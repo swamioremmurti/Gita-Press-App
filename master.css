@@ -1,0 +1,7628 @@
+* {
+	font-family:ChanakyaUni, serif;
+}
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, pre, code, blockquote {
+	margin:0;
+	padding:0;
+	border-width:0;
+}
+td, th {
+	border-style:solid;
+	border-width:1px;
+}
+table {
+	border-collapse:collapse;
+}
+table.Samagri-Table {
+	width:100%;
+	margin:12px 0px 12px 0px;
+	border:1px solid darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.1em;
+}
+th.Samagri-Table-Head {
+	background-color:darkslateblue;
+	color:white;
+	border:1px solid darkslateblue;
+	padding:6px 10px;
+	text-align:center;
+	font-weight:bold;
+}
+td.Samagri-Table-Cell {
+	border:1px solid darkslateblue;
+	padding:6px 10px;
+	text-align:left;
+	color:black;
+}
+td.Samagri-Table-Cell-Center {
+	border:1px solid darkslateblue;
+	padding:6px 10px;
+	text-align:center;
+	color:black;
+}
+li {
+	display:block;
+}
+body {
+	-epub-hyphens:auto;
+	-webkit-hyphens:auto;
+}
+@page {
+	margin : 0px 0px 0px 0px;
+}
+p.Basic-Paragraph {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:30px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Text {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Sambandh {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.214;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Tab {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-heading {
+	-epub-ruby-position:over;
+	color:blue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Italik {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Chapter-Heading {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Uvaacha {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Right {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Bole {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Uwach {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Number {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Page-Break {
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Vayakhya {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Footnotes {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.ChapterEnd1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Subject {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Titel-Page---Shri-Hari {
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---Book-Name {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:2.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---Gita-Seva-Trust {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:maroon;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---Author-Name {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---Translater-Author-Name {
+	font-family:ChanakyaUni, serif;
+	font-weight:bold;
+	text-align:center;
+}
+p.Title-Page---Tvamev-mata {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.First-End-Page-text {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.sub-heading {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-black {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Etalic {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.right {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.su-head {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.15;
+	margin-bottom:2px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Etalic-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.right-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Bhav-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Right-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Etalic-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.right-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.right-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Etalic-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Right-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-4 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-4 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-5 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-5 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-6 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-6 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-7 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Etalic-4 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Right-7 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Bhav-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Etalic-5 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.right-4 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-8 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-8 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Minion Pro", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Black {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.First-End-Page-text-1 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-9 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-9 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Etalic-6 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.192;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.right-5 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-10 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-10 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-11 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-11 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-12 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-Paragraph-Style-12 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Right-13 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.para-style-override-1 {
+	text-align:right;
+}
+p.para-style-override-2 {
+	font-size:1.5em;
+	font-style:normal;
+	font-weight:bold;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-3 {
+	font-style:normal;
+	font-weight:bold;
+	margin-bottom:0px;
+	text-align:center;
+}
+p.para-style-override-4 {
+	margin-bottom:0px;
+	text-align:center;
+}
+p.para-style-override-5 {
+	font-style:normal;
+	font-weight:bold;
+	margin-bottom:0px;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-6 {
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-7 {
+	text-align:right;
+	text-indent:0px;
+}
+p.para-style-override-8 {
+	break-after:page;
+	text-align:right;
+}
+p.para-style-override-9 {
+	text-align:center;
+}
+p.para-style-override-10 {
+	margin-bottom:0px;
+}
+p.para-style-override-11 {
+	text-align:justify;
+}
+p.para-style-override-12 {
+	font-style:normal;
+	font-weight:bold;
+	text-align:center;
+}
+p.para-style-override-13 {
+	margin-right:192px;
+	text-align:justify;
+	text-indent:20px;
+}
+p.para-style-override-14 {
+	font-style:italic;
+	font-weight:normal;
+	text-align:center;
+}
+p.para-style-override-15 {
+	color:black;
+}
+p.para-style-override-16 {
+	text-indent:0px;
+}
+p.para-style-override-17 {
+	margin-left:1px;
+}
+p.para-style-override-18 {
+	font-style:normal;
+	font-weight:bold;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-19 {
+	font-style:italic;
+	font-weight:normal;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-20 {
+	text-indent:18px;
+}
+p.para-style-override-21 {
+	margin-bottom:6px;
+}
+p.para-style-override-22 {
+	margin-bottom:5px;
+}
+p.para-style-override-23 {
+	font-size:1.083em;
+}
+p.para-style-override-24 {
+	font-size:1em;
+	text-align:right;
+}
+p.para-style-override-25 {
+	margin-bottom:23px;
+	text-align:center;
+}
+p.para-style-override-26 {
+	font-style:normal;
+	font-weight:bold;
+}
+p.para-style-override-27 {
+	font-family:"Minion Pro", serif;
+	font-style:normal;
+	font-weight:normal;
+}
+p.para-style-override-28 {
+	color:black;
+}
+p.para-style-override-29 {
+	margin-bottom:0px;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-30 {
+	font-style:normal;
+	font-weight:normal;
+	text-align:center;
+}
+p.para-style-override-31 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.142em;
+	font-style:normal;
+	font-weight:normal;
+	text-align:center;
+}
+p.para-style-override-32 {
+	font-size:1.083em;
+	font-style:normal;
+	font-weight:bold;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-33 {
+	-epub-hyphens:none;
+	text-align:justify;
+	text-indent:18px;
+}
+p.para-style-override-34 {
+	font-size:1.125em;
+	font-style:italic;
+	font-weight:normal;
+}
+p.para-style-override-35 {
+	text-align:justify;
+	text-indent:12px;
+}
+p.para-style-override-36 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-weight:normal;
+	text-align:justify;
+	text-indent:12px;
+}
+p.para-style-override-37 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-weight:normal;
+	text-align:justify;
+}
+p.para-style-override-38 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-weight:normal;
+	text-align:center;
+}
+p.para-style-override-39 {
+	font-style:normal;
+	font-weight:normal;
+	text-align:right;
+}
+p.para-style-override-40 {
+	font-family:ChanakyaUni, serif;
+	font-style:normal;
+	font-weight:normal;
+}
+p.para-style-override-41 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-weight:normal;
+	text-align:right;
+	text-indent:12px;
+}
+p.para-style-override-42 {
+	margin-left:12px;
+	margin-right:12px;
+	text-align:justify;
+}
+p.para-style-override-43 {
+	text-indent:20px;
+}
+p.para-style-override-44 {
+	text-align:left;
+}
+p.para-style-override-45 {
+	margin-bottom:7px;
+}
+p.para-style-override-46 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.142em;
+	font-style:normal;
+	font-weight:normal;
+	margin-left:12px;
+	margin-right:12px;
+	text-align:justify;
+	text-indent:12px;
+}
+p.para-style-override-47 {
+	margin-right:72px;
+	text-align:justify;
+	text-indent:12px;
+}
+p.para-style-override-48 {
+	margin-left:6px;
+	text-align:center;
+}
+p.para-style-override-49 {
+	margin-bottom:6px;
+	text-align:center;
+}
+p.para-style-override-50 {
+	font-style:normal;
+	font-weight:normal;
+}
+p.para-style-override-51 {
+	margin-right:96px;
+}
+p.para-style-override-52 {
+	margin-right:6px;
+	text-align:center;
+}
+p.para-style-override-53 {
+	color:red;
+	font-size:1.333em;
+	font-style:normal;
+	font-weight:bold;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-54 {
+	text-indent:12px;
+}
+p.para-style-override-55 {
+	text-indent:14px;
+}
+p.para-style-override-56 {
+	font-size:1.125em;
+	font-style:italic;
+	font-weight:normal;
+	text-align:center;
+	text-indent:0px;
+}
+p.para-style-override-57 {
+	margin-bottom:0px;
+	text-align:right;
+}
+p.para-style-override-58 {
+	color:black;
+	margin-bottom:6px;
+}
+p.para-style-override-59 {
+	font-size:1em;
+	text-align:right;
+	text-indent:0px;
+}
+p.para-style-override-60 {
+	font-size:1.125em;
+}
+p.para-style-override-61 {
+	margin-left:30px;
+	text-align:justify;
+	text-indent:-30px;
+}
+p.para-style-override-62 {
+	break-after:page;
+}
+p.para-style-override-63 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.125em;
+	font-style:normal;
+	font-weight:normal;
+	text-align:justify;
+}
+p.para-style-override-64 {
+	text-align:justify;
+	text-indent:0px;
+}
+span.char-style-override-1 {
+	color:black;
+	font-size:0.714em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-2 {
+	font-size:0.714em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-3 {
+	font-family:ChanakyaUni, serif;
+	font-size:0.813em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-4 {
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-5 {
+	font-size:0.923em;
+}
+span.char-style-override-6 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.0em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-7 {
+	font-size:1.125em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-8 {
+	font-size:0.727em;
+}
+span.char-style-override-9 {
+	font-family:ChanakyaUni, serif;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-10 {
+	font-style:italic;
+	font-weight:bold;
+}
+span.char-style-override-11 {
+	font-size:0.583em;
+	vertical-align:super;
+}
+span.char-style-override-12 {
+	color:black;
+	font-size:0.923em;
+}
+span.char-style-override-13 {
+	font-size:0.938em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-14 {
+	font-size:0.875em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-15 {
+	color:maroon;
+	font-size:0.813em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-16 {
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-17 {
+	font-size:0.583em;
+	font-style:italic;
+	font-weight:normal;
+	vertical-align:super;
+}
+span.char-style-override-18 {
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-19 {
+	font-size:0.625em;
+	vertical-align:super;
+}
+span.char-style-override-20 {
+	color:royalblue;
+}
+span.char-style-override-21 {
+	color:royalblue;
+	font-size:0.583em;
+	vertical-align:super;
+}
+span.char-style-override-22 {
+	font-size:0.75em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-23 {
+	font-size:0.875em;
+}
+span.char-style-override-24 {
+	color:blue;
+}
+span.char-style-override-25 {
+	font-size:0.583em;
+	font-style:normal;
+	font-weight:bold;
+	vertical-align:super;
+}
+span.char-style-override-26 {
+	color:blue;
+}
+span.char-style-override-27 {
+	color:mediumvioletred;
+}
+span.char-style-override-28 {
+	font-size:0.875em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-29 {
+	color:black;
+}
+span.char-style-override-30 {
+	color:black;
+}
+span.char-style-override-31 {
+	color:red;
+	font-size:0.75em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-32 {
+	font-size:0.813em;
+	font-style:italic;
+	font-weight:bold;
+}
+span.char-style-override-33 {
+	font-size:0.813em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-34 {
+	font-size:0.547em;
+	vertical-align:super;
+}
+span.char-style-override-35 {
+	font-size:0.929em;
+}
+span.char-style-override-36 {
+	color:red;
+	font-size:1.333em;
+}
+span.char-style-override-37 {
+	color:black;
+	font-size:0.938em;
+}
+span.char-style-override-38 {
+	color:royalblue;
+	font-size:0.938em;
+}
+span.char-style-override-39 {
+	color:blue;
+	font-size:0.938em;
+}
+span.char-style-override-40 {
+	color:black;
+	font-size:1.083em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-41 {
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-42 {
+	font-size:1.231em;
+}
+span.char-style-override-43 {
+	color:black;
+	font-size:1.083em;
+	font-style:italic;
+	font-weight:bold;
+}
+span.char-style-override-44 {
+	color:navy;
+	font-size:1.167em;
+}
+span.char-style-override-45 {
+	font-size:0.625em;
+}
+span.char-style-override-46 {
+	font-size:0.75em;
+}
+span.char-style-override-47 {
+	font-size:0.813em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-48 {
+	font-family:"Times New Roman", serif;
+	font-size:0.923em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-49 {
+	color:red;
+	font-size:0.75em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-50 {
+	font-size:0.938em;
+}
+span.char-style-override-51 {
+	font-size:0.856em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-52 {
+	font-size:0.547em;
+	font-style:normal;
+	font-weight:bold;
+	vertical-align:super;
+}
+span.char-style-override-53 {
+	color:red;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-54 {
+	color:blue;
+	font-family:"Times New Roman", serif;
+	font-size:0.8em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-55 {
+	font-size:1.142em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-56 {
+	font-size:0.583em;
+	text-decoration:underline;
+	vertical-align:super;
+}
+span.char-style-override-57 {
+	font-size:1.083em;
+	font-style:italic;
+	font-weight:bold;
+}
+span.char-style-override-58 {
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:0.923em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-59 {
+	color:blue;
+	font-size:0.583em;
+	vertical-align:super;
+}
+span.char-style-override-60 {
+	font-size:0.813em;
+}
+span.char-style-override-61 {
+	font-size:0.619em;
+	vertical-align:super;
+}
+span.char-style-override-62 {
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-63 {
+	font-size:0.813em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-64 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.142em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-65 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-weight:bold;
+}
+span.char-style-override-66 {
+	color:red;
+	font-size:1.067em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-67 {
+	color:red;
+	font-size:0.75em;
+}
+span.char-style-override-68 {
+	font-size:1.067em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-69 {
+	font-size:1.067em;
+}
+span.char-style-override-70 {
+	color:black;
+	font-size:0.938em;
+}
+span.char-style-override-71 {
+	font-size:0.844em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-72 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-73 {
+	font-size:0.856em;
+}
+span.char-style-override-74 {
+	font-size:1.142em;
+}
+span.char-style-override-75 {
+	color:black;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-76 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-77 {
+	font-size:0.856em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-78 {
+	font-family:ChanakyaUni, serif;
+	font-size:0.777em;
+	font-style:normal;
+	font-weight:normal;
+	vertical-align:super;
+}
+span.char-style-override-79 {
+	font-variant:small-caps;
+}
+span.char-style-override-80 {
+	font-size:1.054em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-81 {
+	color:black;
+	font-size:1.167em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-82 {
+	color:black;
+	font-size:1.142em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-83 {
+	font-family:"Times New Roman", serif;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-84 {
+	color:navy;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-85 {
+	color:black;
+	font-size:0.856em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-86 {
+	color:maroon;
+	font-size:0.583em;
+	vertical-align:super;
+}
+span.char-style-override-87 {
+	font-size:1.142em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-88 {
+	color:royalblue;
+	font-size:1.067em;
+}
+span.char-style-override-89 {
+	color:blue;
+	font-size:1.067em;
+}
+span.char-style-override-90 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.142em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-91 {
+	color:black;
+	font-size:1.231em;
+}
+span.char-style-override-92 {
+	font-size:1.333em;
+}
+span.char-style-override-93 {
+	font-size:0.856em;
+	font-style:italic;
+	font-weight:bold;
+}
+span.char-style-override-94 {
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:0.923em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-95 {
+	font-size:0.9em;
+}
+span.char-style-override-96 {
+	color:red;
+	font-size:1.067em;
+}
+span.char-style-override-97 {
+	font-size:1.154em;
+	font-style:italic;
+	font-weight:normal;
+}
+span.char-style-override-98 {
+	font-size:0.844em;
+}
+span.char-style-override-99 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.125em;
+	font-style:normal;
+	font-weight:bold;
+}
+span.char-style-override-100 {
+	font-family:ChanakyaUni, serif;
+	font-size:1.125em;
+	font-style:normal;
+	font-weight:normal;
+}
+span.char-style-override-101 {
+	color:darkorange;
+	font-size:0.875em;
+}
+span.char-style-override-102 {
+	color:red;
+	font-size:1.375em;
+	font-style:normal;
+	font-weight:bold;
+}
+img {
+	max-width:300px;
+	height:auto;
+}
+img.frame-1 {
+	width:94%;
+}
+img.frame-2 {
+	width:100%;
+}
+img.frame-3 {
+	width:64%;
+}
+
+
+/* ---- Merged from batch2 additions: new classes not previously in master.css ---- */
+
+p.AA {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.208;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:12px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Page-Break-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.TXT {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Prashna {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Uttar {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.TXT + p.Prashna,
+p.Uttar + p.Prashna {
+	margin-top:20px;
+}
+p.Bhashya-Sanskrit {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:#5a4a3a;
+	font-family:ChanakyaUni, serif;
+	font-size:1.1em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.4;
+	margin-bottom:8px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Doha {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.SHLOK-Black {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Location-Date-Row {
+	display:flex;
+	justify-content:space-between;
+	align-items:baseline;
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Location-Date-Row span {
+	text-align:left;
+}
+p.TXT-Right {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Sub-head-2 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Image {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-1 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.A {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.208;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:15px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.AA-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.208;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:12px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Heading {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:2.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-2 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Tavmev-Mata--pita {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Image-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-4 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Numbers {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-head-2-3 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-5 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-4 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-4 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Numbers-1 {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-head-2-4 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-6 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-5 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-5 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-5 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-7 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-6 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-6 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-6 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color--1 {
+	-epub-ruby-position:over;
+	color:mediumvioletred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-8 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-7 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-7 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-7 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-9 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-8 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-8 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-10 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-9 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-9 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-8 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-11 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-10 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-10 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Numbers-2 {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-head-2-9 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-12 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-11 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-11 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-10 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Image-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-13 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-12 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-12 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-11 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Numbers-3 {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-14 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-13 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-13 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Chapter-End-Text {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-head-2-12 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-15 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Bold-14 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Footnotes-Right-14 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-head-2-13 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Sub-Heading-2 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.OM {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:mediumvioletred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.667em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-New {
+	-epub-ruby-position:over;
+	color:blue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-1 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-2 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-4 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Sub-Heading-2-1 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-5 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-3 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-6 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-4 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-4 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-5 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Chapter-End-Text-7 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-6 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-5 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-8 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-6 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-9 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-7 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-7 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-10 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-8 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-11 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-8 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-9 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-9 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-10 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-12 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-10 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-11 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-11 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Chapter-End-Text-13 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footer-Chopai-12 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Shlok-Color-2-12 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-14 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-13 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-15 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-14 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-16 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Dash {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.818;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color-2-15 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-End-Text-17 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+img.frame-4 {
+	width:48%;
+}
+img.frame-5 {
+	width:98%;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Arth {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Uvach {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Book-Name {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:2.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shrihari {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.S-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:6px;
+	margin-right:6px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnote {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.x-- {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Title-Page---Sub-Title {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.N {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.133;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:24px;
+}
+p.Sub-heading-1 {
+	-epub-ruby-position:over;
+	color:darkcyan;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Bhav-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-4 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.S-2-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:6px;
+	margin-right:6px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.x---1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Bhav-5 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.x---2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Footnote-1 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Bhav-6 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Footnote-2 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Bhav-7 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.x---3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Sub-heading-2 {
+	-epub-ruby-position:over;
+	color:deepskyblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnote-3 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Bhav-8 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-9 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-10 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-11 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-12 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-13 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-14 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-15 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Bhav-16 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Nayash {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Varsh---Sankhya {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.SHLOK {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnote-Center {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Footnote-Right {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:2px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Title-page---sub-title {
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.667em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Main-Heading {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:2.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+img.frame-6 {
+	width:47%;
+}
+img.frame-7 {
+	width:56%;
+}
+img.frame-8 {
+	width:42%;
+}
+img.frame-9 {
+	width:43%;
+}
+img.frame-10 {
+	width:59%;
+}
+img.frame-11 {
+	width:61%;
+}
+img.frame-12 {
+	width:60%;
+}
+img.frame-13 {
+	width:58%;
+}
+img.frame-14 {
+	width:64%;
+}
+img.frame-15 {
+	width:62%;
+}
+img.frame-16 {
+	width:51%;
+}
+img.frame-17 {
+	width:69%;
+}
+img.frame-18 {
+	width:44%;
+}
+img.frame-19 {
+	width:48%;
+}
+img.frame-20 {
+	width:39%;
+}
+img.frame-21 {
+	width:46%;
+}
+img.frame-22 {
+	width:54%;
+}
+img.frame-23 {
+	width:41%;
+}
+img.frame-24 {
+	width:55%;
+}
+img.frame-25 {
+	width:45%;
+}
+img.frame-26 {
+	width:52%;
+}
+img.frame-27 {
+	width:63%;
+}
+img.frame-28 {
+	width:40%;
+}
+img.frame-29 {
+	width:37%;
+}
+p.Padchched-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Shlok-L {
+	-epub-ruby-position:over;
+	color:teal;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Paradhan-Vishay {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Chapter-End {
+	-epub-ruby-position:over;
+	color:mediumvioletred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Subject {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:3px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Normal {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:8px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Title-Page---Sub-Heading {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Gadya {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height: 1.8;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.mantra {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height: 1.8;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Title-Page--Sub-Title {
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.667em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height: 1.8;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-Heading-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:steelblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height: 1.8;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Number-copy {
+	-epub-ruby-position:over;
+	color:mediumvioletred;
+	font-family:ChanakyaUni, serif;
+	font-size:0.917em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height: 1.8;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Similarity-assigned aliases: spelling/numbering variants mapped to closest existing class ---- */
+
+p.Footnotes-bold {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-Head-2 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---subheading {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---Sub-heading {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-right {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:0px;
+	border:1px solid BlueViolet;
+}
+p.Sub-Heading- {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sholk-Black {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Basic-Paragraph-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:30px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.xfootnote {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.x-Main-Heading {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:2.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Number-1 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Color {
+	-epub-ruby-position:over;
+	color:mediumvioletred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-1 {
+	-epub-ruby-position:over;
+	color:darkcyan;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Basic-Paragraph-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:30px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Futnote {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Shlok-Number--2 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Slok1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.No-paragraph-style {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Black-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-Black-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.SHLOK-Black-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Number {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Head-3 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.sub-head {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chapter-Heading-2 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Footnotes-Center {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.subhead {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Uvach-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Text-Right-coloer {
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:italic;
+	text-align:right;
+}
+p.Text-Right {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Sub-Heading-2-2 {
+	-epub-ruby-position:over;
+	color:deepskyblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Uvach-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.uwach {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page-Subheading {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Foot-note {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.UWACH {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Uwash {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.SHLOK-Black-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-1-2 {
+	-epub-ruby-position:over;
+	color:darkcyan;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.SHLOK-Black-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-1-3 {
+	-epub-ruby-position:over;
+	color:darkcyan;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.TXT-Right-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.TXT-Right-2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Sub-Heading-1-1 {
+	-epub-ruby-position:over;
+	color:darkcyan;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.fOOTNOTE-1 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.fOOTNOTE {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Futnote-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Footnote--A- {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.xfootnote-2 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.xfootnote-1 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Sub-Hading {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Slok-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.mantra-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height: 1.8;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Sub-Head-1 {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---sub-heading {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.FOOTNOTE-2 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.FOOTNOTE-1 {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.uvach-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Basic-Paragraph-4 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:30px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Basic-Paragraph-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:30px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sholk {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Chappter-Heading {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Slok2 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shloka {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Text-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Vyakhya {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Sub-had- {
+	-epub-ruby-position:over;
+	color:darkred;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---Subheading {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Foot-Note {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.SHLOK-number {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page---sub-title {
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.667em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Uvach-3 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-4 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-2-3 {
+	-epub-ruby-position:over;
+	color:deepskyblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.TEXT {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Paragraph-Style {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:"Times New Roman", serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:left;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.TEXT-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.TEXT-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:12px;
+}
+p.Title-page---sub-title-2 {
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.667em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.heading1 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:2.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.x75 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.207;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Footer {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.numbers {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Inner-Heading {
+	-epub-ruby-position:over;
+	color:teal;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.TXT-Bold {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Sanwant {
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.day-night {
+	-epub-ruby-position:over;
+	color:steelblue;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.x1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.207;
+	margin-bottom:0px;
+	margin-left:24px;
+	margin-right:27px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Futnoot {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.154;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:19px;
+}
+p.S-3 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:60px;
+	margin-right:12px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.B-3 {
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.169;
+	margin-bottom:0px;
+	margin-left:36px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Pad-sankhya {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Main-Heading---Book-Name-etc- {
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:2.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Title-Page--caption {
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.pravachan {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Head {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Caption-L-16 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.333;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:24px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.dhyan {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.end {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.stotra {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.FOOTNOTE {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.SLOK {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Middle-Heading {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.uvach {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.05em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.135;
+	margin-bottom:1px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Text- {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Chapter-end-Text {
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Footnote-A {
+	-epub-ruby-position:over;
+	color:BlueViolet;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.154;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+	border:1px solid BlueViolet;
+}
+p.Sloke-AA {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:firebrick;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:24px;
+	margin-right:24px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Sub-Heading-A {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.417em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.106;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.OM-Namah {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.167em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Center-Dais-A {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.25em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.F-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.154;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.TXT-hindi {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:2px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Chapter {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:deeppink;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:6px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Question {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:red;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:2px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+p.Answer {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:2px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:18px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Subhed {
+	-epub-ruby-position:over;
+	color:maroon;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Slok {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.125em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.133;
+	margin-bottom:0px;
+	margin-left:12px;
+	margin-right:12px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Merged from batch3 additions: new classes not previously in master.css ---- */
+
+p.Hindi-Chappter-Heading {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:10px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Hindi-Chappter-Heading-1 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:10px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Hindi-Chappter-Heading-2 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:10px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Hindi-Chaptter-Heading {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.833em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:10px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-new {
+	-epub-ruby-position:over;
+	color:darkorange;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+
+
+/* ---- Vedic-content classes (Rigveda and future Veda books) ---- */
+
+p.Pada-Patha {
+	color:#231f20;
+	font-family:ChanakyaUni, serif;
+	font-size:1.1em;
+	font-style:italic;
+	text-align:center;
+	margin-bottom:8px;
+}
+p.Rishi-Devata-Line {
+	color:#5a5148;
+	font-family:ChanakyaUni, serif;
+	font-size:0.95em;
+	text-align:center;
+	margin-bottom:6px;
+}
+p.Mantra-Vishay {
+	color:#1066b1;
+	font-family:ChanakyaUni, serif;
+	font-size:1.05em;
+	font-style:italic;
+	text-align:justify;
+	margin-bottom:6px;
+}
+p.Mantra-Num {
+	color:#a51512;
+	font-weight:bold;
+	text-align:center;
+	margin-bottom:2px;
+}
+hr.mantra-sep {
+	border:none;
+	border-top:1px dashed #e8ddc8;
+	margin:1.2rem 0;
+}
+
+p.Bhavartha {
+	margin-top:14px;
+}
+
+/* Merge consecutive footnote paragraphs (any p.Footnotes* variant) into a single bordered
+   block instead of a separate box per line. Same specificity as the individual p.Footnotes*
+   rules above (element + one selector), so being later in the cascade is what makes these win;
+   keep this block after all Footnotes-* definitions. */
+p[class*="Footnotes"]:has(+ p[class*="Footnotes"]) {
+	border-bottom: none;
+	margin-bottom: 0px;
+	padding-bottom: 6px;
+}
+p[class*="Footnotes"] + p[class*="Footnotes"] {
+	border-top: none;
+	margin-top: 0px;
+	padding-top: 6px;
+}
+
+p.TXT em {
+	color:#8a7f6a;
+	font-size:0.85em;
+	font-style:italic;
+}
+
+/* ---- added for महाभारत (आदिपर्व से स्वर्गारोहणपर्व) import ---- */
+p.SHLOK-2,
+p.SHLOK-3,
+p.SHLOK-4,
+p.SHLOK-5,
+p.SHLOK-6,
+p.SHLOK-7,
+p.SHLOK-8,
+p.SHLOK-9,
+p.SHLOK-10,
+p.SHLOK-11,
+p.SHLOK-12,
+p.SHLOK-13,
+p.SHLOK-14,
+p.SHLOK-15,
+p.SHLOK-16,
+p.SHLOK-17,
+p.SHLOK-18,
+p.SHLOK-19,
+p.SHLOK-20,
+p.SHLOK-21,
+p.SHLOK-22,
+p.SHLOK-23,
+p.SHLOK-24,
+p.SHLOK-25,
+p.SHLOK-26,
+p.SHLOK-27,
+p.SHLOK-28,
+p.SHLOK-29,
+p.SHLOK-30,
+p.SHLOK-31,
+p.SHLOK-32,
+p.SHLOK-33,
+p.SHLOK-34,
+p.SHLOK-35,
+p.SHLOK-36,
+p.SHLOK-37,
+p.SHLOK-38,
+p.SHLOK-39,
+p.SHLOK-40,
+p.SHLOK-41,
+p.SHLOK-42,
+p.SHLOK-43,
+p.SHLOK-44,
+p.SHLOK-45,
+p.SHLOK-46,
+p.SHLOK-47,
+p.SHLOK-48,
+p.SHLOK-49,
+p.SHLOK-50,
+p.SHLOK-51,
+p.SHLOK-52,
+p.SHLOK-53,
+p.SHLOK-54,
+p.SHLOK-55,
+p.SHLOK-56,
+p.SHLOK-57,
+p.SHLOK-58,
+p.SHLOK-59,
+p.SHLOK-60,
+p.SHLOK-61 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:0.85em;
+	font-style:italic;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:4px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Image-3,
+p.Image-4,
+p.Image-5,
+p.Image-6,
+p.Image-7,
+p.Image-8,
+p.Image-9,
+p.Image-10,
+p.Image-11,
+p.Image-12,
+p.Image-13,
+p.Image-14,
+p.Image-15,
+p.Image-16,
+p.Image-17,
+p.Image-18,
+p.Image-19,
+p.Image-20,
+p.Image-21,
+p.Image-22,
+p.Image-23,
+p.Image-24,
+p.Image-25,
+p.Image-26,
+p.Image-27,
+p.Image-28,
+p.Image-29,
+p.Image-30,
+p.Image-31,
+p.Image-32,
+p.Image-33,
+p.Image-34,
+p.Image-35,
+p.Image-36,
+p.Image-37,
+p.Image-38,
+p.Image-39,
+p.Image-40,
+p.Image-41,
+p.Image-42,
+p.Image-43,
+p.Image-44,
+p.Image-45,
+p.Image-46,
+p.Image-47,
+p.Image-48,
+p.Image-49,
+p.Image-50,
+p.Image-51,
+p.Image-52,
+p.Image-53,
+p.Image-54,
+p.Image-55,
+p.Image-56,
+p.Image-57,
+p.Image-58,
+p.Image-59,
+p.Image-60,
+p.Image-61,
+p.Image-62,
+p.Image-63,
+p.Image-64,
+p.Image-65,
+p.Image-66 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Image-word,
+p.Image-word-1,
+p.Image-Word-10,
+p.Image-word-11,
+p.Image-word-12,
+p.Image-Word-13,
+p.Image-Word-14,
+p.Image-Word-15,
+p.Image-Word-16,
+p.Image-word-17,
+p.Image-word-18,
+p.Image-word-19,
+p.Image-word-2,
+p.Image-word-20,
+p.Image-word-21,
+p.Image-word-22,
+p.Image-word-23,
+p.Image-word-24,
+p.Image-word-25,
+p.Image-word-26,
+p.Image-word-27,
+p.Image-word-28,
+p.Image-word-29,
+p.Image-word-3,
+p.Image-word-30,
+p.Image-word-31,
+p.Image-word-32,
+p.Image-word-33,
+p.Image-word-34,
+p.Image-word-35,
+p.Image-word-36,
+p.Image-word-37,
+p.Image-word-38,
+p.Image-word-39,
+p.Image-word-4,
+p.Image-word-40,
+p.Image-word-41,
+p.Image-word-42,
+p.Image-word-43,
+p.Image-word-44,
+p.Image-word-5,
+p.Image-Word-6,
+p.Image-word-7,
+p.Image-word-8,
+p.Image-Word-9 {
+	color:#333333;
+	font-family:ChanakyaUni, serif;
+	font-size:0.917em;
+	font-style:italic;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:8px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Basic-Paragraph-5,
+p.Basic-Paragraph-6,
+p.Basic-Paragraph-7,
+p.Basic-Paragraph-8,
+p.Basic-Paragraph-9,
+p.Basic-Paragraph-10,
+p.Basic-Paragraph-11,
+p.Basic-Paragraph-12,
+p.Basic-Paragraph-13,
+p.Basic-Paragraph-14,
+p.Basic-Paragraph-15 {
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:0.9;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:30px;
+	text-align:justify;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.TXT-Right-3 {
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:black;
+	font-family:ChanakyaUni, serif;
+	font-size:1.083em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:normal;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:right;
+	text-decoration:none;
+	text-indent:18px;
+}
+

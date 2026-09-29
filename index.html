@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Swadhyay | स्वाध्याय — A Digital Library of Sanatan Wisdom</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="stylesheet" href="swadhyay.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <nav class="sidebar-nav">
+      <a class="side-link" data-nav="home" href="#/"><span class="ic">&#8962;</span><span>होम</span></a>
+      <a class="side-link" data-nav="library" href="#/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
+      <a class="side-link" data-nav="favorites" href="#/favorites"><span class="ic">&#9825;</span><span>पसंदीदा</span></a>
+      <a class="side-link" data-nav="myreads" href="#/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
+      <a class="side-link" data-nav="notes" href="#/notes"><span class="ic">&#128221;</span><span>नोट्स</span></a>
+      <a class="side-link" data-nav="chat" href="#/chat"><span class="ic">&#128172;</span><span>सहायक</span></a>
+      <a class="side-link" data-nav="settings" href="#/settings"><span class="ic">&#9881;</span><span>सेटिंग्स</span></a>
+    </nav>
+    <div class="sidebar-brand">ॐ<br>सत्यं<br>शिवं<br>सुन्दरम्</div>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <div class="topbar-left">
+        <span class="logo-mark" role="img" aria-label="स्वाध्याय"></span>
+      </div>
+      <button class="global-search-btn profile-btn" title="खोजें">&#128269;</button>
+      <label class="theme-switch" title="डार्क मोड">
+        <input type="checkbox" id="themeSwitch">
+        <span class="track"></span>
+      </label>
+      <button class="profile-btn" id="profileBtn" title="प्रोफ़ाइल">&#128100;</button>
+    </header>
+
+    <div id="viewRoot"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a class="side-link" data-nav="home" href="#/"><span class="ic">&#8962;</span><span>होम</span></a>
+  <a class="side-link" data-nav="library" href="#/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
+  <a class="side-link" data-nav="favorites" href="#/favorites"><span class="ic">&#9825;</span><span>पसंदीदा</span></a>
+  <a class="side-link" data-nav="myreads" href="#/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
+  <a class="side-link" data-nav="chat" href="#/chat"><span class="ic">&#128172;</span><span>सहायक</span></a>
+  <a class="side-link" data-nav="settings" href="#/settings"><span class="ic">&#8942;</span><span>अधिक</span></a>
+</nav>
+
+<script src="swadhyay-data.js"></script>
+<script src="swadhyay-app.js"></script>
+</body>
+</html>

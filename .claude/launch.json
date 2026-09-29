@@ -1,0 +1,41 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "ayodhya-mahima-svg",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8743", "--directory", "C:\\Users\\megha\\Downloads\\network-images\\Ayodhya Mahima"],
+      "port": 8743
+    },
+    {
+      "name": "ayodhya-mahima-render",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8744", "--directory", "C:\\Users\\megha\\AppData\\Local\\Temp\\claude\\C--Gita-Press-App\\df8d67d6-ed1c-498f-86d6-fc1bc35d6cbb\\scratchpad"],
+      "port": 8744
+    },
+    {
+      "name": "network-images-root",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8745", "--directory", "C:\\Users\\megha\\Downloads\\network-images"],
+      "port": 8745
+    },
+    {
+      "name": "swadhyay",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [".claude/dev-server.js"],
+      "port": 5173
+    },
+    {
+      "name": "swadhyay-chat",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server/server.js"],
+      "port": 5174
+    },
+    {
+      "name": "gita-press-app-root",
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8746", "--directory", "C:\\Gita Press App"],
+      "port": 8746
+    }
+  ]
+}
