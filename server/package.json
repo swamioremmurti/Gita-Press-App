@@ -1,0 +1,14 @@
+{
+  "name": "swadhyay-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Swadhyay app server: static file serving, RAG chat, and the admin/auth/comments/progress API.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "migrate": "node lib/migrate.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.11.0"
+  }
+}

@@ -824,3 +824,102 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
   .author-avatar { width: 52px; height: 52px; font-size: 1.2rem; }
   .author-name { max-width: 72px; font-size: .75rem; }
 }
+
+/* ---------------- auth pages (login/signup) ---------------- */
+.is-hidden { display: none !important; }
+.auth-page { max-width: 420px; }
+.auth-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.auth-form label { display: flex; flex-direction: column; gap: .4rem; font-size: .9rem; color: var(--muted); }
+.auth-form input {
+  border: 1px solid var(--rule); border-radius: 10px; padding: .65rem .85rem;
+  font-family: inherit; font-size: .95rem; background: var(--surface); color: var(--ink);
+}
+.auth-error { color: var(--accent-dark); font-size: .88rem; min-height: 1.1em; }
+.auth-switch { margin-top: 1rem; color: var(--muted); font-size: .9rem; }
+.auth-switch a { color: var(--accent); }
+
+/* ---------------- खाता / सेटिंग्स ---------------- */
+.account-card {
+  background: var(--surface-2); border-radius: 14px; padding: 1.2rem 1.4rem;
+  max-width: 460px; display: flex; flex-direction: column; gap: .7rem; align-items: flex-start;
+}
+.account-name { font-size: 1.15rem; font-weight: 700; color: var(--ink); }
+.account-email { color: var(--muted); font-size: .9rem; margin-top: -.5rem; }
+.admin-role-badge {
+  display: inline-block; font-size: .7rem; padding: .15rem .55rem; border-radius: 10px;
+  background: var(--surface); color: var(--muted); vertical-align: middle; margin-left: .4rem;
+}
+.admin-role-badge.admin { background: var(--accent); color: #fff; }
+.admin-settings-link { margin-top: .3rem; }
+
+/* ---------------- लेखक (authors) ---------------- */
+.author-photo.cover { position: relative; overflow: hidden; border-radius: 50%; }
+.author-photo.cover-sm { width: 52px; height: 52px; aspect-ratio: 1/1; }
+.author-photo.cover-md { width: 120px; height: 120px; aspect-ratio: 1/1; margin: 0 auto; }
+.author-photo.cover-lg { width: 150px; height: 150px; aspect-ratio: 1/1; }
+.authors-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; }
+.author-card { display: flex; flex-direction: column; align-items: center; gap: .5rem; text-align: center; text-decoration: none; }
+.author-card-name { color: var(--ink); font-weight: 600; font-size: .95rem; }
+.author-card-count { color: var(--muted); font-size: .8rem; }
+.author-detail-head { display: flex; gap: 1.4rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.author-detail-head h1 { margin: 0 0 .4rem; }
+.author-bio { color: var(--ink); line-height: 1.6; max-width: 640px; }
+.tag-row-topics { margin-top: -.6rem; }
+.tag-topic { text-decoration: none; cursor: pointer; }
+.tag-topic:hover { background: var(--accent); color: #fff; }
+
+/* ---------------- एडमिन पैनल ---------------- */
+.admin-page { max-width: 900px; }
+.admin-nav-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1rem; margin-top: 1rem; }
+.admin-nav-card {
+  display: flex; flex-direction: column; align-items: center; gap: .6rem; text-decoration: none;
+  background: var(--surface-2); border-radius: 14px; padding: 1.6rem 1rem; color: var(--ink); text-align: center;
+}
+.admin-nav-card:hover { background: var(--surface); outline: 1px solid var(--accent); }
+.admin-nav-icon { font-size: 2rem; }
+.admin-nav-label { font-weight: 600; }
+
+.admin-book-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.admin-book-row { background: var(--surface-2); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: .7rem; }
+.admin-book-head { display: flex; align-items: center; gap: .8rem; }
+.admin-book-head .cover { width: 42px; aspect-ratio: 3/4; flex: 0 0 auto; }
+.admin-book-title { font-weight: 600; color: var(--ink); }
+.admin-book-author { font-size: .82rem; color: var(--muted); }
+.admin-cat-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.admin-cat-chip {
+  display: inline-flex; align-items: center; gap: .3rem; font-size: .78rem; color: var(--muted);
+  background: var(--surface); border-radius: 10px; padding: .25rem .6rem; cursor: pointer;
+}
+.admin-cat-chip input:checked ~ * { color: var(--accent); }
+.admin-cat-chip:has(input:checked) { color: var(--accent-dark); background: var(--surface); outline: 1px solid var(--accent); }
+.admin-tags-label { display: flex; flex-direction: column; gap: .3rem; font-size: .82rem; color: var(--muted); max-width: 420px; }
+.admin-tags-input, .admin-author-name, .admin-author-bio {
+  border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .7rem; font-family: inherit;
+  font-size: .88rem; background: var(--surface); color: var(--ink);
+}
+.admin-save-status { font-size: .8rem; color: var(--muted); margin-left: .6rem; }
+.admin-pager { display: flex; align-items: center; gap: 1rem; margin-top: 1.2rem; }
+
+.admin-inline-form { display: flex; gap: .6rem; margin: 1rem 0; }
+.admin-inline-form input { border: 1px solid var(--rule); border-radius: 10px; padding: .55rem .8rem; font-family: inherit; background: var(--surface); color: var(--ink); flex: 1; max-width: 320px; }
+.admin-author-list, .admin-user-list, .admin-comment-list { display: flex; flex-direction: column; gap: .9rem; margin-top: .5rem; }
+.admin-author-row { display: flex; gap: 1rem; align-items: flex-start; background: var(--surface-2); border-radius: 12px; padding: 1rem; }
+.admin-author-fields { flex: 1; display: flex; flex-direction: column; gap: .5rem; }
+.admin-author-fields textarea { resize: vertical; }
+.admin-photo-label { font-size: .8rem; color: var(--muted); display: flex; flex-direction: column; gap: .3rem; }
+.admin-author-actions { display: flex; flex-direction: column; align-items: flex-end; gap: .4rem; }
+
+.admin-user-row { display: flex; align-items: center; gap: 1rem; background: var(--surface-2); border-radius: 12px; padding: .9rem 1.1rem; }
+.admin-user-row > div:first-child { flex: 1; }
+.admin-user-email { font-size: .82rem; color: var(--muted); }
+
+.admin-comment-row { background: var(--surface-2); border-radius: 12px; padding: 1rem; }
+.admin-comment-book { font-size: .8rem; color: var(--accent-dark); font-weight: 600; margin: .2rem 0; }
+.admin-comment-actions { display: flex; gap: .6rem; margin-top: .6rem; }
+
+@media (max-width: 860px) {
+  .authors-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+  .author-photo.cover-md { width: 90px; height: 90px; }
+  .admin-author-row { flex-direction: column; }
+  .admin-author-actions { align-items: flex-start; flex-direction: row; }
+}

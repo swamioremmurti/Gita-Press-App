@@ -1,2 +1,4 @@
 .env
 index/
+node_modules/
+data/

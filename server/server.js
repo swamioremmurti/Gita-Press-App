@@ -8,6 +8,8 @@ const url = require('url');
 const voyage = require('./lib/voyage');
 const anthropic = require('./lib/anthropic');
 const store = require('./lib/vectorStore');
+const db = require('./lib/db');
+const api = require('./lib/api');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 5174;
@@ -119,7 +121,18 @@ const server = http.createServer((req, res) => {
     res.end(JSON.stringify({ ok: true, indexedBooks: manifest ? manifest.completedFiles.length : 0, totalChunks: manifest ? manifest.totalChunks : 0 }));
     return;
   }
+  if (parsed.pathname.startsWith('/api/')) {
+    api.handle(req, res, parsed.pathname).then((handled) => {
+      if (!handled) { res.writeHead(404, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'Unknown API route' })); }
+    }).catch((err) => {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: err.message }));
+    });
+    return;
+  }
   serveStatic(req, res);
 });
 
-server.listen(PORT, () => console.log('Swadhyay (with AI chat) running at http://localhost:' + PORT));
+db.init()
+  .then(() => server.listen(PORT, () => console.log('Swadhyay (with AI chat + admin API) running at http://localhost:' + PORT)))
+  .catch((err) => { console.error('Failed to initialize database:', err); process.exit(1); });

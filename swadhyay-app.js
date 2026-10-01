@@ -430,6 +430,18 @@
       authorRoman: normalizeRoman(devanagariToRoman(author)),
       category: b.category,
       categoryMeta: cat,
+      /* Multi-category/tags/author-link support: these start as a one-item fallback built
+         from the legacy single `category` field above, and get overwritten with the real
+         (possibly multi-valued) data once applyBookMetaOverrides() resolves the server's
+         /api/book-meta response at boot. Kept as arrays from the start (rather than being
+         undefined until the fetch resolves) so every render path can safely assume they
+         exist, including a render that happens before/without that fetch succeeding (e.g.
+         the server isn't running) -- the app degrades to exactly today's single-category
+         behavior in that case. */
+      categoryKeys: [b.category],
+      categoryMetas: [cat],
+      tags: [],
+      authorId: null,
       sizeKB: b.sizeKB || 10,
       minutes: estMinutes(b.sizeKB || 10),
       paletteIdx: hashCode(title) % PALETTE.length,
@@ -439,11 +451,30 @@
     };
   });
   var BOOKS_BY_ID = {};
-  BOOKS.forEach(function (b) { BOOKS_BY_ID[b.id] = b; });
+  var BOOKS_BY_FILE = {};
+  BOOKS.forEach(function (b) { BOOKS_BY_ID[b.id] = b; BOOKS_BY_FILE[b.file] = b; });
 
   function findByFile(file) {
-    for (var i = 0; i < BOOKS.length; i++) if (BOOKS[i].file === file) return BOOKS[i];
-    return null;
+    return BOOKS_BY_FILE[file] || null;
+  }
+
+  /** Overlay the server's per-book categories/tags/author onto BOOKS in place. */
+  function applyBookMetaOverrides(metaMap) {
+    Object.keys(metaMap || {}).forEach(function (file) {
+      var book = BOOKS_BY_FILE[file];
+      if (!book) return;
+      var m = metaMap[file];
+      if (m.categories && m.categories.length) {
+        book.categoryKeys = m.categories.map(function (c) { return c.key; });
+        book.categoryMetas = m.categories;
+        book.category = book.categoryKeys[0];
+        book.categoryMeta = book.categoryMetas[0];
+      }
+      book.tags = (m.tags || []).map(function (t) { return t.label; });
+      book.authorId = m.author ? m.author.id : null;
+      if (m.author && m.author.name) { book.author = m.author.name; book.authorRoman = normalizeRoman(devanagariToRoman(m.author.name)); }
+      if (m.author && m.author.photoPath) book.authorPhoto = m.author.photoPath;
+    });
   }
 
   /* ---------------- affiliate links ----------------
@@ -494,8 +525,41 @@
     return arr.indexOf(id) !== -1;
   }
 
+  /* ---------------- server API helpers ----------------
+     Thin fetch() wrappers for the Node API in server/server.js (auth, admin, comments,
+     progress sync). All same-origin, JSON in/out. A non-2xx response rejects with the
+     server's {error} message when present. Every call site that matters for the static
+     (no-server) experience wraps these in try/catch so the app keeps working -- just
+     without login/sync/admin -- if the API isn't reachable (e.g. opened via the plain
+     static file server instead of server/server.js). */
+  function apiCall(method, path, body) {
+    var opts = { method: method, credentials: "same-origin", headers: {} };
+    if (body !== undefined) { opts.headers["Content-Type"] = "application/json"; opts.body = JSON.stringify(body); }
+    return fetch(path, opts).then(function (res) {
+      return res.json().catch(function () { return {}; }).then(function (data) {
+        if (!res.ok) throw new Error(data.error || ("HTTP " + res.status));
+        return data;
+      });
+    });
+  }
+  function apiGet(path) { return apiCall("GET", path); }
+  function apiPost(path, body) { return apiCall("POST", path, body || {}); }
+  function apiPatch(path, body) { return apiCall("PATCH", path, body || {}); }
+  function apiDelete(path) { return apiCall("DELETE", path); }
+
   function getReads() { return readJSON(LS.reads, {}); }
   function setReads(obj) { writeJSON(LS.reads, obj); }
+
+  function pushProgress(book, entry) {
+    if (!book || !isLoggedIn()) return;
+    apiPost("/api/progress", {
+      file: book.file,
+      progress: entry.progress || 0,
+      lastOpenedAt: entry.lastOpenedAt,
+      firstOpenedAt: entry.firstOpenedAt
+    }).catch(function () {});
+  }
+
   function recordOpen(id) {
     var reads = getReads();
     var entry = reads[id] || { progress: 0 };
@@ -503,6 +567,7 @@
     if (!entry.firstOpenedAt) entry.firstOpenedAt = entry.lastOpenedAt;
     reads[id] = entry;
     setReads(reads);
+    pushProgress(BOOKS_BY_ID[id], entry);
   }
   function setProgress(id, pct) {
     var reads = getReads();
@@ -512,46 +577,70 @@
     if (!entry.firstOpenedAt) entry.firstOpenedAt = entry.lastOpenedAt;
     reads[id] = entry;
     setReads(reads);
+    pushProgress(BOOKS_BY_ID[id], entry);
   }
   function clearHistory() { setReads({}); }
 
-  /* ---------------- auth stub ----------------
-     No real login system yet (to be built separately). getCurrentUser() reads a
-     "swadhyay_current_user_v1" record ({name:"..."}) from localStorage; until a real
-     login flow writes that key, this always returns null, so comment-posting stays gated
-     behind "please sign in" everywhere in the UI below. */
-  function getCurrentUser() { return readJSON(LS.currentUser, null); }
-  function isLoggedIn() { return !!getCurrentUser(); }
+  /** Pull this user's server-side progress and merge it into local reads (newer
+   *  lastOpenedAt wins per book), keyed by the book's stable `file` on the wire and
+   *  the local numeric `id` in localStorage -- see the admin-panel plan for why `file`
+   *  is the sync key (array-index ids aren't stable across a changing book list). */
+  function syncProgressFromServer() {
+    if (!isLoggedIn()) return Promise.resolve();
+    return apiGet("/api/progress").then(function (data) {
+      var remote = data.progress || {};
+      var reads = getReads();
+      var changed = false;
+      Object.keys(remote).forEach(function (file) {
+        var book = BOOKS_BY_FILE[file];
+        if (!book) return;
+        var r = remote[file];
+        var local = reads[book.id];
+        if (!local || (r.lastOpenedAt || 0) > (local.lastOpenedAt || 0)) {
+          reads[book.id] = {
+            progress: r.progress,
+            lastOpenedAt: r.lastOpenedAt,
+            firstOpenedAt: (local && local.firstOpenedAt) ? Math.min(local.firstOpenedAt, r.firstOpenedAt || r.lastOpenedAt) : (r.firstOpenedAt || r.lastOpenedAt),
+            lastChapter: local ? local.lastChapter : undefined,
+            totalChapters: local ? local.totalChapters : undefined,
+            scrollPct: local ? local.scrollPct : undefined
+          };
+          changed = true;
+        }
+      });
+      if (changed) setReads(reads);
+    }).catch(function () {});
+  }
+
+  /* ---------------- auth ----------------
+     Real session-cookie auth against server/server.js's /api/auth/* routes. The current
+     user is cached in this module-level var (not localStorage -- the HttpOnly cookie is
+     the actual source of truth); refreshCurrentUser() populates it at boot and after
+     login/signup/logout. */
+  var CURRENT_USER = null;
+  function getCurrentUser() { return CURRENT_USER; }
+  function isLoggedIn() { return !!CURRENT_USER; }
+  function isAdmin() { return !!(CURRENT_USER && CURRENT_USER.role === "admin"); }
+  function refreshCurrentUser() {
+    return apiGet("/api/auth/me").then(function (data) {
+      CURRENT_USER = data.user || null;
+      return CURRENT_USER;
+    }).catch(function () { CURRENT_USER = null; return null; });
+  }
 
   /* No real subscription/billing system yet (to be built separately). isSubscribed() always
      returns false until a real subscription flow marks the current user's record, so
      "Listen to this book" stays visible to everyone but opens a subscribe prompt on click. */
   function isSubscribed() { var u = getCurrentUser(); return !!(u && u.subscribed); }
 
-  /* ---------------- comments (per-book, localStorage-backed) ----------------
-     Comments are stored locally in this browser only (there is no backend/server in this
-     project), keyed by book id: { [bookId]: [ {id, author, text, ts}, ... ] }. This is a
-     placeholder data layer so the UI/UX can be built now; swap for a real API once one exists. */
-  function getAllComments() { return readJSON(LS.comments, {}); }
-  function getComments(bookId) {
-    var list = getAllComments()[bookId] || [];
-    return list.slice().sort(function (a, b) { return b.ts - a.ts; });
+  /* ---------------- comments (server-backed, per book `file`) ---------------- */
+  function getComments(bookFile) {
+    return apiGet("/api/books/" + encodeURIComponent(bookFile) + "/comments").then(function (data) {
+      return data.comments || [];
+    }).catch(function () { return []; });
   }
-  function addComment(bookId, text) {
-    var user = getCurrentUser();
-    if (!user || !text.trim()) return null;
-    var all = getAllComments();
-    var list = all[bookId] || [];
-    var entry = {
-      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
-      author: user.name || "अनाम पाठक",
-      text: text.trim().slice(0, 1000),
-      ts: Date.now()
-    };
-    list.push(entry);
-    all[bookId] = list;
-    writeJSON(LS.comments, all);
-    return entry;
+  function addComment(bookFile, text) {
+    return apiPost("/api/books/" + encodeURIComponent(bookFile) + "/comments", { text: text });
   }
 
   function timeAgo(ts) {
@@ -725,7 +814,7 @@
 
   function categoryTabs(activeKey) {
     return '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.map(function (c) {
-      var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.category === c.key; }).length;
+      var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
       return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
         bilingual(c.hi, c.en) + ' <span class="cnt">(' + count + ')</span></a>';
     }).join("") + '</nav>';
@@ -737,7 +826,7 @@
       '<div class="row-scroll-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<div class="row-scroll cat-scroll">' + CATEGORY_META.map(function (c) {
-        var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.category === c.key; }).length;
+        var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tile" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
           '<span class="cat-tile-icon">' + c.icon + '</span>' +
           '<span class="cat-tile-label">' + bilingual(c.hi, c.en) + '</span>' +
@@ -798,7 +887,7 @@
     return '<div class="special-book-tile">' +
       '<a href="#/book/' + book.id + '">' + coverEl(book, "md") + '</a>' +
       '<a href="#/book/' + book.id + '" class="special-book-title">' + esc(book.title) + '</a>' +
-      '<div class="special-book-sub">' + esc(book.categoryMeta.hi) + '</div>' +
+      '<div class="special-book-sub">' + esc(book.categoryMetas[0].hi) + '</div>' +
       '<a class="special-book-cta" href="#/book/' + book.id + '">' + bilingual("पढ़ें") + ' →</a>' +
       '</div>';
   }
@@ -912,6 +1001,7 @@
     if (!q) return true;
     var ql = q.toLowerCase();
     if (book.title.toLowerCase().indexOf(ql) !== -1 || book.author.toLowerCase().indexOf(ql) !== -1) return true;
+    if (book.tags.some(function (t) { return t.toLowerCase().indexOf(ql) !== -1; })) return true;
     // Roman/English-script fallback (e.g. "krishna" matching "कृष्ण"), and equally useful the
     // other way round for a Devanagari query with slightly different spelling conventions.
     var qRoman = normalizeRoman(devanagariToRoman(q));
@@ -926,10 +1016,15 @@
   function viewLibrary(params) {
     var cat = params.get("cat") || "all";
     var q = params.get("q") || "";
+    var tag = params.get("tag") || "";
     var sort = params.get("sort") || "default";
     var filter = params.get("filter") || "all";
 
-    var list = BOOKS.filter(function (b) { return (cat === "all" || b.category === cat) && matchesQuery(b, q); });
+    var list = BOOKS.filter(function (b) {
+      return (cat === "all" || b.categoryKeys.indexOf(cat) !== -1) &&
+        (!tag || b.tags.indexOf(tag) !== -1) &&
+        matchesQuery(b, q);
+    });
 
     if (filter === "short") list = list.filter(function (b) { return b.sizeKB < 150; });
     if (filter === "popular") list = list.filter(function (b) { return hashCode(b.file) % 3 === 0; });
@@ -942,8 +1037,9 @@
     var page = Math.min(libraryState.page, totalPages);
     var pageItems = list.slice(0, page * PAGE_SIZE);
 
+    var heading = tag ? "#" + tag : bilingual(meta.hi, meta.en);
     var html = '<div class="page-header">' +
-      '<h1>' + bilingual(meta.hi, meta.en) + ' <span class="cnt">(' + list.length + ')</span></h1>' +
+      '<h1>' + heading + ' <span class="cnt">(' + list.length + ')</span></h1>' +
       '<div class="lib-search"><input id="librarySearch" type="text" placeholder="खोजें…" value="' + esc(q) + '"></div>' +
       '</div>';
     html += categoryTabs(cat);
@@ -965,7 +1061,7 @@
   }
 
   function genBlurb(book) {
-    var meta = book.categoryMeta;
+    var meta = book.categoryMetas[0];
     var source = book.isGitaPress
       ? "गीता प्रेस की प्रामाणिक शैली में प्रकाशित"
       : "सुधी पाठकों के लिए सुलभ कराया गया";
@@ -1709,27 +1805,36 @@
     if (overlay) overlay.classList.remove("show");
   }
 
-  /* ---------------- comments ---------------- */
-  function renderCommentList(bookId) {
-    var list = getComments(bookId);
+  /* ---------------- comments (server-backed, lazy-loaded like the TOC tab) ---------------- */
+  function renderCommentList(list) {
     if (!list.length) return '<div class="empty-state small">अभी तक कोई टिप्पणी नहीं है। सबसे पहली टिप्पणी आप ही करें!</div>';
     return '<div class="comment-list">' + list.map(function (c) {
       return '<div class="comment-item"><div class="comment-head"><b>' + esc(c.author) + '</b>' +
-        '<span class="comment-time">' + timeAgo(c.ts) + '</span></div>' +
+        '<span class="comment-time">' + timeAgo(c.created_at) + '</span></div>' +
         '<p>' + esc(c.text) + '</p></div>';
     }).join("") + '</div>';
+  }
+
+  function refreshCommentList(book) {
+    var wrap = document.getElementById("commentListWrap");
+    return getComments(book.file).then(function (list) {
+      wrap = document.getElementById("commentListWrap"); // re-query: the view may have re-rendered while awaiting
+      if (wrap) wrap.innerHTML = renderCommentList(list);
+      var tabBtn = document.querySelector('.detail-tab[data-tab="comments"]');
+      if (tabBtn) tabBtn.textContent = "टिप्पणियाँ" + (list.length ? " (" + list.length + ")" : "");
+      return list;
+    });
   }
 
   function renderCommentsTab(book) {
     var user = getCurrentUser();
     var html = '<div class="comments-block">';
     html += user
-      ? '<form class="comment-form" id="commentForm" data-book="' + book.id + '">' +
+      ? '<form class="comment-form" id="commentForm" data-book="' + esc(book.file) + '">' +
         '<textarea id="commentText" rows="3" maxlength="1000" placeholder="अपनी टिप्पणी लिखें…" required></textarea>' +
         '<button type="submit" class="btn-primary">टिप्पणी भेजें</button></form>'
-      : '<div class="comment-login-gate">🔒 टिप्पणी करने के लिए साइन इन करना आवश्यक है। ' +
-        '<span class="muted-note">(लॉगिन सुविधा शीघ्र ही जोड़ी जाएगी)</span></div>';
-    html += '<div id="commentListWrap">' + renderCommentList(book.id) + '</div>';
+      : '<div class="comment-login-gate">🔒 टिप्पणी करने के लिए <a href="#/login">साइन इन</a> करना आवश्यक है।</div>';
+    html += '<div id="commentListWrap"><div class="empty-state small">लोड हो रहा है…</div></div>';
     html += '</div>';
     return html;
   }
@@ -1764,10 +1869,19 @@
     html += '<h1>' + esc(book.title) + '</h1>';
     html += '<button class="btn-listen" id="listenBtn"><span class="btn-listen-icon">🎧</span> ' +
       bilingual("इस पुस्तक को सुनें", "Listen to this book") + '</button>';
-    html += '<div class="meta-line">👤 ' + esc(book.author) + '</div>';
+    html += '<div class="meta-line">👤 ' + (book.authorId
+      ? '<a href="#/author/' + book.authorId + '">' + esc(book.author) + '</a>'
+      : esc(book.author)) + '</div>';
     html += '<div class="meta-line">📖 हिन्दी</div>';
     html += '<div class="meta-line">⏱️ अनुमानित पठन समय ' + formatDuration(book.minutes) + '</div>';
-    html += '<div class="tag-row"><span class="tag">' + esc(book.categoryMeta.hi) + '</span></div>';
+    html += '<div class="tag-row">' + book.categoryMetas.map(function (cm) {
+      return '<span class="tag">' + esc(cm.hi) + '</span>';
+    }).join("") + '</div>';
+    if (book.tags.length) {
+      html += '<div class="tag-row tag-row-topics">' + book.tags.map(function (t) {
+        return '<a class="tag tag-topic" href="#/library?tag=' + encodeURIComponent(t) + '">#' + esc(t) + '</a>';
+      }).join("") + '</div>';
+    }
     html += '<div class="detail-actions">' +
       '<a class="btn-primary" href="#/read/' + book.id + '" id="startReadingBtn">▶ पढ़ना शुरू करें</a>' +
       '<button class="btn-outline ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '">' + (fav ? "♥ पसंदीदा में शामिल" : "♡ पसंदीदा में जोड़ें") + '</button>' +
@@ -1776,11 +1890,10 @@
     html += '<div class="progress-block"><label>' + bilingual("आपकी प्रगति") + ': <b id="progressLabel">' + pct + '%</b></label>' +
       '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%" id="progressFillBar"></div></div></div>';
 
-    var commentCount = getComments(book.id).length;
     html += '<div class="detail-tabs" id="detailTabs" data-book="' + book.id + '">' +
       '<button class="detail-tab active" data-tab="intro">किताब का परिचय</button>' +
       '<button class="detail-tab" data-tab="toc">विषय सूची</button>' +
-      '<button class="detail-tab" data-tab="comments">टिप्पणियाँ' + (commentCount ? ' (' + commentCount + ')' : '') + '</button>' +
+      '<button class="detail-tab" data-tab="comments">टिप्पणियाँ</button>' +
       '</div>';
     html += '<div class="detail-tab-panel active" data-panel="intro">' +
       '<div class="about-block"><h3>इस पुस्तक के बारे में</h3><p>' + genBlurb(book) + '</p></div></div>';
@@ -2093,6 +2206,446 @@
       }).join("") + '</div>';
   }
 
+  /* ---------------- सेटिंग्स / खाता ---------------- */
+  function viewSettings() {
+    var user = getCurrentUser();
+    var html = '<main class="content-pad"><div class="page-header"><h1>' + bilingual("सेटिंग्स", "Settings") + '</h1></div>';
+    if (user) {
+      html += '<div class="account-card">' +
+        '<div class="account-name">' + esc(user.name) + (user.role === "admin" ? ' <span class="admin-role-badge admin">admin</span>' : '') + '</div>' +
+        '<div class="account-email">' + esc(user.email) + '</div>' +
+        '<button class="btn-outline" id="logoutBtn">लॉगआउट</button>' +
+        (user.role === "admin" ? '<a class="btn-primary admin-settings-link" href="#/admin">एडमिन पैनल खोलें</a>' : '') +
+        '</div>';
+    } else {
+      html += '<div class="account-card"><p>अपनी पठन-प्रगति सभी उपकरणों पर सुरक्षित रखने और टिप्पणी करने के लिए साइन इन करें।</p>' +
+        '<a class="btn-primary" href="#/login">साइन इन करें</a> <a class="btn-outline" href="#/signup">खाता बनाएं</a></div>';
+    }
+    html += '</main>';
+    return html;
+  }
+
+  /* ---------------- auth pages ---------------- */
+  function viewLogin() {
+    return '<main class="content-pad auth-page">' +
+      '<div class="page-header"><h1>' + bilingual("साइन इन करें", "Sign in") + '</h1></div>' +
+      '<form class="auth-form" id="loginForm">' +
+      '<div class="auth-error" id="authError"></div>' +
+      '<label>ईमेल<input type="text" id="loginEmail" autocomplete="username" required></label>' +
+      '<label>पासवर्ड<input type="password" id="loginPassword" autocomplete="current-password" required></label>' +
+      '<button type="submit" class="btn-primary">साइन इन करें</button>' +
+      '</form>' +
+      '<p class="auth-switch">खाता नहीं है? <a href="#/signup">खाता बनाएं</a></p>' +
+      '</main>';
+  }
+
+  function viewSignup() {
+    return '<main class="content-pad auth-page">' +
+      '<div class="page-header"><h1>' + bilingual("खाता बनाएं", "Create account") + '</h1></div>' +
+      '<form class="auth-form" id="signupForm">' +
+      '<div class="auth-error" id="authError"></div>' +
+      '<label>नाम<input type="text" id="signupName" required></label>' +
+      '<label>ईमेल<input type="text" id="signupEmail" autocomplete="username" required></label>' +
+      '<label>पासवर्ड<input type="password" id="signupPassword" autocomplete="new-password" required minlength="4"></label>' +
+      '<button type="submit" class="btn-primary">खाता बनाएं</button>' +
+      '</form>' +
+      '<p class="auth-switch">पहले से खाता है? <a href="#/login">साइन इन करें</a></p>' +
+      '</main>';
+  }
+
+  /* ---------------- लेखक (authors) ---------------- */
+  function authorAvatarEl(author, size) {
+    if (author.photoPath) {
+      return '<div class="cover cover-' + (size || "md") + ' has-img author-photo"><img src="' + esc(author.photoPath) + '" alt="' + esc(author.name) + '" loading="lazy"></div>';
+    }
+    var g = PALETTE[hashCode(author.name) % PALETTE.length];
+    return '<div class="cover cover-' + (size || "md") + ' author-photo" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' +
+      '<span class="cover-letter">' + esc((author.name || "?").trim().charAt(0)) + '</span></div>';
+  }
+
+  function viewAuthors() {
+    return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("लेखक", "Authors") + '</h1></div>' +
+      '<div id="authorsGrid" class="authors-grid"><div class="empty-state small">लोड हो रहा है…</div></div></main>';
+  }
+
+  function viewAuthor(id) {
+    return '<main class="content-pad author-page" id="authorPage" data-author="' + id + '">' +
+      '<a href="javascript:history.back()" class="back-link">← वापस</a>' +
+      '<div id="authorDetailWrap"><div class="empty-state small">लोड हो रहा है…</div></div>' +
+      '</main>';
+  }
+
+  /* ---------------- एडमिन पैनल ---------------- */
+  function adminNavCard(href, icon, hi, en) {
+    return '<a class="admin-nav-card" href="' + href + '"><span class="admin-nav-icon">' + icon + '</span>' +
+      '<span class="admin-nav-label">' + bilingual(hi, en) + '</span></a>';
+  }
+
+  function viewAdminHome() {
+    return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("एडमिन पैनल", "Admin") + '</h1></div>' +
+      '<div class="admin-nav-grid">' +
+      adminNavCard("#/admin/books", "📚", "पुस्तकें", "Books") +
+      adminNavCard("#/admin/authors", "✍️", "लेखक", "Authors") +
+      adminNavCard("#/admin/users", "👥", "उपयोगकर्ता", "Users") +
+      adminNavCard("#/admin/comments", "💬", "टिप्पणी मॉडरेशन", "Comments") +
+      '</div></main>';
+  }
+
+  var adminBooksState = { page: 1 };
+  var ADMIN_PAGE_SIZE = 20;
+
+  function adminBookRow(book) {
+    var catBoxes = CATEGORY_META.filter(function (c) { return c.key !== "all"; }).map(function (c) {
+      var checked = book.categoryKeys.indexOf(c.key) !== -1 ? " checked" : "";
+      return '<label class="admin-cat-chip"><input type="checkbox" value="' + esc(c.key) + '"' + checked + '> ' + esc(c.hi) + '</label>';
+    }).join("");
+    return '<div class="admin-book-row" data-file="' + esc(book.file) + '">' +
+      '<div class="admin-book-head">' + coverEl(book, "sm") +
+      '<div><div class="admin-book-title">' + esc(book.title) + '</div><div class="admin-book-author">' + esc(book.author) + '</div></div></div>' +
+      '<div class="admin-cat-chips">' + catBoxes + '</div>' +
+      '<label class="admin-tags-label">टैग (कॉमा से अलग करें)<input type="text" class="admin-tags-input" value="' + esc(book.tags.join(", ")) + '"></label>' +
+      '<button class="btn-outline admin-save-btn">सहेजें</button>' +
+      '<span class="admin-save-status"></span>' +
+      '</div>';
+  }
+
+  function viewAdminBooks(params) {
+    var q = (params && params.get("q")) || "";
+    var list = q ? BOOKS.filter(function (b) { return matchesQuery(b, q); }) : BOOKS;
+    var totalPages = Math.max(1, Math.ceil(list.length / ADMIN_PAGE_SIZE));
+    var page = Math.min(adminBooksState.page, totalPages);
+    var pageItems = list.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE);
+
+    var html = '<main class="content-pad admin-page">' +
+      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
+      '<div class="page-header"><h1>' + bilingual("पुस्तकें प्रबंधित करें", "Manage books") + ' <span class="cnt">(' + list.length + ')</span></h1>' +
+      '<div class="lib-search"><input id="adminBooksSearch" type="text" placeholder="खोजें…" value="' + esc(q) + '"></div></div>' +
+      '<div class="admin-book-list">' + pageItems.map(adminBookRow).join("") + '</div>';
+    if (totalPages > 1) {
+      html += '<div class="admin-pager">' +
+        '<button class="btn-outline" id="adminBooksPrev"' + (page <= 1 ? " disabled" : "") + '>‹ पिछला</button>' +
+        '<span>' + page + ' / ' + totalPages + '</span>' +
+        '<button class="btn-outline" id="adminBooksNext"' + (page >= totalPages ? " disabled" : "") + '>अगला ›</button>' +
+        '</div>';
+    }
+    html += '</main>';
+    return html;
+  }
+
+  function adminAuthorRow(author) {
+    return '<div class="admin-author-row" data-id="' + author.id + '">' +
+      authorAvatarEl(author, "sm") +
+      '<div class="admin-author-fields">' +
+      '<input type="text" class="admin-author-name" value="' + esc(author.name) + '">' +
+      '<textarea class="admin-author-bio" rows="2" placeholder="संक्षिप्त परिचय…">' + esc(author.bio || "") + '</textarea>' +
+      '<label class="admin-photo-label">फोटो अपलोड करें <input type="file" class="admin-author-photo" accept="image/png,image/jpeg,image/webp"></label>' +
+      '</div>' +
+      '<div class="admin-author-actions"><button class="btn-outline admin-save-author-btn">सहेजें</button>' +
+      '<span class="admin-save-status"></span></div>' +
+      '</div>';
+  }
+
+  function viewAdminAuthors() {
+    return '<main class="content-pad admin-page">' +
+      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
+      '<div class="page-header"><h1>' + bilingual("लेखक प्रबंधित करें", "Manage authors") + '</h1></div>' +
+      '<form class="admin-inline-form" id="adminNewAuthorForm">' +
+      '<input type="text" id="adminNewAuthorName" placeholder="नया लेखक नाम…" required>' +
+      '<button type="submit" class="btn-primary">जोड़ें</button></form>' +
+      '<div id="adminAuthorsList" class="admin-author-list"><div class="empty-state small">लोड हो रहा है…</div></div>' +
+      '</main>';
+  }
+
+  function adminUserRow(u, selfId) {
+    var isAdminUser = u.role === "admin";
+    return '<div class="admin-user-row" data-id="' + u.id + '">' +
+      '<div><b>' + esc(u.name) + '</b><div class="admin-user-email">' + esc(u.email) + '</div></div>' +
+      '<span class="admin-role-badge' + (isAdminUser ? " admin" : "") + '">' + (isAdminUser ? "admin" : "user") + '</span>' +
+      (u.id === selfId
+        ? '<span class="muted-note">(आप)</span>'
+        : '<button class="btn-outline admin-toggle-role-btn" data-role="' + (isAdminUser ? "user" : "admin") + '">' +
+          (isAdminUser ? "Admin हटाएं" : "Admin बनाएं") + '</button>') +
+      '</div>';
+  }
+
+  function viewAdminUsers() {
+    return '<main class="content-pad admin-page">' +
+      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
+      '<div class="page-header"><h1>' + bilingual("उपयोगकर्ता", "Users") + '</h1></div>' +
+      '<div id="adminUsersList" class="admin-user-list"><div class="empty-state small">लोड हो रहा है…</div></div>' +
+      '</main>';
+  }
+
+  function adminCommentRow(c) {
+    var book = findByFile(c.book_file);
+    return '<div class="admin-comment-row" data-id="' + c.id + '">' +
+      '<div class="comment-head"><b>' + esc(c.author) + '</b>' +
+      '<span class="comment-time">' + timeAgo(c.created_at) + '</span>' +
+      '<span class="admin-role-badge' + (c.status === "hidden" ? "" : " admin") + '">' + esc(c.status) + '</span></div>' +
+      '<div class="admin-comment-book">' + (book ? esc(book.title) : esc(c.book_file)) + '</div>' +
+      '<p>' + esc(c.text) + '</p>' +
+      '<div class="admin-comment-actions">' +
+      '<button class="btn-outline admin-comment-toggle-btn" data-next="' + (c.status === "hidden" ? "visible" : "hidden") + '">' +
+      (c.status === "hidden" ? "दिखाएं" : "छिपाएं") + '</button>' +
+      '<button class="btn-outline admin-comment-delete-btn">हटाएं</button>' +
+      '</div></div>';
+  }
+
+  function viewAdminComments() {
+    return '<main class="content-pad admin-page">' +
+      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
+      '<div class="page-header"><h1>' + bilingual("टिप्पणी मॉडरेशन", "Comment moderation") + '</h1></div>' +
+      '<div id="adminCommentsList" class="admin-comment-list"><div class="empty-state small">लोड हो रहा है…</div></div>' +
+      '</main>';
+  }
+
+  /* ---------------- wiring for login/signup/authors/admin ----------------
+     Kept as one function, called from the end of wireView(r), rather than scattered
+     through wireView, since every piece here gates on an element that only exists on
+     its own route (same `if (el) {...}` idiom the rest of wireView already uses) --
+     this just keeps the new auth/author/admin code visually grouped in one place. */
+  function wireExtraViews(r) {
+    var loginForm = document.getElementById("loginForm");
+    if (loginForm) {
+      loginForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var errEl = document.getElementById("authError");
+        errEl.textContent = "";
+        apiPost("/api/auth/login", {
+          email: document.getElementById("loginEmail").value,
+          password: document.getElementById("loginPassword").value
+        }).then(function (data) {
+          CURRENT_USER = data.user;
+          return syncProgressFromServer();
+        }).then(function () {
+          updateAuthChrome();
+          location.hash = "#/";
+        }).catch(function (err) { errEl.textContent = err.message; });
+      });
+    }
+
+    var signupForm = document.getElementById("signupForm");
+    if (signupForm) {
+      signupForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var errEl = document.getElementById("authError");
+        errEl.textContent = "";
+        apiPost("/api/auth/signup", {
+          name: document.getElementById("signupName").value,
+          email: document.getElementById("signupEmail").value,
+          password: document.getElementById("signupPassword").value
+        }).then(function (data) {
+          CURRENT_USER = data.user;
+          updateAuthChrome();
+          location.hash = "#/";
+        }).catch(function (err) { errEl.textContent = err.message; });
+      });
+    }
+
+    var logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", function () {
+        apiPost("/api/auth/logout", {}).catch(function () {}).then(function () {
+          CURRENT_USER = null;
+          updateAuthChrome();
+          location.hash = "#/";
+        });
+      });
+    }
+
+    var authorsGrid = document.getElementById("authorsGrid");
+    if (authorsGrid) {
+      apiGet("/api/authors").then(function (data) {
+        var authors = (data.authors || []).filter(function (a) { return a.bookCount > 0; });
+        authorsGrid.innerHTML = authors.length ? authors.map(function (a) {
+          return '<a class="author-card" href="#/author/' + a.id + '">' + authorAvatarEl(a, "md") +
+            '<div class="author-card-name">' + esc(a.name) + '</div>' +
+            '<div class="author-card-count">' + a.bookCount + ' ग्रंथ</div></a>';
+        }).join("") : '<div class="empty-state">कोई लेखक नहीं मिला</div>';
+      }).catch(function () { authorsGrid.innerHTML = '<div class="empty-state">लेखक लोड नहीं हो सके</div>'; });
+    }
+
+    var authorPage = document.getElementById("authorPage");
+    if (authorPage) {
+      var authorId = authorPage.getAttribute("data-author");
+      var wrap = document.getElementById("authorDetailWrap");
+      apiGet("/api/authors/" + authorId).then(function (data) {
+        var a = data.author;
+        var books = (a.bookFiles || []).map(findByFile).filter(Boolean);
+        wrap.innerHTML = '<div class="author-detail-head">' + authorAvatarEl(a, "lg") +
+          '<div><h1>' + esc(a.name) + '</h1>' +
+          (a.bio ? '<p class="author-bio">' + esc(a.bio) + '</p>' : '') + '</div></div>' +
+          '<div class="page-header"><h2>' + bilingual("इस लेखक के ग्रंथ", "Books by this author") + ' (' + books.length + ')</h2></div>' +
+          '<div class="book-grid">' + books.map(bookCard).join("") + '</div>';
+        wireView(r); // re-wire the newly-inserted book cards' favorite buttons
+      }).catch(function () { wrap.innerHTML = '<div class="empty-state">लेखक नहीं मिला</div>'; });
+    }
+
+    /* ---- admin: books ---- */
+    var adminBooksSearch = document.getElementById("adminBooksSearch");
+    if (adminBooksSearch) {
+      var searchTimer;
+      adminBooksSearch.addEventListener("input", function () {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(function () {
+          adminBooksState.page = 1;
+          location.hash = "#/admin/books" + (adminBooksSearch.value ? "?q=" + encodeURIComponent(adminBooksSearch.value) : "");
+        }, 250);
+      });
+    }
+    var adminBooksPrev = document.getElementById("adminBooksPrev");
+    if (adminBooksPrev) adminBooksPrev.addEventListener("click", function () { adminBooksState.page--; render(); });
+    var adminBooksNext = document.getElementById("adminBooksNext");
+    if (adminBooksNext) adminBooksNext.addEventListener("click", function () { adminBooksState.page++; render(); });
+
+    var adminBookList = document.getElementById("adminBookList") || document.querySelector(".admin-book-list");
+    if (adminBookList) {
+      adminBookList.addEventListener("click", function (e) {
+        var btn = e.target.closest(".admin-save-btn");
+        if (!btn) return;
+        var row = btn.closest(".admin-book-row");
+        var file = row.getAttribute("data-file");
+        var statusEl = row.querySelector(".admin-save-status");
+        var keys = Array.prototype.slice.call(row.querySelectorAll(".admin-cat-chip input:checked")).map(function (c) { return c.value; });
+        var tags = row.querySelector(".admin-tags-input").value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
+        statusEl.textContent = "सहेज रहे हैं…";
+        btn.disabled = true;
+        Promise.all([
+          apiPost("/api/admin/books/" + encodeURIComponent(file) + "/categories", { categories: keys }),
+          apiPost("/api/admin/books/" + encodeURIComponent(file) + "/tags", { tags: tags })
+        ]).then(function () {
+          return apiGet("/api/book-meta");
+        }).then(function (data) {
+          applyBookMetaOverrides(data.meta || {});
+          statusEl.textContent = "✓ सहेजा गया";
+          btn.disabled = false;
+        }).catch(function (err) {
+          statusEl.textContent = "त्रुटि: " + err.message;
+          btn.disabled = false;
+        });
+      });
+    }
+
+    /* ---- admin: authors ---- */
+    var adminNewAuthorForm = document.getElementById("adminNewAuthorForm");
+    if (adminNewAuthorForm) {
+      adminNewAuthorForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = document.getElementById("adminNewAuthorName");
+        var name = input.value.trim();
+        if (!name) return;
+        apiPost("/api/admin/authors", { name: name }).then(function () {
+          input.value = "";
+          loadAdminAuthors();
+        }).catch(function (err) { toast(err.message); });
+      });
+    }
+    function loadAdminAuthors() {
+      var list = document.getElementById("adminAuthorsList");
+      if (!list) return;
+      apiGet("/api/authors").then(function (data) {
+        list.innerHTML = (data.authors || []).map(adminAuthorRow).join("") || '<div class="empty-state">कोई लेखक नहीं है</div>';
+      }).catch(function () { list.innerHTML = '<div class="empty-state">लोड करने में त्रुटि</div>'; });
+    }
+    var adminAuthorsList = document.getElementById("adminAuthorsList");
+    if (adminAuthorsList) {
+      loadAdminAuthors();
+      adminAuthorsList.addEventListener("click", function (e) {
+        var btn = e.target.closest(".admin-save-author-btn");
+        if (!btn) return;
+        var row = btn.closest(".admin-author-row");
+        var id = row.getAttribute("data-id");
+        var statusEl = row.querySelector(".admin-save-status");
+        var name = row.querySelector(".admin-author-name").value.trim();
+        var bio = row.querySelector(".admin-author-bio").value.trim();
+        var fileInput = row.querySelector(".admin-author-photo");
+        var file = fileInput.files && fileInput.files[0];
+        statusEl.textContent = "सहेज रहे हैं…";
+        btn.disabled = true;
+
+        var updatePromise = apiPatch("/api/admin/authors/" + id, { name: name, bio: bio });
+        var photoPromise = file ? readFileAsDataURL(file).then(function (dataUrl) {
+          return apiPost("/api/admin/authors/" + id + "/photo", { imageData: dataUrl, imageName: file.name });
+        }) : Promise.resolve();
+
+        Promise.all([updatePromise, photoPromise]).then(function () {
+          statusEl.textContent = "✓ सहेजा गया";
+          btn.disabled = false;
+        }).catch(function (err) {
+          statusEl.textContent = "त्रुटि: " + err.message;
+          btn.disabled = false;
+        });
+      });
+    }
+
+    /* ---- admin: users ---- */
+    var adminUsersList = document.getElementById("adminUsersList");
+    if (adminUsersList) {
+      apiGet("/api/admin/users").then(function (data) {
+        var self = getCurrentUser();
+        adminUsersList.innerHTML = (data.users || []).map(function (u) { return adminUserRow(u, self && self.id); }).join("");
+      }).catch(function () { adminUsersList.innerHTML = '<div class="empty-state">लोड करने में त्रुटि</div>'; });
+      adminUsersList.addEventListener("click", function (e) {
+        var btn = e.target.closest(".admin-toggle-role-btn");
+        if (!btn) return;
+        var row = btn.closest(".admin-user-row");
+        var id = row.getAttribute("data-id");
+        var nextRole = btn.getAttribute("data-role");
+        btn.disabled = true;
+        apiPatch("/api/admin/users/" + id + "/role", { role: nextRole }).then(function () {
+          apiGet("/api/admin/users").then(function (data) {
+            var self = getCurrentUser();
+            adminUsersList.innerHTML = (data.users || []).map(function (u) { return adminUserRow(u, self && self.id); }).join("");
+          });
+        }).catch(function (err) { toast(err.message); btn.disabled = false; });
+      });
+    }
+
+    /* ---- admin: comments ---- */
+    var adminCommentsList = document.getElementById("adminCommentsList");
+    if (adminCommentsList) {
+      function loadAdminComments() {
+        apiGet("/api/admin/comments").then(function (data) {
+          adminCommentsList.innerHTML = (data.comments || []).map(adminCommentRow).join("") || '<div class="empty-state">कोई टिप्पणी नहीं है</div>';
+        }).catch(function () { adminCommentsList.innerHTML = '<div class="empty-state">लोड करने में त्रुटि</div>'; });
+      }
+      loadAdminComments();
+      adminCommentsList.addEventListener("click", function (e) {
+        var row = e.target.closest(".admin-comment-row");
+        if (!row) return;
+        var id = row.getAttribute("data-id");
+        var toggleBtn = e.target.closest(".admin-comment-toggle-btn");
+        var deleteBtn = e.target.closest(".admin-comment-delete-btn");
+        if (toggleBtn) {
+          apiPatch("/api/admin/comments/" + id, { status: toggleBtn.getAttribute("data-next") }).then(loadAdminComments).catch(function (err) { toast(err.message); });
+        } else if (deleteBtn) {
+          if (confirm("क्या आप यह टिप्पणी स्थायी रूप से हटाना चाहते हैं?")) {
+            apiDelete("/api/admin/comments/" + id).then(loadAdminComments).catch(function (err) { toast(err.message); });
+          }
+        }
+      });
+    }
+  }
+
+  function readFileAsDataURL(file) {
+    return new Promise(function (resolve, reject) {
+      var reader = new FileReader();
+      reader.onload = function () { resolve(reader.result); };
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /** Shows/hides the sidebar's admin-only link and updates the profile button's
+   *  destination (#/login when signed out, #/settings when signed in). Called once
+   *  at boot and again right after login/signup/logout. */
+  function updateAuthChrome() {
+    var admin = isAdmin();
+    document.querySelectorAll(".admin-only").forEach(function (el) { el.classList.toggle("is-hidden", !admin); });
+    var profileBtn = document.getElementById("profileBtn");
+    if (profileBtn) profileBtn.setAttribute("data-logged-in", isLoggedIn() ? "1" : "0");
+  }
+
   /* ---------------- router ---------------- */
   function parseHash() {
     var h = location.hash.replace(/^#\/?/, "");
@@ -2103,7 +2656,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -2140,8 +2693,20 @@
     else if (seg[0] === "panchang") { html = viewPanchang(); }
     else if (seg[0] === "help") { html = viewHelp(); }
     else if (seg[0] === "feedback") { html = viewFeedback(); }
-    else if (seg[0] === "settings") { html = viewStub("सेटिंग्स", "Settings"); }
+    else if (seg[0] === "settings") { html = viewSettings(); }
     else if (seg[0] === "subscribe") { html = viewStub("सदस्यता", "Subscribe"); }
+    else if (seg[0] === "login") { if (isLoggedIn()) { location.hash = "#/"; return; } html = viewLogin(); }
+    else if (seg[0] === "signup") { if (isLoggedIn()) { location.hash = "#/"; return; } html = viewSignup(); }
+    else if (seg[0] === "authors") { html = viewAuthors(); }
+    else if (seg[0] === "author" && seg[1] !== undefined) { html = viewAuthor(parseInt(seg[1], 10)); }
+    else if (seg[0] === "admin") {
+      if (!isAdmin()) { location.hash = "#/login"; return; }
+      if (seg[1] === "books") html = viewAdminBooks(r.params);
+      else if (seg[1] === "authors") html = viewAdminAuthors();
+      else if (seg[1] === "users") html = viewAdminUsers();
+      else if (seg[1] === "comments") html = viewAdminComments();
+      else html = viewAdminHome();
+    }
     else { html = viewHome(); }
 
     root.innerHTML = html;
@@ -2233,6 +2798,7 @@
       var bookId = parseInt(detailTabs.getAttribute("data-book"), 10);
       var book = BOOKS_BY_ID[bookId];
       var panels = document.querySelectorAll(".detail-tab-panel");
+      var commentsLoaded = false;
       detailTabs.querySelectorAll(".detail-tab").forEach(function (tabBtn) {
         tabBtn.addEventListener("click", function () {
           var target = tabBtn.getAttribute("data-tab");
@@ -2241,6 +2807,10 @@
           if (target === "toc") {
             var tocPanel = document.getElementById("tocPanel");
             if (tocPanel && !tocPanel.hasChildNodes()) loadTOC(book, tocPanel);
+          }
+          if (target === "comments" && !commentsLoaded) {
+            commentsLoaded = true;
+            refreshCommentList(book);
           }
         });
       });
@@ -2262,12 +2832,19 @@
         commentForm.addEventListener("submit", function (e) {
           e.preventDefault();
           var textarea = document.getElementById("commentText");
-          var entry = addComment(bookId, textarea.value);
-          if (!entry) return;
-          textarea.value = "";
-          document.getElementById("commentListWrap").innerHTML = renderCommentList(bookId);
-          var tabBtn = detailTabs.querySelector('[data-tab="comments"]');
-          if (tabBtn) tabBtn.textContent = "टिप्पणियाँ (" + getComments(bookId).length + ")";
+          var submitBtn = commentForm.querySelector("button[type=submit]");
+          var text = textarea.value;
+          if (!text.trim()) return;
+          if (submitBtn) submitBtn.disabled = true;
+          addComment(book.file, text).then(function () {
+            textarea.value = "";
+            commentsLoaded = true;
+            return refreshCommentList(book);
+          }).catch(function (err) {
+            toast(err.message || "टिप्पणी भेजने में त्रुटि हुई");
+          }).then(function () {
+            if (submitBtn) submitBtn.disabled = false;
+          });
         });
       }
     }
@@ -2312,6 +2889,8 @@
         toast("धन्यवाद! आपका सुझाव प्राप्त हुआ");
       });
     }
+
+    wireExtraViews(r);
   }
 
   /* Sends a question to the प्रश्नोत्तर (chat) page, prefilling the input rather than
@@ -2387,7 +2966,7 @@
     });
 
     var profileBtn = document.getElementById("profileBtn");
-    if (profileBtn) profileBtn.addEventListener("click", function () { location.hash = "#/settings"; });
+    if (profileBtn) profileBtn.addEventListener("click", function () { location.hash = isLoggedIn() ? "#/settings" : "#/login"; });
 
     var bellBtn = document.getElementById("notifyBtn");
     if (bellBtn) bellBtn.addEventListener("click", function () { toast("अभी कोई नई सूचना नहीं है"); });
@@ -2426,6 +3005,18 @@
   document.addEventListener("DOMContentLoaded", function () {
     seedDemoData();
     initChrome();
-    onNavigate();
+    /* Book-meta (categories/tags/author links) and the current session are both fetched
+       from the API before the first render, so the home/library pages open already
+       showing the real data instead of flashing the single-category fallback and then
+       re-rendering. Both calls swallow their own errors (see applyBookMetaOverrides /
+       refreshCurrentUser) so a server that isn't running just means the app behaves
+       exactly like it did before any of this existed -- it never blocks startup. */
+    Promise.all([
+      apiGet("/api/book-meta").then(function (data) { applyBookMetaOverrides(data.meta || {}); }).catch(function () {}),
+      refreshCurrentUser()
+    ]).then(function () {
+      updateAuthChrome();
+      return syncProgressFromServer();
+    }).then(onNavigate, onNavigate);
   });
 })();
