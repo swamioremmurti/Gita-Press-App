@@ -1,9 +1,15 @@
-// Builds (or resumes) the local vector index over Gita Press Books.
+// Standalone tool: builds (or resumes) the local vector index over Gita Press Books.
+// Safe to interrupt (Ctrl+C) or close the terminal at any time — progress is only
+// committed to disk after a book finishes, so a partial book is simply retried, never
+// duplicated.
 //
 // Usage:
-//   node server/build-index.js                 build/resume the full index
-//   node server/build-index.js --limit 5        only index the first 5 not-yet-done books
-//   node server/build-index.js --files "a.html,b.html"   only these files
+//   node server/build-index.js                 build/resume the full index (throttled pace)
+//   node server/build-index.js --fast           same, but without Voyage's free-tier pacing
+//                                                 (use once a payment method is on file)
+//   node server/build-index.js --limit 5        only index 5 more not-yet-done books
+//   node server/build-index.js --files "a.html,b.html"   only these specific files
+//   node server/build-index.js --max-chunks-per-file 24  cap chunks/book (quick smoke test)
 //
 require('./lib/env').loadEnv();
 const fs = require('fs');
@@ -15,12 +21,14 @@ const store = require('./lib/vectorStore');
 const ROOT = path.join(__dirname, '..');
 const BOOKS_DIR = path.join(ROOT, 'Gita Press Books', 'Gita Press Books');
 const DATA_JS = path.join(ROOT, 'swadhyay-data.js');
+const LOG_PATH = path.join(store.INDEX_DIR, 'build.log');
+const PROGRESS_PATH = path.join(store.INDEX_DIR, 'progress.json');
 
 let BATCH_MAX_CHUNKS = 20;
 let BATCH_MAX_CHARS = 8000;
-// Voyage throttles accounts with no payment method to 3 requests/min, 10K tokens/min.
+// Voyage throttles accounts with no payment method to roughly 3 requests/min, 10K tokens/min.
 // Once a payment method is on file (still free up to the free-tier token quota), pass
-// --fast to skip this pacing.
+// --fast to remove this pacing and go much faster.
 let MIN_CALL_INTERVAL_MS = 21000;
 
 function parseArgs() {
@@ -33,6 +41,20 @@ function parseArgs() {
     else if (args[i] === '--fast') { MIN_CALL_INTERVAL_MS = 0; BATCH_MAX_CHUNKS = 48; BATCH_MAX_CHARS = 40000; }
   }
   return out;
+}
+
+function log(line) {
+  console.log(line);
+  try {
+    fs.mkdirSync(store.INDEX_DIR, { recursive: true });
+    fs.appendFileSync(LOG_PATH, '[' + new Date().toISOString() + '] ' + line + '\n');
+  } catch { /* logging is best-effort */ }
+}
+
+function fmtDuration(ms) {
+  const s = Math.round(ms / 1000);
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return (h ? h + 'h ' : '') + (h || m ? m + 'm ' : '') + sec + 's';
 }
 
 let lastCallAt = 0;
@@ -64,14 +86,16 @@ async function embedBatch(texts, inputType, attempt = 1) {
     await pace();
     return await voyage.embed(texts, inputType);
   } catch (err) {
-    if (attempt >= 5) throw err;
-    const wait = Math.min(30000, 1000 * Math.pow(2, attempt));
-    console.warn('  embed batch failed (attempt ' + attempt + '): ' + err.message + ' — retrying in ' + wait + 'ms');
+    if (attempt >= 6) throw err;
+    const wait = Math.min(60000, 2000 * Math.pow(2, attempt));
+    log('  embed batch failed (attempt ' + attempt + '): ' + err.message.slice(0, 160) + ' — retrying in ' + Math.round(wait / 1000) + 's');
     await new Promise(r => setTimeout(r, wait));
     return embedBatch(texts, inputType, attempt + 1);
   }
 }
 
+// Indexes one book fully in memory, then commits to disk in a single append — so an
+// interruption mid-book never leaves partial/duplicate data behind.
 async function indexFile(file, meta, maxChunksPerFile) {
   const html = fs.readFileSync(path.join(BOOKS_DIR, file), 'utf8');
   const title = titleFromFile(file);
@@ -80,6 +104,8 @@ async function indexFile(file, meta, maxChunksPerFile) {
   if (!chunks.length) return { count: 0, dims: null };
 
   let dims = null;
+  const allMetas = [];
+  const allVectors = [];
   let batch = [];
   let batchChars = 0;
 
@@ -88,14 +114,17 @@ async function indexFile(file, meta, maxChunksPerFile) {
     const texts = batch.map(c => (c.heading ? c.heading + '\n' : '') + c.text);
     const vectors = await embedBatch(texts, 'document');
     dims = vectors[0].length;
-    const metas = batch.map(c => ({
-      file, bookId: meta ? meta.id : null, title,
-      author: (meta && meta.author && meta.author.trim()) || 'गीता प्रेस, गोरखपुर',
-      category: meta ? meta.category : null,
-      heading: c.heading, pageStart: c.pageStart, pageEnd: c.pageEnd,
-      text: c.text
-    }));
-    store.appendChunks(metas, vectors, dims);
+    for (let i = 0; i < batch.length; i++) {
+      const c = batch[i];
+      allMetas.push({
+        file, bookId: meta ? meta.id : null, title,
+        author: (meta && meta.author && meta.author.trim()) || 'गीता प्रेस, गोरखपुर',
+        category: meta ? meta.category : null,
+        heading: c.heading, pageStart: c.pageStart, pageEnd: c.pageEnd,
+        text: c.text
+      });
+      allVectors.push(vectors[i]);
+    }
     batch = [];
     batchChars = 0;
   }
@@ -109,7 +138,13 @@ async function indexFile(file, meta, maxChunksPerFile) {
     batchChars += textLen;
   }
   await flushBatch();
+
+  store.appendChunks(allMetas, allVectors, dims);
   return { count: chunks.length, dims };
+}
+
+function writeProgress(p) {
+  try { fs.writeFileSync(PROGRESS_PATH, JSON.stringify(p, null, 2)); } catch { /* best-effort */ }
 }
 
 async function main() {
@@ -123,7 +158,16 @@ async function main() {
   let todo = files.filter(f => !done.has(f));
   if (args.limit) todo = todo.slice(0, args.limit);
 
-  console.log('Books total: ' + files.length + ' | already indexed: ' + done.size + ' | to process now: ' + todo.length);
+  log('Books total: ' + files.length + ' | already indexed: ' + done.size + ' | to process now: ' + todo.length +
+    (MIN_CALL_INTERVAL_MS ? ' | throttled pace (use --fast once a Voyage payment method is on file)' : ' | fast mode'));
+
+  let interrupted = false;
+  const onInterrupt = () => {
+    interrupted = true;
+    log('Interrupted — progress so far is saved. Re-run the same command to resume.');
+    process.exit(130);
+  };
+  process.on('SIGINT', onInterrupt);
 
   const startAll = Date.now();
   for (let i = 0; i < todo.length; i++) {
@@ -135,17 +179,30 @@ async function main() {
       manifest.totalChunks = (manifest.totalChunks || 0) + count;
       if (dims && !manifest.dims) manifest.dims = dims;
       store.writeManifest(manifest);
-      const secs = ((Date.now() - t0) / 1000).toFixed(1);
-      console.log('[' + (i + 1) + '/' + todo.length + '] ' + file + ' -> ' + count + ' chunks (' + secs + 's)');
+
+      const elapsed = Date.now() - startAll;
+      const avgPerBook = elapsed / (i + 1);
+      const remaining = todo.length - (i + 1);
+      const eta = fmtDuration(avgPerBook * remaining);
+      writeProgress({
+        booksTotal: files.length, booksDone: manifest.completedFiles.length,
+        totalChunks: manifest.totalChunks, elapsedMs: elapsed,
+        etaForThisRun: eta, lastFile: file, updatedAt: new Date().toISOString()
+      });
+
+      log('[' + (i + 1) + '/' + todo.length + '] ' + file + ' -> ' + count + ' chunks (' +
+        ((Date.now() - t0) / 1000).toFixed(1) + 's) | total chunks: ' + manifest.totalChunks +
+        ' | elapsed ' + fmtDuration(elapsed) + ' | ETA ' + eta);
     } catch (err) {
-      console.error('FAILED on ' + file + ': ' + err.message);
+      log('FAILED on ' + file + ': ' + err.message);
       store.writeManifest(manifest);
       process.exitCode = 1;
       return;
     }
   }
-  const totalSecs = ((Date.now() - startAll) / 1000).toFixed(1);
-  console.log('Done. Indexed ' + todo.length + ' book(s) in ' + totalSecs + 's. Total chunks so far: ' + manifest.totalChunks);
+  process.removeListener('SIGINT', onInterrupt);
+  log('Done. Indexed ' + todo.length + ' book(s) in ' + fmtDuration(Date.now() - startAll) +
+    '. Total chunks so far: ' + manifest.totalChunks + ' across ' + manifest.completedFiles.length + ' book(s).');
 }
 
-main().catch(err => { console.error(err); process.exitCode = 1; });
+main().catch(err => { log('FATAL: ' + err.message); process.exitCode = 1; });

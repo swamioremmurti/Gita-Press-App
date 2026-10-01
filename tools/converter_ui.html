@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book Converter</title>
+<style>
+  :root {
+    --bg: #faf7f0; --surface: #fff; --surface-2: #fbf2df; --ink: #231f20;
+    --muted: #8a7f6a; --rule: #e8ddc8; --accent: #a51512; --accent-dark: #7a0f0d;
+    --gold: #c45911; --radius: 12px; --shadow: 0 2px 10px rgba(60,40,10,0.08);
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif; padding: 1.5rem;
+  }
+  h1 { color: var(--accent-dark); font-size: 1.5rem; margin: 0 0 .2rem; }
+  .sub { color: var(--muted); margin: 0 0 1.2rem; font-size: .9rem; }
+  .tabs { display: flex; gap: .5rem; margin-bottom: 1rem; }
+  .tab-btn {
+    border: 1px solid var(--rule); background: var(--surface); color: var(--ink);
+    padding: .5rem 1.1rem; border-radius: 20px; cursor: pointer; font-size: .9rem;
+  }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .panel { display: none; max-width: 900px; }
+  .panel.active { display: block; }
+  .card {
+    background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 1.2rem 1.4rem; margin-bottom: 1rem;
+  }
+  .card h2 { margin: 0 0 .9rem; font-size: 1.05rem; color: var(--accent-dark); }
+  .row { display: flex; gap: .9rem; flex-wrap: wrap; margin-bottom: .8rem; }
+  .field { flex: 1 1 240px; display: flex; flex-direction: column; gap: .3rem; }
+  .field.grow { flex: 1 1 100%; }
+  label { font-size: .82rem; color: var(--muted); font-weight: 600; }
+  input[type=text], input[type=number], select, textarea {
+    border: 1px solid var(--rule); border-radius: 8px; padding: .5rem .7rem;
+    font-family: inherit; font-size: .92rem; background: var(--surface); color: var(--ink);
+  }
+  textarea { resize: vertical; min-height: 160px; font-family: Consolas, monospace; font-size: .82rem; }
+  .radio-row { display: flex; gap: 1.2rem; align-items: center; }
+  .radio-row label { font-weight: normal; color: var(--ink); display: flex; align-items: center; gap: .3rem; }
+  .checkbox-row { display: flex; align-items: center; gap: .5rem; }
+  .checkbox-row label { font-weight: normal; color: var(--ink); }
+  details { border: 1px dashed var(--rule); border-radius: 8px; padding: .5rem .8rem; margin-bottom: .8rem; }
+  details summary { cursor: pointer; font-size: .85rem; color: var(--gold); font-weight: 600; }
+  details .row { margin-top: .7rem; }
+  .strip-pair { display: flex; gap: .5rem; align-items: center; margin-bottom: .4rem; }
+  .strip-pair input { flex: 1; }
+  .mini-btn {
+    border: 1px solid var(--rule); background: var(--surface-2); color: var(--ink);
+    border-radius: 6px; padding: .3rem .6rem; font-size: .8rem; cursor: pointer;
+  }
+  .btn-row { display: flex; gap: .7rem; margin-top: .5rem; flex-wrap: wrap; }
+  button.primary, button.secondary {
+    border: none; border-radius: 20px; padding: .6rem 1.3rem; font-size: .9rem; cursor: pointer;
+  }
+  button.primary { background: var(--accent); color: #fff; }
+  button.primary:hover { background: var(--accent-dark); }
+  button.secondary { background: var(--surface-2); color: var(--ink); border: 1px solid var(--rule); }
+  button:disabled { opacity: .5; cursor: default; }
+  .log-panel {
+    background: #1e1b17; color: #e8ddc8; border-radius: 10px; padding: .9rem 1rem;
+    font-family: Consolas, monospace; font-size: .82rem; white-space: pre-wrap; margin-top: .9rem;
+    max-height: 420px; overflow-y: auto; display: none;
+  }
+  .log-panel.show { display: block; }
+  .banner { padding: .6rem .9rem; border-radius: 8px; font-size: .85rem; margin-top: .9rem; display: none; }
+  .banner.ok { display: block; background: #e4f3e4; color: #1f6b2a; border: 1px solid #b7dfb9; }
+  .banner.err { display: block; background: #fbe4e2; color: var(--accent-dark); border: 1px solid #f0bcb7; }
+  .hint { color: var(--muted); font-size: .78rem; margin-top: -.3rem; }
+</style>
+</head>
+<body>
+
+<h1>📚 Book Converter</h1>
+<p class="sub">Import a .docx / Zoho-HTML source into the Swadhyay library, or set a book's cover image. Runs entirely on this machine — the source path on the Convert tab is read straight off disk; the cover image is picked from your browser and sent to the server as a file.</p>
+
+<div class="tabs">
+  <button class="tab-btn active" data-tab="convert">Convert a book</button>
+  <button class="tab-btn" data-tab="cover">Set a cover image</button>
+</div>
+
+<!-- ============================= CONVERT ============================= -->
+<div class="panel active" id="panel-convert">
+
+  <div class="card">
+    <h2>Source</h2>
+    <div class="row">
+      <div class="field grow">
+        <label>Source file path (.docx or .html)</label>
+        <input type="text" id="c-source" placeholder="C:\Users\me\Desktop\book.docx">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="secondary" id="c-list-styles">List docx styles</button>
+    </div>
+    <pre class="log-panel" id="c-styles-log"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Book details</h2>
+    <div class="row">
+      <div class="field"><label>Title *</label><input type="text" id="c-title"></div>
+      <div class="field"><label>Author *</label><input type="text" id="c-author"></div>
+      <div class="field"><label>Category *</label><select id="c-category"></select></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Translator (without "अनुवादक:" prefix)</label><input type="text" id="c-translator"></div>
+      <div class="field"><label>Subtitle / title-page note</label><input type="text" id="c-subtitle"></div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Publisher</label>
+        <div class="radio-row">
+          <label><input type="radio" name="c-publisher" value="gitapress" checked> Gita Press</label>
+          <label><input type="radio" name="c-publisher" value="other"> Other (non-Gita-Press)</label>
+        </div>
+        <div class="hint">"Other" also registers the file in NON_GITA_PRESS_BOOKS and adjusts the book-detail blurb.</div>
+      </div>
+    </div>
+  </div>
+
+  <details>
+    <summary>.docx style mapping</summary>
+    <div class="row">
+      <div class="field"><label>Chapter-heading styles</label><input type="text" id="c-chapter-styles" value="Heading 1,Heading 2"></div>
+      <div class="field"><label>Sub-heading styles</label><input type="text" id="c-sub-styles" value="Heading 3,Heading 4"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Quote-block styles</label><input type="text" id="c-quote-styles" value="Quote"></div>
+      <div class="field"><label>Verse/sutra style name</label><input type="text" id="c-shlok-style" value="Shlok"></div>
+    </div>
+  </details>
+
+  <details>
+    <summary>Zoho/Aspose .html options</summary>
+    <div class="row">
+      <div class="field grow"><label>Chapter-marker div class</label><input type="text" id="c-marker-class" value="z-fs:24 z-fw:700 z-txt:grey0"></div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Footnote threshold (chars)</label><input type="number" id="c-footnote-min" value="200"></div>
+      <div class="field">
+        <div class="checkbox-row" style="margin-top:1.4rem"><input type="checkbox" id="c-reorder"><label for="c-reorder">Reorder numbered chapters (१. २. ३. ...) into correct order</label></div>
+      </div>
+    </div>
+    <label>Strip boilerplate runs (publisher/"Buy" widgets etc.)</label>
+    <div id="c-strip-list"></div>
+    <button class="mini-btn" id="c-strip-add" type="button">+ add a strip-between pair</button>
+  </details>
+
+  <details>
+    <summary>Output paths (defaults match this project)</summary>
+    <div class="row">
+      <div class="field"><label>Output filename (no extension; default = title)</label><input type="text" id="c-out-name"></div>
+      <div class="field grow"><label>Output directory</label><input type="text" id="c-out-dir"></div>
+    </div>
+    <div class="row">
+      <div class="field grow"><label>swadhyay-data.js</label><input type="text" id="c-data-js"></div>
+    </div>
+    <div class="row">
+      <div class="field grow"><label>swadhyay-app.js</label><input type="text" id="c-app-js"></div>
+    </div>
+    <div class="checkbox-row"><input type="checkbox" id="c-no-register"><label for="c-no-register">Only write the HTML file; don't register in swadhyay-data.js / swadhyay-app.js</label></div>
+  </details>
+
+  <div class="btn-row">
+    <button class="secondary" id="c-preview">Preview (dry run)</button>
+    <button class="primary" id="c-apply">Convert &amp; Register</button>
+  </div>
+  <div class="banner" id="c-banner"></div>
+  <pre class="log-panel" id="c-log"></pre>
+</div>
+
+<!-- =============================== COVER =============================== -->
+<div class="panel" id="panel-cover">
+  <div class="card">
+    <h2>Set a cover image</h2>
+    <div class="row">
+      <div class="field"><label>Book filename (as registered, e.g. राजयोग.html)</label><input type="text" id="v-book-file"></div>
+      <div class="field grow">
+        <label>Cover image (.png / .jpg / .webp)</label>
+        <input type="file" id="v-image-file" accept="image/png,image/jpeg,image/webp">
+        <div class="hint" id="v-image-preview-hint"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field"><label>Slug override (optional; default auto-romanized)</label><input type="text" id="v-slug"></div>
+      <div class="field">
+        <div class="checkbox-row" style="margin-top:1.4rem"><input type="checkbox" id="v-force"><label for="v-force">Overwrite if the destination image already exists</label></div>
+      </div>
+    </div>
+    <details>
+      <summary>Output paths</summary>
+      <div class="row">
+        <div class="field grow"><label>Covers directory</label><input type="text" id="v-covers-dir"></div>
+      </div>
+      <div class="row">
+        <div class="field grow"><label>swadhyay-app.js</label><input type="text" id="v-app-js"></div>
+      </div>
+    </details>
+    <div class="btn-row">
+      <button class="secondary" id="v-preview">Preview (dry run)</button>
+      <button class="primary" id="v-apply">Set cover</button>
+    </div>
+    <div class="banner" id="v-banner"></div>
+    <pre class="log-panel" id="v-log"></pre>
+  </div>
+</div>
+
+<script>
+async function api(method, path, body) {
+  const opts = { method };
+  if (body !== undefined) {
+    opts.headers = { "Content-Type": "application/json" };
+    opts.body = JSON.stringify(body);
+  }
+  const res = await fetch(path, opts);
+  return res.json();
+}
+
+function showLog(el, text) {
+  el.textContent = text || "(no output)";
+  el.classList.add("show");
+}
+function showBanner(el, ok, msg) {
+  el.className = "banner " + (ok ? "ok" : "err");
+  el.textContent = msg;
+}
+
+/* ---- tabs ---- */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+/* ---- strip-between dynamic rows ---- */
+function addStripRow(start, end) {
+  const wrap = document.getElementById("c-strip-list");
+  const row = document.createElement("div");
+  row.className = "strip-pair";
+  row.innerHTML =
+    '<input type="text" placeholder="start text (e.g. प्रकाशक)" class="strip-start" value="' + (start || "").replace(/"/g, "&quot;") + '">' +
+    '<input type="text" placeholder="end text (e.g. Buy eBook)" class="strip-end" value="' + (end || "").replace(/"/g, "&quot;") + '">' +
+    '<button type="button" class="mini-btn strip-remove">✕</button>';
+  row.querySelector(".strip-remove").addEventListener("click", () => row.remove());
+  wrap.appendChild(row);
+}
+document.getElementById("c-strip-add").addEventListener("click", () => addStripRow());
+
+function collectStripPairs() {
+  return Array.from(document.querySelectorAll(".strip-pair")).map(row => [
+    row.querySelector(".strip-start").value.trim(),
+    row.querySelector(".strip-end").value.trim(),
+  ]).filter(pair => pair[0] && pair[1]);
+}
+
+/* ---- load defaults ---- */
+(async function init() {
+  const meta = await api("GET", "/api/meta");
+  const sel = document.getElementById("c-category");
+  meta.categories.forEach(c => {
+    const opt = document.createElement("option");
+    opt.value = c; opt.textContent = c;
+    sel.appendChild(opt);
+  });
+  document.getElementById("c-out-dir").value = meta.defaults.out_dir;
+  document.getElementById("c-data-js").value = meta.defaults.data_js;
+  document.getElementById("c-app-js").value = meta.defaults.app_js;
+  document.getElementById("v-covers-dir").value = meta.defaults.covers_dir;
+  document.getElementById("v-app-js").value = meta.defaults.app_js;
+})();
+
+/* ---- convert: list styles ---- */
+document.getElementById("c-list-styles").addEventListener("click", async () => {
+  const src = document.getElementById("c-source").value.trim();
+  const log = document.getElementById("c-styles-log");
+  if (!src) { showLog(log, "Enter a source path first."); return; }
+  const res = await api("GET", "/api/list-styles?path=" + encodeURIComponent(src));
+  showLog(log, res.ok ? res.log : ("Error: " + (res.error || "unknown")));
+});
+
+/* ---- convert: build payload ---- */
+function buildConvertPayload(dryRun) {
+  return {
+    source: document.getElementById("c-source").value.trim(),
+    title: document.getElementById("c-title").value.trim(),
+    author: document.getElementById("c-author").value.trim(),
+    category: document.getElementById("c-category").value,
+    translator: document.getElementById("c-translator").value.trim(),
+    subtitle: document.getElementById("c-subtitle").value.trim(),
+    publisher: document.querySelector('input[name="c-publisher"]:checked').value,
+    chapter_heading_styles: document.getElementById("c-chapter-styles").value.trim(),
+    sub_heading_styles: document.getElementById("c-sub-styles").value.trim(),
+    quote_styles: document.getElementById("c-quote-styles").value.trim(),
+    shlok_style: document.getElementById("c-shlok-style").value.trim(),
+    marker_class: document.getElementById("c-marker-class").value.trim(),
+    strip_between: collectStripPairs(),
+    reorder_numeric: document.getElementById("c-reorder").checked,
+    footnote_min_chars: parseInt(document.getElementById("c-footnote-min").value || "200", 10),
+    out_name: document.getElementById("c-out-name").value.trim(),
+    out_dir: document.getElementById("c-out-dir").value.trim(),
+    data_js: document.getElementById("c-data-js").value.trim(),
+    app_js: document.getElementById("c-app-js").value.trim(),
+    no_register: document.getElementById("c-no-register").checked,
+    dry_run: dryRun,
+  };
+}
+
+async function runConvert(dryRun) {
+  const banner = document.getElementById("c-banner");
+  const log = document.getElementById("c-log");
+  banner.className = "banner";
+  const payload = buildConvertPayload(dryRun);
+  if (!payload.source || !payload.title || !payload.author || !payload.category) {
+    showBanner(banner, false, "Source, title, author and category are all required.");
+    return;
+  }
+  const res = await api("POST", "/api/convert", payload);
+  showLog(log, res.log || res.error || "");
+  showBanner(banner, res.ok, res.ok
+    ? (dryRun ? "Preview OK — nothing written. Review the log, then Convert & Register." : "Converted and registered.")
+    : ("Failed: " + (res.error || "see log")));
+}
+document.getElementById("c-preview").addEventListener("click", () => runConvert(true));
+document.getElementById("c-apply").addEventListener("click", () => {
+  if (confirm("This will write the book HTML and update swadhyay-data.js (and swadhyay-app.js if 'Other' publisher). Continue?")) {
+    runConvert(false);
+  }
+});
+
+/* ---- cover: file picker -> blob -> base64, with a thumbnail preview ---- */
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById("v-image-file").addEventListener("change", (e) => {
+  const hint = document.getElementById("v-image-preview-hint");
+  const file = e.target.files[0];
+  if (!file) { hint.innerHTML = ""; return; }
+  hint.textContent = `${file.name}  (${(file.size / 1024).toFixed(1)} KB)`;
+  readFileAsDataURL(file).then(dataUrl => {
+    hint.innerHTML = "";
+    const img = document.createElement("img");
+    img.src = dataUrl;
+    img.style.cssText = "max-height:110px;max-width:160px;border-radius:6px;border:1px solid var(--rule);margin-top:.4rem;display:block;";
+    hint.appendChild(img);
+    const label = document.createElement("div");
+    label.textContent = `${file.name}  (${(file.size / 1024).toFixed(1)} KB)`;
+    hint.appendChild(label);
+  });
+});
+
+async function buildCoverPayload(dryRun) {
+  const fileInput = document.getElementById("v-image-file");
+  const file = fileInput.files[0];
+  const payload = {
+    book_file: document.getElementById("v-book-file").value.trim(),
+    slug: document.getElementById("v-slug").value.trim(),
+    force: document.getElementById("v-force").checked,
+    covers_dir: document.getElementById("v-covers-dir").value.trim(),
+    app_js: document.getElementById("v-app-js").value.trim(),
+    dry_run: dryRun,
+  };
+  if (file) {
+    payload.image_data = await readFileAsDataURL(file);
+    payload.image_name = file.name;
+  }
+  return payload;
+}
+async function runCover(dryRun) {
+  const banner = document.getElementById("v-banner");
+  const log = document.getElementById("v-log");
+  banner.className = "banner";
+  const payload = await buildCoverPayload(dryRun);
+  if (!payload.book_file || !payload.image_data) {
+    showBanner(banner, false, "Book filename and a cover image file are both required.");
+    return;
+  }
+  const res = await api("POST", "/api/cover", payload);
+  showLog(log, res.log || res.error || "");
+  showBanner(banner, res.ok, res.ok
+    ? (dryRun ? "Preview OK — nothing written." : "Cover set.")
+    : ("Failed: " + (res.error || "see log")));
+}
+document.getElementById("v-preview").addEventListener("click", () => runCover(true));
+document.getElementById("v-apply").addEventListener("click", () => {
+  if (confirm("This will copy the image into assets/covers/ and edit swadhyay-app.js. Continue?")) {
+    runCover(false);
+  }
+});
+</script>
+</body>
+</html>

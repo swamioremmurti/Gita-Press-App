@@ -456,7 +456,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
   color: var(--accent-dark); font-size: .85rem; display: flex; align-items: center; justify-content: center;
   transition: transform .15s;
 }
-.toc-toggle-spacer { flex: 0 0 auto; width: 1.4rem; }
+.toc-section-header .toc-toggle-spacer { flex: 0 0 auto; width: 1.4rem; }
 .toc-section.open > .toc-section-header .toc-toggle { transform: rotate(90deg); }
 .toc-children { list-style: none; margin: 0; padding: 0; display: none; }
 .toc-section.open > .toc-children { display: block; }

@@ -3448,7 +3448,19 @@ var SWADHYAY_BOOKS_RAW = [
         "file":  "राजयोग.html",
         "category":  "Vedant",
         "author":  "स्वामी विवेकानन्द",
-        "sizeKB":  946.5
+        "sizeKB":  947.6
+    },
+    {
+        "file":  "स्वामी विवेकानन्द संक्षिप्त जीवनी तथा उपदेश.html",
+        "category":  "Vedant",
+        "author":  "स्वामी अपूर्वानन्द",
+        "sizeKB":  360.6
+    },
+    {
+        "file":  "श्रीकृष्ण चैतन्य.html",
+        "category":  "Balaupayogi",
+        "author":  "तेलुगु मूल: डॉ. वै. वी. रमण राव",
+        "sizeKB":  92.8
     }
 ]
 ;

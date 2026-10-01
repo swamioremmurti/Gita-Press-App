@@ -349,6 +349,8 @@
   // Gita Prakashan, Tirumala Tirupati Devasthanam, etc.) — affiliate buy buttons are
   // hidden for these since Gita Press does not sell them.
   var NON_GITA_PRESS_BOOKS = {
+    "श्रीकृष्ण चैतन्य.html": true,
+    "स्वामी विवेकानन्द संक्षिप्त जीवनी तथा उपदेश.html": true,
     "भक्तियोग.html": true,
     "राजयोग.html": true,
     "मानस-मुक्ता.html": true,
@@ -964,8 +966,11 @@
 
   function genBlurb(book) {
     var meta = book.categoryMeta;
+    var source = book.isGitaPress
+      ? "गीता प्रेस की प्रामाणिक शैली में प्रकाशित"
+      : "सुधी पाठकों के लिए सुलभ कराया गया";
     return "इस ग्रंथ का विषय — " + meta.hi + " — सनातन धर्म की समृद्ध परम्परा का अंग है। " +
-      esc(book.author) + " द्वारा प्रस्तुत, गीता प्रेस की प्रामाणिक शैली में प्रकाशित यह संस्करण सरल एवं सुगम पठन के लिए तैयार किया गया है।";
+      esc(book.author) + " द्वारा प्रस्तुत, " + source + " यह संस्करण सरल एवं सुगम पठन के लिए तैयार किया गया है।";
   }
 
   /* ---------------- table of contents ----------------
