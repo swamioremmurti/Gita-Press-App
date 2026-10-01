@@ -57,15 +57,16 @@ button { cursor: pointer; font: inherit; }
 /* ---------- app shell ---------- */
 .app-shell { display: flex; min-height: 100vh; }
 
-:root { --sidebar-w: 160px; }
+:root { --sidebar-w: 160px; --sidebar-collapsed-w: 68px; }
 
 .sidebar {
-  width: var(--sidebar-w); flex-shrink: 0;
+  width: var(--sidebar-collapsed-w); flex-shrink: 0;
   background: var(--sidebar-bg); color: var(--sidebar-ink);
   display: flex; flex-direction: column;
   padding: 1.1rem 0 1rem; position: fixed; top: 0; left: 0; height: 100vh; z-index: 120;
   font-family: Calibri, Arial, 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', sans-serif;
-  overflow-y: auto;
+  overflow-x: hidden; overflow-y: auto;
+  transition: width .18s ease, box-shadow .18s ease;
 }
 .sidebar-header { display: flex; align-items: center; gap: .4rem; padding: .3rem .9rem 1.1rem; }
 .sidebar-logo-mark {
@@ -74,7 +75,10 @@ button { cursor: pointer; font: inherit; }
   -webkit-mask: url('assets/logo-mark.svg') no-repeat center / contain;
   mask: url('assets/logo-mark.svg') no-repeat center / contain;
 }
-.sidebar-wordmark { font-size: 1.1rem; color: var(--sidebar-ink); letter-spacing: .01em; }
+.sidebar-wordmark {
+  font-size: 1.1rem; color: var(--sidebar-ink); letter-spacing: .01em; white-space: nowrap;
+  opacity: 0; transition: opacity .1s ease;
+}
 .sidebar-nav { display: flex; flex-direction: column; gap: .15rem; width: 100%; padding: 0 .5rem; }
 .sidebar-divider { height: 1px; background: rgba(255,255,255,.12); margin: .6rem .8rem; }
 .sidebar-nav-bottom { margin-top: auto; padding-top: .6rem; border-top: 1px solid rgba(255,255,255,.12); }
@@ -84,9 +88,21 @@ button { cursor: pointer; font: inherit; }
   opacity: .8; font-size: 1rem;
 }
 .side-link .ic { font-size: 1.05rem; flex: 0 0 auto; width: 1.2rem; text-align: center; }
+.side-link span:not(.ic) {
+  white-space: nowrap; opacity: 0; transition: opacity .1s ease;
+}
 .side-link .sidebar-om { font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif; font-size: 1.25rem; }
 .side-link:hover { opacity: 1; background: rgba(255,255,255,.08); }
 .side-link.active { opacity: 1; background: var(--accent); color: #fff; }
+
+/* Icon-rail collapse + hover-to-expand -- desktop only (≥861px); the mobile off-canvas
+   drawer below (≤860px) sets its own width/left regardless of :hover, so this block is
+   scoped out of that range entirely rather than relying on specificity to not collide. */
+@media (min-width: 861px) {
+  .sidebar:hover { width: var(--sidebar-w); box-shadow: 6px 0 24px rgba(0,0,0,.3); }
+  .sidebar:hover .sidebar-wordmark,
+  .sidebar:hover .side-link span:not(.ic) { opacity: 1; transition-delay: .06s; }
+}
 
 .sidebar-scrim {
   display: none; position: fixed; inset: 0; background: rgba(20,14,12,.5); z-index: 110;
@@ -94,7 +110,7 @@ button { cursor: pointer; font: inherit; }
 }
 .sidebar-scrim.show { opacity: 1; pointer-events: auto; }
 
-.main-col { flex: 1; min-width: 0; margin-left: var(--sidebar-w); }
+.main-col { flex: 1; min-width: 0; margin-left: var(--sidebar-collapsed-w); }
 
 :root { --topbar-h: 64px; }
 
@@ -107,7 +123,7 @@ button { cursor: pointer; font: inherit; }
 .topbar {
   display: flex; align-items: center; justify-content: flex-end; gap: 1rem;
   padding: .8rem 1.5rem; height: var(--topbar-h);
-  position: fixed; top: 0; left: var(--sidebar-w); right: 0; z-index: 40;
+  position: fixed; top: 0; left: var(--sidebar-collapsed-w); right: 0; z-index: 40;
   background: transparent; border-bottom: 1px solid transparent; color: #fff;
   transition: background .25s ease, border-color .25s ease, box-shadow .25s ease, color .25s ease, left .2s ease;
 }
@@ -547,6 +563,9 @@ body.is-home .cover-mark { font-size: max(1rem, calc(.8rem * 1.12)); }
   .sidebar {
     left: -88%; width: 82%; max-width: 300px; transition: left .22s ease; box-shadow: var(--shadow);
   }
+  /* The off-canvas drawer always shows full labels -- it has no hover affordance on
+     touch, so it doesn't use the desktop icon-rail collapse (≥861px, above). */
+  .sidebar-wordmark, .side-link span:not(.ic) { opacity: 1; }
   .sidebar.open { left: 0; }
   .sidebar-scrim { display: block; }
   .hamburger-btn { display: flex; align-items: center; justify-content: center; }
