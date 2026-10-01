@@ -3461,13 +3461,6 @@ var SWADHYAY_BOOKS_RAW = [
         "category":  "Balaupayogi",
         "author":  "तेलुगु मूल: डॉ. वै. वी. रमण राव",
         "sizeKB":  92.8
-    },
-    {
-        "file":  "परीक्षण पुस्तक.html",
-        "category":  "Vedant",
-        "author":  "",
-        "sizeKB":  0.5
-    }
-]
+    }]
 ;
 
