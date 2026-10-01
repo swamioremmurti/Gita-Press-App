@@ -26,19 +26,19 @@
   --radius: 14px;
 }
 :root[data-theme="dark"] {
-  --bg: #1b1512;
-  --surface: #241d19;
-  --surface-2: #2c231d;
-  --ink: #f1e9da;
-  --muted: #b9ab90;
-  --rule: #3c2f26;
+  --bg: #0f131a;
+  --surface: #171c24;
+  --surface-2: #1f2630;
+  --ink: #e9edf3;
+  --muted: #94a0b3;
+  --rule: #2a3340;
   --accent: #e2564f;
   --accent-dark: #c23d36;
   --gold: #e08a3e;
   --blue: #4ea3e8;
-  --sidebar-bg: #150c0a;
+  --sidebar-bg: #0b0e14;
   --sidebar-ink: #f3e6c8;
-  --shadow: 0 2px 14px rgba(0,0,0,0.4);
+  --shadow: 0 2px 14px rgba(0,0,0,0.45);
 }
 
 * { box-sizing: border-box; }
@@ -190,9 +190,16 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .hero-chips .chip:hover { background: var(--gold); color: #fff; }
 
 /* ---------- category tabs ---------- */
+.cat-tabs-wrap { position: relative; max-width: 1200px; margin: 0 auto; border-bottom: 1px solid var(--rule); }
+.cat-tabs-wrap .row-nav { top: 50%; }
 .cat-tabs {
-  display: flex; flex-wrap: wrap; gap: .5rem; padding: 1rem 1.5rem;
-  max-width: 1200px; margin: 0 auto; border-bottom: 1px solid var(--rule);
+  display: flex; flex-wrap: nowrap; gap: .5rem; padding: 1rem 1.5rem;
+  overflow-x: auto; scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+@media (max-width: 860px) {
+  .cat-tabs-wrap .row-nav { display: none; }
 }
 .cat-tab {
   border: 1px solid var(--rule); background: var(--surface); padding: .5rem 1rem;
@@ -283,14 +290,19 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
   background-size: cover; background-position: center; border-color: var(--gold);
   padding-left: 20%;
 }
-:root[data-theme="dark"] .panchang-card, :root[data-theme="dark"] .ai-ask-card { background: var(--surface); border-color: var(--rule); }
+:root[data-theme="dark"] .panchang-card, :root[data-theme="dark"] .ai-ask-card { border-color: var(--rule); }
+:root[data-theme="dark"] .panchang-card { background: url('assets/panchang-bg-dark.webp'); background-size: cover; background-position: center; }
+:root[data-theme="dark"] .ai-ask-card { background: url('assets/ai-ask-bg-dark.webp'); background-size: cover; background-position: center; }
 @media (max-width: 860px) {
   .panchang-card, .ai-ask-card { padding: 20px; max-width: 100%; overflow: hidden; }
   /* Wash the background photo with a 10%-opaque white layer so it reads as a muted
-     backdrop rather than competing with the card's text -- dark mode already swaps
-     the image out for a solid surface color above, so this layer doesn't apply there. */
+     backdrop rather than competing with the card's text. */
   .panchang-card { background-image: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url('assets/panchang-bg.webp'); }
   .ai-ask-card { background-image: linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,.1)), url('assets/ai-ask-bg.webp'); }
+  /* Dark theme uses its own (already-dark) photo, so wash with a translucent layer of
+     the dark-theme bg color instead of the light-theme's white wash. */
+  :root[data-theme="dark"] .panchang-card { background-image: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url('assets/panchang-bg-dark.webp'); }
+  :root[data-theme="dark"] .ai-ask-card { background-image: linear-gradient(rgba(0,0,0,.7), rgba(0,0,0,.7)), url('assets/ai-ask-bg-dark.webp'); }
 }
 .pc-head, .ai-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .7rem; }
 .pc-head-icon, .ai-head-icon { font-size: 1.2rem; color: var(--accent); }
@@ -416,7 +428,13 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .filter-tab { border: 1px solid var(--rule); padding: .4rem .9rem; border-radius: 16px; font-size: .82rem; background: var(--surface); }
 .filter-tab.active { background: var(--gold); border-color: var(--gold); color: #fff; }
 
-.load-more-wrap { text-align: center; margin-top: 1.5rem; }
+.load-more-wrap { text-align: center; margin-top: 1.5rem; padding: 1rem 0; }
+.load-more-spinner {
+  display: inline-block; width: 26px; height: 26px; border-radius: 50%;
+  border: 3px solid var(--rule); border-top-color: var(--accent);
+  animation: load-more-spin .7s linear infinite;
+}
+@keyframes load-more-spin { to { transform: rotate(360deg); } }
 .btn-outline { border: 1px solid var(--accent); color: var(--accent); background: transparent; padding: .55rem 1.2rem; border-radius: 20px; font-size: 1rem; }
 .btn-outline.active { background: var(--accent); color: #fff; }
 .btn-primary { display: inline-block; border: none; background: var(--accent); color: #fff; padding: .6rem 1.3rem; border-radius: 20px; font-size: 1rem; }
@@ -813,12 +831,28 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
 }
 
 /* ---------------- पंचांग पेज ---------------- */
-.panchang-week-strip { display: flex; gap: .6rem; overflow-x: auto; padding: .2rem .1rem 1rem; }
-.pw-day {
-  flex: 0 0 68px; text-align: center; background: var(--surface); border: 1px solid var(--rule);
-  border-radius: 12px; padding: .6rem .3rem; box-shadow: var(--shadow);
+.panchang-page { max-width: 640px; margin: 0 auto; }
+.panchang-week-wrap { position: relative; }
+.panchang-week-wrap .row-nav { top: 50%; }
+@media (max-width: 860px) { .panchang-week-wrap .row-nav { display: none; } }
+.panchang-week-strip {
+  display: flex; gap: .6rem; overflow-x: auto; padding: .2rem .1rem 1rem; scroll-behavior: smooth;
+  scrollbar-width: none; -ms-overflow-style: none;
 }
+.panchang-week-strip::-webkit-scrollbar { display: none; }
+.pw-day {
+  position: relative; flex: 0 0 68px; text-align: center; background: var(--surface); border: 1px solid var(--rule);
+  border-radius: 12px; padding: .6rem .3rem; box-shadow: var(--shadow);
+  font-family: inherit; color: inherit; cursor: pointer; transition: background .12s ease, border-color .12s ease;
+}
+.pw-day:hover { border-color: var(--accent); }
 .pw-day.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.pw-day.is-today:not(.active) { border-color: var(--accent); border-width: 2px; }
+.pw-month {
+  font-size: .62rem; font-weight: bold; color: var(--accent); white-space: nowrap;
+  margin-bottom: .15rem;
+}
+.pw-day.active .pw-month { color: rgba(255,255,255,.9); }
 .pw-weekday { font-size: .75rem; opacity: .75; }
 .pw-date { font-size: 1.15rem; font-weight: bold; margin: .1rem 0; }
 .pw-tithi { font-size: .75rem; opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

@@ -816,11 +816,15 @@
   }
 
   function categoryTabs(activeKey) {
-    return '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.map(function (c) {
-      var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
-      return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
-        bilingual(c.hi, c.en) + ' <span class="cnt">(' + count + ')</span></a>';
-    }).join("") + '</nav>';
+    return '<div class="cat-tabs-wrap">' +
+      '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
+      '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.map(function (c) {
+        var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
+        return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
+          bilingual(c.hi, c.en) + ' <span class="cnt">(' + count + ')</span></a>';
+      }).join("") + '</nav>' +
+      '<button class="row-nav next" aria-label="अगला">›</button>' +
+      '</div>';
   }
 
   function categoryGrid() {
@@ -1014,6 +1018,7 @@
 
   var PAGE_SIZE = 40;
   var libraryState = { page: 1 };
+  var panchangState = { dayOffset: 0 };
   var chatState = { history: [], busy: false, turns: [], pendingInput: "" };
 
   function viewLibrary(params) {
@@ -1058,7 +1063,7 @@
       html += '<div class="empty-state">' + bilingual("कोई पुस्तक नहीं मिली", "No books found") + '</div>';
     } else {
       html += '<div class="book-grid">' + pageItems.map(bookCard).join("") + '</div>';
-      if (page < totalPages) html += '<div class="load-more-wrap"><button id="loadMoreBtn" class="btn-outline">' + bilingual("और दिखाएँ", "Load More") + '</button></div>';
+      if (page < totalPages) html += '<div class="load-more-wrap" id="libraryLoadSentinel"><span class="load-more-spinner"></span></div>';
     }
     return '<main class="content-pad">' + html + '</main>';
   }
@@ -2116,25 +2121,35 @@
   function viewPanchang() {
     var city = getPanchangCity();
     var today = new Date();
-    var p = getPanchang(today, city);
+    var selDate = new Date(today.getTime() + panchangState.dayOffset * 86400000);
+    var p = getPanchang(selDate, city);
     var cityOpts = PANCHANG_CITIES.map(function (c) {
       return '<option value="' + c.key + '"' + (c.key === city.key ? " selected" : "") + '>' + esc(c.hi) + '</option>';
     }).join("");
 
+    var MONTH_HI = ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितम्बर", "अक्टूबर", "नवम्बर", "दिसम्बर"];
+    var DAY_RANGE = 30;
     var week = [];
-    for (var i = 0; i < 7; i++) {
+    for (var i = -DAY_RANGE; i <= DAY_RANGE; i++) {
       var dt = new Date(today.getTime() + i * 86400000);
       var pw = getPanchang(dt, city);
-      week.push('<div class="pw-day' + (i === 0 ? " active" : "") + '">' +
+      var showMonth = i === -DAY_RANGE || dt.getDate() === 1;
+      week.push('<button type="button" class="pw-day' + (i === panchangState.dayOffset ? " active" : "") + (i === 0 ? " is-today" : "") + '" data-offset="' + i + '">' +
+        (showMonth ? '<div class="pw-month">' + esc(MONTH_HI[dt.getMonth()]) + '</div>' : '') +
         '<div class="pw-weekday">' + esc(pw.weekdayHi.slice(0, 3)) + '</div>' +
         '<div class="pw-date">' + dt.getDate() + '</div>' +
-        '<div class="pw-tithi">' + esc(pw.tithiName) + '</div></div>');
+        '<div class="pw-tithi">' + esc(pw.tithiName) + '</div></button>');
     }
 
     return '<main class="content-pad">' +
+      '<div class="panchang-page">' +
       '<div class="page-header"><h1>' + bilingual("पंचांग") + '</h1>' +
       '<select class="pc-city" id="panchangPageCitySelect">' + cityOpts + '</select></div>' +
-      '<div class="panchang-week-strip">' + week.join("") + '</div>' +
+      '<div class="panchang-week-wrap">' +
+      '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
+      '<div class="panchang-week-strip" id="panchangWeekStrip">' + week.join("") + '</div>' +
+      '<button class="row-nav next" aria-label="अगला">›</button>' +
+      '</div>' +
       '<div class="panchang-detail-card">' +
       '<div class="pd-date-head"><h2>' + esc(p.weekdayHi) + ', ' + esc(formatHindiDate(p.date)) + '</h2>' +
       '<div class="pd-sub">' + esc(p.paksha) + ' पक्ष • ' + esc(p.tithiName) + ' • ' + esc(city.hi) + '</div></div>' +
@@ -2159,7 +2174,7 @@
       panchangDetailRow("⚠", "गुलिक काल", p.gulikakal.start + " – " + p.gulikakal.end) +
       '</div>' +
       '<p class="pd-disclaimer">' + bilingual("यह पंचांग खगोलीय सन्निकटन (approximation) पर आधारित है और केवल सामान्य जानकारी हेतु है। महत्वपूर्ण मुहूर्तों के लिए कृपया किसी प्रामाणिक पंचांग या विद्वान् से परामर्श करें।") + '</p>' +
-      '</div></main>';
+      '</div></div></main>';
   }
 
   /* ---------------- सहायता ---------------- */
@@ -2859,6 +2874,8 @@
     });
   }
 
+  var lastRenderedPath = null;
+
   function render() {
     var r = parseHash();
     var root = document.getElementById("viewRoot");
@@ -2866,6 +2883,12 @@
     var top = document.getElementById("subTopbar");
 
     var seg = r.path.split("/");
+
+    var focusedEl = document.activeElement;
+    var focusedId = focusedEl && focusedEl.id && (focusedEl === document.getElementById("librarySearch") || focusedEl === document.getElementById("homeSearch")) ? focusedEl.id : null;
+    var focusedSelStart = focusedId ? focusedEl.selectionStart : null;
+    var focusedSelEnd = focusedId ? focusedEl.selectionEnd : null;
+    var samePath = r.path === lastRenderedPath;
 
     if (seg[0] === "read" && seg[1] !== undefined) {
       var rId = parseInt(seg[1], 10);
@@ -2909,10 +2932,21 @@
 
     root.innerHTML = html;
     setActiveNav(r.path);
-    window.scrollTo(0, 0);
+    if (!samePath) window.scrollTo(0, 0);
+    lastRenderedPath = r.path;
     wireView(r);
     applyHeroBanner();
     if (seg[0] === "chat") wireChatView();
+
+    if (focusedId) {
+      var toFocus = document.getElementById(focusedId);
+      if (toFocus) {
+        toFocus.focus();
+        if (typeof focusedSelStart === "number") {
+          try { toFocus.setSelectionRange(focusedSelStart, focusedSelEnd); } catch (e) {}
+        }
+      }
+    }
   }
 
   function wireView(r) {
@@ -2931,6 +2965,13 @@
       var prev = wrap.querySelector(".prev"), next = wrap.querySelector(".next");
       if (prev) prev.addEventListener("click", function () { scroller.scrollBy({ left: -600, behavior: "smooth" }); });
       if (next) next.addEventListener("click", function () { scroller.scrollBy({ left: 600, behavior: "smooth" }); });
+    });
+
+    document.querySelectorAll(".cat-tabs-wrap").forEach(function (wrap) {
+      var scroller = wrap.querySelector(".cat-tabs");
+      var prev = wrap.querySelector(".prev"), next = wrap.querySelector(".next");
+      if (prev) prev.addEventListener("click", function () { scroller.scrollBy({ left: -400, behavior: "smooth" }); });
+      if (next) next.addEventListener("click", function () { scroller.scrollBy({ left: 400, behavior: "smooth" }); });
     });
 
     document.querySelectorAll(".hero-chips .chip").forEach(function (chip) {
@@ -2961,8 +3002,17 @@
       });
     }
 
-    var loadMore = document.getElementById("loadMoreBtn");
-    if (loadMore) loadMore.addEventListener("click", function () { libraryState.page++; render(); });
+    var loadSentinel = document.getElementById("libraryLoadSentinel");
+    if (loadSentinel && window.IntersectionObserver) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) {
+          io.disconnect();
+          libraryState.page++;
+          render();
+        }
+      }, { rootMargin: "600px" });
+      io.observe(loadSentinel);
+    }
 
     var startBtn = document.getElementById("startReadingBtn");
     if (startBtn) {
@@ -3051,6 +3101,23 @@
     document.querySelectorAll("#panchangCitySelect, #panchangPageCitySelect").forEach(function (sel) {
       sel.addEventListener("change", function () { setPanchangCity(sel.value); render(); });
     });
+
+    document.querySelectorAll(".pw-day").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        panchangState.dayOffset = parseInt(btn.getAttribute("data-offset"), 10);
+        render();
+      });
+    });
+
+    var panchangWeekWrap = document.querySelector(".panchang-week-wrap");
+    if (panchangWeekWrap) {
+      var pwStrip = document.getElementById("panchangWeekStrip");
+      var pwPrev = panchangWeekWrap.querySelector(".prev"), pwNext = panchangWeekWrap.querySelector(".next");
+      if (pwPrev) pwPrev.addEventListener("click", function () { pwStrip.scrollBy({ left: -300, behavior: "smooth" }); });
+      if (pwNext) pwNext.addEventListener("click", function () { pwStrip.scrollBy({ left: 300, behavior: "smooth" }); });
+      var pwActive = pwStrip.querySelector(".pw-day.active");
+      if (pwActive) pwActive.scrollIntoView({ inline: "center", block: "nearest" });
+    }
 
     /* ---- ग्रंथों से पूछें AI: home card ---- */
     var homeAiForm = document.getElementById("homeAiForm");
@@ -3197,7 +3264,7 @@
     topbar.classList.toggle("scrolled", solid);
   }
 
-  function onNavigate() { libraryState.page = 1; render(); updateTopbarSolidity(); }
+  function onNavigate() { libraryState.page = 1; panchangState.dayOffset = 0; render(); updateTopbarSolidity(); }
 
   window.addEventListener("hashchange", onNavigate);
   document.addEventListener("DOMContentLoaded", function () {
