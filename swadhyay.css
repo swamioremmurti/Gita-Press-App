@@ -268,6 +268,9 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
   padding-left: 20%;
 }
 :root[data-theme="dark"] .panchang-card, :root[data-theme="dark"] .ai-ask-card { background: var(--surface); border-color: var(--rule); }
+@media (max-width: 860px) {
+  .panchang-card, .ai-ask-card { padding: 0; }
+}
 .pc-head, .ai-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .7rem; }
 .pc-head-icon, .ai-head-icon { font-size: 1.2rem; color: var(--accent); }
 .ai-head-icon { font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif; }
