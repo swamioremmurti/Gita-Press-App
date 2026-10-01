@@ -9,7 +9,7 @@
     "migrate": "node lib/migrate.js"
   },
   "dependencies": {
-    "google-auth-library": "^11.1.0",
-    "sql.js": "^1.11.0"
+    "@libsql/client": "^0.18.0",
+    "google-auth-library": "^11.1.0"
   }
 }

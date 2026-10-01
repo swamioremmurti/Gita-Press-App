@@ -1,0 +1,10 @@
+{
+  "name": "swadhyay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Swadhyay digital library. Root package.json exists only so Vercel installs these dependencies where api/[...path].js (and, through it, server/lib/*.js) can resolve them -- the actual app is static files served from this directory; local dev still runs server/server.js via server/package.json.",
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "google-auth-library": "^11.1.0"
+  }
+}

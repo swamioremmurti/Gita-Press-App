@@ -50,9 +50,9 @@ async function main() {
   // ---- categories ----
   let catCount = 0;
   for (const c of CATEGORY_META) {
-    const existing = db.get('SELECT key FROM categories WHERE key = ?', [c.key]);
+    const existing = await db.get('SELECT key FROM categories WHERE key = ?', [c.key]);
     if (existing) continue;
-    db.run('INSERT INTO categories (key, hi, en, icon) VALUES (?, ?, ?, ?)', [c.key, c.hi, c.en, c.icon]);
+    await db.run('INSERT INTO categories (key, hi, en, icon) VALUES (?, ?, ?, ?)', [c.key, c.hi, c.en, c.icon]);
     catCount++;
   }
 
@@ -64,12 +64,12 @@ async function main() {
 
   for (const b of books) {
     if (categoryKeys.has(b.category)) {
-      const existing = db.get(
+      const existing = await db.get(
         'SELECT 1 AS x FROM book_categories WHERE book_file = ? AND category_key = ?',
         [b.file, b.category]
       );
       if (!existing) {
-        db.run('INSERT INTO book_categories (book_file, category_key) VALUES (?, ?)', [b.file, b.category]);
+        await db.run('INSERT INTO book_categories (book_file, category_key) VALUES (?, ?)', [b.file, b.category]);
         bookCatLinks++;
       }
     }
@@ -79,11 +79,11 @@ async function main() {
 
     let authorId = authorIdByName.get(authorName);
     if (authorId === undefined) {
-      const existingAuthor = db.get('SELECT id FROM authors WHERE name = ?', [authorName]);
+      const existingAuthor = await db.get('SELECT id FROM authors WHERE name = ?', [authorName]);
       if (existingAuthor) {
         authorId = existingAuthor.id;
       } else {
-        db.run('INSERT INTO authors (name, bio, photo_path, created_at) VALUES (?, ?, NULL, ?)',
+        await db.run('INSERT INTO authors (name, bio, photo_path, created_at) VALUES (?, ?, NULL, ?)',
           [authorName, '', Date.now()]);
         authorId = db.lastInsertId();
         authorsCreated++;
@@ -91,9 +91,9 @@ async function main() {
       authorIdByName.set(authorName, authorId);
     }
 
-    const existingLink = db.get('SELECT book_file FROM book_authors WHERE book_file = ?', [b.file]);
+    const existingLink = await db.get('SELECT book_file FROM book_authors WHERE book_file = ?', [b.file]);
     if (!existingLink) {
-      db.run('INSERT INTO book_authors (book_file, author_id) VALUES (?, ?)', [b.file, authorId]);
+      await db.run('INSERT INTO book_authors (book_file, author_id) VALUES (?, ?)', [b.file, authorId]);
       bookAuthorLinks++;
     }
   }
@@ -103,19 +103,17 @@ async function main() {
   const adminEmail = (process.env.ADMIN_EMAIL || '').trim();
   const adminPassword = process.env.ADMIN_PASSWORD || '';
   if (adminEmail && adminPassword) {
-    const existing = db.get('SELECT id FROM users WHERE email = ?', [adminEmail]);
+    const existing = await db.get('SELECT id FROM users WHERE email = ?', [adminEmail]);
     if (existing) {
-      db.run('UPDATE users SET role = ? WHERE id = ?', ['admin', existing.id]);
+      await db.run('UPDATE users SET role = ? WHERE id = ?', ['admin', existing.id]);
       adminStatus = `already existed (id ${existing.id}) -- role ensured 'admin'`;
     } else {
       const { hash, salt } = auth.hashPassword(adminPassword);
-      db.run('INSERT INTO users (name, email, password_hash, salt, role, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+      await db.run('INSERT INTO users (name, email, password_hash, salt, role, created_at) VALUES (?, ?, ?, ?, ?, ?)',
         ['Admin', adminEmail, hash, salt, 'admin', Date.now()]);
       adminStatus = `created (id ${db.lastInsertId()})`;
     }
   }
-
-  db.saveNow();
 
   console.log('Migration complete:');
   console.log(`  Categories seeded: ${catCount} new (of ${CATEGORY_META.length} total)`);
@@ -124,7 +122,7 @@ async function main() {
   console.log(`  Authors created: ${authorsCreated} (${authorIdByName.size} distinct author names seen)`);
   console.log(`  Book-author links created: ${bookAuthorLinks}`);
   console.log(`  Admin account: ${adminStatus}`);
-  console.log(`  DB file: ${db.DB_PATH}`);
+  console.log(`  DB target: ${process.env.TURSO_DATABASE_URL || db.LOCAL_DB_PATH}`);
 }
 
 main().catch((err) => { console.error(err); process.exit(1); });

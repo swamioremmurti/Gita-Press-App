@@ -21,17 +21,17 @@ function verifyPassword(password, salt, expectedHash) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
-function createSession(userId) {
+async function createSession(userId) {
   const token = crypto.randomBytes(32).toString('hex');
   const now = Date.now();
-  db.run('INSERT INTO sessions (token, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)',
+  await db.run('INSERT INTO sessions (token, user_id, created_at, expires_at) VALUES (?, ?, ?, ?)',
     [token, userId, now, now + SESSION_TTL_MS]);
   return token;
 }
 
-function destroySession(token) {
+async function destroySession(token) {
   if (!token) return;
-  db.run('DELETE FROM sessions WHERE token = ?', [token]);
+  await db.run('DELETE FROM sessions WHERE token = ?', [token]);
 }
 
 function publicUser(row) {
@@ -51,24 +51,28 @@ function parseCookies(req) {
   return out;
 }
 
+// Vercel sets VERCEL=1 on deployed functions (always HTTPS there); local dev stays
+// plain HTTP, where a Secure cookie would just get silently dropped by the browser.
+const SECURE_FLAG = process.env.VERCEL ? '; Secure' : '';
+
 function setSessionCookie(res, token) {
   const expires = new Date(Date.now() + SESSION_TTL_MS).toUTCString();
   res.setHeader('Set-Cookie',
-    `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Expires=${expires}`);
+    `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Expires=${expires}${SECURE_FLAG}`);
 }
 
 function clearSessionCookie(res) {
-  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+  res.setHeader('Set-Cookie', `${SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0${SECURE_FLAG}`);
 }
 
 /** Resolve the current request's user (or null), from the session cookie. */
-function currentUser(req) {
+async function currentUser(req) {
   const cookies = parseCookies(req);
   const token = cookies[SESSION_COOKIE];
   if (!token) return null;
-  const session = db.get('SELECT * FROM sessions WHERE token = ?', [token]);
+  const session = await db.get('SELECT * FROM sessions WHERE token = ?', [token]);
   if (!session || session.expires_at < Date.now()) return null;
-  const user = db.get('SELECT * FROM users WHERE id = ?', [session.user_id]);
+  const user = await db.get('SELECT * FROM users WHERE id = ?', [session.user_id]);
   return publicUser(user);
 }
 
