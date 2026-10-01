@@ -14,6 +14,7 @@ function hashPassword(password, salt) {
 }
 
 function verifyPassword(password, salt, expectedHash) {
+  if (!salt || !expectedHash) return false; // Google-only accounts have no password set
   const { hash } = hashPassword(password, salt);
   const a = Buffer.from(hash, 'hex');
   const b = Buffer.from(expectedHash, 'hex');
@@ -35,7 +36,7 @@ function destroySession(token) {
 
 function publicUser(row) {
   if (!row) return null;
-  return { id: row.id, name: row.name, email: row.email, role: row.role };
+  return { id: row.id, name: row.name, email: row.email, role: row.role, avatarUrl: row.avatar_url || null };
 }
 
 function parseCookies(req) {

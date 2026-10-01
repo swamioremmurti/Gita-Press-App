@@ -405,7 +405,8 @@
     "सन्त-जीवन-दर्पण.html": true,
     "साधन-तत्त्व.html": true,
     "साधन-त्रिवेणी.html": true,
-    "साधन-निधि.html": true
+    "साधन-निधि.html": true,
+  
   };
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
@@ -413,7 +414,9 @@
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी",
     "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "श्रीलिङ्ग महापुराण",
     "श्रीहनुमानचालीसा (हिन्दी भावार्थसहित).html": "ॐ श्रीहनुमानचालीसा",
-    "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html": "महाभारत"
+    "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html": "महाभारत",
+    "परीक्षण पुस्तक.html": "परीक्षण पुस्तक"
+  
   };
 
   var BOOKS = (window.SWADHYAY_BOOKS_RAW || []).map(function (b, i) {
@@ -618,6 +621,7 @@
      the actual source of truth); refreshCurrentUser() populates it at boot and after
      login/signup/logout. */
   var CURRENT_USER = null;
+  var GOOGLE_CLIENT_ID = null; // fetched from /api/auth/config at boot; null until a real ID is configured server-side
   function getCurrentUser() { return CURRENT_USER; }
   function isLoggedIn() { return !!CURRENT_USER; }
   function isAdmin() { return !!(CURRENT_USER && CURRENT_USER.role === "admin"); }
@@ -2226,11 +2230,18 @@
   }
 
   /* ---------------- auth pages ---------------- */
+  function googleButtonBlock() {
+    if (!GOOGLE_CLIENT_ID) return "";
+    return '<div id="googleSignInBtn" class="google-signin-btn"></div>' +
+      '<div class="auth-divider"><span>' + bilingual("या", "or") + '</span></div>';
+  }
+
   function viewLogin() {
     return '<main class="content-pad auth-page">' +
       '<div class="page-header"><h1>' + bilingual("साइन इन करें", "Sign in") + '</h1></div>' +
-      '<form class="auth-form" id="loginForm">' +
       '<div class="auth-error" id="authError"></div>' +
+      googleButtonBlock() +
+      '<form class="auth-form" id="loginForm">' +
       '<label>ईमेल<input type="text" id="loginEmail" autocomplete="username" required></label>' +
       '<label>पासवर्ड<input type="password" id="loginPassword" autocomplete="current-password" required></label>' +
       '<button type="submit" class="btn-primary">साइन इन करें</button>' +
@@ -2242,8 +2253,9 @@
   function viewSignup() {
     return '<main class="content-pad auth-page">' +
       '<div class="page-header"><h1>' + bilingual("खाता बनाएं", "Create account") + '</h1></div>' +
-      '<form class="auth-form" id="signupForm">' +
       '<div class="auth-error" id="authError"></div>' +
+      googleButtonBlock() +
+      '<form class="auth-form" id="signupForm">' +
       '<label>नाम<input type="text" id="signupName" required></label>' +
       '<label>ईमेल<input type="text" id="signupEmail" autocomplete="username" required></label>' +
       '<label>पासवर्ड<input type="password" id="signupPassword" autocomplete="new-password" required minlength="4"></label>' +
@@ -2276,106 +2288,193 @@
   }
 
   /* ---------------- एडमिन पैनल ---------------- */
-  function adminNavCard(href, icon, hi, en) {
-    return '<a class="admin-nav-card" href="' + href + '"><span class="admin-nav-icon">' + icon + '</span>' +
-      '<span class="admin-nav-label">' + bilingual(hi, en) + '</span></a>';
+  /* ---------------- एडमिन शेल (persistent sidenav + topbar, used by every admin page) --- */
+  var ADMIN_NAV_ITEMS = [
+    ["", "📊", "डैशबोर्ड", "Dashboard"],
+    ["books", "📚", "पुस्तकें", "Books"],
+    ["authors", "✍️", "लेखक", "Authors"],
+    ["users", "👥", "उपयोगकर्ता", "Users"],
+    ["comments", "💬", "टिप्पणियाँ", "Comments"]
+  ];
+  function adminShell(active, title, actionHtml, bodyHtml) {
+    var nav = ADMIN_NAV_ITEMS.map(function (it) {
+      var href = "#/admin" + (it[0] ? "/" + it[0] : "");
+      return '<a class="admin-sidenav-link' + (it[0] === active ? " active" : "") + '" href="' + href + '">' +
+        '<span class="admin-sidenav-icon">' + it[1] + '</span><span>' + bilingual(it[2], it[3]) + '</span></a>';
+    }).join("");
+    return '<div class="admin-shell">' +
+      '<aside class="admin-sidenav">' +
+      '<div class="admin-sidenav-brand">🛡️ <span>एडमिन पैनल</span></div>' +
+      '<nav>' + nav + '</nav>' +
+      '<a class="admin-sidenav-link admin-sidenav-exit" href="#/">← ' + bilingual("ऐप पर वापस", "Back to app") + '</a>' +
+      '</aside>' +
+      '<div class="admin-main">' +
+      '<div class="admin-topbar"><h1>' + esc(title) + '</h1><div class="admin-topbar-actions">' + (actionHtml || "") + '</div></div>' +
+      '<div class="admin-body">' + bodyHtml + '</div>' +
+      '</div></div>';
   }
 
   function viewAdminHome() {
-    return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("एडमिन पैनल", "Admin") + '</h1></div>' +
-      '<div class="admin-nav-grid">' +
-      adminNavCard("#/admin/books", "📚", "पुस्तकें", "Books") +
-      adminNavCard("#/admin/authors", "✍️", "लेखक", "Authors") +
-      adminNavCard("#/admin/users", "👥", "उपयोगकर्ता", "Users") +
-      adminNavCard("#/admin/comments", "💬", "टिप्पणी मॉडरेशन", "Comments") +
-      '</div></main>';
+    var stats = '<div class="admin-stat-grid" id="adminStatGrid">' +
+      ['books', 'authors', 'users', 'comments'].map(function (k) {
+        return '<div class="admin-stat-card" data-stat="' + k + '"><div class="admin-stat-value">–</div><div class="admin-stat-label"></div></div>';
+      }).join("") + '</div>';
+    var links = '<div class="admin-nav-grid">' +
+      ADMIN_NAV_ITEMS.slice(1).map(function (it) {
+        return '<a class="admin-nav-card" href="#/admin/' + it[0] + '"><span class="admin-nav-icon">' + it[1] + '</span>' +
+          '<span class="admin-nav-label">' + bilingual(it[2], it[3]) + '</span></a>';
+      }).join("") + '</div>';
+    return adminShell("", bilingual("डैशबोर्ड", "Dashboard"), "", stats + links);
   }
 
+  /* ---------------- पुस्तकें: सूची ---------------- */
   var adminBooksState = { page: 1 };
-  var ADMIN_PAGE_SIZE = 20;
+  var ADMIN_PAGE_SIZE = 25;
 
-  function adminBookRow(book) {
-    var catBoxes = CATEGORY_META.filter(function (c) { return c.key !== "all"; }).map(function (c) {
-      var checked = book.categoryKeys.indexOf(c.key) !== -1 ? " checked" : "";
-      return '<label class="admin-cat-chip"><input type="checkbox" value="' + esc(c.key) + '"' + checked + '> ' + esc(c.hi) + '</label>';
-    }).join("");
-    return '<div class="admin-book-row" data-file="' + esc(book.file) + '">' +
-      '<div class="admin-book-head">' + coverEl(book, "sm") +
-      '<div><div class="admin-book-title">' + esc(book.title) + '</div><div class="admin-book-author">' + esc(book.author) + '</div></div></div>' +
-      '<div class="admin-cat-chips">' + catBoxes + '</div>' +
-      '<label class="admin-tags-label">टैग (कॉमा से अलग करें)<input type="text" class="admin-tags-input" value="' + esc(book.tags.join(", ")) + '"></label>' +
-      '<button class="btn-outline admin-save-btn">सहेजें</button>' +
-      '<span class="admin-save-status"></span>' +
-      '</div>';
+  function adminBookTableRow(book) {
+    return '<tr class="admin-table-row" data-file="' + esc(book.file) + '">' +
+      '<td class="admin-td-cover">' + coverEl(book, "sm") + '</td>' +
+      '<td><div class="admin-table-title">' + esc(book.title) + '</div>' +
+      '<div class="admin-table-sub">' + esc(book.file) + '</div></td>' +
+      '<td>' + esc(book.author) + '</td>' +
+      '<td class="admin-td-chips">' + book.categoryMetas.map(function (c) { return '<span class="chip-sm">' + esc(c.hi) + '</span>'; }).join("") + '</td>' +
+      '<td class="admin-td-chips">' + book.tags.slice(0, 3).map(function (t) { return '<span class="chip-sm chip-sm-tag">#' + esc(t) + '</span>'; }).join("") +
+      (book.tags.length > 3 ? '<span class="chip-sm">+' + (book.tags.length - 3) + '</span>' : '') + '</td>' +
+      '<td class="admin-td-actions"><a class="btn-outline-sm" href="#/admin/books/edit?file=' + encodeURIComponent(book.file) + '">' + bilingual("संपादित करें", "Edit") + '</a></td>' +
+      '</tr>';
   }
 
-  function viewAdminBooks(params) {
+  function viewAdminBooksList(params) {
     var q = (params && params.get("q")) || "";
     var list = q ? BOOKS.filter(function (b) { return matchesQuery(b, q); }) : BOOKS;
     var totalPages = Math.max(1, Math.ceil(list.length / ADMIN_PAGE_SIZE));
     var page = Math.min(adminBooksState.page, totalPages);
     var pageItems = list.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE);
 
-    var html = '<main class="content-pad admin-page">' +
-      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
-      '<div class="page-header"><h1>' + bilingual("पुस्तकें प्रबंधित करें", "Manage books") + ' <span class="cnt">(' + list.length + ')</span></h1>' +
-      '<div class="lib-search"><input id="adminBooksSearch" type="text" placeholder="खोजें…" value="' + esc(q) + '"></div></div>' +
-      '<div class="admin-book-list">' + pageItems.map(adminBookRow).join("") + '</div>';
+    var action = '<a class="btn-primary-sm" href="#/admin/books/new">+ ' + bilingual("नई पुस्तक जोड़ें", "Add book") + '</a>';
+    var body = '<div class="admin-toolbar"><input id="adminBooksSearch" type="text" class="admin-search-input" placeholder="खोजें…" value="' + esc(q) + '">' +
+      '<span class="admin-toolbar-count">' + list.length + ' ' + bilingual("पुस्तकें", "books") + '</span></div>';
+    body += '<div class="admin-table-wrap"><table class="admin-table"><thead><tr>' +
+      '<th></th><th>' + bilingual("शीर्षक", "Title") + '</th><th>' + bilingual("लेखक", "Author") + '</th>' +
+      '<th>' + bilingual("श्रेणियाँ", "Categories") + '</th><th>' + bilingual("टैग", "Tags") + '</th><th></th>' +
+      '</tr></thead><tbody>' + pageItems.map(adminBookTableRow).join("") + '</tbody></table></div>';
     if (totalPages > 1) {
-      html += '<div class="admin-pager">' +
-        '<button class="btn-outline" id="adminBooksPrev"' + (page <= 1 ? " disabled" : "") + '>‹ पिछला</button>' +
+      body += '<div class="admin-pager">' +
+        '<button class="btn-outline-sm" id="adminBooksPrev"' + (page <= 1 ? " disabled" : "") + '>‹ ' + bilingual("पिछला", "Prev") + '</button>' +
         '<span>' + page + ' / ' + totalPages + '</span>' +
-        '<button class="btn-outline" id="adminBooksNext"' + (page >= totalPages ? " disabled" : "") + '>अगला ›</button>' +
+        '<button class="btn-outline-sm" id="adminBooksNext"' + (page >= totalPages ? " disabled" : "") + '>' + bilingual("अगला", "Next") + ' ›</button>' +
         '</div>';
     }
-    html += '</main>';
-    return html;
+    return adminShell("books", bilingual("पुस्तकें प्रबंधित करें", "Manage books"), action, body);
   }
 
-  function adminAuthorRow(author) {
-    return '<div class="admin-author-row" data-id="' + author.id + '">' +
-      authorAvatarEl(author, "sm") +
-      '<div class="admin-author-fields">' +
-      '<input type="text" class="admin-author-name" value="' + esc(author.name) + '">' +
-      '<textarea class="admin-author-bio" rows="2" placeholder="संक्षिप्त परिचय…">' + esc(author.bio || "") + '</textarea>' +
-      '<label class="admin-photo-label">फोटो अपलोड करें <input type="file" class="admin-author-photo" accept="image/png,image/jpeg,image/webp"></label>' +
-      '</div>' +
-      '<div class="admin-author-actions"><button class="btn-outline admin-save-author-btn">सहेजें</button>' +
-      '<span class="admin-save-status"></span></div>' +
+  /* ---------------- पुस्तकें: जोड़ें / संपादित करें (shared form) ---------------- */
+  function adminCategoryCheckboxes(selectedKeys) {
+    return CATEGORY_META.filter(function (c) { return c.key !== "all"; }).map(function (c) {
+      var checked = selectedKeys.indexOf(c.key) !== -1 ? " checked" : "";
+      return '<label class="admin-cat-chip"><input type="checkbox" name="bookCategory" value="' + esc(c.key) + '"' + checked + '> ' + esc(c.hi) + '</label>';
+    }).join("");
+  }
+
+  function viewAdminBookForm(file) {
+    var book = file ? findByFile(file) : null;
+    if (file && !book) {
+      return adminShell("books", bilingual("पुस्तक नहीं मिली", "Book not found"), "", '<div class="empty-state">यह पुस्तक नहीं मिली।</div>');
+    }
+    var isEdit = !!book;
+    var title = isEdit ? bilingual("पुस्तक संपादित करें", "Edit book") : bilingual("नई पुस्तक जोड़ें", "Add new book");
+
+    var body = '<form class="admin-form" id="bookForm" data-file="' + (isEdit ? esc(file) : "") + '">';
+    body += '<div class="admin-form-section"><h3>' + bilingual("मूल जानकारी", "Basic info") + '</h3>';
+    body += '<label class="admin-form-field">' + bilingual("शीर्षक", "Title") + '<input type="text" id="bookTitle" value="' + (isEdit ? esc(book.title) : "") + '" required></label>';
+    body += '<label class="admin-form-field">' + bilingual("लेखक", "Author") +
+      '<select id="bookAuthorSelect"><option value="">लोड हो रहा है…</option></select></label>';
+    body += '<div class="admin-form-field admin-new-author-field is-hidden" id="bookNewAuthorWrap">' +
+      '<label>' + bilingual("नये लेखक का नाम", "New author's name") + '<input type="text" id="bookNewAuthorName"></label></div>';
+    if (!isEdit) {
+      body += '<div class="admin-form-field"><label><input type="radio" name="bookPublisher" value="gitapress" checked> गीता प्रेस</label> ' +
+        '<label><input type="radio" name="bookPublisher" value="other"> अन्य प्रकाशक</label></div>';
+    } else {
+      body += '<label class="admin-form-field"><input type="checkbox" id="bookIsGitaPress"' + (book.isGitaPress ? " checked" : "") + '> ' +
+        bilingual("गीता प्रेस प्रकाशन है", "Published by Gita Press") + '</label>';
+    }
+    body += '</div>';
+
+    body += '<div class="admin-form-section"><h3>' + bilingual("वर्गीकरण", "Categorization") + '</h3>';
+    body += '<div class="admin-cat-chips">' + adminCategoryCheckboxes(isEdit ? book.categoryKeys : []) + '</div>';
+    body += '<label class="admin-form-field">' + bilingual("टैग (कॉमा से अलग करें)", "Tags (comma-separated)") +
+      '<input type="text" id="bookTags" value="' + (isEdit ? esc(book.tags.join(", ")) : "") + '"></label>';
+    body += '</div>';
+
+    if (!isEdit) {
+      body += '<div class="admin-form-section"><h3>' + bilingual("पुस्तक फ़ाइल", "Book file") + '</h3>' +
+        '<p class="muted-note">पहले से तैयार (स्वाध्याय प्रारूप में) पुस्तक की HTML फ़ाइल संलग्न करें। कच्चे .docx से बदलाव हेतु tools/book_converter.py का उपयोग करें।</p>' +
+        '<label class="admin-form-field"><input type="file" id="bookHtmlFile" accept=".html,.htm" required></label>' +
+        '</div>';
+    } else {
+      body += '<div class="admin-form-section"><h3>' + bilingual("पुस्तक फ़ाइल", "Book file") + '</h3>' +
+        '<p class="muted-note">फ़ाइल: <code>' + esc(book.file) + '</code> — सामग्री संपादित करने हेतु tools/book_converter.py / tools/converter_ui.html का उपयोग करें; यह फ़ॉर्म केवल श्रेणी/टैग/लेखक/शीर्षक बदलता है।</p></div>';
+    }
+
+    body += '<div class="admin-error" id="bookFormError"></div>';
+    body += '<div class="admin-form-actions">' +
+      '<button type="submit" class="btn-primary">' + bilingual("सहेजें", "Save") + '</button>' +
+      '<a class="btn-outline" href="#/admin/books">' + bilingual("रद्द करें", "Cancel") + '</a>' +
       '</div>';
+    body += '</form>';
+
+    return adminShell("books", title, "", body);
+  }
+
+  /* ---------------- लेखक ---------------- */
+  function adminAuthorTableRow(author) {
+    return '<tr class="admin-table-row admin-author-row" data-id="' + author.id + '">' +
+      '<td class="admin-td-cover">' + authorAvatarEl(author, "sm") + '</td>' +
+      '<td><div class="admin-table-title">' + esc(author.name) + '</div>' +
+      '<div class="admin-table-sub">' + (author.bookCount || 0) + ' ग्रंथ</div></td>' +
+      '<td class="admin-table-bio-cell">' + esc((author.bio || "").slice(0, 80)) + (author.bio && author.bio.length > 80 ? "…" : "") + '</td>' +
+      '<td class="admin-td-actions"><button class="btn-outline-sm admin-author-edit-toggle">' + bilingual("संपादित करें", "Edit") + '</button></td>' +
+      '</tr>' +
+      '<tr class="admin-author-edit-row is-hidden" data-id="' + author.id + '"><td colspan="4">' +
+      '<div class="admin-author-edit-panel">' +
+      '<label class="admin-form-field">' + bilingual("नाम", "Name") + '<input type="text" class="admin-author-name" value="' + esc(author.name) + '"></label>' +
+      '<label class="admin-form-field">' + bilingual("परिचय", "Bio") + '<textarea class="admin-author-bio" rows="2">' + esc(author.bio || "") + '</textarea></label>' +
+      '<label class="admin-form-field">' + bilingual("फोटो", "Photo") + '<input type="file" class="admin-author-photo" accept="image/png,image/jpeg,image/webp"></label>' +
+      '<div class="admin-form-actions"><button class="btn-primary-sm admin-save-author-btn">सहेजें</button><span class="admin-save-status"></span></div>' +
+      '</div></td></tr>';
   }
 
   function viewAdminAuthors() {
-    return '<main class="content-pad admin-page">' +
-      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
-      '<div class="page-header"><h1>' + bilingual("लेखक प्रबंधित करें", "Manage authors") + '</h1></div>' +
-      '<form class="admin-inline-form" id="adminNewAuthorForm">' +
+    var action = '<form class="admin-inline-form" id="adminNewAuthorForm">' +
       '<input type="text" id="adminNewAuthorName" placeholder="नया लेखक नाम…" required>' +
-      '<button type="submit" class="btn-primary">जोड़ें</button></form>' +
-      '<div id="adminAuthorsList" class="admin-author-list"><div class="empty-state small">लोड हो रहा है…</div></div>' +
-      '</main>';
+      '<button type="submit" class="btn-primary-sm">+ ' + bilingual("जोड़ें", "Add") + '</button></form>';
+    var body = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr>' +
+      '<th></th><th>' + bilingual("नाम", "Name") + '</th><th>' + bilingual("परिचय", "Bio") + '</th><th></th>' +
+      '</tr></thead><tbody id="adminAuthorsList"><tr><td colspan="4"><div class="empty-state small">लोड हो रहा है…</div></td></tr></tbody></table></div>';
+    return adminShell("authors", bilingual("लेखक प्रबंधित करें", "Manage authors"), action, body);
   }
 
-  function adminUserRow(u, selfId) {
+  /* ---------------- उपयोगकर्ता ---------------- */
+  function adminUserTableRow(u, selfId) {
     var isAdminUser = u.role === "admin";
-    return '<div class="admin-user-row" data-id="' + u.id + '">' +
-      '<div><b>' + esc(u.name) + '</b><div class="admin-user-email">' + esc(u.email) + '</div></div>' +
-      '<span class="admin-role-badge' + (isAdminUser ? " admin" : "") + '">' + (isAdminUser ? "admin" : "user") + '</span>' +
-      (u.id === selfId
+    return '<tr class="admin-table-row" data-id="' + u.id + '">' +
+      '<td><div class="admin-table-title">' + esc(u.name) + '</div><div class="admin-table-sub">' + esc(u.email) + '</div></td>' +
+      '<td><span class="admin-role-badge' + (isAdminUser ? " admin" : "") + '">' + (isAdminUser ? "admin" : "user") + '</span></td>' +
+      '<td class="admin-td-actions">' + (u.id === selfId
         ? '<span class="muted-note">(आप)</span>'
-        : '<button class="btn-outline admin-toggle-role-btn" data-role="' + (isAdminUser ? "user" : "admin") + '">' +
+        : '<button class="btn-outline-sm admin-toggle-role-btn" data-role="' + (isAdminUser ? "user" : "admin") + '">' +
           (isAdminUser ? "Admin हटाएं" : "Admin बनाएं") + '</button>') +
-      '</div>';
+      '</td></tr>';
   }
 
   function viewAdminUsers() {
-    return '<main class="content-pad admin-page">' +
-      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
-      '<div class="page-header"><h1>' + bilingual("उपयोगकर्ता", "Users") + '</h1></div>' +
-      '<div id="adminUsersList" class="admin-user-list"><div class="empty-state small">लोड हो रहा है…</div></div>' +
-      '</main>';
+    var body = '<div class="admin-table-wrap"><table class="admin-table"><thead><tr>' +
+      '<th>' + bilingual("उपयोगकर्ता", "User") + '</th><th>' + bilingual("भूमिका", "Role") + '</th><th></th>' +
+      '</tr></thead><tbody id="adminUsersList"><tr><td colspan="3"><div class="empty-state small">लोड हो रहा है…</div></td></tr></tbody></table></div>';
+    return adminShell("users", bilingual("उपयोगकर्ता", "Users"), "", body);
   }
 
+  /* ---------------- टिप्पणी मॉडरेशन ---------------- */
   function adminCommentRow(c) {
     var book = findByFile(c.book_file);
     return '<div class="admin-comment-row" data-id="' + c.id + '">' +
@@ -2385,18 +2484,15 @@
       '<div class="admin-comment-book">' + (book ? esc(book.title) : esc(c.book_file)) + '</div>' +
       '<p>' + esc(c.text) + '</p>' +
       '<div class="admin-comment-actions">' +
-      '<button class="btn-outline admin-comment-toggle-btn" data-next="' + (c.status === "hidden" ? "visible" : "hidden") + '">' +
+      '<button class="btn-outline-sm admin-comment-toggle-btn" data-next="' + (c.status === "hidden" ? "visible" : "hidden") + '">' +
       (c.status === "hidden" ? "दिखाएं" : "छिपाएं") + '</button>' +
-      '<button class="btn-outline admin-comment-delete-btn">हटाएं</button>' +
+      '<button class="btn-outline-sm admin-comment-delete-btn">हटाएं</button>' +
       '</div></div>';
   }
 
   function viewAdminComments() {
-    return '<main class="content-pad admin-page">' +
-      '<a href="#/admin" class="back-link">← एडमिन पैनल</a>' +
-      '<div class="page-header"><h1>' + bilingual("टिप्पणी मॉडरेशन", "Comment moderation") + '</h1></div>' +
-      '<div id="adminCommentsList" class="admin-comment-list"><div class="empty-state small">लोड हो रहा है…</div></div>' +
-      '</main>';
+    var body = '<div id="adminCommentsList" class="admin-comment-list"><div class="empty-state small">लोड हो रहा है…</div></div>';
+    return adminShell("comments", bilingual("टिप्पणी मॉडरेशन", "Comment moderation"), "", body);
   }
 
   /* ---------------- wiring for login/signup/authors/admin ----------------
@@ -2405,6 +2501,22 @@
      its own route (same `if (el) {...}` idiom the rest of wireView already uses) --
      this just keeps the new auth/author/admin code visually grouped in one place. */
   function wireExtraViews(r) {
+    var googleBtnEl = document.getElementById("googleSignInBtn");
+    if (googleBtnEl && GOOGLE_CLIENT_ID) {
+      // The GSI <script> tag is loaded async/defer (index.html), so it may not have
+      // finished executing yet when this first runs right after a render -- poll
+      // briefly rather than silently rendering an empty button container.
+      (function waitForGoogle(attemptsLeft) {
+        if (!document.getElementById("googleSignInBtn")) return; // navigated away already
+        if (window.google && window.google.accounts && window.google.accounts.id) {
+          google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: handleGoogleCredential });
+          google.accounts.id.renderButton(googleBtnEl, { theme: "outline", size: "large", width: 320, locale: "hi" });
+        } else if (attemptsLeft > 0) {
+          setTimeout(function () { waitForGoogle(attemptsLeft - 1); }, 200);
+        }
+      })(15);
+    }
+
     var loginForm = document.getElementById("loginForm");
     if (loginForm) {
       loginForm.addEventListener("submit", function (e) {
@@ -2481,7 +2593,23 @@
       }).catch(function () { wrap.innerHTML = '<div class="empty-state">लेखक नहीं मिला</div>'; });
     }
 
-    /* ---- admin: books ---- */
+    /* ---- admin: dashboard stats ---- */
+    var adminStatGrid = document.getElementById("adminStatGrid");
+    if (adminStatGrid) {
+      var statLabels = { books: bilingual("पुस्तकें", "Books"), authors: bilingual("लेखक", "Authors"), users: bilingual("उपयोगकर्ता", "Users"), comments: bilingual("टिप्पणियाँ", "Comments") };
+      function setStat(key, value) {
+        var card = adminStatGrid.querySelector('[data-stat="' + key + '"]');
+        if (!card) return;
+        card.querySelector(".admin-stat-value").textContent = value;
+        card.querySelector(".admin-stat-label").textContent = statLabels[key];
+      }
+      setStat("books", BOOKS.length);
+      apiGet("/api/authors").then(function (d) { setStat("authors", (d.authors || []).length); }).catch(function () { setStat("authors", "–"); });
+      apiGet("/api/admin/users").then(function (d) { setStat("users", (d.users || []).length); }).catch(function () { setStat("users", "–"); });
+      apiGet("/api/admin/comments").then(function (d) { setStat("comments", (d.comments || []).length); }).catch(function () { setStat("comments", "–"); });
+    }
+
+    /* ---- admin: books list ---- */
     var adminBooksSearch = document.getElementById("adminBooksSearch");
     if (adminBooksSearch) {
       var searchTimer;
@@ -2498,31 +2626,79 @@
     var adminBooksNext = document.getElementById("adminBooksNext");
     if (adminBooksNext) adminBooksNext.addEventListener("click", function () { adminBooksState.page++; render(); });
 
-    var adminBookList = document.getElementById("adminBookList") || document.querySelector(".admin-book-list");
-    if (adminBookList) {
-      adminBookList.addEventListener("click", function (e) {
-        var btn = e.target.closest(".admin-save-btn");
-        if (!btn) return;
-        var row = btn.closest(".admin-book-row");
-        var file = row.getAttribute("data-file");
-        var statusEl = row.querySelector(".admin-save-status");
-        var keys = Array.prototype.slice.call(row.querySelectorAll(".admin-cat-chip input:checked")).map(function (c) { return c.value; });
-        var tags = row.querySelector(".admin-tags-input").value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
-        statusEl.textContent = "सहेज रहे हैं…";
-        btn.disabled = true;
-        Promise.all([
-          apiPost("/api/admin/books/" + encodeURIComponent(file) + "/categories", { categories: keys }),
-          apiPost("/api/admin/books/" + encodeURIComponent(file) + "/tags", { tags: tags })
-        ]).then(function () {
-          return apiGet("/api/book-meta");
-        }).then(function (data) {
-          applyBookMetaOverrides(data.meta || {});
-          statusEl.textContent = "✓ सहेजा गया";
-          btn.disabled = false;
-        }).catch(function (err) {
-          statusEl.textContent = "त्रुटि: " + err.message;
-          btn.disabled = false;
-        });
+    /* ---- admin: add/edit book form ---- */
+    var bookForm = document.getElementById("bookForm");
+    if (bookForm) {
+      var editingFile = bookForm.getAttribute("data-file") || null;
+      var authorSelect = document.getElementById("bookAuthorSelect");
+      var newAuthorWrap = document.getElementById("bookNewAuthorWrap");
+      var currentAuthorId = editingFile && findByFile(editingFile) ? findByFile(editingFile).authorId : null;
+
+      apiGet("/api/authors").then(function (data) {
+        var opts = '<option value="">' + bilingual("-- कोई नहीं / पाठ के रूप में --", "-- none / free text --") + '</option>';
+        opts += (data.authors || []).slice().sort(function (a, b) { return a.name.localeCompare(b.name, "hi"); }).map(function (a) {
+          return '<option value="' + a.id + '"' + (a.id === currentAuthorId ? " selected" : "") + '>' + esc(a.name) + '</option>';
+        }).join("");
+        opts += '<option value="__new__">+ ' + bilingual("नया लेखक जोड़ें", "Add new author") + '</option>';
+        authorSelect.innerHTML = opts;
+        newAuthorWrap.classList.toggle("is-hidden", authorSelect.value !== "__new__");
+      }).catch(function () { authorSelect.innerHTML = '<option value="">लोड नहीं हो सका</option>'; });
+
+      authorSelect.addEventListener("change", function () {
+        newAuthorWrap.classList.toggle("is-hidden", authorSelect.value !== "__new__");
+      });
+
+      bookForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var errEl = document.getElementById("bookFormError");
+        errEl.textContent = "";
+        var submitBtn = bookForm.querySelector("button[type=submit]");
+        submitBtn.disabled = true;
+
+        var categories = Array.prototype.slice.call(bookForm.querySelectorAll('input[name="bookCategory"]:checked')).map(function (c) { return c.value; });
+        var tags = document.getElementById("bookTags").value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
+        var authorVal = authorSelect.value;
+
+        function finish(promise) {
+          promise.then(function () {
+            location.hash = "#/admin/books";
+            location.reload(); // title/publisher overrides live in static files only reloaded at boot
+          }).catch(function (err) {
+            errEl.textContent = err.message;
+            submitBtn.disabled = false;
+          });
+        }
+
+        if (!editingFile) {
+          var fileInput = document.getElementById("bookHtmlFile");
+          var file = fileInput.files && fileInput.files[0];
+          if (!file) { errEl.textContent = "पुस्तक की HTML फ़ाइल आवश्यक है"; submitBtn.disabled = false; return; }
+          if (!categories.length) { errEl.textContent = "कम से कम एक श्रेणी चुनें"; submitBtn.disabled = false; return; }
+          readFileAsDataURL(file).then(function (dataUrl) {
+            finish(apiPost("/api/admin/books", {
+              title: document.getElementById("bookTitle").value.trim(),
+              categories: categories,
+              tags: tags,
+              authorId: (authorVal && authorVal !== "__new__") ? authorVal : null,
+              newAuthorName: authorVal === "__new__" ? document.getElementById("bookNewAuthorName").value.trim() : "",
+              publisher: (bookForm.querySelector('input[name="bookPublisher"]:checked') || {}).value || "gitapress",
+              htmlData: dataUrl
+            }));
+          });
+        } else {
+          var isGitaPressEl = document.getElementById("bookIsGitaPress");
+          var metaPromise = apiPatch("/api/admin/books/" + encodeURIComponent(editingFile), {
+            title: document.getElementById("bookTitle").value.trim(),
+            isGitaPress: isGitaPressEl ? isGitaPressEl.checked : true
+          });
+          var catPromise = apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/categories", { categories: categories });
+          var tagPromise = apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/tags", { tags: tags });
+          var authorPromise = authorVal === "__new__"
+            ? apiPost("/api/admin/authors", { name: document.getElementById("bookNewAuthorName").value.trim() })
+              .then(function (data) { return apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/author", { authorId: data.author.id }); })
+            : apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/author", { authorId: authorVal || null });
+          finish(Promise.all([metaPromise, catPromise, tagPromise, authorPromise]));
+        }
       });
     }
 
@@ -2544,21 +2720,28 @@
       var list = document.getElementById("adminAuthorsList");
       if (!list) return;
       apiGet("/api/authors").then(function (data) {
-        list.innerHTML = (data.authors || []).map(adminAuthorRow).join("") || '<div class="empty-state">कोई लेखक नहीं है</div>';
-      }).catch(function () { list.innerHTML = '<div class="empty-state">लोड करने में त्रुटि</div>'; });
+        list.innerHTML = (data.authors || []).map(adminAuthorTableRow).join("") || '<tr><td colspan="4"><div class="empty-state">कोई लेखक नहीं है</div></td></tr>';
+      }).catch(function () { list.innerHTML = '<tr><td colspan="4"><div class="empty-state">लोड करने में त्रुटि</div></td></tr>'; });
     }
     var adminAuthorsList = document.getElementById("adminAuthorsList");
     if (adminAuthorsList) {
       loadAdminAuthors();
       adminAuthorsList.addEventListener("click", function (e) {
+        var toggleBtn = e.target.closest(".admin-author-edit-toggle");
+        if (toggleBtn) {
+          var row = toggleBtn.closest(".admin-author-row");
+          var editRow = row.nextElementSibling;
+          if (editRow && editRow.classList.contains("admin-author-edit-row")) editRow.classList.toggle("is-hidden");
+          return;
+        }
         var btn = e.target.closest(".admin-save-author-btn");
         if (!btn) return;
-        var row = btn.closest(".admin-author-row");
-        var id = row.getAttribute("data-id");
-        var statusEl = row.querySelector(".admin-save-status");
-        var name = row.querySelector(".admin-author-name").value.trim();
-        var bio = row.querySelector(".admin-author-bio").value.trim();
-        var fileInput = row.querySelector(".admin-author-photo");
+        var editRow = btn.closest(".admin-author-edit-row");
+        var id = editRow.getAttribute("data-id");
+        var statusEl = editRow.querySelector(".admin-save-status");
+        var name = editRow.querySelector(".admin-author-name").value.trim();
+        var bio = editRow.querySelector(".admin-author-bio").value.trim();
+        var fileInput = editRow.querySelector(".admin-author-photo");
         var file = fileInput.files && fileInput.files[0];
         statusEl.textContent = "सहेज रहे हैं…";
         btn.disabled = true;
@@ -2571,6 +2754,7 @@
         Promise.all([updatePromise, photoPromise]).then(function () {
           statusEl.textContent = "✓ सहेजा गया";
           btn.disabled = false;
+          loadAdminAuthors();
         }).catch(function (err) {
           statusEl.textContent = "त्रुटि: " + err.message;
           btn.disabled = false;
@@ -2581,23 +2765,22 @@
     /* ---- admin: users ---- */
     var adminUsersList = document.getElementById("adminUsersList");
     if (adminUsersList) {
-      apiGet("/api/admin/users").then(function (data) {
-        var self = getCurrentUser();
-        adminUsersList.innerHTML = (data.users || []).map(function (u) { return adminUserRow(u, self && self.id); }).join("");
-      }).catch(function () { adminUsersList.innerHTML = '<div class="empty-state">लोड करने में त्रुटि</div>'; });
+      function loadAdminUsers() {
+        apiGet("/api/admin/users").then(function (data) {
+          var self = getCurrentUser();
+          adminUsersList.innerHTML = (data.users || []).map(function (u) { return adminUserTableRow(u, self && self.id); }).join("");
+        }).catch(function () { adminUsersList.innerHTML = '<tr><td colspan="3"><div class="empty-state">लोड करने में त्रुटि</div></td></tr>'; });
+      }
+      loadAdminUsers();
       adminUsersList.addEventListener("click", function (e) {
         var btn = e.target.closest(".admin-toggle-role-btn");
         if (!btn) return;
-        var row = btn.closest(".admin-user-row");
+        var row = btn.closest(".admin-table-row");
         var id = row.getAttribute("data-id");
         var nextRole = btn.getAttribute("data-role");
         btn.disabled = true;
-        apiPatch("/api/admin/users/" + id + "/role", { role: nextRole }).then(function () {
-          apiGet("/api/admin/users").then(function (data) {
-            var self = getCurrentUser();
-            adminUsersList.innerHTML = (data.users || []).map(function (u) { return adminUserRow(u, self && self.id); }).join("");
-          });
-        }).catch(function (err) { toast(err.message); btn.disabled = false; });
+        apiPatch("/api/admin/users/" + id + "/role", { role: nextRole }).then(loadAdminUsers)
+          .catch(function (err) { toast(err.message); btn.disabled = false; });
       });
     }
 
@@ -2625,6 +2808,20 @@
         }
       });
     }
+  }
+
+  /** Google Identity Services callback -- receives a signed Google ID token (JWT) in
+   *  response.credential, which the server verifies (server/lib/api.js, handleGoogleAuth)
+   *  before creating a session. The token itself is never decoded client-side. */
+  function handleGoogleCredential(response) {
+    var errEl = document.getElementById("authError");
+    apiPost("/api/auth/google", { credential: response.credential }).then(function (data) {
+      CURRENT_USER = data.user;
+      return syncProgressFromServer();
+    }).then(function () {
+      updateAuthChrome();
+      location.hash = "#/";
+    }).catch(function (err) { if (errEl) errEl.textContent = err.message; else toast(err.message); });
   }
 
   function readFileAsDataURL(file) {
@@ -2701,7 +2898,9 @@
     else if (seg[0] === "author" && seg[1] !== undefined) { html = viewAuthor(parseInt(seg[1], 10)); }
     else if (seg[0] === "admin") {
       if (!isAdmin()) { location.hash = "#/login"; return; }
-      if (seg[1] === "books") html = viewAdminBooks(r.params);
+      if (seg[1] === "books" && seg[2] === "new") html = viewAdminBookForm(null);
+      else if (seg[1] === "books" && seg[2] === "edit") html = viewAdminBookForm(r.params.get("file"));
+      else if (seg[1] === "books") html = viewAdminBooksList(r.params);
       else if (seg[1] === "authors") html = viewAdminAuthors();
       else if (seg[1] === "users") html = viewAdminUsers();
       else if (seg[1] === "comments") html = viewAdminComments();
@@ -3013,6 +3212,7 @@
        exactly like it did before any of this existed -- it never blocks startup. */
     Promise.all([
       apiGet("/api/book-meta").then(function (data) { applyBookMetaOverrides(data.meta || {}); }).catch(function () {}),
+      apiGet("/api/auth/config").then(function (data) { GOOGLE_CLIENT_ID = data.googleClientId || null; }).catch(function () {}),
       refreshCurrentUser()
     ]).then(function () {
       updateAuthChrome();

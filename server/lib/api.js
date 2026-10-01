@@ -5,11 +5,19 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const { OAuth2Client } = require('google-auth-library');
 const db = require('./db');
 const auth = require('./auth');
+const registry = require('./bookRegistry');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const AUTHORS_DIR = path.join(PROJECT_ROOT, 'assets', 'authors');
+const BOOKS_DIR = path.join(PROJECT_ROOT, 'Gita Press Books', 'Gita Press Books');
+const DATA_JS = path.join(PROJECT_ROOT, 'swadhyay-data.js');
+const APP_JS = path.join(PROJECT_ROOT, 'swadhyay-app.js');
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const googleClient = GOOGLE_CLIENT_ID ? new OAuth2Client(GOOGLE_CLIENT_ID) : null;
 
 function sendJSON(res, status, obj) {
   const body = JSON.stringify(obj);
@@ -91,6 +99,46 @@ function handleLogout(req, res) {
 
 function handleMe(req, res) {
   sendJSON(res, 200, { user: auth.currentUser(req) });
+}
+
+function handleAuthConfig(req, res) {
+  sendJSON(res, 200, { googleClientId: GOOGLE_CLIENT_ID || null });
+}
+
+async function handleGoogleAuth(req, res) {
+  if (!googleClient) {
+    return sendJSON(res, 500, { error: 'Google साइन-इन अभी सर्वर पर सेट नहीं है (GOOGLE_CLIENT_ID गायब है)' });
+  }
+  let payload;
+  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
+  const credential = payload.credential;
+  if (!credential) return sendJSON(res, 400, { error: 'Missing credential' });
+
+  let ticket;
+  try {
+    ticket = await googleClient.verifyIdToken({ idToken: credential, audience: GOOGLE_CLIENT_ID });
+  } catch (e) {
+    return sendJSON(res, 401, { error: 'अमान्य Google प्रमाणपत्र: ' + e.message });
+  }
+  const g = ticket.getPayload();
+  const googleId = g.sub;
+  const email = (g.email || '').toLowerCase();
+  const name = g.name || email || 'Google उपयोगकर्ता';
+  const avatarUrl = g.picture || null;
+
+  let user = db.get('SELECT * FROM users WHERE google_id = ?', [googleId]);
+  if (!user && email) user = db.get('SELECT * FROM users WHERE email = ?', [email]);
+  if (user) {
+    db.run('UPDATE users SET google_id = ?, avatar_url = ? WHERE id = ?', [googleId, avatarUrl, user.id]);
+    user = db.get('SELECT * FROM users WHERE id = ?', [user.id]);
+  } else {
+    db.run('INSERT INTO users (name, email, google_id, avatar_url, role, created_at) VALUES (?, ?, ?, ?, ?, ?)',
+      [name, email, googleId, avatarUrl, 'user', Date.now()]);
+    user = db.get('SELECT * FROM users WHERE id = ?', [db.lastInsertId()]);
+  }
+  const token = auth.createSession(user.id);
+  auth.setSessionCookie(res, token);
+  sendJSON(res, 200, { user: auth.publicUser(user) });
 }
 
 // ==================================================================== books
@@ -223,6 +271,92 @@ async function handleProgressPost(req, res, user) {
 }
 
 // ============================================================== admin: books
+
+function slugFilename(name) {
+  return name.endsWith('.html') ? name : name + '.html';
+}
+
+/** Create a brand-new book: write the already-converted HTML file the admin attached,
+ *  register it in swadhyay-data.js (same text-edit tools/book_converter.py uses), and
+ *  link its categories/tags/author in the DB. This does NOT convert a .docx/manuscript
+ *  -- that stays on tools/book_converter.py; this is for a book that's already in our
+ *  HTML template format and just needs to be added to the library. */
+async function handleAdminBookCreate(req, res) {
+  let payload;
+  try { payload = await readJSONBody(req, 25e6); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
+
+  const title = String(payload.title || '').trim();
+  if (!title) return sendJSON(res, 400, { error: 'शीर्षक आवश्यक है' });
+
+  const categories = (Array.isArray(payload.categories) ? payload.categories : [])
+    .filter((k) => db.get('SELECT key FROM categories WHERE key = ?', [k]));
+  if (!categories.length) return sendJSON(res, 400, { error: 'कम से कम एक श्रेणी चुनें' });
+
+  let htmlData = String(payload.htmlData || '');
+  if (!htmlData) return sendJSON(res, 400, { error: 'पुस्तक की HTML फ़ाइल संलग्न करें' });
+  const m = htmlData.match(/^data:([^;]+);base64,(.*)$/s);
+  if (m) htmlData = m[2];
+  let htmlBytes;
+  try { htmlBytes = Buffer.from(htmlData, 'base64'); } catch { return sendJSON(res, 400, { error: 'फ़ाइल डिकोड नहीं हो सकी' }); }
+  if (!htmlBytes.length) return sendJSON(res, 400, { error: 'फ़ाइल खाली है' });
+
+  const filename = slugFilename(((payload.outName && String(payload.outName).trim()) || title));
+  const destPath = path.join(BOOKS_DIR, filename);
+  if (fs.existsSync(destPath)) return sendJSON(res, 409, { error: `फ़ाइल पहले से मौजूद है: ${filename}` });
+
+  // resolve author: either an existing authorId, or a brand-new name to create+link
+  let authorId = payload.authorId ? parseInt(payload.authorId, 10) : null;
+  let authorName = '';
+  if (authorId) {
+    const a = db.get('SELECT * FROM authors WHERE id = ?', [authorId]);
+    if (!a) return sendJSON(res, 400, { error: 'चयनित लेखक नहीं मिला' });
+    authorName = a.name;
+  } else if (payload.newAuthorName && String(payload.newAuthorName).trim()) {
+    authorName = String(payload.newAuthorName).trim();
+    db.run('INSERT INTO authors (name, bio, photo_path, created_at) VALUES (?, ?, NULL, ?)', [authorName, '', Date.now()]);
+    authorId = db.lastInsertId();
+  }
+
+  fs.mkdirSync(BOOKS_DIR, { recursive: true });
+  fs.writeFileSync(destPath, htmlBytes);
+  const sizeKB = Math.round((htmlBytes.length / 1024) * 10) / 10;
+
+  registry.registerInDataJs(DATA_JS, filename, categories[0], authorName, sizeKB);
+  registry.setTitleOverride(APP_JS, filename, title);
+  if (payload.publisher === 'other') registry.setNonGitaPress(APP_JS, filename, true);
+
+  categories.forEach((key) => db.run('INSERT OR IGNORE INTO book_categories (book_file, category_key) VALUES (?, ?)', [filename, key]));
+  const tags = (Array.isArray(payload.tags) ? payload.tags : []).map((t) => String(t).trim()).filter(Boolean).slice(0, 30);
+  tags.forEach((label) => {
+    let tag = db.get('SELECT id FROM tags WHERE label = ?', [label]);
+    if (!tag) { db.run('INSERT INTO tags (label) VALUES (?)', [label]); tag = { id: db.lastInsertId() }; }
+    db.run('INSERT OR IGNORE INTO book_tags (book_file, tag_id) VALUES (?, ?)', [filename, tag.id]);
+  });
+  if (authorId) db.run('INSERT OR IGNORE INTO book_authors (book_file, author_id) VALUES (?, ?)', [filename, authorId]);
+
+  sendJSON(res, 200, { ok: true, file: filename });
+}
+
+/** Edit a book's title / fallback author text / Gita-Press-publisher flag -- these three
+ *  live in the static swadhyay-data.js / swadhyay-app.js files (see bookRegistry.js),
+ *  unlike categories/tags/author-link below which are pure DB state. The client reloads
+ *  the page after a successful save since these files are only read once at boot. */
+async function handleAdminBookMeta(req, res, bookFile) {
+  let payload;
+  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
+  if (payload.title !== undefined) {
+    const title = String(payload.title).trim();
+    if (!title) return sendJSON(res, 400, { error: 'शीर्षक खाली नहीं हो सकता' });
+    registry.setTitleOverride(APP_JS, bookFile, title);
+  }
+  if (payload.authorText !== undefined) {
+    registry.updateDataJsField(DATA_JS, bookFile, 'author', String(payload.authorText).trim());
+  }
+  if (payload.isGitaPress !== undefined) {
+    registry.setNonGitaPress(APP_JS, bookFile, !payload.isGitaPress);
+  }
+  sendJSON(res, 200, { ok: true });
+}
 
 async function handleAdminBookCategories(req, res, bookFile) {
   let payload;
@@ -391,6 +525,8 @@ async function handle(req, res, pathname) {
     if (method === 'POST' && pathname === '/api/auth/login') { await handleLogin(req, res); return true; }
     if (method === 'POST' && pathname === '/api/auth/logout') { handleLogout(req, res); return true; }
     if (method === 'GET' && pathname === '/api/auth/me') { handleMe(req, res); return true; }
+    if (method === 'GET' && pathname === '/api/auth/config') { handleAuthConfig(req, res); return true; }
+    if (method === 'POST' && pathname === '/api/auth/google') { await handleGoogleAuth(req, res); return true; }
 
     if (method === 'GET' && pathname === '/api/book-meta') { handleBookMeta(req, res); return true; }
     if (method === 'GET' && pathname === '/api/categories') { handleAllCategories(req, res); return true; }
@@ -416,6 +552,11 @@ async function handle(req, res, pathname) {
     // ---- admin routes: everything below requires role === 'admin' ----
     if (pathname.startsWith('/api/admin/')) {
       if (!user || user.role !== 'admin') { sendJSON(res, 403, { error: 'Admin अनुमति आवश्यक है' }); return true; }
+
+      if (method === 'POST' && pathname === '/api/admin/books') { await handleAdminBookCreate(req, res); return true; }
+
+      m = pathname.match(/^\/api\/admin\/books\/([^/]+)$/);
+      if (method === 'PATCH' && m) { await handleAdminBookMeta(req, res, decodeURIComponent(m[1])); return true; }
 
       m = pathname.match(/^\/api\/admin\/books\/([^/]+)\/categories$/);
       if (method === 'POST' && m) { await handleAdminBookCategories(req, res, decodeURIComponent(m[1])); return true; }

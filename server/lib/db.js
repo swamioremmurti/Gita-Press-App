@@ -18,8 +18,10 @@ CREATE TABLE IF NOT EXISTS users (
   id            INTEGER PRIMARY KEY AUTOINCREMENT,
   name          TEXT NOT NULL,
   email         TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  salt          TEXT NOT NULL,
+  password_hash TEXT,
+  salt          TEXT,
+  google_id     TEXT UNIQUE,
+  avatar_url    TEXT,
   role          TEXT NOT NULL DEFAULT 'user',
   created_at    INTEGER NOT NULL
 );
@@ -102,8 +104,19 @@ async function init() {
   db = bytes ? new SQL.Database(bytes) : new SQL.Database();
   db.run('PRAGMA foreign_keys = ON;');
   db.exec(SCHEMA);
+  ensureColumn('users', 'google_id', 'TEXT');
+  ensureColumn('users', 'avatar_url', 'TEXT');
   saveNow();
   return db;
+}
+
+/** Adds a column to an already-existing table if a DB created before this column
+ *  existed is being reopened (CREATE TABLE IF NOT EXISTS above only helps brand-new
+ *  DBs). Safe to call every boot -- checks PRAGMA table_info first. */
+function ensureColumn(table, column, type) {
+  const cols = db.exec(`PRAGMA table_info(${table})`);
+  const names = cols.length ? cols[0].values.map((r) => r[1]) : [];
+  if (!names.includes(column)) db.run(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
 }
 
 function getDb() {
