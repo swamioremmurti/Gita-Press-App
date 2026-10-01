@@ -31,6 +31,174 @@
     ["#6a3fa0", "#472a6d"], ["#b8860b", "#7d5c07"]
   ];
 
+  /* ==================== पंचांग (approximate astronomical panchang) ====================
+     Low-precision Sun/Moon position formulas (abbreviated Meeus algorithms, accurate to a
+     fraction of a degree -- ample for tithi/nakshatra/yoga/karan display purposes) plus the
+     classic NOAA/Almanac sunrise-sunset equation. This is an approximation, not a substitute
+     for a published, ephemeris-verified panchang. */
+  var PANCHANG_CITIES = [
+    { key: "delhi", hi: "दिल्ली", lat: 28.6139, lon: 77.2090, tz: 5.5 },
+    { key: "mumbai", hi: "मुंबई", lat: 19.0760, lon: 72.8777, tz: 5.5 },
+    { key: "varanasi", hi: "वाराणसी", lat: 25.3176, lon: 82.9739, tz: 5.5 },
+    { key: "chennai", hi: "चेन्नई", lat: 13.0827, lon: 80.2707, tz: 5.5 },
+    { key: "kolkata", hi: "कोलकाता", lat: 22.5726, lon: 88.3639, tz: 5.5 },
+    { key: "bengaluru", hi: "बैंगलोर", lat: 12.9716, lon: 77.5946, tz: 5.5 }
+  ];
+  var TITHI_NAMES = ["प्रतिपदा", "द्वितीया", "तृतीया", "चतुर्थी", "पंचमी", "षष्ठी", "सप्तमी", "अष्टमी", "नवमी", "दशमी", "एकादशी", "द्वादशी", "त्रयोदशी", "चतुर्दशी"];
+  var NAKSHATRA_NAMES = ["अश्विनी", "भरणी", "कृत्तिका", "रोहिणी", "मृगशिरा", "आर्द्रा", "पुनर्वसु", "पुष्य", "आश्लेषा", "मघा", "पूर्वाफाल्गुनी", "उत्तराफाल्गुनी", "हस्त", "चित्रा", "स्वाती", "विशाखा", "अनुराधा", "ज्येष्ठा", "मूल", "पूर्वाषाढ़ा", "उत्तराषाढ़ा", "श्रवण", "धनिष्ठा", "शतभिषा", "पूर्वाभाद्रपद", "उत्तराभाद्रपद", "रेवती"];
+  var YOGA_NAMES = ["विष्कुम्भ", "प्रीति", "आयुष्मान्", "सौभाग्य", "शोभन", "अतिगण्ड", "सुकर्मा", "धृति", "शूल", "गण्ड", "वृद्धि", "ध्रुव", "व्याघात", "हर्षण", "वज्र", "सिद्धि", "व्यतीपात", "वरीयान्", "परिघ", "शिव", "सिद्ध", "साध्य", "शुभ", "शुक्ल", "ब्रह्म", "ऐन्द्र", "वैधृति"];
+  var KARAN_MOVABLE = ["बव", "बालव", "कौलव", "तैतिल", "गरज", "वणिज", "विष्टि"];
+  var KARAN_FIXED = ["शकुनि", "चतुष्पाद", "नाग", "किंस्तुघ्न"];
+  var WEEKDAY_HI = ["रविवार", "सोमवार", "मंगलवार", "बुधवार", "गुरुवार", "शुक्रवार", "शनिवार"];
+  var RAHU_PART = [8, 2, 7, 5, 6, 4, 3]; // segment (1-8, sunrise->sunset split in 8) by getDay()
+  var YAMAGANDA_PART = [5, 4, 3, 2, 1, 7, 6];
+  var GULIKA_PART = [7, 6, 5, 4, 3, 2, 1];
+
+  function normDeg(d) { d = d % 360; return d < 0 ? d + 360 : d; }
+  function sinDeg(d) { return Math.sin(d * Math.PI / 180); }
+  function cosDeg(d) { return Math.cos(d * Math.PI / 180); }
+  function tanDeg(d) { return Math.tan(d * Math.PI / 180); }
+  function asinDeg(x) { return Math.asin(x) * 180 / Math.PI; }
+  function acosDeg(x) { return Math.acos(Math.max(-1, Math.min(1, x))) * 180 / Math.PI; }
+  function atanDeg(x) { return Math.atan(x) * 180 / Math.PI; }
+
+  function toJulianDay(y, m, d, hourUTC) {
+    if (m <= 2) { y -= 1; m += 12; }
+    var A = Math.floor(y / 100);
+    var B = 2 - A + Math.floor(A / 4);
+    return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + hourUTC / 24 + B - 1524.5;
+  }
+
+  // Sun's apparent ecliptic longitude (low-precision, Meeus ch.25), degrees.
+  function sunLongitudeAt(T) {
+    var L0 = normDeg(280.46646 + 36000.76983 * T + 0.0003032 * T * T);
+    var M = normDeg(357.52911 + 35999.05029 * T - 0.0001537 * T * T);
+    var C = (1.914602 - 0.004817 * T - 0.000014 * T * T) * sinDeg(M) +
+      (0.019993 - 0.000101 * T) * sinDeg(2 * M) + 0.000289 * sinDeg(3 * M);
+    return { longitude: normDeg(L0 + C), meanAnomaly: M };
+  }
+
+  // Moon's apparent ecliptic longitude (abbreviated ELP2000 / Meeus ch.47 leading terms), degrees.
+  function moonLongitudeAt(T, sunM) {
+    var Lp = normDeg(218.3164477 + 481267.88123421 * T - 0.0015786 * T * T + T * T * T / 538841);
+    var D = normDeg(297.8501921 + 445267.1114034 * T - 0.0018819 * T * T + T * T * T / 545868);
+    var Mm = normDeg(134.9633964 + 477198.8675055 * T + 0.0087414 * T * T + T * T * T / 69699);
+    var F = normDeg(93.2720950 + 483202.0175233 * T - 0.0036539 * T * T - T * T * T / 3526000);
+    var corr = 6.289 * sinDeg(Mm) + 1.274 * sinDeg(2 * D - Mm) + 0.658 * sinDeg(2 * D) +
+      0.214 * sinDeg(2 * Mm) - 0.186 * sinDeg(sunM) - 0.114 * sinDeg(2 * F);
+    return normDeg(Lp + corr);
+  }
+
+  function lahiriAyanamsa(dateUTC) {
+    var years = (dateUTC.getTime() - Date.UTC(2000, 0, 1, 12)) / (365.25 * 86400000);
+    return 23.853 + years * 0.013970;
+  }
+
+  function dayOfYearUTC(y, m, d) {
+    return Math.floor((Date.UTC(y, m - 1, d) - Date.UTC(y, 0, 1)) / 86400000) + 1;
+  }
+
+  // Classic Almanac sunrise/sunset equation -> local decimal hours, or null (polar day/night).
+  function sunEventLocalHour(y, m, d, lat, lon, tz, isRise) {
+    var N = dayOfYearUTC(y, m, d);
+    var lngHour = lon / 15;
+    var t = N + ((isRise ? 6 : 18) - lngHour) / 24;
+    var M = 0.9856 * t - 3.289;
+    var L = normDeg(M + 1.916 * sinDeg(M) + 0.020 * sinDeg(2 * M) + 282.634);
+    var RA = normDeg(atanDeg(0.91764 * tanDeg(L)));
+    RA += (Math.floor(L / 90) * 90 - Math.floor(RA / 90) * 90);
+    RA /= 15;
+    var sinDec = 0.39782 * sinDeg(L);
+    var cosDec = Math.cos(Math.asin(sinDec));
+    var cosH = (cosDeg(90.833) - sinDec * sinDeg(lat)) / (cosDec * cosDeg(lat));
+    if (cosH > 1 || cosH < -1) return null;
+    var H = (isRise ? 360 - acosDeg(cosH) : acosDeg(cosH)) / 15;
+    var Tt = H + RA - 0.06571 * t - 6.622;
+    var UT = ((Tt - lngHour) % 24 + 24) % 24;
+    return (UT + tz + 24) % 24;
+  }
+
+  function fmtHourMin(h) {
+    if (h == null) return "—";
+    var hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+    if (mm === 60) { mm = 0; hh += 1; }
+    hh = ((hh % 24) + 24) % 24;
+    return (hh < 10 ? "0" : "") + hh + ":" + (mm < 10 ? "0" : "") + mm;
+  }
+  function addHours(h, delta) { return ((h + delta) % 24 + 24) % 24; }
+
+  function getPanchang(date, city) {
+    city = city || PANCHANG_CITIES[0];
+    var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
+    // Noon local time, converted to UT, as the reference instant for tithi/nakshatra/yoga.
+    var hourUTC = 12 - city.tz;
+    var JD = toJulianDay(y, m, d, hourUTC);
+    var T = (JD - 2451545.0) / 36525;
+    var sun = sunLongitudeAt(T);
+    var moonLong = moonLongitudeAt(T, sun.meanAnomaly);
+
+    var tithiAngle = normDeg(moonLong - sun.longitude);
+    var tithiIdx = Math.floor(tithiAngle / 12); // 0..29
+    var paksha = tithiIdx < 15 ? "शुक्ल" : "कृष्ण";
+    var tithiInPaksha = (tithiIdx % 15) + 1;
+    var tithiName = tithiInPaksha === 15 ? (paksha === "शुक्ल" ? "पूर्णिमा" : "अमावस्या") : TITHI_NAMES[tithiInPaksha - 1];
+
+    var ayanamsa = lahiriAyanamsa(new Date(Date.UTC(y, m - 1, d, hourUTC)));
+    var siderealMoon = normDeg(moonLong - ayanamsa);
+    var siderealSun = normDeg(sun.longitude - ayanamsa);
+    var nakshatraIdx = Math.floor(siderealMoon / (360 / 27));
+    var nakshatraPada = Math.floor((siderealMoon % (360 / 27)) / ((360 / 27) / 4)) + 1;
+
+    var yogaAngle = normDeg(siderealSun + siderealMoon);
+    var yogaIdx = Math.floor(yogaAngle / (360 / 27));
+
+    var karanIdx = Math.floor(tithiAngle / 6); // 0..59
+    var karanName = karanIdx === 0 ? KARAN_FIXED[3] :
+      karanIdx <= 56 ? KARAN_MOVABLE[(karanIdx - 1) % 7] :
+      KARAN_FIXED[karanIdx - 57];
+
+    var sunriseH = sunEventLocalHour(y, m, d, city.lat, city.lon, city.tz, true);
+    var sunsetH = sunEventLocalHour(y, m, d, city.lat, city.lon, city.tz, false);
+    var dayLen = (sunriseH != null && sunsetH != null) ? (sunsetH - sunriseH + 24) % 24 : 12;
+    if (sunriseH == null) sunriseH = 6;
+    if (sunsetH == null) sunsetH = 18;
+    var segment = dayLen / 8;
+    var weekday = date.getDay();
+    var rahuStart = addHours(sunriseH, (RAHU_PART[weekday] - 1) * segment);
+    var yamaStart = addHours(sunriseH, (YAMAGANDA_PART[weekday] - 1) * segment);
+    var gulikaStart = addHours(sunriseH, (GULIKA_PART[weekday] - 1) * segment);
+    var solarNoon = addHours(sunriseH, dayLen / 2);
+    var muhurta = dayLen / 15;
+
+    return {
+      date: date, city: city,
+      weekdayHi: WEEKDAY_HI[weekday],
+      paksha: paksha, tithiName: tithiName, tithiNum: tithiInPaksha,
+      nakshatraName: NAKSHATRA_NAMES[nakshatraIdx % 27], nakshatraPada: nakshatraPada,
+      yogaName: YOGA_NAMES[yogaIdx % 27],
+      karanName: karanName,
+      sunrise: fmtHourMin(sunriseH), sunset: fmtHourMin(sunsetH),
+      rahukal: { start: fmtHourMin(rahuStart), end: fmtHourMin(addHours(rahuStart, segment)) },
+      yamaganda: { start: fmtHourMin(yamaStart), end: fmtHourMin(addHours(yamaStart, segment)) },
+      gulikakal: { start: fmtHourMin(gulikaStart), end: fmtHourMin(addHours(gulikaStart, segment)) },
+      abhijit: { start: fmtHourMin(addHours(solarNoon, -muhurta / 2)), end: fmtHourMin(addHours(solarNoon, muhurta / 2)) }
+    };
+  }
+
+  function getPanchangCity() {
+    var key = localStorage.getItem(LS.panchangCity);
+    for (var i = 0; i < PANCHANG_CITIES.length; i++) if (PANCHANG_CITIES[i].key === key) return PANCHANG_CITIES[i];
+    return PANCHANG_CITIES[0];
+  }
+  function setPanchangCity(key) {
+    localStorage.setItem(LS.panchangCity, key);
+  }
+
+  var HINDI_DATE_MONTHS = ["जनवरी", "फ़रवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितम्बर", "अक्टूबर", "नवम्बर", "दिसम्बर"];
+  function formatHindiDate(date) {
+    return date.getDate() + " " + HINDI_DATE_MONTHS[date.getMonth()] + " " + date.getFullYear();
+  }
+
   function titleFromFile(file) {
     var t = file.replace(/\.html$/i, "");
     if (t.indexOf("u_") === 0) t = t.slice(2);
@@ -181,6 +349,8 @@
   // Gita Prakashan, Tirumala Tirupati Devasthanam, etc.) — affiliate buy buttons are
   // hidden for these since Gita Press does not sell them.
   var NON_GITA_PRESS_BOOKS = {
+    "भक्तियोग.html": true,
+    "राजयोग.html": true,
     "मानस-मुक्ता.html": true,
     "यह कलियुग है!.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
@@ -298,7 +468,9 @@
     readerTheme: "swadhyay_reader_theme_v1",
     readerFont: "swadhyay_reader_font_v1",
     bookmarks: "swadhyay_bookmarks_v1",
-    highlights: "swadhyay_highlights_v1"
+    highlights: "swadhyay_highlights_v1",
+    panchangCity: "swadhyay_panchang_city_v1",
+    feedback: "swadhyay_feedback_v1"
   };
 
   function readJSON(key, fallback) {
@@ -446,6 +618,47 @@
     "श्रीविष्णुसहस्रनाम (शांकरभाष्य, हिन्दी अनुवाद सहित).html"
   ];
 
+  /* ---------------- home page: पंचांग-आधारित सुझाव / AI / संग्रह data ---------------- */
+  var VRAT_BY_TITHI = {
+    "एकादशी": { title: "एकादशी व्रत", desc: "आज एकादशी है। भगवान् विष्णुके व्रत और उपासनाका विशेष महत्व है।", keyword: "एकादशी" },
+    "चतुर्थी": { title: "संकष्टी चतुर्थी", desc: "आज चतुर्थी है। भगवान् श्रीगणेशके पूजनका विशेष महत्व है।", keyword: "गणेश" },
+    "त्रयोदशी": { title: "प्रदोष व्रत", desc: "आज त्रयोदशी है। शिव पूजन और रुद्राभिषेकका विशेष महत्व है।", keyword: "शिव" },
+    "पूर्णिमा": { title: "पूर्णिमा व्रत", desc: "आज पूर्णिमा है। सत्यनारायण पूजन और दान-पुण्यका विशेष महत्व है।", keyword: "सत्यनारायण" },
+    "अमावस्या": { title: "अमावस्या", desc: "आज अमावस्या है। पितृ-तर्पण और स्नान-दानका विशेष महत्व है।", keyword: "पितर" },
+    "अष्टमी": { title: "अष्टमी व्रत", desc: "आज अष्टमी है। देवी भगवतीके पूजनका विशेष महत्व है।", keyword: "देवी" }
+  };
+  function getTodaysSpecial(panchang) {
+    var v = VRAT_BY_TITHI[panchang.tithiName];
+    if (!v) return null;
+    var matches = BOOKS.filter(function (b) { return b.title.indexOf(v.keyword) !== -1; });
+    if (matches.length < 4) matches = matches.concat(pickN(BOOKS, 4 - matches.length, 13));
+    return { title: v.title, desc: v.desc, books: matches.slice(0, 4) };
+  }
+
+  var AI_TOPIC_CHIPS = [
+    { label: "सभी ग्रंथ", icon: "📖" },
+    { label: "गीता", icon: "📗" },
+    { label: "रामायण", icon: "🏛" },
+    { label: "उपनिषद्", icon: "📖" },
+    { label: "पुराण", icon: "📜" },
+    { label: "शिव पुराण", icon: "🔱" }
+  ];
+
+  var SPECIAL_COLLECTIONS = [
+    { icon: "🪷", hi: "दैनिक स्तोत्र", sub: "सुबह-शाम के लिए", q: "स्तोत्र" },
+    { icon: "🪔", hi: "व्रत एवं त्योहार", sub: "विधि और महत्व", q: "व्रत" },
+    { icon: "🌿", hi: "जीवन मार्गदर्शन", sub: "आचार, विचार, आचरण", q: "जीवन" },
+    { icon: "🪶", hi: "संस्कृत सीखें", sub: "श्लोक, उच्चारण, व्याकरण", q: "व्याकरण" }
+  ];
+
+  var POPULAR_AUTHOR_HINTS = ["हनुमानप्रसाद", "शंकराचार्य", "विवेकानन्द", "तुलसीदास"];
+  function findAuthorLabel(hint) {
+    for (var i = 0; i < BOOKS.length; i++) {
+      if (BOOKS[i].author && BOOKS[i].author.indexOf(hint) !== -1) return BOOKS[i].author;
+    }
+    return hint;
+  }
+
   /* ---------------- rendering helpers ---------------- */
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
@@ -495,9 +708,9 @@
       '</div></div>';
   }
 
-  function carousel(titleHi, titleEn, subHi, items, viewAllHash) {
+  function carousel(titleHi, titleEn, subHi, items, viewAllHash, extraClass) {
     if (!items.length) return "";
-    var html = '<section class="row-section">' +
+    var html = '<section class="row-section' + (extraClass ? " " + extraClass : "") + '">' +
       '<div class="row-head"><h2>' + bilingual(titleHi, titleEn) + (subHi ? ' <span class="row-sub">| ' + esc(subHi) + '</span>' : '') + '</h2>' +
       '<a class="view-all" href="' + viewAllHash + '">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
       '<div class="row-scroll-wrap">' +
@@ -517,13 +730,125 @@
   }
 
   function categoryGrid() {
-    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("श्रेणियाँ", "Categories") + '</h2></div>' +
-      '<div class="cat-grid">' + CATEGORY_META.filter(function (c) { return c.key !== "all"; }).map(function (c) {
-        var count = BOOKS.filter(function (b) { return b.category === c.key; }).length;
+    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("श्रेणियाँ", "Categories") +
+      '</h2><a class="view-all" href="#/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '<div class="row-scroll-wrap">' +
+      '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
+      '<div class="row-scroll cat-scroll">' + CATEGORY_META.map(function (c) {
+        var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.category === c.key; }).length;
         return '<a class="cat-tile" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
           '<span class="cat-tile-icon">' + c.icon + '</span>' +
           '<span class="cat-tile-label">' + bilingual(c.hi, c.en) + '</span>' +
           '<span class="cat-tile-count">' + count + '</span></a>';
+      }).join("") + '</div>' +
+      '<button class="row-nav next" aria-label="अगला">›</button>' +
+      '</div></section>';
+  }
+
+  /* ---------------- home: पंचांग कार्ड ---------------- */
+  function panchangCard(p) {
+    var cityOpts = PANCHANG_CITIES.map(function (c) {
+      return '<option value="' + c.key + '"' + (c.key === p.city.key ? " selected" : "") + '>' + esc(c.hi) + '</option>';
+    }).join("");
+    return '<div class="panchang-card">' +
+      '<div class="pc-head"><span class="pc-head-icon">📅</span><h3>' + bilingual("आज का पंचांग") + '</h3>' +
+      '<select class="pc-city" id="panchangCitySelect">' + cityOpts + '</select></div>' +
+      '<div class="pc-date">' + esc(p.weekdayHi) + ', ' + esc(formatHindiDate(p.date)) + '</div>' +
+      '<div class="pc-tithi-line">' + esc(p.paksha) + ' पक्ष • ' + esc(p.tithiName) + '</div>' +
+      '<div class="pc-grid">' +
+      '<div class="pc-col">' +
+      '<div class="pc-fact"><span class="pc-ic">🌙</span><span class="pc-fact-data"><b>तिथि</b>' + esc(p.tithiName) + '</span></div>' +
+      '<div class="pc-fact"><span class="pc-ic">✦</span><span class="pc-fact-data"><b>नक्षत्र</b>' + esc(p.nakshatraName) + '</span></div>' +
+      '<div class="pc-fact"><span class="pc-ic">☯</span><span class="pc-fact-data"><b>योग</b>' + esc(p.yogaName) + '</span></div>' +
+      '<div class="pc-fact"><span class="pc-ic">◐</span><span class="pc-fact-data"><b>करण</b>' + esc(p.karanName) + '</span></div>' +
+      '</div>' +
+      '<div class="pc-col">' +
+      '<div class="pc-fact"><span class="pc-ic">🌅</span><span class="pc-fact-data"><b>सूर्योदय</b>' + esc(p.sunrise) + '</span></div>' +
+      '<div class="pc-fact"><span class="pc-ic">🌇</span><span class="pc-fact-data"><b>सूर्यास्त</b>' + esc(p.sunset) + '</span></div>' +
+      '<div class="pc-fact"><span class="pc-ic">⛔</span><span class="pc-fact-data"><b>राहुकाल</b>' + esc(p.rahukal.start) + ' – ' + esc(p.rahukal.end) + '</span></div>' +
+      '<div class="pc-fact"><span class="pc-ic">🕉</span><span class="pc-fact-data"><b>अभिजीत मुहूर्त</b>' + esc(p.abhijit.start) + ' – ' + esc(p.abhijit.end) + '</span></div>' +
+      '</div>' +
+      '</div>' +
+      '<a class="btn-primary pc-full-btn" href="#/panchang">' + bilingual("पूर्ण पंचांग देखें") + ' →</a>' +
+      '</div>';
+  }
+
+  /* ---------------- home: ग्रंथों से पूछें AI कार्ड ---------------- */
+  function aiAskCard() {
+    return '<div class="ai-ask-card">' +
+      '<div class="ai-head"><img class="ai-head-icon-badge" src="assets/om-medallion.webp" alt="ॐ"><h3>' + bilingual("ग्रंथों से पूछें") + '</h3><span class="ai-badge">AI</span></div>' +
+      '<p class="ai-sub">' + bilingual("स्वाध्याय के ग्रंथों के आधार पर संदर्भ सहित उत्तर प्राप्त करें") + '</p>' +
+      '<form class="ai-ask-form" id="homeAiForm">' +
+      '<span class="ai-ask-search-ic">🔍</span>' +
+      '<input type="text" id="homeAiInput" placeholder="आप क्या जानना चाहते हैं?">' +
+      '<button type="submit" class="ai-ask-send" aria-label="भेजें">➤</button>' +
+      '</form>' +
+      '<div class="ai-chips">' + AI_TOPIC_CHIPS.map(function (t, i) {
+        return '<button class="chip ai-topic-chip' + (i === 0 ? " active" : "") + '" data-q="' + esc(t.label) + '">' +
+          '<span class="chip-ic">' + t.icon + '</span>' + esc(t.label) + '</button>';
+      }).join("") + '</div>' +
+      '<div class="ai-footer-note"><span>📖</span>' + bilingual("ग्रंथों में खोजकर संदर्भ सहित उत्तर मिलेगा") + '</div>' +
+      '</div>';
+  }
+
+  /* ---------------- home: आज के लिए विशेष ---------------- */
+  function specialBookTile(book) {
+    return '<div class="special-book-tile">' +
+      '<a href="#/book/' + book.id + '">' + coverEl(book, "md") + '</a>' +
+      '<a href="#/book/' + book.id + '" class="special-book-title">' + esc(book.title) + '</a>' +
+      '<div class="special-book-sub">' + esc(book.categoryMeta.hi) + '</div>' +
+      '<a class="special-book-cta" href="#/book/' + book.id + '">' + bilingual("पढ़ें") + ' →</a>' +
+      '</div>';
+  }
+
+  function todaysSpecialSection(panchang) {
+    var special = getTodaysSpecial(panchang);
+    if (!special) return "";
+    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("आज के लिए विशेष") +
+      ' <span class="row-sub">| आज के पंचांग के अनुसार अनुशंसित ग्रंथ और पाठ</span></h2></div>' +
+      '<div class="today-special-grid">' +
+      '<div class="festival-banner">' +
+      '<div class="festival-icon">🔱</div>' +
+      '<div class="festival-body"><h4>' + esc(special.title) + '</h4><p>' + esc(special.desc) + '</p>' +
+      '<a class="btn-outline festival-cta" href="#/library?q=' + encodeURIComponent(special.title) + '">' + bilingual("विस्तार देखें") + ' →</a></div>' +
+      '</div>' +
+      '<div class="special-book-row">' + special.books.map(specialBookTile).join("") + '</div>' +
+      '</div></section>';
+  }
+
+  /* ---------------- home: आज क्या पढ़ें? CTA ---------------- */
+  function suggestedReadBanner() {
+    var day = Math.floor(Date.now() / 86400000);
+    var book = BOOKS[day % BOOKS.length];
+    return '<section class="row-section"><a class="cta-banner" href="#/book/' + book.id + '">' +
+      '<div class="cta-banner-body"><h3>' + bilingual("आज क्या पढ़ें?") + '</h3>' +
+      '<p>' + bilingual("आज के दिन के अनुसार उपयुक्त पाठ, स्तोत्र और साधना सुझाव") + '</p>' +
+      '<span class="btn-primary">' + bilingual("देखें") + ' →</span></div>' +
+      '</a></section>';
+  }
+
+  /* ---------------- home: विशेष संग्रह ---------------- */
+  function specialCollectionsSection() {
+    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("विशेष संग्रह") +
+      '</h2><a class="view-all" href="#/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '<div class="collections-grid">' + SPECIAL_COLLECTIONS.map(function (c) {
+        return '<a class="collection-tile" href="#/library?q=' + encodeURIComponent(c.q) + '">' +
+          '<span class="collection-icon">' + c.icon + '</span>' +
+          '<span class="collection-label">' + bilingual(c.hi) + '</span>' +
+          '<span class="collection-sub">' + bilingual(c.sub) + '</span></a>';
+      }).join("") + '</div></section>';
+  }
+
+  /* ---------------- home: लोकप्रिय लेखक ---------------- */
+  function popularAuthorsSection() {
+    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("लोकप्रिय लेखक") +
+      '</h2><a class="view-all" href="#/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '<div class="authors-row">' + POPULAR_AUTHOR_HINTS.map(function (hint, i) {
+        var label = findAuthorLabel(hint);
+        var g = PALETTE[i % PALETTE.length];
+        return '<a class="author-tile" href="#/library?q=' + encodeURIComponent(hint) + '">' +
+          '<span class="author-avatar" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' + esc(label.charAt(0)) + '</span>' +
+          '<span class="author-name">' + esc(label) + '</span></a>';
       }).join("") + '</div></section>';
   }
 
@@ -553,6 +878,8 @@
     var favIds = getFavorites();
     var favBooks = favIds.map(function (id) { return BOOKS_BY_ID[id]; }).filter(Boolean).slice(0, 8);
 
+    var panchang = getPanchang(new Date(), getPanchangCity());
+
     var html = '';
     html += '<section class="hero-banner">' +
       '<div class="hero-overlay">' +
@@ -565,13 +892,16 @@
       }).join("") +
       '</div></div></section>';
 
-    html += categoryTabs("all");
-
     html += '<main class="content-pad">';
-    if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", "जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", recentBooks, "#/myreads");
-    html += carousel("नये आगमन", "New Additions", "", newAdd, "#/library?cat=all&sort=latest");
-    if (favBooks.length) html += carousel("आपके प्रिय ग्रंथ", "Your Favorites", "", favBooks, "#/favorites");
+    html += '<div class="home-top-grid">' + panchangCard(panchang) + aiAskCard() + '</div>';
     html += categoryGrid();
+    if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", "जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", recentBooks, "#/myreads");
+    html += todaysSpecialSection(panchang);
+    html += carousel("नये आगमन", "New Additions", "", newAdd, "#/library?cat=all&sort=latest", "new-arrivals-row");
+    if (favBooks.length) html += carousel("आपके प्रिय ग्रंथ", "Your Favorites", "", favBooks, "#/favorites");
+    html += suggestedReadBanner();
+    html += specialCollectionsSection();
+    html += popularAuthorsSection();
     html += '</main>';
     return html;
   }
@@ -589,7 +919,7 @@
 
   var PAGE_SIZE = 40;
   var libraryState = { page: 1 };
-  var chatState = { history: [], busy: false, turns: [] };
+  var chatState = { history: [], busy: false, turns: [], pendingInput: "" };
 
   function viewLibrary(params) {
     var cat = params.get("cat") || "all";
@@ -1551,7 +1881,7 @@
     var intro = '<div class="chat-msg chat-msg-bot"><div class="chat-bubble">' +
       bilingual("नमस्ते! गीता प्रेस की पुस्तकोंसे जुड़ा कोई भी प्रश्न पूछें — मैं केवल उन्हीं पुस्तकोंके आधारपर उत्तर दूँगा।") + "</div></div>";
 
-    return '<main class="content-pad chat-page"><div class="page-header"><h1>' + bilingual("सहायक") + "</h1></div>" +
+    return '<main class="content-pad chat-page"><div class="page-header"><h1>' + bilingual("प्रश्नोत्तर") + "</h1></div>" +
       '<div class="chat-shell"><div class="chat-messages" id="chatMessages">' + (turnsHtml || intro) + "</div>" +
       '<form class="chat-input-row" id="chatForm">' +
       '<input type="text" id="chatInput" placeholder="' + bilingual("अपना प्रश्न लिखें...") + '" autocomplete="off">' +
@@ -1566,6 +1896,7 @@
 
   function wireChatView() {
     scrollChatToBottom();
+    focusChatInput();
     var form = document.getElementById("chatForm");
     if (!form || form.dataset.wired) return;
     form.dataset.wired = "1";
@@ -1657,6 +1988,106 @@
     return viewLibrary(params);
   }
 
+  /* ---------------- पंचांग पेज ---------------- */
+  function panchangDetailRow(icon, label, value) {
+    return '<div class="pd-row"><span class="pd-ic">' + icon + '</span><span class="pd-label">' + bilingual(label) + '</span><span class="pd-val">' + esc(value) + '</span></div>';
+  }
+  function viewPanchang() {
+    var city = getPanchangCity();
+    var today = new Date();
+    var p = getPanchang(today, city);
+    var cityOpts = PANCHANG_CITIES.map(function (c) {
+      return '<option value="' + c.key + '"' + (c.key === city.key ? " selected" : "") + '>' + esc(c.hi) + '</option>';
+    }).join("");
+
+    var week = [];
+    for (var i = 0; i < 7; i++) {
+      var dt = new Date(today.getTime() + i * 86400000);
+      var pw = getPanchang(dt, city);
+      week.push('<div class="pw-day' + (i === 0 ? " active" : "") + '">' +
+        '<div class="pw-weekday">' + esc(pw.weekdayHi.slice(0, 3)) + '</div>' +
+        '<div class="pw-date">' + dt.getDate() + '</div>' +
+        '<div class="pw-tithi">' + esc(pw.tithiName) + '</div></div>');
+    }
+
+    return '<main class="content-pad">' +
+      '<div class="page-header"><h1>' + bilingual("पंचांग") + '</h1>' +
+      '<select class="pc-city" id="panchangPageCitySelect">' + cityOpts + '</select></div>' +
+      '<div class="panchang-week-strip">' + week.join("") + '</div>' +
+      '<div class="panchang-detail-card">' +
+      '<div class="pd-date-head"><h2>' + esc(p.weekdayHi) + ', ' + esc(formatHindiDate(p.date)) + '</h2>' +
+      '<div class="pd-sub">' + esc(p.paksha) + ' पक्ष • ' + esc(p.tithiName) + ' • ' + esc(city.hi) + '</div></div>' +
+      '<div class="pd-section-title">' + bilingual("पंचांग विवरण") + '</div>' +
+      '<div class="pd-rows">' +
+      panchangDetailRow("🌙", "तिथि", p.paksha + " " + p.tithiName) +
+      panchangDetailRow("✦", "नक्षत्र", p.nakshatraName + " (चरण " + p.nakshatraPada + ")") +
+      panchangDetailRow("☯", "योग", p.yogaName) +
+      panchangDetailRow("◐", "करण", p.karanName) +
+      panchangDetailRow("📆", "वार", p.weekdayHi) +
+      '</div>' +
+      '<div class="pd-section-title">' + bilingual("सूर्य एवं मुहूर्त") + '</div>' +
+      '<div class="pd-rows">' +
+      panchangDetailRow("🌅", "सूर्योदय", p.sunrise) +
+      panchangDetailRow("🌇", "सूर्यास्त", p.sunset) +
+      panchangDetailRow("🕉", "अभिजीत मुहूर्त", p.abhijit.start + " – " + p.abhijit.end) +
+      '</div>' +
+      '<div class="pd-section-title">' + bilingual("अशुभ काल") + '</div>' +
+      '<div class="pd-rows">' +
+      panchangDetailRow("⛔", "राहुकाल", p.rahukal.start + " – " + p.rahukal.end) +
+      panchangDetailRow("⚠", "यमगण्ड", p.yamaganda.start + " – " + p.yamaganda.end) +
+      panchangDetailRow("⚠", "गुलिक काल", p.gulikakal.start + " – " + p.gulikakal.end) +
+      '</div>' +
+      '<p class="pd-disclaimer">' + bilingual("यह पंचांग खगोलीय सन्निकटन (approximation) पर आधारित है और केवल सामान्य जानकारी हेतु है। महत्वपूर्ण मुहूर्तों के लिए कृपया किसी प्रामाणिक पंचांग या विद्वान् से परामर्श करें।") + '</p>' +
+      '</div></main>';
+  }
+
+  /* ---------------- सहायता ---------------- */
+  var HELP_FAQS = [
+    ["स्वाध्याय क्या है?", "स्वाध्याय गीता प्रेस की पुस्तकों का एक डिजिटल पुस्तकालय है, जहाँ आप सैकड़ों धार्मिक ग्रंथ निःशुल्क पढ़ सकते हैं।"],
+    ["क्या मुझे पढ़ने के लिए खाता बनाना ज़रूरी है?", "नहीं, आप बिना खाता बनाये भी सभी ग्रंथ पढ़ सकते हैं। आपकी पठन-प्रगति और पसंदीदा सूची इसी ब्राउज़र में सुरक्षित रहती है।"],
+    ["मैं अपनी पठन-स्थिति कैसे जारी रखूँ?", "\"अध्ययन\" अनुभागमें आपको वे सभी ग्रंथ मिलेंगे जो आपने पहले पढ़ने शुरू किये हैं — जहाँसे छोड़ा था, वहींसे आगे पढ़ सकते हैं।"],
+    ["पंचांग की जानकारी कितनी सटीक है?", "यहाँ दिखाया गया पंचांग खगोलीय सन्निकटन पर आधारित एक अनुमान है — यह सामान्य जानकारी के लिए उपयोगी है, परन्तु महत्वपूर्ण मुहूर्तों हेतु प्रामाणिक पंचांग से पुष्टि करें।"],
+    ["मुझे किसी ग्रंथ में त्रुटि मिली, क्या करूँ?", "कृपया \"विषय सुधार\" पृष्ठ से हमें सूचित करें — हम उसे यथाशीघ्र सुधारने का प्रयास करेंगे।"]
+  ];
+  function viewHelp() {
+    return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("सहायता") + '</h1></div>' +
+      '<div class="help-faq-list">' + HELP_FAQS.map(function (f) {
+        return '<details class="help-faq-item"><summary>' + esc(f[0]) + '</summary><p>' + esc(f[1]) + '</p></details>';
+      }).join("") + '</div>' +
+      '<p class="help-contact">' + bilingual("अपना प्रश्न यहाँ नहीं मिला?") + ' <a href="#/feedback">' + bilingual("हमें लिखें") + '</a></p>' +
+      '</main>';
+  }
+
+  /* ---------------- विषय सुधार (content feedback) ---------------- */
+  function viewFeedback() {
+    return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("विषय सुधार") + '</h1></div>' +
+      '<p class="feedback-intro">' + bilingual("किसी ग्रंथ में त्रुटि, अशुद्ध पाठ, या कोई अन्य सुझाव हो तो कृपया नीचे बताएँ। आपका सुझाव इस उपकरण पर सुरक्षित रहता है और हमारी टीम द्वारा देखा जाएगा।") + '</p>' +
+      '<form class="feedback-form" id="feedbackForm">' +
+      '<label>' + bilingual("ग्रंथ / पृष्ठ का नाम (वैकल्पिक)") + '<input type="text" id="feedbackBook" placeholder="जैसे — श्रीमद्भगवद्गीता साधक संजीवनी"></label>' +
+      '<label>' + bilingual("आपका सुझाव") + '<textarea id="feedbackText" rows="5" placeholder="यहाँ लिखें..." required></textarea></label>' +
+      '<button type="submit" class="btn-primary">' + bilingual("सुझाव भेजें") + '</button>' +
+      '</form>' +
+      '<div id="feedbackHistory"></div>' +
+      '</main>';
+  }
+  function getFeedbackList() { return readJSON(LS.feedback, []); }
+  function addFeedback(book, text) {
+    var list = getFeedbackList();
+    list.unshift({ book: book, text: text, ts: Date.now() });
+    writeJSON(LS.feedback, list.slice(0, 50));
+  }
+  function renderFeedbackHistory() {
+    var wrap = document.getElementById("feedbackHistory");
+    if (!wrap) return;
+    var list = getFeedbackList();
+    if (!list.length) { wrap.innerHTML = ""; return; }
+    wrap.innerHTML = '<div class="page-header"><h2>' + bilingual("आपके पूर्व सुझाव") + '</h2></div>' +
+      '<div class="comment-list">' + list.map(function (f) {
+        return '<div class="comment-item"><div class="comment-head"><b>' + esc(f.book || "सामान्य सुझाव") + '</b>' +
+          '<span class="comment-time">' + timeAgo(f.ts) + '</span></div><p>' + esc(f.text) + '</p></div>';
+      }).join("") + '</div>';
+  }
+
   /* ---------------- router ---------------- */
   function parseHash() {
     var h = location.hash.replace(/^#\/?/, "");
@@ -1667,7 +2098,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -1699,8 +2130,11 @@
     else if (seg[0] === "book" && seg[1] !== undefined) { html = viewBook(parseInt(seg[1], 10)); }
     else if (seg[0] === "favorites") { html = viewFavorites(); }
     else if (seg[0] === "myreads") { html = viewMyReads(); }
-    else if (seg[0] === "notes") { html = viewStub("नोट्स", "Notes"); }
+    else if (seg[0] === "notes") { html = viewStub("मेरे ग्रंथ", "My Scriptures"); }
     else if (seg[0] === "chat") { html = viewChat(); }
+    else if (seg[0] === "panchang") { html = viewPanchang(); }
+    else if (seg[0] === "help") { html = viewHelp(); }
+    else if (seg[0] === "feedback") { html = viewFeedback(); }
     else if (seg[0] === "settings") { html = viewStub("सेटिंग्स", "Settings"); }
     else if (seg[0] === "subscribe") { html = viewStub("सदस्यता", "Subscribe"); }
     else { html = viewHome(); }
@@ -1832,6 +2266,63 @@
         });
       }
     }
+
+    /* ---- पंचांग: शहर चयन (home card + full page) ---- */
+    document.querySelectorAll("#panchangCitySelect, #panchangPageCitySelect").forEach(function (sel) {
+      sel.addEventListener("change", function () { setPanchangCity(sel.value); render(); });
+    });
+
+    /* ---- ग्रंथों से पूछें AI: home card ---- */
+    var homeAiForm = document.getElementById("homeAiForm");
+    if (homeAiForm) {
+      homeAiForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var input = document.getElementById("homeAiInput");
+        var q = (input.value || "").trim();
+        askAI(q);
+      });
+    }
+    document.querySelectorAll(".ai-topic-chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        document.querySelectorAll(".ai-topic-chip").forEach(function (c) { c.classList.remove("active"); });
+        chip.classList.add("active");
+        var t = chip.getAttribute("data-q");
+        var input = document.getElementById("homeAiInput");
+        if (t !== "सभी ग्रंथ" && input) { input.placeholder = t + " से संबंधित प्रश्न पूछें…"; input.focus(); }
+      });
+    });
+    /* ---- विषय सुधार फ़ॉर्म ---- */
+    var feedbackForm = document.getElementById("feedbackForm");
+    if (feedbackForm) {
+      renderFeedbackHistory();
+      feedbackForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var bookInput = document.getElementById("feedbackBook");
+        var textInput = document.getElementById("feedbackText");
+        var text = (textInput.value || "").trim();
+        if (!text) return;
+        addFeedback((bookInput.value || "").trim(), text);
+        bookInput.value = ""; textInput.value = "";
+        renderFeedbackHistory();
+        toast("धन्यवाद! आपका सुझाव प्राप्त हुआ");
+      });
+    }
+  }
+
+  /* Sends a question to the प्रश्नोत्तर (chat) page, prefilling the input rather than
+     auto-submitting -- lets the visitor review/edit before it actually goes out. */
+  function askAI(q) {
+    chatState.pendingInput = q || "";
+    if (location.hash === "#/chat") { rerenderChat(); focusChatInput(); }
+    else location.hash = "#/chat";
+  }
+  function focusChatInput() {
+    var input = document.getElementById("chatInput");
+    if (input && chatState.pendingInput) {
+      input.value = chatState.pendingInput;
+      chatState.pendingInput = "";
+      input.focus();
+    }
   }
 
   function toast(msg) {
@@ -1892,6 +2383,27 @@
 
     var profileBtn = document.getElementById("profileBtn");
     if (profileBtn) profileBtn.addEventListener("click", function () { location.hash = "#/settings"; });
+
+    var bellBtn = document.getElementById("notifyBtn");
+    if (bellBtn) bellBtn.addEventListener("click", function () { toast("अभी कोई नई सूचना नहीं है"); });
+
+    var sidebar = document.querySelector(".sidebar");
+    var scrim = document.getElementById("sidebarScrim");
+    function closeSidebarDrawer() {
+      if (sidebar) sidebar.classList.remove("open");
+      if (scrim) scrim.classList.remove("show");
+    }
+    var drawerBtn = document.getElementById("appDrawerBtn");
+    if (drawerBtn) {
+      drawerBtn.addEventListener("click", function () {
+        if (sidebar) sidebar.classList.add("open");
+        if (scrim) scrim.classList.add("show");
+      });
+    }
+    if (scrim) scrim.addEventListener("click", closeSidebarDrawer);
+    document.querySelectorAll(".sidebar [data-nav]").forEach(function (link) {
+      link.addEventListener("click", closeSidebarDrawer);
+    });
 
     window.addEventListener("scroll", updateTopbarSolidity, { passive: true });
   }

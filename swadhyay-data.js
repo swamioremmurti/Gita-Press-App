@@ -3437,6 +3437,18 @@ var SWADHYAY_BOOKS_RAW = [
         "category":  "Itihasas",
         "author":  "श्रीमन्महर्षि वेदव्यास",
         "sizeKB":  68694.9
+    },
+    {
+        "file":  "भक्तियोग.html",
+        "category":  "Vedant",
+        "author":  "स्वामी विवेकानन्द",
+        "sizeKB":  360.8
+    },
+    {
+        "file":  "राजयोग.html",
+        "category":  "Vedant",
+        "author":  "स्वामी विवेकानन्द",
+        "sizeKB":  946.5
     }
 ]
 ;

@@ -10,22 +10,33 @@
 <body>
 <div class="app-shell">
 
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
   <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-logo-mark" role="img" aria-label="स्वाध्याय"></span>
+      <span class="sidebar-wordmark">स्वाध्याय</span>
+    </div>
     <nav class="sidebar-nav">
       <a class="side-link" data-nav="home" href="#/"><span class="ic">&#8962;</span><span>होम</span></a>
       <a class="side-link" data-nav="library" href="#/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
       <a class="side-link" data-nav="favorites" href="#/favorites"><span class="ic">&#9825;</span><span>पसंदीदा</span></a>
       <a class="side-link" data-nav="myreads" href="#/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
-      <a class="side-link" data-nav="notes" href="#/notes"><span class="ic">&#128221;</span><span>नोट्स</span></a>
-      <a class="side-link" data-nav="chat" href="#/chat"><span class="ic">&#128172;</span><span>सहायक</span></a>
-      <a class="side-link" data-nav="settings" href="#/settings"><span class="ic">&#9881;</span><span>सेटिंग्स</span></a>
+      <a class="side-link" data-nav="notes" href="#/notes"><span class="ic">&#128220;</span><span>मेरे ग्रंथ</span></a>
+      <div class="sidebar-divider"></div>
+      <a class="side-link" data-nav="chat" href="#/chat"><span class="ic sidebar-om">&#2384;</span><span>प्रश्नोत्तर</span></a>
+      <a class="side-link" data-nav="panchang" href="#/panchang"><span class="ic">&#128197;</span><span>पंचांग</span></a>
     </nav>
-    <div class="sidebar-brand">ॐ<br>सत्यं<br>शिवं<br>सुन्दरम्</div>
+    <nav class="sidebar-nav sidebar-nav-bottom">
+      <a class="side-link" data-nav="settings" href="#/settings"><span class="ic">&#9881;</span><span>सेटिंग्स</span></a>
+      <a class="side-link" data-nav="help" href="#/help"><span class="ic">&#10067;</span><span>सहायता</span></a>
+      <a class="side-link" data-nav="feedback" href="#/feedback"><span class="ic">&#9999;</span><span>विषय सुधार</span></a>
+    </nav>
   </aside>
 
   <div class="main-col">
     <header class="topbar">
       <div class="topbar-left">
+        <button class="hamburger-btn" id="appDrawerBtn" title="मेनू" aria-label="मेनू">&#9776;</button>
         <span class="logo-mark" role="img" aria-label="स्वाध्याय"></span>
       </div>
       <button class="global-search-btn profile-btn" title="खोजें">&#128269;</button>
@@ -33,6 +44,7 @@
         <input type="checkbox" id="themeSwitch">
         <span class="track"></span>
       </label>
+      <button class="profile-btn" id="notifyBtn" title="सूचनाएँ">&#128276;</button>
       <button class="profile-btn" id="profileBtn" title="प्रोफ़ाइल">&#128100;</button>
     </header>
 
@@ -43,10 +55,9 @@
 <nav class="bottom-nav">
   <a class="side-link" data-nav="home" href="#/"><span class="ic">&#8962;</span><span>होम</span></a>
   <a class="side-link" data-nav="library" href="#/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
-  <a class="side-link" data-nav="favorites" href="#/favorites"><span class="ic">&#9825;</span><span>पसंदीदा</span></a>
   <a class="side-link" data-nav="myreads" href="#/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
-  <a class="side-link" data-nav="chat" href="#/chat"><span class="ic">&#128172;</span><span>सहायक</span></a>
-  <a class="side-link" data-nav="settings" href="#/settings"><span class="ic">&#8942;</span><span>अधिक</span></a>
+  <a class="side-link" data-nav="chat" href="#/chat"><span class="ic sidebar-om">&#2384;</span><span>प्रश्नोत्तर</span></a>
+  <a class="side-link" data-nav="panchang" href="#/panchang"><span class="ic">&#128197;</span><span>पंचांग</span></a>
 </nav>
 
 <script src="swadhyay-data.js"></script>
