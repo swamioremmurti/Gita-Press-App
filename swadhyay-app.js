@@ -199,6 +199,17 @@
     return date.getDate() + " " + HINDI_DATE_MONTHS[date.getMonth()] + " " + date.getFullYear();
   }
 
+  /* SEO-friendly URL slugs: keeps Devanagari (best keyword match for Hindi search
+     queries, since this is a Hindi-content site) plus ASCII alphanumerics and hyphens,
+     collapsing whitespace/punctuation to a single hyphen. */
+  function slugify(str) {
+    var s = String(str || "").trim();
+    s = s.replace(/\s+/g, "-");
+    s = s.replace(/[^0-9A-Za-zऀ-ॿ-]/g, "");
+    s = s.replace(/-{2,}/g, "-").replace(/^-+|-+$/g, "");
+    return s || "x";
+  }
+
   function titleFromFile(file) {
     var t = file.replace(/\.html$/i, "");
     if (t.indexOf("u_") === 0) t = t.slice(2);
@@ -418,12 +429,18 @@
   
   };
 
+  var seenBookSlugs = {};
   var BOOKS = (window.SWADHYAY_BOOKS_RAW || []).map(function (b, i) {
     var cat = CATEGORY_BY_KEY[b.category] || { key: b.category, hi: b.category, en: b.category, icon: "📖" };
     var title = TITLE_OVERRIDES[b.file] || titleFromFile(b.file);
     var author = (b.author && b.author.trim()) ? b.author.trim() : "गीता प्रेस, गोरखपुर";
+    var baseSlug = slugify(b.file.replace(/\.html$/i, ""));
+    var slug = baseSlug, dupeN = 2;
+    while (seenBookSlugs[slug]) { slug = baseSlug + "-" + dupeN; dupeN++; }
+    seenBookSlugs[slug] = true;
     return {
       id: i,
+      slug: slug,
       file: b.file,
       href: bookHref(b.file),
       title: title,
@@ -454,10 +471,25 @@
   });
   var BOOKS_BY_ID = {};
   var BOOKS_BY_FILE = {};
-  BOOKS.forEach(function (b) { BOOKS_BY_ID[b.id] = b; BOOKS_BY_FILE[b.file] = b; });
+  var BOOKS_BY_SLUG = {};
+  BOOKS.forEach(function (b) { BOOKS_BY_ID[b.id] = b; BOOKS_BY_FILE[b.file] = b; BOOKS_BY_SLUG[b.slug] = b; });
 
   function findByFile(file) {
     return BOOKS_BY_FILE[file] || null;
+  }
+
+  /* Resolves a /book/:x or /read/:x URL segment to a book: tries the SEO slug first,
+     then falls back to a bare numeric id so old #/book/12-style links (bookmarked or
+     shared before this app switched to slugs) keep working. */
+  function resolveBookParam(x) {
+    if (x === undefined || x === null) return null;
+    var decoded;
+    try { decoded = decodeURIComponent(x); } catch (e) { decoded = x; }
+    return BOOKS_BY_SLUG[decoded] || BOOKS_BY_ID[parseInt(x, 10)] || null;
+  }
+  function bookPath(book) { return "/book/" + encodeURIComponent(book.slug); }
+  function readPath(book, chapterIdx) {
+    return "/read/" + encodeURIComponent(book.slug) + (chapterIdx !== undefined && chapterIdx !== null ? "/" + chapterIdx : "");
   }
 
   /** Overlay the server's per-book categories/tags/author onto BOOKS in place. */
@@ -502,6 +534,7 @@
     currentUser: "swadhyay_current_user_v1",
     readerTheme: "swadhyay_reader_theme_v1",
     readerFont: "swadhyay_reader_font_v1",
+    readerLineHeight: "swadhyay_reader_line_height_v1",
     bookmarks: "swadhyay_bookmarks_v1",
     highlights: "swadhyay_highlights_v1",
     panchangCity: "swadhyay_panchang_city_v1",
@@ -662,7 +695,7 @@
   // swadhyay.css, 860px) rather than just scaling down the desktop banner.
   function heroBannerUrl(t) {
     var mobile = window.innerWidth <= 860;
-    return "assets/hero_banner_" + (mobile ? "mobile_" : "") + (t === "dark" ? "dark" : "light") + ".png";
+    return "assets/hero_banner_" + (mobile ? "mobile_" : "") + (t === "dark" ? "dark" : "light") + ".webp";
   }
   function applyHeroBanner() {
     var hero = document.querySelector(".hero-banner");
@@ -780,12 +813,12 @@
   function bookCard(book) {
     var fav = isFavorite(book.id);
     return '<div class="book-card" data-id="' + book.id + '">' +
-      '<a class="book-card-link" href="#/book/' + book.id + '">' +
+      '<a class="book-card-link" href="' + bookPath(book) + '">' +
       coverEl(book, "md") +
       '</a>' +
       '<button class="fav-toggle ' + (fav ? "active" : "") + '" data-fav="' + book.id + '" title="पसंदीदा">♥</button>' +
       '<div class="book-card-body">' +
-      '<a href="#/book/' + book.id + '" class="book-title">' + esc(book.title) + '</a>' +
+      '<a href="' + bookPath(book) + '" class="book-title">' + esc(book.title) + '</a>' +
       '<div class="book-author">' + esc(book.author) + '</div>' +
       '</div></div>';
   }
@@ -794,9 +827,9 @@
     var read = getReads()[book.id];
     var pct = read ? (read.progress || 0) : 0;
     return '<div class="book-row-item" data-id="' + book.id + '">' +
-      '<a class="book-card-link" href="#/book/' + book.id + '">' + coverEl(book, "sm") + '</a>' +
+      '<a class="book-card-link" href="' + bookPath(book) + '">' + coverEl(book, "sm") + '</a>' +
       '<div class="book-row-body">' +
-      '<a href="#/book/' + book.id + '" class="book-title">' + esc(book.title) + '</a>' +
+      '<a href="' + bookPath(book) + '" class="book-title">' + esc(book.title) + '</a>' +
       (read ? '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div><span class="progress-pct">' + pct + '%</span>' :
         '<div class="book-author">' + esc(book.author) + '</div>') +
       '</div></div>';
@@ -820,7 +853,7 @@
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
-        return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
+        return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
           bilingual(c.hi, c.en) + ' <span class="cnt">(' + count + ')</span></a>';
       }).join("") + '</nav>' +
       '<button class="row-nav next" aria-label="अगला">›</button>' +
@@ -829,12 +862,12 @@
 
   function categoryGrid() {
     return '<section class="row-section"><div class="row-head"><h2>' + bilingual("श्रेणियाँ", "Categories") +
-      '</h2><a class="view-all" href="#/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '</h2><a class="view-all" href="/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
       '<div class="row-scroll-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<div class="row-scroll cat-scroll">' + CATEGORY_META.map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
-        return '<a class="cat-tile" href="#/library?cat=' + encodeURIComponent(c.key) + '">' +
+        return '<a class="cat-tile" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
           '<span class="cat-tile-icon">' + c.icon + '</span>' +
           '<span class="cat-tile-label">' + bilingual(c.hi, c.en) + '</span>' +
           '<span class="cat-tile-count">' + count + '</span></a>';
@@ -867,7 +900,7 @@
       '<div class="pc-fact"><span class="pc-ic">🕉</span><span class="pc-fact-data"><b>अभिजीत मुहूर्त</b>' + esc(p.abhijit.start) + ' – ' + esc(p.abhijit.end) + '</span></div>' +
       '</div>' +
       '</div>' +
-      '<a class="btn-primary pc-full-btn" href="#/panchang">' + bilingual("पूर्ण पंचांग देखें") + ' →</a>' +
+      '<a class="btn-primary pc-full-btn" href="/panchang">' + bilingual("पूर्ण पंचांग देखें") + ' →</a>' +
       '</div>';
   }
 
@@ -892,10 +925,10 @@
   /* ---------------- home: आज के लिए विशेष ---------------- */
   function specialBookTile(book) {
     return '<div class="special-book-tile">' +
-      '<a href="#/book/' + book.id + '">' + coverEl(book, "md") + '</a>' +
-      '<a href="#/book/' + book.id + '" class="special-book-title">' + esc(book.title) + '</a>' +
+      '<a href="' + bookPath(book) + '">' + coverEl(book, "md") + '</a>' +
+      '<a href="' + bookPath(book) + '" class="special-book-title">' + esc(book.title) + '</a>' +
       '<div class="special-book-sub">' + esc(book.categoryMetas[0].hi) + '</div>' +
-      '<a class="special-book-cta" href="#/book/' + book.id + '">' + bilingual("पढ़ें") + ' →</a>' +
+      '<a class="special-book-cta" href="' + bookPath(book) + '">' + bilingual("पढ़ें") + ' →</a>' +
       '</div>';
   }
 
@@ -908,7 +941,7 @@
       '<div class="festival-banner">' +
       '<div class="festival-icon">🔱</div>' +
       '<div class="festival-body"><h4>' + esc(special.title) + '</h4><p>' + esc(special.desc) + '</p>' +
-      '<a class="btn-outline festival-cta" href="#/library?q=' + encodeURIComponent(special.title) + '">' + bilingual("विस्तार देखें") + ' →</a></div>' +
+      '<a class="btn-outline festival-cta" href="/library?q=' + encodeURIComponent(special.title) + '">' + bilingual("विस्तार देखें") + ' →</a></div>' +
       '</div>' +
       '<div class="special-book-row">' + special.books.map(specialBookTile).join("") + '</div>' +
       '</div></section>';
@@ -918,7 +951,7 @@
   function suggestedReadBanner() {
     var day = Math.floor(Date.now() / 86400000);
     var book = BOOKS[day % BOOKS.length];
-    return '<section class="row-section"><a class="cta-banner" href="#/book/' + book.id + '">' +
+    return '<section class="row-section"><a class="cta-banner" href="' + bookPath(book) + '">' +
       '<div class="cta-banner-body"><h3>' + bilingual("आज क्या पढ़ें?") + '</h3>' +
       '<p>' + bilingual("आज के दिन के अनुसार उपयुक्त पाठ, स्तोत्र और साधना सुझाव") + '</p>' +
       '<span class="btn-primary">' + bilingual("देखें") + ' →</span></div>' +
@@ -928,9 +961,9 @@
   /* ---------------- home: विशेष संग्रह ---------------- */
   function specialCollectionsSection() {
     return '<section class="row-section"><div class="row-head"><h2>' + bilingual("विशेष संग्रह") +
-      '</h2><a class="view-all" href="#/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '</h2><a class="view-all" href="/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
       '<div class="collections-grid">' + SPECIAL_COLLECTIONS.map(function (c) {
-        return '<a class="collection-tile" href="#/library?q=' + encodeURIComponent(c.q) + '">' +
+        return '<a class="collection-tile" href="/library?q=' + encodeURIComponent(c.q) + '">' +
           '<span class="collection-icon">' + c.icon + '</span>' +
           '<span class="collection-label">' + bilingual(c.hi) + '</span>' +
           '<span class="collection-sub">' + bilingual(c.sub) + '</span></a>';
@@ -940,11 +973,11 @@
   /* ---------------- home: लोकप्रिय लेखक ---------------- */
   function popularAuthorsSection() {
     return '<section class="row-section"><div class="row-head"><h2>' + bilingual("लोकप्रिय लेखक") +
-      '</h2><a class="view-all" href="#/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '</h2><a class="view-all" href="/authors">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
       '<div class="authors-row">' + POPULAR_AUTHOR_HINTS.map(function (hint, i) {
         var label = findAuthorLabel(hint);
         var g = PALETTE[i % PALETTE.length];
-        return '<a class="author-tile" href="#/library?q=' + encodeURIComponent(hint) + '">' +
+        return '<a class="author-tile" href="/library?q=' + encodeURIComponent(hint) + '">' +
           '<span class="author-avatar" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' + esc(label.charAt(0)) + '</span>' +
           '<span class="author-name">' + esc(label) + '</span></a>';
       }).join("") + '</div></section>';
@@ -993,10 +1026,10 @@
     html += '<main class="content-pad">';
     html += '<div class="home-top-grid">' + panchangCard(panchang) + aiAskCard() + '</div>';
     html += categoryGrid();
-    if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", "जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", recentBooks, "#/myreads");
+    if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", "जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", recentBooks, "/myreads");
     html += todaysSpecialSection(panchang);
-    html += carousel("नये आगमन", "New Additions", "", newAdd, "#/library?cat=all&sort=latest", "new-arrivals-row");
-    if (favBooks.length) html += carousel("आपके प्रिय ग्रंथ", "Your Favorites", "", favBooks, "#/favorites");
+    html += carousel("नये आगमन", "New Additions", "", newAdd, "/library?cat=all&sort=latest", "new-arrivals-row");
+    if (favBooks.length) html += carousel("आपके प्रिय ग्रंथ", "Your Favorites", "", favBooks, "/favorites");
     html += suggestedReadBanner();
     html += specialCollectionsSection();
     html += popularAuthorsSection();
@@ -1054,9 +1087,9 @@
     html += '<div class="filter-tabs">' +
       ["all:सभी", "popular:लोकप्रिय", "short:लघु पाठ"].map(function (f) {
         var parts = f.split(":"); var key = parts[0];
-        return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="#/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' + parts[1] + '</a>';
+        return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' + parts[1] + '</a>';
       }).join("") +
-      '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="#/library?cat=' + encodeURIComponent(cat) + '&sort=latest">नवीनतम</a>' +
+      '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest">नवीनतम</a>' +
       '</div>';
 
     if (!pageItems.length) {
@@ -1168,7 +1201,8 @@
      otherwise wreck the app chrome if loaded globally. */
   var READER_THEMES = ["day", "night", "sepia"];
   var readerCache = {};              // bookId -> { headHtml, chapters:[{label, html, subs}] }
-  var reader = { open: false, bookId: null, book: null, headHtml: "", chapters: null, idx: 0, theme: "day", fontSize: 19, expandedChapters: {} };
+  var READER_LINE_HEIGHT_MIN = 0.8, READER_LINE_HEIGHT_MAX = 2.5, READER_LINE_HEIGHT_STEP = 0.1;
+  var reader = { open: false, bookId: null, book: null, headHtml: "", chapters: null, idx: 0, theme: "day", fontSize: 19, lineHeight: 1.6, expandedChapters: {} };
 
   function getReaderTheme() {
     var t = localStorage.getItem(LS.readerTheme);
@@ -1186,6 +1220,15 @@
   function setReaderFontSize(n) {
     n = Math.max(12, Math.min(32, n));
     try { localStorage.setItem(LS.readerFont, String(n)); } catch (e) {}
+    return n;
+  }
+  function getReaderLineHeight() {
+    var n = parseFloat(localStorage.getItem(LS.readerLineHeight));
+    return (n >= READER_LINE_HEIGHT_MIN && n <= READER_LINE_HEIGHT_MAX) ? n : 1.6;
+  }
+  function setReaderLineHeight(n) {
+    n = Math.round(Math.max(READER_LINE_HEIGHT_MIN, Math.min(READER_LINE_HEIGHT_MAX, n)) * 10) / 10;
+    try { localStorage.setItem(LS.readerLineHeight, String(n)); } catch (e) {}
     return n;
   }
 
@@ -1345,7 +1388,12 @@
   }
 
   function readerBaseUrl(book) {
-    var abs = new URL(book.href, location.href);
+    /* document.baseURI (not location.href) -- this must stay anchored to the site root
+       regardless of which real path the reader was opened from (e.g. /read/<slug>/2),
+       since book.href is itself root-relative ("Gita Press Books/..."). Resolving against
+       location.href here would instead resolve relative to that deep path and break the
+       book's own <link href="../../master.css"> once carried into the reader iframe. */
+    var abs = new URL(book.href, document.baseURI);
     return abs.href.replace(/[^/]*$/, "");
   }
 
@@ -1461,7 +1509,7 @@
       '})();';
   }
 
-  function renderIframeDoc(book, headHtml, chapterHtml, fontSize, theme, highlightList, restoreScrollPct, anchorId) {
+  function renderIframeDoc(book, headHtml, chapterHtml, fontSize, lineHeight, theme, highlightList, restoreScrollPct, anchorId) {
     var themeClass = theme === "night" ? "rdr-night" : theme === "sepia" ? "rdr-sepia" : "";
     var bg = theme === "sepia" ? "#f4ecd8" : "#ffffff";
     return '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
@@ -1471,6 +1519,10 @@
       'html{background:' + bg + ';}' +
       'body{margin:0;padding:1.1rem 1.2rem 4rem;max-width:900px;margin-left:auto;margin-right:auto;' +
       'font-size:' + fontSize + 'px;box-sizing:border-box;}' +
+      /* !important: the book's own master.css sets an explicit (unitless) line-height on
+         almost every paragraph class, so a plain body{line-height} rule would be overridden
+         by those more specific selectors -- this reading-comfort control needs to win everywhere. */
+      'body, body *{line-height:' + lineHeight + 'em !important;}' +
       '@media (min-width:900px){body{max-width:1100px;padding:1.4rem 2rem 4rem;}}' +
       'mark.rdr-hl{background:#ffe58a;border-radius:2px;}' +
       readerThemeCSS() +
@@ -1534,6 +1586,11 @@
       '<button id="readerFontDec" aria-label="छोटा करें">A−</button>' +
       '<span id="readerFontVal"></span>' +
       '<button id="readerFontInc" aria-label="बड़ा करें">A+</button>' +
+      '</div></div>' +
+      '<div class="reader-settings-row"><span>पंक्ति ऊँचाई</span>' +
+      '<div class="reader-lineheight-ctl">' +
+      '<input type="range" id="readerLineHeightSlider" min="' + READER_LINE_HEIGHT_MIN + '" max="' + READER_LINE_HEIGHT_MAX + '" step="' + READER_LINE_HEIGHT_STEP + '" aria-label="पंक्ति ऊँचाई">' +
+      '<span id="readerLineHeightVal"></span>' +
       '</div></div>' +
       '</div>' +
       '<div class="reader-content" id="readerContent">' +
@@ -1620,6 +1677,10 @@
     }
     var fv = document.getElementById("readerFontVal");
     if (fv) fv.textContent = reader.fontSize + "px";
+    var lhSlider = document.getElementById("readerLineHeightSlider");
+    if (lhSlider) lhSlider.value = reader.lineHeight;
+    var lhVal = document.getElementById("readerLineHeightVal");
+    if (lhVal) lhVal.textContent = reader.lineHeight.toFixed(1) + "em";
     document.querySelectorAll(".rdr-theme-btn").forEach(function (b) {
       b.classList.toggle("active", b.getAttribute("data-theme") === reader.theme);
     });
@@ -1639,7 +1700,7 @@
     if (!iframe) return;
     var chapter = reader.chapters[reader.idx];
     var highlights = getChapterHighlights(reader.bookId, reader.idx);
-    iframe.srcdoc = renderIframeDoc(reader.book, reader.headHtml, chapter.html, reader.fontSize, reader.theme, highlights, restoreScrollPct || 0, anchorId);
+    iframe.srcdoc = renderIframeDoc(reader.book, reader.headHtml, chapter.html, reader.fontSize, reader.lineHeight, reader.theme, highlights, restoreScrollPct || 0, anchorId);
   }
 
   function readerSaveProgress(scrollPct) {
@@ -1662,7 +1723,7 @@
     readerRenderIframe(0, anchorId);
     readerUpdateChrome();
     readerSaveProgress(0);
-    try { history.replaceState(null, "", "#/read/" + reader.bookId + "/" + idx); } catch (e) {}
+    try { history.replaceState(null, "", readPath(reader.book, idx)); } catch (e) {}
     closeDrawerAndSettings();
   }
 
@@ -1719,6 +1780,12 @@
       readerRenderIframe(pct);
       readerUpdateChrome();
     });
+    document.getElementById("readerLineHeightSlider").addEventListener("input", function (e) {
+      var pct = readerCurrentScrollPct();
+      reader.lineHeight = setReaderLineHeight(parseFloat(e.target.value));
+      readerRenderIframe(pct);
+      readerUpdateChrome();
+    });
     document.getElementById("readerBookmarkToggle").addEventListener("click", function () {
       var nowMarked = toggleBookmark(reader.bookId, reader.idx, reader.chapters[reader.idx].label);
       readerUpdateChrome();
@@ -1753,7 +1820,7 @@
 
   function openReader(bookId, startIdx) {
     var book = BOOKS_BY_ID[bookId];
-    if (!book) { location.hash = "#/library"; return; }
+    if (!book) { navigate("/library"); return; }
 
     document.body.classList.add("reader-active");
     if (!document.getElementById("readerOverlay")) {
@@ -1767,6 +1834,7 @@
     reader.book = book;
     reader.theme = getReaderTheme();
     reader.fontSize = getReaderFontSize();
+    reader.lineHeight = getReaderLineHeight();
     reader.chapters = null;
     reader.expandedChapters = {};
 
@@ -1787,7 +1855,7 @@
       readerRenderIframe(restorePct);
       readerUpdateChrome();
       readerSaveProgress(restorePct);
-      try { history.replaceState(null, "", "#/read/" + bookId + "/" + reader.idx); } catch (e) {}
+      try { history.replaceState(null, "", readPath(book, reader.idx)); } catch (e) {}
     }
 
     if (readerCache[bookId]) {
@@ -1841,7 +1909,7 @@
       ? '<form class="comment-form" id="commentForm" data-book="' + esc(book.file) + '">' +
         '<textarea id="commentText" rows="3" maxlength="1000" placeholder="अपनी टिप्पणी लिखें…" required></textarea>' +
         '<button type="submit" class="btn-primary">टिप्पणी भेजें</button></form>'
-      : '<div class="comment-login-gate">🔒 टिप्पणी करने के लिए <a href="#/login">साइन इन</a> करना आवश्यक है।</div>';
+      : '<div class="comment-login-gate">🔒 टिप्पणी करने के लिए <a href="/login">साइन इन</a> करना आवश्यक है।</div>';
     html += '<div id="commentListWrap"><div class="empty-state small">लोड हो रहा है…</div></div>';
     html += '</div>';
     return html;
@@ -1878,7 +1946,7 @@
     html += '<button class="btn-listen" id="listenBtn"><span class="btn-listen-icon">🎧</span> ' +
       bilingual("इस पुस्तक को सुनें", "Listen to this book") + '</button>';
     html += '<div class="meta-line">👤 ' + (book.authorId
-      ? '<a href="#/author/' + book.authorId + '">' + esc(book.author) + '</a>'
+      ? '<a href="/author/' + book.authorId + '">' + esc(book.author) + '</a>'
       : esc(book.author)) + '</div>';
     html += '<div class="meta-line">📖 हिन्दी</div>';
     html += '<div class="meta-line">⏱️ अनुमानित पठन समय ' + formatDuration(book.minutes) + '</div>';
@@ -1887,11 +1955,11 @@
     }).join("") + '</div>';
     if (book.tags.length) {
       html += '<div class="tag-row tag-row-topics">' + book.tags.map(function (t) {
-        return '<a class="tag tag-topic" href="#/library?tag=' + encodeURIComponent(t) + '">#' + esc(t) + '</a>';
+        return '<a class="tag tag-topic" href="/library?tag=' + encodeURIComponent(t) + '">#' + esc(t) + '</a>';
       }).join("") + '</div>';
     }
     html += '<div class="detail-actions">' +
-      '<a class="btn-primary" href="#/read/' + book.id + '" id="startReadingBtn">▶ पढ़ना शुरू करें</a>' +
+      '<a class="btn-primary" href="' + readPath(book) + '" id="startReadingBtn">▶ पढ़ना शुरू करें</a>' +
       '<button class="btn-outline ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '">' + (fav ? "♥ पसंदीदा में शामिल" : "♡ पसंदीदा में जोड़ें") + '</button>' +
       '<button class="btn-outline" id="shareBtn">↪ साझा करें</button>' +
       '</div>';
@@ -1917,7 +1985,7 @@
     var html = '<div class="page-header"><h1>' + bilingual("आपके प्रिय ग्रंथ", "Your Favorites") + ' <span class="cnt">(' + favBooks.length + ')</span></h1></div>';
     if (!favBooks.length) {
       html += '<div class="empty-state">' + bilingual("आपने अभी तक कोई पुस्तक पसंदीदा में नहीं जोड़ी है।", "You haven't added any favorites yet.") +
-        '<br><a class="btn-primary" href="#/library">' + bilingual("पुस्तकालय देखें", "Browse Library") + '</a></div>';
+        '<br><a class="btn-primary" href="/library">' + bilingual("पुस्तकालय देखें", "Browse Library") + '</a></div>';
     } else {
       html += '<div class="book-grid">' + favBooks.map(bookCard).join("") + '</div>';
     }
@@ -1957,9 +2025,9 @@
       var top = books[0];
       html += '<div class="continue-card"><div class="continue-label">' + bilingual("पढ़ना जारी रखें", "Continue Reading") + '</div>' +
         '<div class="continue-body">' + coverEl(top.book, "sm") +
-        '<div><a class="book-title" href="#/book/' + top.book.id + '">' + esc(top.book.title) + '</a>' +
+        '<div><a class="book-title" href="' + bookPath(top.book) + '">' + esc(top.book.title) + '</a>' +
         '<div class="progress-track"><div class="progress-fill" style="width:' + (top.read.progress || 0) + '%"></div></div></div>' +
-        '<a class="btn-primary" href="#/read/' + top.book.id + '">' + bilingual("जारी रखें", "Continue") + '</a></div></div>';
+        '<a class="btn-primary" href="' + readPath(top.book) + '">' + bilingual("जारी रखें", "Continue") + '</a></div></div>';
     }
 
     html += '<div class="page-header" style="margin-top:2rem"><h2>' + bilingual("पठन इतिहास", "Reading History") + '</h2>' +
@@ -1967,11 +2035,11 @@
 
     if (!books.length) {
       html += '<div class="empty-state">' + bilingual("अभी तक कोई पठन इतिहास नहीं है।", "No reading history yet.") +
-        '<br><a class="btn-primary" href="#/library">' + bilingual("पढ़ना शुरू करें", "Start Reading") + '</a></div>';
+        '<br><a class="btn-primary" href="/library">' + bilingual("पढ़ना शुरू करें", "Start Reading") + '</a></div>';
     } else {
       html += '<div class="history-list">' + books.map(function (x) {
         return '<div class="history-item">' + coverEl(x.book, "sm") +
-          '<div class="history-body"><a class="book-title" href="#/book/' + x.book.id + '">' + esc(x.book.title) + '</a>' +
+          '<div class="history-body"><a class="book-title" href="' + bookPath(x.book) + '">' + esc(x.book.title) + '</a>' +
           '<div class="book-author">' + esc(x.book.author) + '</div>' +
           '<div class="progress-track"><div class="progress-fill" style="width:' + (x.read.progress || 0) + '%"></div></div></div>' +
           '<span class="progress-pct">' + (x.read.progress || 0) + '%</span></div>';
@@ -1982,8 +2050,9 @@
 
   function chatSourceChip(s) {
     var inner = "[" + s.n + "] " + esc(s.title);
-    return s.bookId != null
-      ? '<a class="chat-source-chip" href="#/book/' + s.bookId + '">' + inner + "</a>"
+    var srcBook = s.bookId != null ? BOOKS_BY_ID[s.bookId] : null;
+    return srcBook
+      ? '<a class="chat-source-chip" href="' + bookPath(srcBook) + '">' + inner + "</a>"
       : '<span class="chat-source-chip">' + inner + "</span>";
   }
 
@@ -2039,7 +2108,7 @@
 
   function rerenderChat() {
     var root = document.getElementById("viewRoot");
-    if (!root || location.hash.replace(/^#\/?/, "").split("/")[0] !== "chat") return;
+    if (!root || location.pathname.replace(/^\/+/, "").split("/")[0] !== "chat") return;
     root.innerHTML = viewChat();
     scrollChatToBottom();
     wireChatView();
@@ -2190,7 +2259,7 @@
       '<div class="help-faq-list">' + HELP_FAQS.map(function (f) {
         return '<details class="help-faq-item"><summary>' + esc(f[0]) + '</summary><p>' + esc(f[1]) + '</p></details>';
       }).join("") + '</div>' +
-      '<p class="help-contact">' + bilingual("अपना प्रश्न यहाँ नहीं मिला?") + ' <a href="#/feedback">' + bilingual("हमें लिखें") + '</a></p>' +
+      '<p class="help-contact">' + bilingual("अपना प्रश्न यहाँ नहीं मिला?") + ' <a href="/feedback">' + bilingual("हमें लिखें") + '</a></p>' +
       '</main>';
   }
 
@@ -2233,11 +2302,11 @@
         '<div class="account-name">' + esc(user.name) + (user.role === "admin" ? ' <span class="admin-role-badge admin">admin</span>' : '') + '</div>' +
         '<div class="account-email">' + esc(user.email) + '</div>' +
         '<button class="btn-outline" id="logoutBtn">लॉगआउट</button>' +
-        (user.role === "admin" ? '<a class="btn-primary admin-settings-link" href="#/admin">एडमिन पैनल खोलें</a>' : '') +
+        (user.role === "admin" ? '<a class="btn-primary admin-settings-link" href="/admin">एडमिन पैनल खोलें</a>' : '') +
         '</div>';
     } else {
       html += '<div class="account-card"><p>अपनी पठन-प्रगति सभी उपकरणों पर सुरक्षित रखने और टिप्पणी करने के लिए साइन इन करें।</p>' +
-        '<a class="btn-primary" href="#/login">साइन इन करें</a> <a class="btn-outline" href="#/signup">खाता बनाएं</a></div>';
+        '<a class="btn-primary" href="/login">साइन इन करें</a> <a class="btn-outline" href="/signup">खाता बनाएं</a></div>';
     }
     html += '</main>';
     return html;
@@ -2260,7 +2329,7 @@
       '<label>पासवर्ड<input type="password" id="loginPassword" autocomplete="current-password" required></label>' +
       '<button type="submit" class="btn-primary">साइन इन करें</button>' +
       '</form>' +
-      '<p class="auth-switch">खाता नहीं है? <a href="#/signup">खाता बनाएं</a></p>' +
+      '<p class="auth-switch">खाता नहीं है? <a href="/signup">खाता बनाएं</a></p>' +
       '</main>';
   }
 
@@ -2275,18 +2344,33 @@
       '<label>पासवर्ड<input type="password" id="signupPassword" autocomplete="new-password" required minlength="4"></label>' +
       '<button type="submit" class="btn-primary">खाता बनाएं</button>' +
       '</form>' +
-      '<p class="auth-switch">पहले से खाता है? <a href="#/login">साइन इन करें</a></p>' +
+      '<p class="auth-switch">पहले से खाता है? <a href="/login">साइन इन करें</a></p>' +
       '</main>';
   }
 
   /* ---------------- लेखक (authors) ---------------- */
+  /* Author names in the data carry their role as a prefix ("अनुवादक— श्रीमुनिलाल गुप्त",
+     "टीकाकार-…", "सम्पादक – …", with assorted dash styles). Split that into a role + a clean
+     name so the role can be shown as a group heading instead of repeated in every name. */
+  var AUTHOR_ROLE_RE = /^\s*(संग्रहकर्ता तथा अनुवादक|सम्पादक तथा संशोधक|संपादक तथा संशोधक|अनुवादक|टीकाकार|ग्रन्थकार|प्रणेता|भाष्यकार|व्याख्याकार|लेखक|सम्पादक|संपादक)\s*(?:[-—–]\s*(.*))?$/;
+  var AUTHOR_ROLE_ORDER = ["लेखक", "ग्रन्थकार", "प्रणेता", "टीकाकार", "भाष्यकार", "व्याख्याकार", "अनुवादक", "सम्पादक", "सम्पादक तथा संशोधक", "संग्रहकर्ता तथा अनुवादक"];
+  function splitAuthorRole(rawName) {
+    var s = String(rawName || "").trim();
+    var m = s.match(AUTHOR_ROLE_RE);
+    if (!m) return { role: "लेखक", name: s };
+    var role = m[1].replace("संपादक", "सम्पादक");
+    return { role: role, name: (m[2] || "").trim() };
+  }
+  function cleanAuthorName(rawName) { return splitAuthorRole(rawName).name || String(rawName || "").trim(); }
+
   function authorAvatarEl(author, size) {
+    var name = cleanAuthorName(author.name);
     if (author.photoPath) {
-      return '<div class="cover cover-' + (size || "md") + ' has-img author-photo"><img src="' + esc(author.photoPath) + '" alt="' + esc(author.name) + '" loading="lazy"></div>';
+      return '<div class="cover cover-' + (size || "md") + ' has-img author-photo"><img src="' + esc(author.photoPath) + '" alt="' + esc(name) + '" loading="lazy"></div>';
     }
-    var g = PALETTE[hashCode(author.name) % PALETTE.length];
+    var g = PALETTE[hashCode(name) % PALETTE.length];
     return '<div class="cover cover-' + (size || "md") + ' author-photo" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' +
-      '<span class="cover-letter">' + esc((author.name || "?").trim().charAt(0)) + '</span></div>';
+      '<span class="cover-letter">' + esc((name || "?").charAt(0)) + '</span></div>';
   }
 
   function viewAuthors() {
@@ -2312,7 +2396,7 @@
   ];
   function adminShell(active, title, actionHtml, bodyHtml) {
     var nav = ADMIN_NAV_ITEMS.map(function (it) {
-      var href = "#/admin" + (it[0] ? "/" + it[0] : "");
+      var href = "/admin" + (it[0] ? "/" + it[0] : "");
       return '<a class="admin-sidenav-link' + (it[0] === active ? " active" : "") + '" href="' + href + '">' +
         '<span class="admin-sidenav-icon">' + it[1] + '</span><span>' + bilingual(it[2], it[3]) + '</span></a>';
     }).join("");
@@ -2320,7 +2404,7 @@
       '<aside class="admin-sidenav">' +
       '<div class="admin-sidenav-brand">🛡️ <span>एडमिन पैनल</span></div>' +
       '<nav>' + nav + '</nav>' +
-      '<a class="admin-sidenav-link admin-sidenav-exit" href="#/">← ' + bilingual("ऐप पर वापस", "Back to app") + '</a>' +
+      '<a class="admin-sidenav-link admin-sidenav-exit" href="/">← ' + bilingual("ऐप पर वापस", "Back to app") + '</a>' +
       '</aside>' +
       '<div class="admin-main">' +
       '<div class="admin-topbar"><h1>' + esc(title) + '</h1><div class="admin-topbar-actions">' + (actionHtml || "") + '</div></div>' +
@@ -2335,7 +2419,7 @@
       }).join("") + '</div>';
     var links = '<div class="admin-nav-grid">' +
       ADMIN_NAV_ITEMS.slice(1).map(function (it) {
-        return '<a class="admin-nav-card" href="#/admin/' + it[0] + '"><span class="admin-nav-icon">' + it[1] + '</span>' +
+        return '<a class="admin-nav-card" href="/admin/' + it[0] + '"><span class="admin-nav-icon">' + it[1] + '</span>' +
           '<span class="admin-nav-label">' + bilingual(it[2], it[3]) + '</span></a>';
       }).join("") + '</div>';
     return adminShell("", bilingual("डैशबोर्ड", "Dashboard"), "", stats + links);
@@ -2354,7 +2438,7 @@
       '<td class="admin-td-chips">' + book.categoryMetas.map(function (c) { return '<span class="chip-sm">' + esc(c.hi) + '</span>'; }).join("") + '</td>' +
       '<td class="admin-td-chips">' + book.tags.slice(0, 3).map(function (t) { return '<span class="chip-sm chip-sm-tag">#' + esc(t) + '</span>'; }).join("") +
       (book.tags.length > 3 ? '<span class="chip-sm">+' + (book.tags.length - 3) + '</span>' : '') + '</td>' +
-      '<td class="admin-td-actions"><a class="btn-outline-sm" href="#/admin/books/edit?file=' + encodeURIComponent(book.file) + '">' + bilingual("संपादित करें", "Edit") + '</a></td>' +
+      '<td class="admin-td-actions"><a class="btn-outline-sm" href="/admin/books/edit?file=' + encodeURIComponent(book.file) + '">' + bilingual("संपादित करें", "Edit") + '</a></td>' +
       '</tr>';
   }
 
@@ -2365,7 +2449,7 @@
     var page = Math.min(adminBooksState.page, totalPages);
     var pageItems = list.slice((page - 1) * ADMIN_PAGE_SIZE, page * ADMIN_PAGE_SIZE);
 
-    var action = '<a class="btn-primary-sm" href="#/admin/books/new">+ ' + bilingual("नई पुस्तक जोड़ें", "Add book") + '</a>';
+    var action = '<a class="btn-primary-sm" href="/admin/books/new">+ ' + bilingual("नई पुस्तक जोड़ें", "Add book") + '</a>';
     var body = '<div class="admin-toolbar"><input id="adminBooksSearch" type="text" class="admin-search-input" placeholder="खोजें…" value="' + esc(q) + '">' +
       '<span class="admin-toolbar-count">' + list.length + ' ' + bilingual("पुस्तकें", "books") + '</span></div>';
     body += '<div class="admin-table-wrap"><table class="admin-table"><thead><tr>' +
@@ -2433,7 +2517,7 @@
     body += '<div class="admin-error" id="bookFormError"></div>';
     body += '<div class="admin-form-actions">' +
       '<button type="submit" class="btn-primary">' + bilingual("सहेजें", "Save") + '</button>' +
-      '<a class="btn-outline" href="#/admin/books">' + bilingual("रद्द करें", "Cancel") + '</a>' +
+      '<a class="btn-outline" href="/admin/books">' + bilingual("रद्द करें", "Cancel") + '</a>' +
       '</div>';
     body += '</form>';
 
@@ -2545,7 +2629,7 @@
           return syncProgressFromServer();
         }).then(function () {
           updateAuthChrome();
-          location.hash = "#/";
+          navigate("/");
         }).catch(function (err) { errEl.textContent = err.message; });
       });
     }
@@ -2563,7 +2647,7 @@
         }).then(function (data) {
           CURRENT_USER = data.user;
           updateAuthChrome();
-          location.hash = "#/";
+          navigate("/");
         }).catch(function (err) { errEl.textContent = err.message; });
       });
     }
@@ -2574,7 +2658,7 @@
         apiPost("/api/auth/logout", {}).catch(function () {}).then(function () {
           CURRENT_USER = null;
           updateAuthChrome();
-          location.hash = "#/";
+          navigate("/");
         });
       });
     }
@@ -2582,11 +2666,22 @@
     var authorsGrid = document.getElementById("authorsGrid");
     if (authorsGrid) {
       apiGet("/api/authors").then(function (data) {
-        var authors = (data.authors || []).filter(function (a) { return a.bookCount > 0; });
-        authorsGrid.innerHTML = authors.length ? authors.map(function (a) {
-          return '<a class="author-card" href="#/author/' + a.id + '">' + authorAvatarEl(a, "md") +
-            '<div class="author-card-name">' + esc(a.name) + '</div>' +
-            '<div class="author-card-count">' + a.bookCount + ' ग्रंथ</div></a>';
+        var groups = {};
+        (data.authors || []).forEach(function (a) {
+          if (!(a.bookCount > 0)) return;
+          var parts = splitAuthorRole(a.name);
+          if (!parts.name) return; // role-only entries ("सम्पादक—") carry no actual name
+          (groups[parts.role] = groups[parts.role] || []).push({ a: a, name: parts.name });
+        });
+        var roles = AUTHOR_ROLE_ORDER.filter(function (r) { return groups[r]; });
+        authorsGrid.classList.remove("authors-grid");
+        authorsGrid.innerHTML = roles.length ? roles.map(function (role) {
+          return '<section class="authors-group"><h2 class="authors-group-title">' + esc(role) + ' <span class="cnt">(' + groups[role].length + ')</span></h2>' +
+            '<div class="authors-grid">' + groups[role].map(function (x) {
+              return '<a class="author-card" href="/author/' + x.a.id + '">' + authorAvatarEl(x.a, "md") +
+                '<div class="author-card-name">' + esc(x.name) + '</div>' +
+                '<div class="author-card-count">' + x.a.bookCount + ' ग्रंथ</div></a>';
+            }).join("") + '</div></section>';
         }).join("") : '<div class="empty-state">कोई लेखक नहीं मिला</div>';
       }).catch(function () { authorsGrid.innerHTML = '<div class="empty-state">लेखक लोड नहीं हो सके</div>'; });
     }
@@ -2598,8 +2693,10 @@
       apiGet("/api/authors/" + authorId).then(function (data) {
         var a = data.author;
         var books = (a.bookFiles || []).map(findByFile).filter(Boolean);
+        var aParts = splitAuthorRole(a.name);
         wrap.innerHTML = '<div class="author-detail-head">' + authorAvatarEl(a, "lg") +
-          '<div><h1>' + esc(a.name) + '</h1>' +
+          '<div><h1>' + esc(aParts.name || a.name) + '</h1>' +
+          (aParts.role !== "लेखक" ? '<div class="author-role-label">' + esc(aParts.role) + '</div>' : '') +
           (a.bio ? '<p class="author-bio">' + esc(a.bio) + '</p>' : '') + '</div></div>' +
           '<div class="page-header"><h2>' + bilingual("इस लेखक के ग्रंथ", "Books by this author") + ' (' + books.length + ')</h2></div>' +
           '<div class="book-grid">' + books.map(bookCard).join("") + '</div>';
@@ -2631,7 +2728,7 @@
         clearTimeout(searchTimer);
         searchTimer = setTimeout(function () {
           adminBooksState.page = 1;
-          location.hash = "#/admin/books" + (adminBooksSearch.value ? "?q=" + encodeURIComponent(adminBooksSearch.value) : "");
+          navigate("/admin/books" + (adminBooksSearch.value ? "?q=" + encodeURIComponent(adminBooksSearch.value) : ""));
         }, 250);
       });
     }
@@ -2675,7 +2772,7 @@
 
         function finish(promise) {
           promise.then(function () {
-            location.hash = "#/admin/books";
+            history.pushState(null, "", "/admin/books");
             location.reload(); // title/publisher overrides live in static files only reloaded at boot
           }).catch(function (err) {
             errEl.textContent = err.message;
@@ -2834,7 +2931,7 @@
       return syncProgressFromServer();
     }).then(function () {
       updateAuthChrome();
-      location.hash = "#/";
+      navigate("/");
     }).catch(function (err) { if (errEl) errEl.textContent = err.message; else toast(err.message); });
   }
 
@@ -2857,13 +2954,47 @@
     if (profileBtn) profileBtn.setAttribute("data-logged-in", isLoggedIn() ? "1" : "0");
   }
 
-  /* ---------------- router ---------------- */
-  function parseHash() {
-    var h = location.hash.replace(/^#\/?/, "");
-    var qIdx = h.indexOf("?");
-    var path = qIdx === -1 ? h : h.slice(0, qIdx);
-    var params = new URLSearchParams(qIdx === -1 ? "" : h.slice(qIdx + 1));
+  /* ---------------- router (real paths via the History API -- crawlable/SEO-friendly,
+     unlike the old #/... hash routes which all collapsed to one URL for search engines) ---------------- */
+  function parsePath() {
+    var path = location.pathname.replace(/^\/+/, "").replace(/\/+$/, "");
+    var params = new URLSearchParams(location.search);
     return { path: path || "", params: params };
+  }
+
+  /* Client-side navigation: pushes the real URL, then re-renders -- the SPA equivalent
+     of what a hashchange used to trigger automatically. */
+  function navigate(path) {
+    history.pushState(null, "", path);
+    onNavigate();
+  }
+
+  /* Old #/library, #/book/12-style links (bookmarked or shared before this app switched
+     from hash routing to real paths) still work: on boot, rewrite the hash straight into
+     the equivalent real path before the first render. */
+  function migrateLegacyHash() {
+    var h = location.hash;
+    if (!h || h.charAt(0) !== "#") return;
+    var p = h.replace(/^#\/?/, "/");
+    try { history.replaceState(null, "", (p || "/") + location.search); } catch (e) {}
+  }
+
+  /* Intercepts clicks on same-document, absolute-path links (e.g. href="/library") so
+     navigation goes through pushState instead of a full page reload. Links to actual
+     files -- book content under "Gita Press Books/..." (a relative href, see bookHref())
+     external URLs, mailto:, etc. -- are all left alone since none of them start with "/". */
+  function wireLinkInterception() {
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a) return;
+      if (a.target && a.target !== "" && a.target !== "_self") return;
+      if (a.hasAttribute("download")) return;
+      var href = a.getAttribute("href");
+      if (!href || href.charAt(0) !== "/") return;
+      e.preventDefault();
+      if (href !== location.pathname + location.search) navigate(href);
+    });
   }
 
   function setActiveNav(path) {
@@ -2877,7 +3008,8 @@
   var lastRenderedPath = null;
 
   function render() {
-    var r = parseHash();
+    migrateLegacyHash();
+    var r = parsePath();
     var root = document.getElementById("viewRoot");
     var body = document.body;
     var top = document.getElementById("subTopbar");
@@ -2891,9 +3023,10 @@
     var samePath = r.path === lastRenderedPath;
 
     if (seg[0] === "read" && seg[1] !== undefined) {
-      var rId = parseInt(seg[1], 10);
+      var rBook = resolveBookParam(seg[1]);
       var rCh = seg[2] !== undefined ? parseInt(seg[2], 10) : null;
-      openReader(rId, rCh);
+      if (!rBook) { navigate("/library"); return; }
+      openReader(rBook.id, rCh);
       setActiveNav(r.path);
       return;
     }
@@ -2904,7 +3037,16 @@
 
     if (seg[0] === "" || seg[0] === "home") { html = viewHome(); }
     else if (seg[0] === "library") { html = viewLibrary(r.params); }
-    else if (seg[0] === "book" && seg[1] !== undefined) { html = viewBook(parseInt(seg[1], 10)); }
+    else if (seg[0] === "book" && seg[1] !== undefined) {
+      var bBook = resolveBookParam(seg[1]);
+      if (!bBook) { html = viewHome(); }
+      else {
+        /* A legacy #/book/12 link lands here with a numeric id in the URL -- swap it for
+           the real slug URL (replace, not push, so it doesn't add a back-button entry). */
+        if (seg[1] !== bBook.slug) { try { history.replaceState(null, "", bookPath(bBook) + location.search); } catch (e) {} }
+        html = viewBook(bBook.id);
+      }
+    }
     else if (seg[0] === "favorites") { html = viewFavorites(); }
     else if (seg[0] === "myreads") { html = viewMyReads(); }
     else if (seg[0] === "notes") { html = viewStub("मेरे ग्रंथ", "My Scriptures"); }
@@ -2914,12 +3056,12 @@
     else if (seg[0] === "feedback") { html = viewFeedback(); }
     else if (seg[0] === "settings") { html = viewSettings(); }
     else if (seg[0] === "subscribe") { html = viewStub("सदस्यता", "Subscribe"); }
-    else if (seg[0] === "login") { if (isLoggedIn()) { location.hash = "#/"; return; } html = viewLogin(); }
-    else if (seg[0] === "signup") { if (isLoggedIn()) { location.hash = "#/"; return; } html = viewSignup(); }
+    else if (seg[0] === "login") { if (isLoggedIn()) { navigate("/"); return; } html = viewLogin(); }
+    else if (seg[0] === "signup") { if (isLoggedIn()) { navigate("/"); return; } html = viewSignup(); }
     else if (seg[0] === "authors") { html = viewAuthors(); }
     else if (seg[0] === "author" && seg[1] !== undefined) { html = viewAuthor(parseInt(seg[1], 10)); }
     else if (seg[0] === "admin") {
-      if (!isAdmin()) { location.hash = "#/login"; return; }
+      if (!isAdmin()) { navigate("/login"); return; }
       if (seg[1] === "books" && seg[2] === "new") html = viewAdminBookForm(null);
       else if (seg[1] === "books" && seg[2] === "edit") html = viewAdminBookForm(r.params.get("file"));
       else if (seg[1] === "books") html = viewAdminBooksList(r.params);
@@ -2976,7 +3118,7 @@
 
     document.querySelectorAll(".hero-chips .chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
-        location.hash = "#/library?cat=all&q=" + encodeURIComponent(chip.getAttribute("data-q"));
+        navigate("/library?cat=all&q=" + encodeURIComponent(chip.getAttribute("data-q")));
       });
     });
 
@@ -2984,7 +3126,7 @@
     if (homeSearch) {
       homeSearch.addEventListener("keydown", function (e) {
         if (e.key === "Enter" && homeSearch.value.trim()) {
-          location.hash = "#/library?cat=all&q=" + encodeURIComponent(homeSearch.value.trim());
+          navigate("/library?cat=all&q=" + encodeURIComponent(homeSearch.value.trim()));
         }
       });
     }
@@ -2995,9 +3137,9 @@
       librarySearch.addEventListener("input", function () {
         clearTimeout(t);
         t = setTimeout(function () {
-          var p = parseHash().params;
+          var p = parsePath().params;
           var cat = p.get("cat") || "all";
-          location.hash = "#/library?cat=" + encodeURIComponent(cat) + (librarySearch.value ? "&q=" + encodeURIComponent(librarySearch.value) : "");
+          navigate("/library?cat=" + encodeURIComponent(cat) + (librarySearch.value ? "&q=" + encodeURIComponent(librarySearch.value) : ""));
         }, 250);
       });
     }
@@ -3016,14 +3158,13 @@
 
     var startBtn = document.getElementById("startReadingBtn");
     if (startBtn) {
-      var bId = parseInt(location.hash.split("/book/")[1], 10);
-      startBtn.addEventListener("click", function () { recordOpen(bId); });
+      var startBtnBook = resolveBookParam(r.path.split("/")[1]);
+      startBtn.addEventListener("click", function () { if (startBtnBook) recordOpen(startBtnBook.id); });
     }
     var shareBtn = document.getElementById("shareBtn");
     if (shareBtn) {
       shareBtn.addEventListener("click", function () {
-        var bId = parseInt(location.hash.split("/book/")[1], 10);
-        var book = BOOKS_BY_ID[bId];
+        var book = resolveBookParam(r.path.split("/")[1]);
         var url = location.href;
         if (navigator.share) navigator.share({ title: book.title, url: url }).catch(function () {});
         else { navigator.clipboard && navigator.clipboard.writeText(url); toast("लिंक कॉपी हो गया"); }
@@ -3162,8 +3303,8 @@
      auto-submitting -- lets the visitor review/edit before it actually goes out. */
   function askAI(q) {
     chatState.pendingInput = q || "";
-    if (location.hash === "#/chat") { rerenderChat(); focusChatInput(); }
-    else location.hash = "#/chat";
+    if (location.pathname === "/chat") { rerenderChat(); focusChatInput(); }
+    else navigate("/chat");
   }
   function focusChatInput() {
     var input = document.getElementById("chatInput");
@@ -3200,7 +3341,7 @@
       '<div class="subscribe-modal-icon">🎧</div>' +
       '<h3>' + bilingual("यह सुविधा सदस्यों के लिए है", "This feature is for subscribers") + '</h3>' +
       '<p>' + bilingual("पुस्तकें सुनने के लिए स्वाध्याय सदस्यता लें।", "Subscribe to Swadhyay to listen to books.") + '</p>' +
-      '<a href="#/subscribe" class="btn-primary" id="subscribeModalCta">' + bilingual("सदस्यता लें", "Subscribe now") + '</a>' +
+      '<a href="/subscribe" class="btn-primary" id="subscribeModalCta">' + bilingual("सदस्यता लें", "Subscribe now") + '</a>' +
       '</div>';
     document.body.appendChild(overlay);
     overlay.addEventListener("click", function (e) { if (e.target === overlay) closeSubscribeModal(); });
@@ -3227,11 +3368,11 @@
       themeSwitch.addEventListener("change", function () { setTheme(themeSwitch.checked ? "dark" : "light"); });
     }
     document.querySelectorAll(".global-search-btn").forEach(function (b) {
-      b.addEventListener("click", function () { location.hash = "#/library"; });
+      b.addEventListener("click", function () { navigate("/library"); });
     });
 
     var profileBtn = document.getElementById("profileBtn");
-    if (profileBtn) profileBtn.addEventListener("click", function () { location.hash = isLoggedIn() ? "#/settings" : "#/login"; });
+    if (profileBtn) profileBtn.addEventListener("click", function () { navigate(isLoggedIn() ? "/settings" : "/login"); });
 
     var bellBtn = document.getElementById("notifyBtn");
     if (bellBtn) bellBtn.addEventListener("click", function () { toast("अभी कोई नई सूचना नहीं है"); });
@@ -3266,10 +3407,11 @@
 
   function onNavigate() { libraryState.page = 1; panchangState.dayOffset = 0; render(); updateTopbarSolidity(); }
 
-  window.addEventListener("hashchange", onNavigate);
+  window.addEventListener("popstate", onNavigate);
   document.addEventListener("DOMContentLoaded", function () {
     seedDemoData();
     initChrome();
+    wireLinkInterception();
     /* Book-meta (categories/tags/author links) and the current session are both fetched
        from the API before the first render, so the home/library pages open already
        showing the real data instead of flashing the single-category fallback and then

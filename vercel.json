@@ -1,6 +1,15 @@
 {
   "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/router" }
+    { "source": "/api/:path*", "destination": "/api/router" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "headers": [
+    {
+      "source": "/assets/:path*",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }

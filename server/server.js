@@ -26,7 +26,9 @@ const MIME = {
   '.ttf': 'font/ttf',
   '.woff': 'font/woff',
   '.woff2': 'font/woff2',
-  '.csv': 'text/csv; charset=utf-8'
+  '.csv': 'text/csv; charset=utf-8',
+  '.xml': 'application/xml; charset=utf-8',
+  '.txt': 'text/plain; charset=utf-8'
 };
 
 function serveStatic(req, res) {
@@ -35,7 +37,20 @@ function serveStatic(req, res) {
   const filePath = path.join(ROOT, p);
   if (!filePath.startsWith(ROOT)) { res.writeHead(403); res.end('Forbidden'); return; }
   fs.readFile(filePath, (err, data) => {
-    if (err) { res.writeHead(404); res.end('Not found: ' + p); return; }
+    if (err) {
+      // SPA fallback: a path with no file extension (e.g. /library, /book/<slug>) is a
+      // client-side route, not a missing file -- serve the app shell so the router can
+      // take over. A path that looks like a real file (has an extension) stays a 404.
+      if (req.method === 'GET' && !path.extname(p)) {
+        fs.readFile(path.join(ROOT, 'index.html'), (err2, indexData) => {
+          if (err2) { res.writeHead(404); res.end('Not found: ' + p); return; }
+          res.writeHead(200, { 'Content-Type': MIME['.html'], 'Cache-Control': 'no-store' });
+          res.end(indexData);
+        });
+        return;
+      }
+      res.writeHead(404); res.end('Not found: ' + p); return;
+    }
     const ext = path.extname(filePath).toLowerCase();
     res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream', 'Cache-Control': 'no-store' });
     res.end(data);

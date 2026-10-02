@@ -187,7 +187,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 
 /* ---------- hero ---------- */
 .hero-banner {
-  background-image: url('assets/hero_banner_light.png');
+  background-image: url('assets/hero_banner_light.webp');
   background-size: cover; background-position: center;
   min-height: 380px; display: flex; align-items: center; position: relative;
 }
@@ -648,8 +648,8 @@ body.is-home .cover-mark { font-size: max(1rem, calc(.8rem * 1.12)); }
   body { padding-bottom: 64px; }
   .content-pad { padding: 1rem 1rem 3rem; }
   .hero-overlay { margin: 0 1rem; max-width: none; }
-  .hero-banner { background-image: url('assets/hero_banner_mobile_light.png'); }
-  :root[data-theme="dark"] .hero-banner { background-image: url('assets/hero_banner_mobile_dark.png'); }
+  .hero-banner { background-image: url('assets/hero_banner_mobile_light.webp'); }
+  :root[data-theme="dark"] .hero-banner { background-image: url('assets/hero_banner_mobile_dark.webp'); }
   /* clamp(), not a fixed size, so the title shrinks to fit its one line (white-space:
      nowrap, set above) at any phone width instead of wrapping or overflowing. */
   body.is-home .hero-title { font-size: clamp(1rem, 6.3vw, calc(1.4rem * 1.12)); }
@@ -790,6 +790,9 @@ body.reader-active { overflow: hidden; }
   background: var(--surface-2); color: var(--ink); font-size: .95rem; cursor: pointer;
 }
 #readerFontVal { font-size: .9rem; min-width: 44px; text-align: center; }
+.reader-lineheight-ctl { display: flex; align-items: center; gap: .8rem; }
+.reader-lineheight-ctl input[type="range"] { flex: 1; accent-color: var(--accent); }
+#readerLineHeightVal { font-size: .9rem; min-width: 44px; text-align: center; }
 
 .reader-bottomnav {
   flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
@@ -966,6 +969,11 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
 .author-card { display: flex; flex-direction: column; align-items: center; gap: .5rem; text-align: center; text-decoration: none; }
 .author-card-name { color: var(--ink); font-weight: 600; font-size: .95rem; }
 .author-card-count { color: var(--muted); font-size: .8rem; }
+.authors-group { margin-bottom: 2rem; }
+.authors-group-title { font-size: 1.1rem; color: var(--accent-dark); margin: 0 0 .9rem; border-bottom: 1px solid var(--rule); padding-bottom: .4rem; }
+.authors-group-title .cnt { color: var(--muted); font-size: .85rem; font-weight: normal; }
+:root[data-theme="dark"] .authors-group-title { color: #ffb199; }
+.author-role-label { color: var(--gold); font-size: .9rem; margin-top: .2rem; }
 .author-detail-head { display: flex; gap: 1.4rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
 .author-detail-head h1 { margin: 0 0 .4rem; }
 .author-bio { color: var(--ink); line-height: 1.6; max-width: 640px; }

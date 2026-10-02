@@ -3,11 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Pins every relative URL (CSS/JS/assets/book-content hrefs, fetch() calls) to the
+     site root, regardless of the current deep-linked path (e.g. /book/<slug>) -- without
+     this, a hard reload on any non-root route would 404 on its own stylesheet/scripts. -->
+<base href="/">
 <title>Swadhyay | स्वाध्याय — A Digital Library of Sanatan Wisdom</title>
-<link rel="icon" href="assets/logo.png">
+<meta name="description" content="स्वाध्याय — गीता प्रेस एवं श्री रामकृष्ण मठ के सैकड़ों धार्मिक ग्रंथ, गीता, उपनिषद्, पुराण, स्तोत्र एवं भजन निःशुल्क ऑनलाइन पढ़ें। Read hundreds of Gita Press and Ramakrishna Math scriptures — Gita, Upanishads, Puranas, Stotras and Bhajans — free online.">
+<meta name="keywords" content="गीता प्रेस, स्वाध्याय, गीता, उपनिषद्, पुराण, स्तोत्र, रामकृष्ण मठ, Gita Press, Swadhyay, Hindu scriptures, Sanatan Dharma, digital library">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#a51512">
+<link rel="canonical" href="https://gitapress-app.vercel.app/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="स्वाध्याय | Swadhyay">
+<meta property="og:title" content="Swadhyay | स्वाध्याय — A Digital Library of Sanatan Wisdom">
+<meta property="og:description" content="गीता प्रेस एवं श्री रामकृष्ण मठ के सैकड़ों धार्मिक ग्रंथ निःशुल्क ऑनलाइन पढ़ें।">
+<meta property="og:url" content="https://gitapress-app.vercel.app/">
+<meta property="og:image" content="https://gitapress-app.vercel.app/assets/hero_banner_light.webp">
+<meta property="og:locale" content="hi_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Swadhyay | स्वाध्याय — A Digital Library of Sanatan Wisdom">
+<meta name="twitter:description" content="गीता प्रेस एवं श्री रामकृष्ण मठ के सैकड़ों धार्मिक ग्रंथ निःशुल्क ऑनलाइन पढ़ें।">
+<meta name="twitter:image" content="https://gitapress-app.vercel.app/assets/hero_banner_light.webp">
+
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="stylesheet" href="swadhyay.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "स्वाध्याय | Swadhyay",
+  "alternateName": "Swadhyay Digital Library",
+  "url": "https://gitapress-app.vercel.app/",
+  "description": "गीता प्रेस एवं श्री रामकृष्ण मठ के सैकड़ों धार्मिक ग्रंथ निःशुल्क ऑनलाइन पढ़ें।",
+  "inLanguage": "hi",
+  "publisher": { "@type": "Organization", "name": "Swadhyay" }
+}
+</script>
 </head>
 <body>
+<noscript>इस वेबसाइट को देखने के लिए कृपया अपने ब्राउज़र में JavaScript सक्षम करें। Please enable JavaScript to view this website.</noscript>
 <div class="app-shell">
 
   <div class="sidebar-scrim" id="sidebarScrim"></div>
@@ -17,20 +54,20 @@
       <span class="sidebar-wordmark">स्वाध्याय</span>
     </div>
     <nav class="sidebar-nav">
-      <a class="side-link" data-nav="home" href="#/"><span class="ic">&#8962;</span><span>होम</span></a>
-      <a class="side-link" data-nav="library" href="#/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
-      <a class="side-link" data-nav="favorites" href="#/favorites"><span class="ic">&#9825;</span><span>पसंदीदा</span></a>
-      <a class="side-link" data-nav="myreads" href="#/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
-      <a class="side-link" data-nav="authors" href="#/authors"><span class="ic">&#9997;&#65039;</span><span>लेखक</span></a>
+      <a class="side-link" data-nav="home" href="/"><span class="ic">&#8962;</span><span>होम</span></a>
+      <a class="side-link" data-nav="library" href="/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
+      <a class="side-link" data-nav="favorites" href="/favorites"><span class="ic">&#9825;</span><span>पसंदीदा</span></a>
+      <a class="side-link" data-nav="myreads" href="/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
+      <a class="side-link" data-nav="authors" href="/authors"><span class="ic">&#9997;&#65039;</span><span>लेखक</span></a>
       <div class="sidebar-divider"></div>
-      <a class="side-link" data-nav="chat" href="#/chat"><span class="ic sidebar-om">&#2384;</span><span>प्रश्नोत्तर</span></a>
-      <a class="side-link" data-nav="panchang" href="#/panchang"><span class="ic">&#128197;</span><span>पंचांग</span></a>
-      <a class="side-link admin-only is-hidden" data-nav="admin" href="#/admin"><span class="ic">&#128737;&#65039;</span><span>एडमिन पैनल</span></a>
+      <a class="side-link" data-nav="chat" href="/chat"><span class="ic sidebar-om">&#2384;</span><span>प्रश्नोत्तर</span></a>
+      <a class="side-link" data-nav="panchang" href="/panchang"><span class="ic">&#128197;</span><span>पंचांग</span></a>
+      <a class="side-link admin-only is-hidden" data-nav="admin" href="/admin"><span class="ic">&#128737;&#65039;</span><span>एडमिन पैनल</span></a>
     </nav>
     <nav class="sidebar-nav sidebar-nav-bottom">
-      <a class="side-link" data-nav="settings" href="#/settings"><span class="ic">&#9881;</span><span>सेटिंग्स</span></a>
-      <a class="side-link" data-nav="help" href="#/help"><span class="ic">&#10067;</span><span>सहायता</span></a>
-      <a class="side-link" data-nav="feedback" href="#/feedback"><span class="ic">&#9999;</span><span>विषय सुधार</span></a>
+      <a class="side-link" data-nav="settings" href="/settings"><span class="ic">&#9881;</span><span>सेटिंग्स</span></a>
+      <a class="side-link" data-nav="help" href="/help"><span class="ic">&#10067;</span><span>सहायता</span></a>
+      <a class="side-link" data-nav="feedback" href="/feedback"><span class="ic">&#9999;</span><span>विषय सुधार</span></a>
     </nav>
   </aside>
 
@@ -60,15 +97,15 @@
 </div>
 
 <nav class="bottom-nav">
-  <a class="side-link" data-nav="home" href="#/"><span class="ic">&#8962;</span><span>होम</span></a>
-  <a class="side-link" data-nav="library" href="#/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
-  <a class="side-link" data-nav="myreads" href="#/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
-  <a class="side-link" data-nav="chat" href="#/chat"><span class="ic sidebar-om">&#2384;</span><span>प्रश्नोत्तर</span></a>
-  <a class="side-link" data-nav="panchang" href="#/panchang"><span class="ic">&#128197;</span><span>पंचांग</span></a>
+  <a class="side-link" data-nav="home" href="/"><span class="ic">&#8962;</span><span>होम</span></a>
+  <a class="side-link" data-nav="library" href="/library"><span class="ic">&#128214;</span><span>पुस्तकालय</span></a>
+  <a class="side-link" data-nav="myreads" href="/myreads"><span class="ic">&#128337;</span><span>अध्ययन</span></a>
+  <a class="side-link" data-nav="chat" href="/chat"><span class="ic sidebar-om">&#2384;</span><span>प्रश्नोत्तर</span></a>
+  <a class="side-link" data-nav="panchang" href="/panchang"><span class="ic">&#128197;</span><span>पंचांग</span></a>
 </nav>
 
 <script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="swadhyay-data.js"></script>
-<script src="swadhyay-app.js"></script>
+<script src="swadhyay-data.js" defer></script>
+<script src="swadhyay-app.js" defer></script>
 </body>
 </html>

@@ -260,7 +260,7 @@ p.Shlok-Number {
 }
 p.Page-Break {
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.167em;
 	font-style:normal;
@@ -347,7 +347,7 @@ p.Footnotes-Right {
 p.ChapterEnd1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:normal;
@@ -379,7 +379,7 @@ p.Subject {
 }
 p.Titel-Page---Shri-Hari {
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.167em;
 	font-style:normal;
@@ -2015,7 +2015,7 @@ span.char-style-override-100 {
 	font-weight:normal;
 }
 span.char-style-override-101 {
-	color:darkorange;
+	color:#b33c00;
 	font-size:0.875em;
 }
 span.char-style-override-102 {
@@ -2060,7 +2060,7 @@ p.AA {
 p.Page-Break-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.167em;
 	font-style:normal;
@@ -3346,7 +3346,7 @@ p.Footnotes-Right-13 {
 p.Chapter-End-Text {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3500,7 +3500,7 @@ p.OM {
 p.Chapter-End-Text-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3549,7 +3549,7 @@ p.Shlok-Color-2-New {
 p.Chapter-End-Text-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3600,7 +3600,7 @@ p.Shlok-Color-2-1 {
 p.Chapter-End-Text-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3651,7 +3651,7 @@ p.Shlok-Color-2-2 {
 p.Chapter-End-Text-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3702,7 +3702,7 @@ p.Sub-Heading-2-1 {
 p.Chapter-End-Text-5 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3735,7 +3735,7 @@ p.Shlok-Color-2-3 {
 p.Chapter-End-Text-6 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3804,7 +3804,7 @@ p.Footer-Chopai-5 {
 p.Chapter-End-Text-7 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3855,7 +3855,7 @@ p.Shlok-Color-2-5 {
 p.Chapter-End-Text-8 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3888,7 +3888,7 @@ p.Shlok-Color-2-6 {
 p.Chapter-End-Text-9 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3939,7 +3939,7 @@ p.Shlok-Color-2-7 {
 p.Chapter-End-Text-10 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -3972,7 +3972,7 @@ p.Shlok-Color-2-8 {
 p.Chapter-End-Text-11 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4057,7 +4057,7 @@ p.Shlok-Color-2-10 {
 p.Chapter-End-Text-12 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4126,7 +4126,7 @@ p.Footer-Chopai-11 {
 p.Chapter-End-Text-13 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4177,7 +4177,7 @@ p.Shlok-Color-2-12 {
 p.Chapter-End-Text-14 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4210,7 +4210,7 @@ p.Shlok-Color-2-13 {
 p.Chapter-End-Text-15 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4243,7 +4243,7 @@ p.Shlok-Color-2-14 {
 p.Chapter-End-Text-16 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4292,7 +4292,7 @@ p.Shlok-Color-2-15 {
 p.Chapter-End-Text-17 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.25em;
 	font-style:italic;
@@ -4367,7 +4367,7 @@ p.Book-Name {
 p.Shrihari {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.167em;
 	font-style:normal;
@@ -4938,7 +4938,7 @@ p.Title-page---sub-title {
 p.Main-Heading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:2.5em;
 	font-style:normal;
@@ -5381,7 +5381,7 @@ p.xfootnote {
 p.x-Main-Heading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:2.5em;
 	font-style:normal;
@@ -6772,7 +6772,7 @@ p.Pad-sankhya {
 }
 p.Main-Heading---Book-Name-etc- {
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:2.083em;
 	font-style:normal;
@@ -6788,7 +6788,7 @@ p.Main-Heading---Book-Name-etc- {
 }
 p.Title-Page--caption {
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.333em;
 	font-style:normal;
@@ -6995,7 +6995,7 @@ p.Text- {
 }
 p.Chapter-end-Text {
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.167em;
 	font-style:italic;
@@ -7066,7 +7066,7 @@ p.Sub-Heading-A {
 p.OM-Namah {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.167em;
 	font-style:normal;
@@ -7290,7 +7290,7 @@ p.Hindi-Chaptter-Heading {
 }
 p.Shlok-new {
 	-epub-ruby-position:over;
-	color:darkorange;
+	color:#b33c00;
 	font-family:ChanakyaUni, serif;
 	font-size:1.333em;
 	font-style:normal;
