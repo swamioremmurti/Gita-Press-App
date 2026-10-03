@@ -429,11 +429,21 @@
   
   };
 
+  /* The data file stores several people in one field separated by "; ". */
+  function splitPeople(s) {
+    return String(s || "").split(";").map(function (x) { return x.trim(); }).filter(Boolean);
+  }
+
   var seenBookSlugs = {};
   var BOOKS = (window.SWADHYAY_BOOKS_RAW || []).map(function (b, i) {
     var cat = CATEGORY_BY_KEY[b.category] || { key: b.category, hi: b.category, en: b.category, icon: "📖" };
     var title = TITLE_OVERRIDES[b.file] || titleFromFile(b.file);
-    var author = (b.author && b.author.trim()) ? b.author.trim() : "गीता प्रेस, गोरखपुर";
+    var authors = splitPeople(b.author), tikakars = splitPeople(b.tikakar), translators = splitPeople(b.translator);
+    var publisher = (b.publisher || "").trim();
+    /* `author` is the single display line used on cards/search/blurb: whoever is credited
+       first, falling back to the publisher when the book names nobody. */
+    var author = authors.join(", ") || tikakars.join(", ") || translators.join(", ") || publisher || "गीता प्रेस, गोरखपुर";
+    var everyone = authors.concat(tikakars, translators, publisher ? [publisher] : []).join(" ");
     var baseSlug = slugify(b.file.replace(/\.html$/i, ""));
     var slug = baseSlug, dupeN = 2;
     while (seenBookSlugs[slug]) { slug = baseSlug + "-" + dupeN; dupeN++; }
@@ -446,7 +456,12 @@
       title: title,
       titleRoman: normalizeRoman(devanagariToRoman(title)),
       author: author,
-      authorRoman: normalizeRoman(devanagariToRoman(author)),
+      authors: authors,
+      tikakars: tikakars,
+      translators: translators,
+      publisher: publisher,
+      people: everyone,
+      authorRoman: normalizeRoman(devanagariToRoman(everyone)),
       category: b.category,
       categoryMeta: cat,
       /* Multi-category/tags/author-link support: these start as a one-item fallback built
@@ -460,7 +475,6 @@
       categoryKeys: [b.category],
       categoryMetas: [cat],
       tags: [],
-      authorId: null,
       sizeKB: b.sizeKB || 10,
       minutes: estMinutes(b.sizeKB || 10),
       paletteIdx: hashCode(title) % PALETTE.length,
@@ -478,6 +492,43 @@
     return BOOKS_BY_FILE[file] || null;
   }
 
+  /* ---------------- people: built straight from the four book fields ----------------
+     Everyone named as author / tikakar / translator / publisher, with the books they
+     appear in under each role. The authors page and author pages render from this, so
+     there is no server round trip. */
+  var PERSON_ROLES = [
+    { key: "authors", label: "लेखक" },
+    { key: "tikakars", label: "टीकाकार" },
+    { key: "translators", label: "अनुवादक" },
+    { key: "publishers", label: "प्रकाशक" }
+  ];
+  var PEOPLE = [];
+  var PEOPLE_BY_NAME = {};
+  var PEOPLE_BY_SLUG = {};
+  (function buildPeople() {
+    function person(name) {
+      if (PEOPLE_BY_NAME[name]) return PEOPLE_BY_NAME[name];
+      var base = slugify(name), slug = base, n = 2;
+      while (PEOPLE_BY_SLUG[slug]) { slug = base + "-" + n; n++; }
+      var p = { name: name, slug: slug, roles: { authors: [], tikakars: [], translators: [], publishers: [] } };
+      PEOPLE_BY_NAME[name] = p; PEOPLE_BY_SLUG[slug] = p; PEOPLE.push(p);
+      return p;
+    }
+    BOOKS.forEach(function (book) {
+      book.authors.forEach(function (n) { person(n).roles.authors.push(book); });
+      book.tikakars.forEach(function (n) { person(n).roles.tikakars.push(book); });
+      book.translators.forEach(function (n) { person(n).roles.translators.push(book); });
+      if (book.publisher) person(book.publisher).roles.publishers.push(book);
+    });
+  })();
+  function personPath(name) {
+    var p = PEOPLE_BY_NAME[name];
+    return "/author/" + encodeURIComponent(p ? p.slug : slugify(name));
+  }
+  function personLink(name) {
+    return '<a href="' + personPath(name) + '">' + esc(name) + '</a>';
+  }
+
   /* Resolves a /book/:x or /read/:x URL segment to a book: tries the SEO slug first,
      then falls back to a bare numeric id so old #/book/12-style links (bookmarked or
      shared before this app switched to slugs) keep working. */
@@ -492,7 +543,8 @@
     return "/read/" + encodeURIComponent(book.slug) + (chapterIdx !== undefined && chapterIdx !== null ? "/" + chapterIdx : "");
   }
 
-  /** Overlay the server's per-book categories/tags/author onto BOOKS in place. */
+  /** Overlay the server's per-book categories/tags onto BOOKS in place. (Author, tikakar,
+   *  translator and publisher now come from the book data itself, not from the server.) */
   function applyBookMetaOverrides(metaMap) {
     Object.keys(metaMap || {}).forEach(function (file) {
       var book = BOOKS_BY_FILE[file];
@@ -505,9 +557,6 @@
         book.categoryMeta = book.categoryMetas[0];
       }
       book.tags = (m.tags || []).map(function (t) { return t.label; });
-      book.authorId = m.author ? m.author.id : null;
-      if (m.author && m.author.name) { book.author = m.author.name; book.authorRoman = normalizeRoman(devanagariToRoman(m.author.name)); }
-      if (m.author && m.author.photoPath) book.authorPhoto = m.author.photoPath;
     });
   }
 
@@ -779,11 +828,14 @@
   ];
 
   var POPULAR_AUTHOR_HINTS = ["हनुमानप्रसाद", "शंकराचार्य", "विवेकानन्द", "तुलसीदास"];
+  /* The credited person (as an author, else in any role) whose name contains `hint`. */
   function findAuthorLabel(hint) {
-    for (var i = 0; i < BOOKS.length; i++) {
-      if (BOOKS[i].author && BOOKS[i].author.indexOf(hint) !== -1) return BOOKS[i].author;
-    }
-    return hint;
+    var best = null;
+    PEOPLE.forEach(function (p) {
+      if (p.name.indexOf(hint) === -1) return;
+      if (!best || p.roles.authors.length > best.roles.authors.length) best = p;
+    });
+    return best ? best.name : hint;
   }
 
   /* ---------------- rendering helpers ---------------- */
@@ -977,8 +1029,10 @@
       '<div class="authors-row">' + POPULAR_AUTHOR_HINTS.map(function (hint, i) {
         var label = findAuthorLabel(hint);
         var g = PALETTE[i % PALETTE.length];
-        return '<a class="author-tile" href="/library?q=' + encodeURIComponent(hint) + '">' +
-          '<span class="author-avatar" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' + esc(label.charAt(0)) + '</span>' +
+        return '<a class="author-tile" href="' + (PEOPLE_BY_NAME[label] ? personPath(label) : '/library?q=' + encodeURIComponent(hint)) + '">' +
+          (AUTHOR_PHOTOS[label]
+            ? '<span class="author-avatar author-avatar-photo" style="background-image:url(\'' + AUTHOR_PHOTOS[label] + '\')"></span>'
+            : '<span class="author-avatar" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' + esc(label.charAt(0)) + '</span>') +
           '<span class="author-name">' + esc(label) + '</span></a>';
       }).join("") + '</div></section>';
   }
@@ -1040,7 +1094,7 @@
   function matchesQuery(book, q) {
     if (!q) return true;
     var ql = q.toLowerCase();
-    if (book.title.toLowerCase().indexOf(ql) !== -1 || book.author.toLowerCase().indexOf(ql) !== -1) return true;
+    if (book.title.toLowerCase().indexOf(ql) !== -1 || book.people.toLowerCase().indexOf(ql) !== -1) return true;
     if (book.tags.some(function (t) { return t.toLowerCase().indexOf(ql) !== -1; })) return true;
     // Roman/English-script fallback (e.g. "krishna" matching "कृष्ण"), and equally useful the
     // other way round for a Devanagari query with slightly different spelling conventions.
@@ -1945,9 +1999,12 @@
     html += '<h1>' + esc(book.title) + '</h1>';
     html += '<button class="btn-listen" id="listenBtn"><span class="btn-listen-icon">🎧</span> ' +
       bilingual("इस पुस्तक को सुनें", "Listen to this book") + '</button>';
-    html += '<div class="meta-line">👤 ' + (book.authorId
-      ? '<a href="/author/' + book.authorId + '">' + esc(book.author) + '</a>'
-      : esc(book.author)) + '</div>';
+    [["👤", "लेखक", book.authors], ["📝", "टीकाकार", book.tikakars], ["🔤", "अनुवादक", book.translators],
+     ["🏛️", "प्रकाशक", book.publisher ? [book.publisher] : []]].forEach(function (row) {
+      if (!row[2].length) return;
+      html += '<div class="meta-line">' + row[0] + ' <span class="meta-label">' + row[1] + ':</span> ' +
+        row[2].map(personLink).join(", ") + '</div>';
+    });
     html += '<div class="meta-line">📖 हिन्दी</div>';
     html += '<div class="meta-line">⏱️ अनुमानित पठन समय ' + formatDuration(book.minutes) + '</div>';
     html += '<div class="tag-row">' + book.categoryMetas.map(function (cm) {
@@ -2349,40 +2406,66 @@
   }
 
   /* ---------------- लेखक (authors) ---------------- */
-  /* Author names in the data carry their role as a prefix ("अनुवादक— श्रीमुनिलाल गुप्त",
-     "टीकाकार-…", "सम्पादक – …", with assorted dash styles). Split that into a role + a clean
-     name so the role can be shown as a group heading instead of repeated in every name. */
-  var AUTHOR_ROLE_RE = /^\s*(संग्रहकर्ता तथा अनुवादक|सम्पादक तथा संशोधक|संपादक तथा संशोधक|अनुवादक|टीकाकार|ग्रन्थकार|प्रणेता|भाष्यकार|व्याख्याकार|लेखक|सम्पादक|संपादक)\s*(?:[-—–]\s*(.*))?$/;
-  var AUTHOR_ROLE_ORDER = ["लेखक", "ग्रन्थकार", "प्रणेता", "टीकाकार", "भाष्यकार", "व्याख्याकार", "अनुवादक", "सम्पादक", "सम्पादक तथा संशोधक", "संग्रहकर्ता तथा अनुवादक"];
-  function splitAuthorRole(rawName) {
-    var s = String(rawName || "").trim();
-    var m = s.match(AUTHOR_ROLE_RE);
-    if (!m) return { role: "लेखक", name: s };
-    var role = m[1].replace("संपादक", "सम्पादक");
-    return { role: role, name: (m[2] || "").trim() };
-  }
-  function cleanAuthorName(rawName) { return splitAuthorRole(rawName).name || String(rawName || "").trim(); }
+  /* Author portraits, keyed by the exact name used in the book data. */
+  var AUTHOR_PHOTOS = {
+    "महर्षि वेदव्यास": "assets/authors/ved-vyas.webp",
+    "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार": "assets/authors/hanumanprasad-poddar.webp",
+    "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज": "assets/authors/ramsukhdas.webp",
+    "श्रद्धेय श्रीजयदयालजी गोयन्दका": "assets/authors/jaydayal-goyandka.webp",
+    "श्रीगोस्वामी तुलसीदासजी": "assets/authors/tulsidas.webp",
+    "स्वामी शरणानन्द जी महाराज": "assets/authors/sharananand.webp"
+  };
 
   function authorAvatarEl(author, size) {
-    var name = cleanAuthorName(author.name);
-    if (author.photoPath) {
-      return '<div class="cover cover-' + (size || "md") + ' has-img author-photo"><img src="' + esc(author.photoPath) + '" alt="' + esc(name) + '" loading="lazy"></div>';
+    var name = String(author.name || "").trim();
+    var photo = author.photoPath || AUTHOR_PHOTOS[name];
+    if (photo) {
+      return '<div class="cover cover-' + (size || "md") + ' has-img author-photo"><img src="' + esc(photo) + '" alt="' + esc(name) + '" loading="lazy"></div>';
     }
     var g = PALETTE[hashCode(name) % PALETTE.length];
     return '<div class="cover cover-' + (size || "md") + ' author-photo" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' +
       '<span class="cover-letter">' + esc((name || "?").charAt(0)) + '</span></div>';
   }
 
+  /* Rendered synchronously from the four book fields (see PEOPLE) -- no network call. */
   function viewAuthors() {
+    var groups = PERSON_ROLES.map(function (role) {
+      var list = PEOPLE.filter(function (p) { return p.roles[role.key].length; }).sort(function (a, b) {
+        return b.roles[role.key].length - a.roles[role.key].length || a.name.localeCompare(b.name, "hi");
+      });
+      if (!list.length) return "";
+      return '<section class="authors-group"><h2 class="authors-group-title">' + esc(role.label) +
+        ' <span class="cnt">(' + list.length + ')</span></h2><div class="authors-grid">' +
+        list.map(function (p) {
+          return '<a class="author-card" href="' + personPath(p.name) + '">' + authorAvatarEl({ name: p.name }, "md") +
+            '<div class="author-card-name">' + esc(p.name) + '</div>' +
+            '<div class="author-card-count">' + p.roles[role.key].length + ' ग्रंथ</div></a>';
+        }).join("") + '</div></section>';
+    }).join("");
     return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("लेखक", "Authors") + '</h1></div>' +
-      '<div id="authorsGrid" class="authors-grid"><div class="empty-state small">लोड हो रहा है…</div></div></main>';
+      (groups || '<div class="empty-state">कोई लेखक नहीं मिला</div>') + '</main>';
   }
 
-  function viewAuthor(id) {
-    return '<main class="content-pad author-page" id="authorPage" data-author="' + id + '">' +
-      '<a href="javascript:history.back()" class="back-link">← वापस</a>' +
-      '<div id="authorDetailWrap"><div class="empty-state small">लोड हो रहा है…</div></div>' +
-      '</main>';
+  function resolvePerson(x) {
+    if (x === undefined || x === null) return null;
+    var decoded;
+    try { decoded = decodeURIComponent(x); } catch (e) { decoded = x; }
+    return PEOPLE_BY_SLUG[decoded] || null;
+  }
+
+  function viewAuthor(p) {
+    var chips = PERSON_ROLES.filter(function (r) { return p.roles[r.key].length; }).map(function (r) {
+      return '<span class="tag">' + esc(r.label) + ' · ' + p.roles[r.key].length + ' ग्रंथ</span>';
+    }).join("");
+    var sections = PERSON_ROLES.filter(function (r) { return p.roles[r.key].length; }).map(function (r) {
+      return '<div class="page-header"><h2>' + esc(r.label) + ' के रूप में (' + p.roles[r.key].length + ')</h2></div>' +
+        '<div class="book-grid">' + p.roles[r.key].map(bookCard).join("") + '</div>';
+    }).join("");
+    return '<main class="content-pad author-page">' +
+      '<a href="/authors" class="back-link">← सभी लेखक</a>' +
+      '<div class="author-detail-head">' + authorAvatarEl({ name: p.name }, "lg") +
+      '<div><h1>' + esc(p.name) + '</h1><div class="tag-row">' + chips + '</div></div></div>' +
+      sections + '</main>';
   }
 
   /* ---------------- एडमिन पैनल ---------------- */
@@ -2485,13 +2568,16 @@
     var body = '<form class="admin-form" id="bookForm" data-file="' + (isEdit ? esc(file) : "") + '">';
     body += '<div class="admin-form-section"><h3>' + bilingual("मूल जानकारी", "Basic info") + '</h3>';
     body += '<label class="admin-form-field">' + bilingual("शीर्षक", "Title") + '<input type="text" id="bookTitle" value="' + (isEdit ? esc(book.title) : "") + '" required></label>';
-    body += '<label class="admin-form-field">' + bilingual("लेखक", "Author") +
-      '<select id="bookAuthorSelect"><option value="">लोड हो रहा है…</option></select></label>';
-    body += '<div class="admin-form-field admin-new-author-field is-hidden" id="bookNewAuthorWrap">' +
-      '<label>' + bilingual("नये लेखक का नाम", "New author's name") + '<input type="text" id="bookNewAuthorName"></label></div>';
+    [["bookAuthor", "लेखक", "Author", "authors"], ["bookTikakar", "टीकाकार", "Tikakar", "tikakars"],
+     ["bookTranslator", "अनुवादक", "Translator", "translators"]].forEach(function (f) {
+      body += '<label class="admin-form-field">' + bilingual(f[1], f[2]) + ' <small>(' + bilingual("एक से अधिक हों तो ; से अलग करें", "separate several with ;") + ')</small>' +
+        '<input type="text" id="' + f[0] + '" value="' + (isEdit ? esc(book[f[3]].join("; ")) : "") + '"></label>';
+    });
+    body += '<label class="admin-form-field">' + bilingual("प्रकाशक", "Publisher") +
+      '<input type="text" id="bookPublisherName" value="' + (isEdit ? esc(book.publisher) : "") + '"></label>';
     if (!isEdit) {
-      body += '<div class="admin-form-field"><label><input type="radio" name="bookPublisher" value="gitapress" checked> गीता प्रेस</label> ' +
-        '<label><input type="radio" name="bookPublisher" value="other"> अन्य प्रकाशक</label></div>';
+      body += '<div class="admin-form-field"><label><input type="radio" name="bookPublisherKind" value="gitapress" checked> गीता प्रेस प्रकाशन</label> ' +
+        '<label><input type="radio" name="bookPublisherKind" value="other"> अन्य प्रकाशक</label></div>';
     } else {
       body += '<label class="admin-form-field"><input type="checkbox" id="bookIsGitaPress"' + (book.isGitaPress ? " checked" : "") + '> ' +
         bilingual("गीता प्रेस प्रकाशन है", "Published by Gita Press") + '</label>';
@@ -2663,47 +2749,6 @@
       });
     }
 
-    var authorsGrid = document.getElementById("authorsGrid");
-    if (authorsGrid) {
-      apiGet("/api/authors").then(function (data) {
-        var groups = {};
-        (data.authors || []).forEach(function (a) {
-          if (!(a.bookCount > 0)) return;
-          var parts = splitAuthorRole(a.name);
-          if (!parts.name) return; // role-only entries ("सम्पादक—") carry no actual name
-          (groups[parts.role] = groups[parts.role] || []).push({ a: a, name: parts.name });
-        });
-        var roles = AUTHOR_ROLE_ORDER.filter(function (r) { return groups[r]; });
-        authorsGrid.classList.remove("authors-grid");
-        authorsGrid.innerHTML = roles.length ? roles.map(function (role) {
-          return '<section class="authors-group"><h2 class="authors-group-title">' + esc(role) + ' <span class="cnt">(' + groups[role].length + ')</span></h2>' +
-            '<div class="authors-grid">' + groups[role].map(function (x) {
-              return '<a class="author-card" href="/author/' + x.a.id + '">' + authorAvatarEl(x.a, "md") +
-                '<div class="author-card-name">' + esc(x.name) + '</div>' +
-                '<div class="author-card-count">' + x.a.bookCount + ' ग्रंथ</div></a>';
-            }).join("") + '</div></section>';
-        }).join("") : '<div class="empty-state">कोई लेखक नहीं मिला</div>';
-      }).catch(function () { authorsGrid.innerHTML = '<div class="empty-state">लेखक लोड नहीं हो सके</div>'; });
-    }
-
-    var authorPage = document.getElementById("authorPage");
-    if (authorPage) {
-      var authorId = authorPage.getAttribute("data-author");
-      var wrap = document.getElementById("authorDetailWrap");
-      apiGet("/api/authors/" + authorId).then(function (data) {
-        var a = data.author;
-        var books = (a.bookFiles || []).map(findByFile).filter(Boolean);
-        var aParts = splitAuthorRole(a.name);
-        wrap.innerHTML = '<div class="author-detail-head">' + authorAvatarEl(a, "lg") +
-          '<div><h1>' + esc(aParts.name || a.name) + '</h1>' +
-          (aParts.role !== "लेखक" ? '<div class="author-role-label">' + esc(aParts.role) + '</div>' : '') +
-          (a.bio ? '<p class="author-bio">' + esc(a.bio) + '</p>' : '') + '</div></div>' +
-          '<div class="page-header"><h2>' + bilingual("इस लेखक के ग्रंथ", "Books by this author") + ' (' + books.length + ')</h2></div>' +
-          '<div class="book-grid">' + books.map(bookCard).join("") + '</div>';
-        wireView(r); // re-wire the newly-inserted book cards' favorite buttons
-      }).catch(function () { wrap.innerHTML = '<div class="empty-state">लेखक नहीं मिला</div>'; });
-    }
-
     /* ---- admin: dashboard stats ---- */
     var adminStatGrid = document.getElementById("adminStatGrid");
     if (adminStatGrid) {
@@ -2741,23 +2786,6 @@
     var bookForm = document.getElementById("bookForm");
     if (bookForm) {
       var editingFile = bookForm.getAttribute("data-file") || null;
-      var authorSelect = document.getElementById("bookAuthorSelect");
-      var newAuthorWrap = document.getElementById("bookNewAuthorWrap");
-      var currentAuthorId = editingFile && findByFile(editingFile) ? findByFile(editingFile).authorId : null;
-
-      apiGet("/api/authors").then(function (data) {
-        var opts = '<option value="">' + bilingual("-- कोई नहीं / पाठ के रूप में --", "-- none / free text --") + '</option>';
-        opts += (data.authors || []).slice().sort(function (a, b) { return a.name.localeCompare(b.name, "hi"); }).map(function (a) {
-          return '<option value="' + a.id + '"' + (a.id === currentAuthorId ? " selected" : "") + '>' + esc(a.name) + '</option>';
-        }).join("");
-        opts += '<option value="__new__">+ ' + bilingual("नया लेखक जोड़ें", "Add new author") + '</option>';
-        authorSelect.innerHTML = opts;
-        newAuthorWrap.classList.toggle("is-hidden", authorSelect.value !== "__new__");
-      }).catch(function () { authorSelect.innerHTML = '<option value="">लोड नहीं हो सका</option>'; });
-
-      authorSelect.addEventListener("change", function () {
-        newAuthorWrap.classList.toggle("is-hidden", authorSelect.value !== "__new__");
-      });
 
       bookForm.addEventListener("submit", function (e) {
         e.preventDefault();
@@ -2768,7 +2796,12 @@
 
         var categories = Array.prototype.slice.call(bookForm.querySelectorAll('input[name="bookCategory"]:checked')).map(function (c) { return c.value; });
         var tags = document.getElementById("bookTags").value.split(",").map(function (t) { return t.trim(); }).filter(Boolean);
-        var authorVal = authorSelect.value;
+        var people = {
+          author: document.getElementById("bookAuthor").value,
+          tikakar: document.getElementById("bookTikakar").value,
+          translator: document.getElementById("bookTranslator").value,
+          publisherName: document.getElementById("bookPublisherName").value
+        };
 
         function finish(promise) {
           promise.then(function () {
@@ -2790,9 +2823,11 @@
               title: document.getElementById("bookTitle").value.trim(),
               categories: categories,
               tags: tags,
-              authorId: (authorVal && authorVal !== "__new__") ? authorVal : null,
-              newAuthorName: authorVal === "__new__" ? document.getElementById("bookNewAuthorName").value.trim() : "",
-              publisher: (bookForm.querySelector('input[name="bookPublisher"]:checked') || {}).value || "gitapress",
+              author: people.author,
+              tikakar: people.tikakar,
+              translator: people.translator,
+              publisherName: people.publisherName,
+              publisherKind: (bookForm.querySelector('input[name="bookPublisherKind"]:checked') || {}).value || "gitapress",
               htmlData: dataUrl
             }));
           });
@@ -2800,15 +2835,15 @@
           var isGitaPressEl = document.getElementById("bookIsGitaPress");
           var metaPromise = apiPatch("/api/admin/books/" + encodeURIComponent(editingFile), {
             title: document.getElementById("bookTitle").value.trim(),
+            author: people.author,
+            tikakar: people.tikakar,
+            translator: people.translator,
+            publisherName: people.publisherName,
             isGitaPress: isGitaPressEl ? isGitaPressEl.checked : true
           });
           var catPromise = apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/categories", { categories: categories });
           var tagPromise = apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/tags", { tags: tags });
-          var authorPromise = authorVal === "__new__"
-            ? apiPost("/api/admin/authors", { name: document.getElementById("bookNewAuthorName").value.trim() })
-              .then(function (data) { return apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/author", { authorId: data.author.id }); })
-            : apiPost("/api/admin/books/" + encodeURIComponent(editingFile) + "/author", { authorId: authorVal || null });
-          finish(Promise.all([metaPromise, catPromise, tagPromise, authorPromise]));
+          finish(Promise.all([metaPromise, catPromise, tagPromise]));
         }
       });
     }
@@ -3059,7 +3094,16 @@
     else if (seg[0] === "login") { if (isLoggedIn()) { navigate("/"); return; } html = viewLogin(); }
     else if (seg[0] === "signup") { if (isLoggedIn()) { navigate("/"); return; } html = viewSignup(); }
     else if (seg[0] === "authors") { html = viewAuthors(); }
-    else if (seg[0] === "author" && seg[1] !== undefined) { html = viewAuthor(parseInt(seg[1], 10)); }
+    else if (seg[0] === "author" && seg[1] !== undefined) {
+      var aPerson = resolvePerson(seg[1]);
+      if (aPerson) html = viewAuthor(aPerson);
+      else {
+        /* An old /author/<number> link (from before authors were slugged by name) -- or a
+           name that no longer exists -- lands on the full authors list instead. */
+        try { history.replaceState(null, "", "/authors"); } catch (e) {}
+        html = viewAuthors();
+      }
+    }
     else if (seg[0] === "admin") {
       if (!isAdmin()) { navigate("/login"); return; }
       if (seg[1] === "books" && seg[2] === "new") html = viewAdminBookForm(null);

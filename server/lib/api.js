@@ -23,11 +23,15 @@ const APP_JS = path.join(PROJECT_ROOT, 'swadhyay-app.js');
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
 const googleClient = GOOGLE_CLIENT_ID ? new OAuth2Client(GOOGLE_CLIENT_ID) : null;
 
-function sendJSON(res, status, obj) {
+function sendJSON(res, status, obj, extraHeaders) {
   const body = JSON.stringify(obj);
-  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.writeHead(status, Object.assign({ 'Content-Type': 'application/json; charset=utf-8' }, extraHeaders));
   res.end(body);
 }
+
+// Public, user-independent catalog data: let Vercel's edge cache serve it for a minute
+// (and serve a stale copy while revalidating) instead of hitting the database each time.
+const PUBLIC_CACHE = { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' };
 
 function readBody(req, limitBytes) {
   return new Promise((resolve, reject) => {
@@ -159,18 +163,20 @@ async function handleGoogleAuth(req, res) {
 // ==================================================================== books
 
 async function handleBookMeta(req, res) {
-  const cats = await db.all(
-    `SELECT bc.book_file, c.key, c.hi, c.en, c.icon
-     FROM book_categories bc JOIN categories c ON c.key = bc.category_key`
-  );
-  const tags = await db.all(
-    `SELECT bt.book_file, t.id, t.label
-     FROM book_tags bt JOIN tags t ON t.id = bt.tag_id`
-  );
-  const authorsLink = await db.all(
-    `SELECT ba.book_file, a.id, a.name, a.photo_path
-     FROM book_authors ba JOIN authors a ON a.id = ba.author_id`
-  );
+  const [cats, tags, authorsLink] = await Promise.all([
+    db.all(
+      `SELECT bc.book_file, c.key, c.hi, c.en, c.icon
+       FROM book_categories bc JOIN categories c ON c.key = bc.category_key`
+    ),
+    db.all(
+      `SELECT bt.book_file, t.id, t.label
+       FROM book_tags bt JOIN tags t ON t.id = bt.tag_id`
+    ),
+    db.all(
+      `SELECT ba.book_file, a.id, a.name, a.photo_path
+       FROM book_authors ba JOIN authors a ON a.id = ba.author_id`
+    )
+  ]);
 
   const meta = {};
   const ensure = (file) => meta[file] || (meta[file] = { categories: [], tags: [], author: null });
@@ -179,7 +185,7 @@ async function handleBookMeta(req, res) {
   tags.forEach((r) => ensure(r.book_file).tags.push({ id: r.id, label: r.label }));
   authorsLink.forEach((r) => { ensure(r.book_file).author = { id: r.id, name: r.name, photoPath: r.photo_path }; });
 
-  sendJSON(res, 200, { meta });
+  sendJSON(res, 200, { meta }, PUBLIC_CACHE);
 }
 
 async function handleAllCategories(req, res) {
@@ -203,15 +209,16 @@ async function authorWithBooks(authorId) {
 }
 
 async function handleAuthorsList(req, res) {
-  const rows = await db.all('SELECT id, name, bio, photo_path FROM authors ORDER BY name');
-  const counts = await db.all('SELECT author_id, COUNT(*) AS n FROM book_authors GROUP BY author_id');
-  const countByAuthor = {};
-  counts.forEach((r) => { countByAuthor[r.author_id] = r.n; });
+  const rows = await db.all(
+    `SELECT a.id, a.name, a.bio, a.photo_path, COUNT(ba.book_file) AS n
+     FROM authors a LEFT JOIN book_authors ba ON ba.author_id = a.id
+     GROUP BY a.id ORDER BY a.name`
+  );
   sendJSON(res, 200, {
     authors: rows.map((r) => ({
-      id: r.id, name: r.name, bio: r.bio, photoPath: r.photo_path, bookCount: countByAuthor[r.id] || 0
+      id: r.id, name: r.name, bio: r.bio, photoPath: r.photo_path, bookCount: Number(r.n) || 0
     }))
-  });
+  }, PUBLIC_CACHE);
 }
 
 async function handleAuthorGet(req, res, id) {
@@ -322,26 +329,16 @@ async function handleAdminBookCreate(req, res) {
   const destPath = path.join(BOOKS_DIR, filename);
   if (fs.existsSync(destPath)) return sendJSON(res, 409, { error: `फ़ाइल पहले से मौजूद है: ${filename}` });
 
-  // resolve author: either an existing authorId, or a brand-new name to create+link
-  let authorId = payload.authorId ? parseInt(payload.authorId, 10) : null;
-  let authorName = '';
-  if (authorId) {
-    const a = await db.get('SELECT * FROM authors WHERE id = ?', [authorId]);
-    if (!a) return sendJSON(res, 400, { error: 'चयनित लेखक नहीं मिला' });
-    authorName = a.name;
-  } else if (payload.newAuthorName && String(payload.newAuthorName).trim()) {
-    authorName = String(payload.newAuthorName).trim();
-    await db.run('INSERT INTO authors (name, bio, photo_path, created_at) VALUES (?, ?, NULL, ?)', [authorName, '', Date.now()]);
-    authorId = db.lastInsertId();
-  }
+  const people = bookPeopleFromPayload(payload);
+  if (!people.publisher && payload.publisherKind !== 'other') people.publisher = 'गीताप्रेस';
 
   fs.mkdirSync(BOOKS_DIR, { recursive: true });
   fs.writeFileSync(destPath, htmlBytes);
   const sizeKB = Math.round((htmlBytes.length / 1024) * 10) / 10;
 
-  registry.registerInDataJs(DATA_JS, filename, categories[0], authorName, sizeKB);
+  registry.registerInDataJs(DATA_JS, filename, categories[0], people, sizeKB);
   registry.setTitleOverride(APP_JS, filename, title);
-  if (payload.publisher === 'other') registry.setNonGitaPress(APP_JS, filename, true);
+  if (payload.publisherKind === 'other') registry.setNonGitaPress(APP_JS, filename, true);
 
   for (const key of categories) {
     await db.run('INSERT OR IGNORE INTO book_categories (book_file, category_key) VALUES (?, ?)', [filename, key]);
@@ -352,9 +349,20 @@ async function handleAdminBookCreate(req, res) {
     if (!tag) { await db.run('INSERT INTO tags (label) VALUES (?)', [label]); tag = { id: db.lastInsertId() }; }
     await db.run('INSERT OR IGNORE INTO book_tags (book_file, tag_id) VALUES (?, ?)', [filename, tag.id]);
   }
-  if (authorId) await db.run('INSERT OR IGNORE INTO book_authors (book_file, author_id) VALUES (?, ?)', [filename, authorId]);
 
   sendJSON(res, 200, { ok: true, file: filename });
+}
+
+/** The four people/publisher fields of a book (author, tikakar, translator, publisher):
+ *  plain text, several names separated by ";" -- stored as-is in swadhyay-data.js. */
+function bookPeopleFromPayload(payload) {
+  const clean = (v) => String(v == null ? '' : v).split(';').map((s) => s.trim()).filter(Boolean).join('; ');
+  return {
+    author: clean(payload.author),
+    tikakar: clean(payload.tikakar),
+    translator: clean(payload.translator),
+    publisher: clean(payload.publisherName)
+  };
 }
 
 /** Edit a book's title / fallback author text / Gita-Press-publisher flag -- these three
@@ -369,9 +377,11 @@ async function handleAdminBookMeta(req, res, bookFile) {
     if (!title) return sendJSON(res, 400, { error: 'शीर्षक खाली नहीं हो सकता' });
     registry.setTitleOverride(APP_JS, bookFile, title);
   }
-  if (payload.authorText !== undefined) {
-    registry.updateDataJsField(DATA_JS, bookFile, 'author', String(payload.authorText).trim());
-  }
+  const people = bookPeopleFromPayload(payload);
+  if (payload.author !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'author', people.author);
+  if (payload.tikakar !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'tikakar', people.tikakar);
+  if (payload.translator !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'translator', people.translator);
+  if (payload.publisherName !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'publisher', people.publisher);
   if (payload.isGitaPress !== undefined) {
     registry.setNonGitaPress(APP_JS, bookFile, !payload.isGitaPress);
   }

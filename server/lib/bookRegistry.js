@@ -20,15 +20,22 @@ function readRawBooks(dataJsPath) {
   return JSON.parse(text.slice(startIdx, endIdx + 1));
 }
 
-function registerInDataJs(dataJsPath, filename, category, author, sizeKB) {
+/** `people` is { author, tikakar, translator, publisher } -- plain strings, several names in
+ *  one field separated by "; ". Every entry carries all four keys (empty string = not stated)
+ *  so updateDataJsField can always patch them later. */
+function registerInDataJs(dataJsPath, filename, category, people, sizeKB) {
   const text = fs.readFileSync(dataJsPath, 'utf8');
   if (text.includes(`"file":  "${filename}"`) || text.includes(`"file": "${filename}"`)) {
     return { registered: false, reason: 'already registered' };
   }
+  const p = people || {};
   const entry = '    {\n' +
     `        "file":  ${JSON.stringify(filename)},\n` +
     `        "category":  ${JSON.stringify(category)},\n` +
-    `        "author":  ${JSON.stringify(author)},\n` +
+    `        "author":  ${JSON.stringify(p.author || '')},\n` +
+    `        "tikakar":  ${JSON.stringify(p.tikakar || '')},\n` +
+    `        "translator":  ${JSON.stringify(p.translator || '')},\n` +
+    `        "publisher":  ${JSON.stringify(p.publisher || '')},\n` +
     `        "sizeKB":  ${sizeKB}\n` +
     '    }';
   const idx = text.lastIndexOf(']');

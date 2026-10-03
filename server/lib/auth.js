@@ -70,10 +70,12 @@ async function currentUser(req) {
   const cookies = parseCookies(req);
   const token = cookies[SESSION_COOKIE];
   if (!token) return null;
-  const session = await db.get('SELECT * FROM sessions WHERE token = ?', [token]);
-  if (!session || session.expires_at < Date.now()) return null;
-  const user = await db.get('SELECT * FROM users WHERE id = ?', [session.user_id]);
-  return publicUser(user);
+  // Session + user in a single round trip (was two sequential queries on every request).
+  const user = await db.get(
+    'SELECT u.* FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ? AND s.expires_at >= ?',
+    [token, Date.now()]
+  );
+  return user ? publicUser(user) : null;
 }
 
 function currentSessionToken(req) {

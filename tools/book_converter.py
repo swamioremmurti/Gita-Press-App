@@ -453,6 +453,9 @@ def register_in_data_js(data_js: Path, filename: str, category: str, author: str
         f'        "file":  "{filename}",\n'
         f'        "category":  "{category}",\n'
         f'        "author":  "{author}",\n'
+        '        "tikakar":  "",\n'
+        '        "translator":  "",\n'
+        '        "publisher":  "",\n'
         f'        "sizeKB":  {size_kb}\n'
         '    }'
     )

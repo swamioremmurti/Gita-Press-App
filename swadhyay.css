@@ -432,6 +432,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 /* ---------- home: लोकप्रिय लेखक ---------- */
 .authors-row { display: flex; gap: 1.3rem; flex-wrap: wrap; }
 .author-tile { display: flex; flex-direction: column; align-items: center; gap: .4rem; width: 92px; text-align: center; }
+.author-avatar-photo { background-size: cover; background-position: center 25%; background-repeat: no-repeat; }
 .author-avatar {
   width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
   color: #fff; font-size: 1.5rem; font-weight: bold; box-shadow: var(--shadow);
@@ -491,6 +492,9 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .btn-listen:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(60,40,10,0.18); }
 .btn-listen-icon { font-size: 1.1rem; }
 .meta-line { color: var(--muted); font-size: .9rem; margin-bottom: .3rem; }
+.meta-line .meta-label { font-weight: bold; }
+.meta-line a { color: var(--accent); }
+.meta-line a:hover { text-decoration: underline; }
 .tag-row { margin: .6rem 0 1rem; }
 .tag { display: inline-block; background: var(--surface-2); color: var(--gold); border-radius: 14px; padding: .3rem .8rem; font-size: .8rem; }
 .detail-actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-bottom: 1.3rem; }
@@ -962,6 +966,7 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ---------------- लेखक (authors) ---------------- */
 .author-photo.cover { position: relative; overflow: hidden; border-radius: 50%; }
+.author-photo.cover.has-img img { object-fit: cover; object-position: center 25%; padding: 0; }
 .author-photo.cover-sm { width: 52px; height: 52px; aspect-ratio: 1/1; }
 .author-photo.cover-md { width: 120px; height: 120px; aspect-ratio: 1/1; margin: 0 auto; }
 .author-photo.cover-lg { width: 150px; height: 150px; aspect-ratio: 1/1; }

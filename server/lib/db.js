@@ -99,9 +99,10 @@ async function init() {
     client = createClient({ url: 'file:' + LOCAL_DB_PATH });
   }
 
-  for (const stmt of SCHEMA_STATEMENTS) await client.execute(stmt);
-  await ensureColumn('users', 'google_id', 'TEXT');
-  await ensureColumn('users', 'avatar_url', 'TEXT');
+  // One round trip for the whole schema (was ~14 sequential ones -- on a cold serverless
+  // start against a remote Turso DB each of those is a cross-region network hop).
+  await client.batch(SCHEMA_STATEMENTS, 'write');
+  await ensureColumns('users', { google_id: 'TEXT', avatar_url: 'TEXT' });
   return client;
 }
 
@@ -112,10 +113,12 @@ function getClient() {
 
 /** Adds a column to an already-existing table if a DB created before this column
  *  existed is being reopened. Safe to call every boot -- checks PRAGMA table_info first. */
-async function ensureColumn(table, column, type) {
+async function ensureColumns(table, columns) {
   const info = await client.execute(`PRAGMA table_info(${table})`);
   const names = info.rows.map((r) => r.name);
-  if (!names.includes(column)) await client.execute(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+  for (const [column, type] of Object.entries(columns)) {
+    if (!names.includes(column)) await client.execute(`ALTER TABLE ${table} ADD COLUMN ${column} ${type}`);
+  }
 }
 
 async function run(sql, params) {
