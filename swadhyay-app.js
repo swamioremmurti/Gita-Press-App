@@ -606,7 +606,7 @@
   function setTaxLang(lang) {
     lang = lang === "hi" ? "hi" : "en";
     try { localStorage.setItem(LS.taxLang, lang); } catch (e) {}
-    document.documentElement.setAttribute("data-taxlang", lang);
+    document.documentElement.setAttribute("lang-mode", lang);
     document.querySelectorAll("#sideLangSwitch [data-l]").forEach(function (b) {
       b.classList.toggle("on", b.getAttribute("data-l") === lang);
     });
@@ -3149,7 +3149,8 @@
       else {
         /* A legacy #/book/12 link lands here with a numeric id in the URL -- swap it for
            the real slug URL (replace, not push, so it doesn't add a back-button entry). */
-        if (seg[1] !== bBook.slug) { try { history.replaceState(null, "", bookPath(bBook) + location.search); } catch (e) {} }
+        var bSegDecoded; try { bSegDecoded = decodeURIComponent(seg[1]); } catch (e) { bSegDecoded = seg[1]; }
+        if (bSegDecoded !== bBook.slug) { try { history.replaceState(null, "", bookPath(bBook) + location.search); } catch (e) {} }
         html = viewBook(bBook.id);
       }
     }
@@ -3358,10 +3359,10 @@
       sel.addEventListener("change", function () { setPanchangCity(sel.value); render(); });
     });
 
-    document.querySelectorAll("[data-taxlang]").forEach(function (btn) {
+    document.querySelectorAll("button[data-taxlang]").forEach(function (btn) {
       btn.addEventListener("click", function () { setTaxLang(btn.getAttribute("data-taxlang")); render(); });
     });
-    document.querySelectorAll("[data-taxlang-toggle]").forEach(function (btn) {
+    document.querySelectorAll("button[data-taxlang-toggle]").forEach(function (btn) {
       btn.addEventListener("click", function () { setTaxLang(getTaxLang() === "en" ? "hi" : "en"); render(); });
     });
 
