@@ -63,12 +63,13 @@ button { cursor: pointer; font: inherit; }
   width: var(--sidebar-collapsed-w); flex-shrink: 0;
   background: var(--sidebar-bg); color: var(--sidebar-ink);
   display: flex; flex-direction: column;
-  padding: 1.1rem 0 1rem; position: fixed; top: 0; left: 0; height: 100vh; z-index: 120;
+  padding: .7rem 0 .6rem; position: fixed; top: 0; left: 0; height: 100vh; z-index: 120;
   font-family: Calibri, Arial, 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', sans-serif;
-  overflow-x: hidden; overflow-y: auto;
+  overflow-x: hidden; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;
   transition: width .18s ease, box-shadow .18s ease;
 }
-.sidebar-header { display: flex; align-items: center; gap: .4rem; padding: .3rem .9rem 1.1rem; }
+.sidebar::-webkit-scrollbar { display: none; }
+.sidebar-header { display: flex; align-items: center; gap: .4rem; padding: .2rem .9rem .6rem; }
 .sidebar-logo-mark {
   display: inline-block; width: 24px; height: 24px; flex-shrink: 0;
   background-color: var(--sidebar-ink);
@@ -79,12 +80,12 @@ button { cursor: pointer; font: inherit; }
   font-size: 1.1rem; color: var(--sidebar-ink); letter-spacing: .01em; white-space: nowrap;
   opacity: 0; transition: opacity .1s ease;
 }
-.sidebar-nav { display: flex; flex-direction: column; gap: .15rem; width: 100%; padding: 0 .5rem; }
-.sidebar-divider { height: 1px; background: rgba(255,255,255,.12); margin: .6rem .8rem; }
-.sidebar-nav-bottom { margin-top: auto; padding-top: .6rem; border-top: 1px solid rgba(255,255,255,.12); }
+.sidebar-nav { display: flex; flex-direction: column; gap: .05rem; width: 100%; padding: 0 .5rem; }
+.sidebar-divider { height: 1px; background: rgba(255,255,255,.12); margin: .3rem .8rem; }
+.sidebar-nav-bottom { margin-top: auto; padding-top: .3rem; border-top: 1px solid rgba(255,255,255,.12); }
 .side-link {
   display: flex; flex-direction: row; align-items: center; gap: .55rem;
-  width: 100%; padding: .6rem .55rem; border-radius: 10px; color: var(--sidebar-ink);
+  width: 100%; padding: .38rem .55rem; border-radius: 10px; color: var(--sidebar-ink);
   opacity: .8; font-size: 1rem;
 }
 .side-link .ic { font-size: 1.05rem; flex: 0 0 auto; width: 1.2rem; text-align: center; }

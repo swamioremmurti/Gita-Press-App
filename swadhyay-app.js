@@ -610,6 +610,34 @@
     document.querySelectorAll("#sideLangSwitch [data-l]").forEach(function (b) {
       b.classList.toggle("on", b.getAttribute("data-l") === lang);
     });
+    applyShellLanguage();
+  }
+
+  /* The side menu, bottom bar and top-bar buttons are static markup in index.html (Hindi),
+     so they are relabelled here whenever the language changes. */
+  var SHELL_LABELS = {
+    home: ["होम", "Home"], library: ["पुस्तकालय", "Library"], favorites: ["पसंदीदा", "Favorites"],
+    myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Authors"], chat: ["प्रश्नोत्तर", "Q & A"],
+    panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
+    help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"]
+  };
+  var SHELL_TITLES = [
+    ["#appDrawerBtn", "मेनू", "Menu"], [".global-search-btn", "खोजें", "Search"], [".theme-switch", "डार्क मोड", "Dark mode"],
+    ["#notifyBtn", "सूचनाएँ", "Notifications"], ["#profileBtn", "प्रोफ़ाइल", "Profile"]
+  ];
+  function applyShellLanguage() {
+    document.querySelectorAll("[data-nav]").forEach(function (el) {
+      var pair = SHELL_LABELS[el.getAttribute("data-nav")];
+      var label = el.querySelector("span:not(.ic)");
+      if (pair && label) label.textContent = tx(pair[0], pair[1]);
+    });
+    SHELL_TITLES.forEach(function (t) {
+      document.querySelectorAll(t[0]).forEach(function (el) {
+        var text = tx(t[1], t[2]);
+        el.setAttribute("title", text);
+        if (el.hasAttribute("aria-label")) el.setAttribute("aria-label", text);
+      });
+    });
   }
   function tx(hi, en) { return getTaxLang() === "en" && en ? en : hi; }
 
