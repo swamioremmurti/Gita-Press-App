@@ -92,6 +92,9 @@ button { cursor: pointer; font: inherit; }
   white-space: nowrap; opacity: 0; transition: opacity .1s ease;
 }
 .side-link .sidebar-om { font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif; font-size: 1.25rem; }
+button.side-link { background: none; border: 0; font-family: inherit; text-align: left; cursor: pointer; }
+.side-lang-label b { font-weight: normal; opacity: .55; }
+.side-lang-label b.on { font-weight: bold; opacity: 1; color: #ffd9a0; }
 .side-link:hover { opacity: 1; background: rgba(255,255,255,.08); }
 .side-link.active { opacity: 1; background: var(--accent); color: #fff; }
 
@@ -979,6 +982,14 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
 .authors-group-title .cnt { color: var(--muted); font-size: .85rem; font-weight: normal; }
 :root[data-theme="dark"] .authors-group-title { color: #ffb199; }
 .author-role-label { color: var(--gold); font-size: .9rem; margin-top: .2rem; }
+.taxlang-toggle {
+  border: 1px solid var(--accent); color: var(--accent); background: transparent; border-radius: 16px;
+  padding: .35rem .8rem; font-size: .8rem; font-weight: bold; cursor: pointer; margin-left: .5rem;
+}
+.taxlang-toggle:hover { background: var(--accent); color: #fff; }
+.lib-search { display: flex; align-items: center; }
+.taxlang-card { margin-top: 1.2rem; }
+.taxlang-options { display: flex; gap: .6rem; margin-top: .6rem; }
 .author-detail-head { display: flex; gap: 1.4rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
 .author-detail-head h1 { margin: 0 0 .4rem; }
 .author-bio { color: var(--ink); line-height: 1.6; max-width: 640px; }

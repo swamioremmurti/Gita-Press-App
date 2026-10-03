@@ -7,20 +7,20 @@
   var CATEGORY_META = [
     { key: "all", hi: "सभी", en: "All", icon: "ॐ" },
     { key: "Vedas", hi: "वेद", en: "Vedas", icon: "ॐ" },
-    { key: "Upanishad", hi: "उपनिषद्", en: "Upanishad", icon: "📖" },
-    { key: "Vedant", hi: "वेदान्त", en: "Vedant", icon: "🧘" },
+    { key: "Upanishad", hi: "उपनिषद्", en: "Upanishads", icon: "📖" },
+    { key: "Vedant", hi: "वेदान्त", en: "Vedanta", icon: "🧘" },
     { key: "Gita", hi: "गीता", en: "Gita", icon: "📗" },
-    { key: "Purans", hi: "पुराण", en: "Purans", icon: "🏛️" },
-    { key: "Upa Puran", hi: "उपपुराण", en: "Upa Puran", icon: "⛩️" },
-    { key: "Itihasas", hi: "इतिहास", en: "Itihasas", icon: "📚" },
-    { key: "Stotra evam Naamavali", hi: "स्तोत्र एवं नामावली", en: "Stotra evam Naamavali", icon: "🙏" },
-    { key: "Bajans", hi: "भजन", en: "Bajans", icon: "🎵" },
-    { key: "Pravachan", hi: "प्रवचन", en: "Pravachan", icon: "🎤" },
-    { key: "Siksha evam Katha", hi: "शिक्षा एवं कथा", en: "Siksha evam Katha", icon: "💡" },
-    { key: "Balaupayogi", hi: "बालोपयोगी", en: "Balaupayogi", icon: "🧒" },
-    { key: "Nitya Puja evam Karmakand", hi: "नित्य पुजा एवं कर्मकाण्ड", en: "Nitya Puja evam Karmakand", icon: "🔔" },
-    { key: "Swami Sharnanand Sahitya", hi: "स्वामी शरणानन्द जी महाराज साहित्य", en: "Swami Sharnanand Sahitya", icon: "🕉️" },
-    { key: "Teerth Sthal", hi: "तीर्थ स्थल", en: "Teerth Sthal", icon: "🛕" }
+    { key: "Purans", hi: "पुराण", en: "Puranas", icon: "🏛️" },
+    { key: "Upa Puran", hi: "उपपुराण", en: "Upapuranas", icon: "⛩️" },
+    { key: "Itihasas", hi: "इतिहास", en: "Itihasa (Epics)", icon: "📚" },
+    { key: "Stotra evam Naamavali", hi: "स्तोत्र एवं नामावली", en: "Stotras & Namavali", icon: "🙏" },
+    { key: "Bajans", hi: "भजन", en: "Bhajans", icon: "🎵" },
+    { key: "Pravachan", hi: "प्रवचन", en: "Discourses", icon: "🎤" },
+    { key: "Siksha evam Katha", hi: "शिक्षा एवं कथा", en: "Teachings & Stories", icon: "💡" },
+    { key: "Balaupayogi", hi: "बालोपयोगी", en: "For Children", icon: "🧒" },
+    { key: "Nitya Puja evam Karmakand", hi: "नित्य पुजा एवं कर्मकाण्ड", en: "Daily Worship & Rituals", icon: "🔔" },
+    { key: "Swami Sharnanand Sahitya", hi: "स्वामी शरणानन्द जी महाराज साहित्य", en: "Swami Sharnanand Ji Maharaj Literature", icon: "🕉️" },
+    { key: "Teerth Sthal", hi: "तीर्थ स्थल", en: "Pilgrimage Places", icon: "🛕" }
   ];
   var CATEGORY_BY_KEY = {};
   CATEGORY_META.forEach(function (c) { CATEGORY_BY_KEY[c.key] = c; });
@@ -497,11 +497,15 @@
      appear in under each role. The authors page and author pages render from this, so
      there is no server round trip. */
   var PERSON_ROLES = [
-    { key: "authors", label: "लेखक" },
-    { key: "tikakars", label: "टीकाकार" },
-    { key: "translators", label: "अनुवादक" },
-    { key: "publishers", label: "प्रकाशक" }
+    { key: "authors", label: "लेखक", en: "Author" },
+    { key: "tikakars", label: "टीकाकार", en: "Commentator" },
+    { key: "translators", label: "अनुवादक", en: "Translator" },
+    { key: "publishers", label: "प्रकाशक", en: "Publisher" }
   ];
+  function roleLabel(role, plural) {
+    return tx(role.label, plural ? role.en + "s" : role.en);
+  }
+  function booksWord(n) { return getTaxLang() === "en" ? (n === 1 ? "book" : "books") : "ग्रंथ"; }
   var PEOPLE = [];
   var PEOPLE_BY_NAME = {};
   var PEOPLE_BY_SLUG = {};
@@ -552,7 +556,9 @@
       var m = metaMap[file];
       if (m.categories && m.categories.length) {
         book.categoryKeys = m.categories.map(function (c) { return c.key; });
-        book.categoryMetas = m.categories;
+        /* Labels come from CATEGORY_META (it carries the Hindi and proper English names);
+           the server's rows are only a fallback for categories the app doesn't know yet. */
+        book.categoryMetas = m.categories.map(function (c) { return CATEGORY_BY_KEY[c.key] || c; });
         book.category = book.categoryKeys[0];
         book.categoryMeta = book.categoryMetas[0];
       }
@@ -587,8 +593,25 @@
     bookmarks: "swadhyay_bookmarks_v1",
     highlights: "swadhyay_highlights_v1",
     panchangCity: "swadhyay_panchang_city_v1",
-    feedback: "swadhyay_feedback_v1"
+    feedback: "swadhyay_feedback_v1",
+    taxLang: "swadhyay_taxonomy_lang_v1"
   };
+
+  /* Taxonomy language: category names, library filters and author-role labels can be shown
+     in Hindi (default) or English. Book titles, author names and content stay as they are. */
+  function getTaxLang() {
+    // English unless the visitor has explicitly chosen Hindi.
+    try { return localStorage.getItem(LS.taxLang) === "hi" ? "hi" : "en"; } catch (e) { return "en"; }
+  }
+  function setTaxLang(lang) {
+    lang = lang === "hi" ? "hi" : "en";
+    try { localStorage.setItem(LS.taxLang, lang); } catch (e) {}
+    document.documentElement.setAttribute("data-taxlang", lang);
+    document.querySelectorAll("#sideLangSwitch [data-l]").forEach(function (b) {
+      b.classList.toggle("on", b.getAttribute("data-l") === lang);
+    });
+  }
+  function tx(hi, en) { return getTaxLang() === "en" && en ? en : hi; }
 
   function readJSON(key, fallback) {
     try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
@@ -821,10 +844,10 @@
   ];
 
   var SPECIAL_COLLECTIONS = [
-    { icon: "🪷", hi: "दैनिक स्तोत्र", sub: "सुबह-शाम के लिए", q: "स्तोत्र" },
-    { icon: "🪔", hi: "व्रत एवं त्योहार", sub: "विधि और महत्व", q: "व्रत" },
-    { icon: "🌿", hi: "जीवन मार्गदर्शन", sub: "आचार, विचार, आचरण", q: "जीवन" },
-    { icon: "🪶", hi: "संस्कृत सीखें", sub: "श्लोक, उच्चारण, व्याकरण", q: "व्याकरण" }
+    { icon: "🪷", hi: "दैनिक स्तोत्र", en: "Daily Stotras", sub: "सुबह-शाम के लिए", subEn: "For morning & evening", q: "स्तोत्र" },
+    { icon: "🪔", hi: "व्रत एवं त्योहार", en: "Fasts & Festivals", sub: "विधि और महत्व", subEn: "Rituals & significance", q: "व्रत" },
+    { icon: "🌿", hi: "जीवन मार्गदर्शन", en: "Life Guidance", sub: "आचार, विचार, आचरण", subEn: "Conduct, thought, behaviour", q: "जीवन" },
+    { icon: "🪶", hi: "संस्कृत सीखें", en: "Learn Sanskrit", sub: "श्लोक, उच्चारण, व्याकरण", subEn: "Shlokas, pronunciation, grammar", q: "व्याकरण" }
   ];
 
   var POPULAR_AUTHOR_HINTS = ["हनुमानप्रसाद", "शंकराचार्य", "विवेकानन्द", "तुलसीदास"];
@@ -887,11 +910,12 @@
       '</div></div>';
   }
 
-  function carousel(titleHi, titleEn, subHi, items, viewAllHash, extraClass) {
+  /* `sub` is an optional [hindi, english] pair shown after the title. */
+  function carousel(titleHi, titleEn, sub, items, viewAllHash, extraClass) {
     if (!items.length) return "";
     var html = '<section class="row-section' + (extraClass ? " " + extraClass : "") + '">' +
-      '<div class="row-head"><h2>' + bilingual(titleHi, titleEn) + (subHi ? ' <span class="row-sub">| ' + esc(subHi) + '</span>' : '') + '</h2>' +
-      '<a class="view-all" href="' + viewAllHash + '">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+      '<div class="row-head"><h2>' + esc(tx(titleHi, titleEn)) + (sub ? ' <span class="row-sub">| ' + esc(tx(sub[0], sub[1])) + '</span>' : '') + '</h2>' +
+      '<a class="view-all" href="' + viewAllHash + '">' + esc(tx("सभी देखें", "View All")) + ' →</a></div>' +
       '<div class="row-scroll-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<div class="row-scroll">' + items.map(bookRow).join("") + '</div>' +
@@ -900,28 +924,36 @@
     return html;
   }
 
+  /* Small Hindi/English switch for category, filter and author-role labels. It shows the
+     language you would switch TO. */
+  function taxLangToggleHtml() {
+    var toEn = getTaxLang() !== "en";
+    return '<button type="button" class="taxlang-toggle" data-taxlang-toggle title="' + esc(toEn ? "Show categories in English" : "श्रेणियाँ हिन्दी में दिखाएँ") + '">' +
+      (toEn ? "EN" : "हिं") + '</button>';
+  }
+
   function categoryTabs(activeKey) {
     return '<div class="cat-tabs-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
-          bilingual(c.hi, c.en) + ' <span class="cnt">(' + count + ')</span></a>';
+          esc(tx(c.hi, c.en)) + ' <span class="cnt">(' + count + ')</span></a>';
       }).join("") + '</nav>' +
       '<button class="row-nav next" aria-label="अगला">›</button>' +
       '</div>';
   }
 
   function categoryGrid() {
-    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("श्रेणियाँ", "Categories") +
-      '</h2><a class="view-all" href="/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+    return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("श्रेणियाँ", "Categories")) +
+      '</h2><a class="view-all" href="/library">' + esc(tx("सभी देखें", "View All")) + ' →</a></div>' +
       '<div class="row-scroll-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<div class="row-scroll cat-scroll">' + CATEGORY_META.map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tile" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
           '<span class="cat-tile-icon">' + c.icon + '</span>' +
-          '<span class="cat-tile-label">' + bilingual(c.hi, c.en) + '</span>' +
+          '<span class="cat-tile-label">' + esc(tx(c.hi, c.en)) + '</span>' +
           '<span class="cat-tile-count">' + count + '</span></a>';
       }).join("") + '</div>' +
       '<button class="row-nav next" aria-label="अगला">›</button>' +
@@ -979,21 +1011,21 @@
     return '<div class="special-book-tile">' +
       '<a href="' + bookPath(book) + '">' + coverEl(book, "md") + '</a>' +
       '<a href="' + bookPath(book) + '" class="special-book-title">' + esc(book.title) + '</a>' +
-      '<div class="special-book-sub">' + esc(book.categoryMetas[0].hi) + '</div>' +
-      '<a class="special-book-cta" href="' + bookPath(book) + '">' + bilingual("पढ़ें") + ' →</a>' +
+      '<div class="special-book-sub">' + esc(tx(book.categoryMetas[0].hi, book.categoryMetas[0].en)) + '</div>' +
+      '<a class="special-book-cta" href="' + bookPath(book) + '">' + esc(tx("पढ़ें", "Read")) + ' →</a>' +
       '</div>';
   }
 
   function todaysSpecialSection(panchang) {
     var special = getTodaysSpecial(panchang);
     if (!special) return "";
-    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("आज के लिए विशेष") +
-      ' <span class="row-sub">| आज के पंचांग के अनुसार अनुशंसित ग्रंथ और पाठ</span></h2></div>' +
+    return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("आज के लिए विशेष", "Special for Today")) +
+      ' <span class="row-sub">| ' + esc(tx("आज के पंचांग के अनुसार अनुशंसित ग्रंथ और पाठ", "Books and readings recommended by today's Panchang")) + '</span></h2></div>' +
       '<div class="today-special-grid">' +
       '<div class="festival-banner">' +
       '<div class="festival-icon">🔱</div>' +
       '<div class="festival-body"><h4>' + esc(special.title) + '</h4><p>' + esc(special.desc) + '</p>' +
-      '<a class="btn-outline festival-cta" href="/library?q=' + encodeURIComponent(special.title) + '">' + bilingual("विस्तार देखें") + ' →</a></div>' +
+      '<a class="btn-outline festival-cta" href="/library?q=' + encodeURIComponent(special.title) + '">' + esc(tx("विस्तार देखें", "View details")) + ' →</a></div>' +
       '</div>' +
       '<div class="special-book-row">' + special.books.map(specialBookTile).join("") + '</div>' +
       '</div></section>';
@@ -1004,28 +1036,28 @@
     var day = Math.floor(Date.now() / 86400000);
     var book = BOOKS[day % BOOKS.length];
     return '<section class="row-section"><a class="cta-banner" href="' + bookPath(book) + '">' +
-      '<div class="cta-banner-body"><h3>' + bilingual("आज क्या पढ़ें?") + '</h3>' +
-      '<p>' + bilingual("आज के दिन के अनुसार उपयुक्त पाठ, स्तोत्र और साधना सुझाव") + '</p>' +
-      '<span class="btn-primary">' + bilingual("देखें") + ' →</span></div>' +
+      '<div class="cta-banner-body"><h3>' + esc(tx("आज क्या पढ़ें?", "What to read today?")) + '</h3>' +
+      '<p>' + esc(tx("आज के दिन के अनुसार उपयुक्त पाठ, स्तोत्र और साधना सुझाव", "Readings, stotras and sadhana suggestions suited to today")) + '</p>' +
+      '<span class="btn-primary">' + esc(tx("देखें", "View")) + ' →</span></div>' +
       '</a></section>';
   }
 
   /* ---------------- home: विशेष संग्रह ---------------- */
   function specialCollectionsSection() {
-    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("विशेष संग्रह") +
-      '</h2><a class="view-all" href="/library">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+    return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("विशेष संग्रह", "Special Collections")) +
+      '</h2><a class="view-all" href="/library">' + esc(tx("सभी देखें", "View All")) + ' →</a></div>' +
       '<div class="collections-grid">' + SPECIAL_COLLECTIONS.map(function (c) {
         return '<a class="collection-tile" href="/library?q=' + encodeURIComponent(c.q) + '">' +
           '<span class="collection-icon">' + c.icon + '</span>' +
-          '<span class="collection-label">' + bilingual(c.hi) + '</span>' +
-          '<span class="collection-sub">' + bilingual(c.sub) + '</span></a>';
+          '<span class="collection-label">' + esc(tx(c.hi, c.en)) + '</span>' +
+          '<span class="collection-sub">' + esc(tx(c.sub, c.subEn)) + '</span></a>';
       }).join("") + '</div></section>';
   }
 
   /* ---------------- home: लोकप्रिय लेखक ---------------- */
   function popularAuthorsSection() {
-    return '<section class="row-section"><div class="row-head"><h2>' + bilingual("लोकप्रिय लेखक") +
-      '</h2><a class="view-all" href="/authors">' + bilingual("सभी देखें", "View All") + ' →</a></div>' +
+    return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("लोकप्रिय लेखक", "Popular Authors")) +
+      '</h2><a class="view-all" href="/authors">' + esc(tx("सभी देखें", "View All")) + ' →</a></div>' +
       '<div class="authors-row">' + POPULAR_AUTHOR_HINTS.map(function (hint, i) {
         var label = findAuthorLabel(hint);
         var g = PALETTE[i % PALETTE.length];
@@ -1080,7 +1112,7 @@
     html += '<main class="content-pad">';
     html += '<div class="home-top-grid">' + panchangCard(panchang) + aiAskCard() + '</div>';
     html += categoryGrid();
-    if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", "जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", recentBooks, "/myreads");
+    if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", ["जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", "Pick up where you left off"], recentBooks, "/myreads");
     html += todaysSpecialSection(panchang);
     html += carousel("नये आगमन", "New Additions", "", newAdd, "/library?cat=all&sort=latest", "new-arrivals-row");
     if (favBooks.length) html += carousel("आपके प्रिय ग्रंथ", "Your Favorites", "", favBooks, "/favorites");
@@ -1132,18 +1164,19 @@
     var page = Math.min(libraryState.page, totalPages);
     var pageItems = list.slice(0, page * PAGE_SIZE);
 
-    var heading = tag ? "#" + tag : bilingual(meta.hi, meta.en);
+    var heading = tag ? "#" + esc(tag) : esc(tx(meta.hi, meta.en));
     var html = '<div class="page-header">' +
       '<h1>' + heading + ' <span class="cnt">(' + list.length + ')</span></h1>' +
-      '<div class="lib-search"><input id="librarySearch" type="text" placeholder="खोजें…" value="' + esc(q) + '"></div>' +
+      '<div class="lib-search"><input id="librarySearch" type="text" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
+      taxLangToggleHtml() + '</div>' +
       '</div>';
     html += categoryTabs(cat);
     html += '<div class="filter-tabs">' +
-      ["all:सभी", "popular:लोकप्रिय", "short:लघु पाठ"].map(function (f) {
-        var parts = f.split(":"); var key = parts[0];
-        return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' + parts[1] + '</a>';
+      [["all", "सभी", "All"], ["popular", "लोकप्रिय", "Popular"], ["short", "लघु पाठ", "Short reads"]].map(function (f) {
+        var key = f[0];
+        return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' + esc(tx(f[1], f[2])) + '</a>';
       }).join("") +
-      '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest">नवीनतम</a>' +
+      '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest">' + esc(tx("नवीनतम", "Latest")) + '</a>' +
       '</div>';
 
     if (!pageItems.length) {
@@ -1999,16 +2032,16 @@
     html += '<h1>' + esc(book.title) + '</h1>';
     html += '<button class="btn-listen" id="listenBtn"><span class="btn-listen-icon">🎧</span> ' +
       bilingual("इस पुस्तक को सुनें", "Listen to this book") + '</button>';
-    [["👤", "लेखक", book.authors], ["📝", "टीकाकार", book.tikakars], ["🔤", "अनुवादक", book.translators],
-     ["🏛️", "प्रकाशक", book.publisher ? [book.publisher] : []]].forEach(function (row) {
+    [["👤", PERSON_ROLES[0], book.authors], ["📝", PERSON_ROLES[1], book.tikakars], ["🔤", PERSON_ROLES[2], book.translators],
+     ["🏛️", PERSON_ROLES[3], book.publisher ? [book.publisher] : []]].forEach(function (row) {
       if (!row[2].length) return;
-      html += '<div class="meta-line">' + row[0] + ' <span class="meta-label">' + row[1] + ':</span> ' +
+      html += '<div class="meta-line">' + row[0] + ' <span class="meta-label">' + esc(roleLabel(row[1])) + ':</span> ' +
         row[2].map(personLink).join(", ") + '</div>';
     });
     html += '<div class="meta-line">📖 हिन्दी</div>';
     html += '<div class="meta-line">⏱️ अनुमानित पठन समय ' + formatDuration(book.minutes) + '</div>';
     html += '<div class="tag-row">' + book.categoryMetas.map(function (cm) {
-      return '<span class="tag">' + esc(cm.hi) + '</span>';
+      return '<span class="tag">' + esc(tx(cm.hi, cm.en)) + '</span>';
     }).join("") + '</div>';
     if (book.tags.length) {
       html += '<div class="tag-row tag-row-topics">' + book.tags.map(function (t) {
@@ -2365,6 +2398,15 @@
       html += '<div class="account-card"><p>अपनी पठन-प्रगति सभी उपकरणों पर सुरक्षित रखने और टिप्पणी करने के लिए साइन इन करें।</p>' +
         '<a class="btn-primary" href="/login">साइन इन करें</a> <a class="btn-outline" href="/signup">खाता बनाएं</a></div>';
     }
+    var lang = getTaxLang();
+    html += '<div class="account-card taxlang-card">' +
+      '<div class="account-name">' + esc(tx("वर्गीकरण की भाषा", "Taxonomy language")) + '</div>' +
+      '<p class="muted-note">' + esc(tx("श्रेणियों, फ़िल्टर और लेखक-भूमिकाओं (लेखक, टीकाकार, अनुवादक, प्रकाशक) के नाम किस भाषा में दिखें।",
+        "Language for category names, filters and author roles (author, commentator, translator, publisher).")) + '</p>' +
+      '<div class="taxlang-options">' +
+      '<button type="button" class="btn-outline' + (lang === "hi" ? " active" : "") + '" data-taxlang="hi">हिन्दी</button>' +
+      '<button type="button" class="btn-outline' + (lang === "en" ? " active" : "") + '" data-taxlang="en">English</button>' +
+      '</div></div>';
     html += '</main>';
     return html;
   }
@@ -2434,16 +2476,17 @@
         return b.roles[role.key].length - a.roles[role.key].length || a.name.localeCompare(b.name, "hi");
       });
       if (!list.length) return "";
-      return '<section class="authors-group"><h2 class="authors-group-title">' + esc(role.label) +
+      return '<section class="authors-group"><h2 class="authors-group-title">' + esc(roleLabel(role, true)) +
         ' <span class="cnt">(' + list.length + ')</span></h2><div class="authors-grid">' +
         list.map(function (p) {
+          var n = p.roles[role.key].length;
           return '<a class="author-card" href="' + personPath(p.name) + '">' + authorAvatarEl({ name: p.name }, "md") +
             '<div class="author-card-name">' + esc(p.name) + '</div>' +
-            '<div class="author-card-count">' + p.roles[role.key].length + ' ग्रंथ</div></a>';
+            '<div class="author-card-count">' + n + ' ' + booksWord(n) + '</div></a>';
         }).join("") + '</div></section>';
     }).join("");
-    return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("लेखक", "Authors") + '</h1></div>' +
-      (groups || '<div class="empty-state">कोई लेखक नहीं मिला</div>') + '</main>';
+    return '<main class="content-pad"><div class="page-header"><h1>' + esc(tx("लेखक", "Authors")) + '</h1>' + taxLangToggleHtml() + '</div>' +
+      (groups || '<div class="empty-state">' + esc(tx("कोई लेखक नहीं मिला", "No authors found")) + '</div>') + '</main>';
   }
 
   function resolvePerson(x) {
@@ -2455,14 +2498,14 @@
 
   function viewAuthor(p) {
     var chips = PERSON_ROLES.filter(function (r) { return p.roles[r.key].length; }).map(function (r) {
-      return '<span class="tag">' + esc(r.label) + ' · ' + p.roles[r.key].length + ' ग्रंथ</span>';
+      return '<span class="tag">' + esc(roleLabel(r)) + ' · ' + p.roles[r.key].length + ' ' + booksWord(p.roles[r.key].length) + '</span>';
     }).join("");
     var sections = PERSON_ROLES.filter(function (r) { return p.roles[r.key].length; }).map(function (r) {
-      return '<div class="page-header"><h2>' + esc(r.label) + ' के रूप में (' + p.roles[r.key].length + ')</h2></div>' +
+      return '<div class="page-header"><h2>' + esc(getTaxLang() === "en" ? "As " + r.en.toLowerCase() : r.label + " के रूप में") + ' (' + p.roles[r.key].length + ')</h2></div>' +
         '<div class="book-grid">' + p.roles[r.key].map(bookCard).join("") + '</div>';
     }).join("");
     return '<main class="content-pad author-page">' +
-      '<a href="/authors" class="back-link">← सभी लेखक</a>' +
+      '<a href="/authors" class="back-link">← ' + esc(tx("सभी लेखक", "All authors")) + '</a>' +
       '<div class="author-detail-head">' + authorAvatarEl({ name: p.name }, "lg") +
       '<div><h1>' + esc(p.name) + '</h1><div class="tag-row">' + chips + '</div></div></div>' +
       sections + '</main>';
@@ -3287,6 +3330,13 @@
       sel.addEventListener("change", function () { setPanchangCity(sel.value); render(); });
     });
 
+    document.querySelectorAll("[data-taxlang]").forEach(function (btn) {
+      btn.addEventListener("click", function () { setTaxLang(btn.getAttribute("data-taxlang")); render(); });
+    });
+    document.querySelectorAll("[data-taxlang-toggle]").forEach(function (btn) {
+      btn.addEventListener("click", function () { setTaxLang(getTaxLang() === "en" ? "hi" : "en"); render(); });
+    });
+
     document.querySelectorAll(".pw-day").forEach(function (btn) {
       btn.addEventListener("click", function () {
         panchangState.dayOffset = parseInt(btn.getAttribute("data-offset"), 10);
@@ -3400,6 +3450,12 @@
   function initChrome() {
     setTheme(getTheme());
 
+    var sideLang = document.getElementById("sideLangSwitch");
+    if (sideLang) sideLang.addEventListener("click", function () {
+      setTaxLang(getTaxLang() === "en" ? "hi" : "en");
+      render();
+    });
+
     var heroResizeTimer;
     window.addEventListener("resize", function () {
       clearTimeout(heroResizeTimer);
@@ -3456,6 +3512,7 @@
     seedDemoData();
     initChrome();
     wireLinkInterception();
+    setTaxLang(getTaxLang());
     /* Book-meta (categories/tags/author links) and the current session are both fetched
        from the API before the first render, so the home/library pages open already
        showing the real data instead of flashing the single-category fallback and then
