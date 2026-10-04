@@ -7,7 +7,6 @@
 // that dynamic-segment matching at all -- this file parses the real path itself from
 // req.url, exactly like server/server.js already does locally.
 require('../server/lib/env').loadEnv(); // no-op on Vercel (env vars come from its dashboard); used by `vercel dev` locally
-const { parse } = require('url');
 const api = require('../server/lib/api');
 const chat = require('../server/lib/chat');
 const db = require('../server/lib/db');
@@ -19,7 +18,9 @@ function ensureInit() {
 }
 
 module.exports = async (req, res) => {
-  const pathname = parse(req.url).pathname;
+  // WHATWG URL (url.parse is deprecated). Collapse leading slashes first so a request
+  // like "//x" is read as a path, not as a protocol-relative host.
+  const pathname = new URL(req.url.replace(/^\/+/, '/'), 'http://localhost').pathname;
 
   if (req.method === 'POST' && pathname === '/api/chat') { await chat.handleChat(req, res); return; }
   if (req.method === 'GET' && pathname === '/api/health') { chat.handleHealth(req, res); return; }

@@ -2,7 +2,6 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
-const url = require('url');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 5173;
@@ -26,7 +25,8 @@ const MIME = {
 };
 
 http.createServer((req, res) => {
-  let p = decodeURIComponent(url.parse(req.url).pathname);
+  // WHATWG URL (url.parse is deprecated); leading slashes collapsed so "//x" stays a path.
+  let p = decodeURIComponent(new URL(req.url.replace(/^\/+/, '/'), 'http://localhost').pathname);
   if (p === '/') p = '/index.html';
   const filePath = path.join(ROOT, p);
   if (!filePath.startsWith(ROOT)) { res.writeHead(403); res.end('Forbidden'); return; }
