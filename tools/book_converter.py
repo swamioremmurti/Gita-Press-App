@@ -403,7 +403,7 @@ def build_html(result, args) -> str:
     if result["translator_line"]:
         sections.append(f'\t\t\t<p class="Title-Page---Translater-Author-Name">{esc(result["translator_line"])}</p>')
     if result["subtitle"]:
-        sections.append(f'\t\t\t<p class="Title-Page---Gita-Seva-Trust">{esc(result["subtitle"])}</p>')
+        sections.append(f'\t\t\t<p class="Title-Page---Publisher-Note">{esc(result["subtitle"])}</p>')
     sections.append("\t\t</div>\n</section>")
     title_section = "\n".join(sections)
 

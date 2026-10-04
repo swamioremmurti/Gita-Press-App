@@ -6490,8 +6490,8 @@ p.Title-Page---Book-Name-Hindi { -epub-ruby-position:over;
 	text-decoration:none;
 	text-indent:0px; }
 
-/* NOTE: 31 differing variants found across books for .Title-Page---Gita-Seva-Trust - showing first found (from आरती-संग्रह.html) */
-p.Title-Page---Gita-Seva-Trust { -epub-hyphens: none;
+/* NOTE: 31 differing variants found across books for .Title-Page---Publisher-Note - showing first found (from आरती-संग्रह.html) */
+p.Title-Page---Publisher-Note { -epub-hyphens: none;
 				-epub-ruby-position: over;
 				color: #c45911;
 				font-family: ChanakyaUni, serif;
