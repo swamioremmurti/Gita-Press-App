@@ -285,6 +285,7 @@
 
   var COVER_OVERRIDES = {
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.png",
+    "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
     "अच्छे बनो.html": "assets/covers/achhe-bano.jpg",
     "अध्यात्म-पथ-प्रदर्शक.html": "assets/covers/adhyatma-path-pradarshak.png",
     "अध्यात्मरामायण.html": "assets/covers/adhyatma-ramayan.jpg",
@@ -1160,7 +1161,23 @@
     // other way round for a Devanagari query with slightly different spelling conventions.
     var qRoman = normalizeRoman(devanagariToRoman(q));
     if (!qRoman) return false;
-    return book.titleRoman.indexOf(qRoman) !== -1 || book.authorRoman.indexOf(qRoman) !== -1;
+    if (book.titleRoman.indexOf(qRoman) !== -1 || book.authorRoman.indexOf(qRoman) !== -1) return true;
+    /* Word-by-word: every typed word must appear somewhere in the title/people index, and a
+       word may drop its trailing "a". The index spells Hindi words with their final schwa
+       ("pada ratnakara") while people type "pad ratnakar", so a whole-phrase substring test
+       misses them even though each word matches on its own. */
+    var hay = book.titleRoman + " " + book.authorRoman;
+    var haySkel = hay.replace(/a/g, "");
+    return qRoman.split(" ").every(function (w) {
+      if (hay.indexOf(w) !== -1) return true;
+      var bare = w.replace(/a$/, "");
+      if (bare.length >= 2 && bare !== w && hay.indexOf(bare) !== -1) return true;
+      /* People also drop the schwas inside a word ("ramcharitmanas" for
+         "ramacharitamanasa"), so as a last resort compare both with every "a" removed.
+         Three or more letters left keeps this from matching on noise. */
+      var skel = w.replace(/a/g, "");
+      return skel.length >= 3 && haySkel.indexOf(skel) !== -1;
+    });
   }
 
   var PAGE_SIZE = 40;
@@ -1765,6 +1782,7 @@
   function readerUpdateChrome() {
     var titleEl = document.getElementById("readerTitleText");
     if (titleEl) titleEl.textContent = reader.book.title + " · " + reader.chapters[reader.idx].label;
+    setPageMeta(reader.book, reader.chapters[reader.idx].label);
     var ind = document.getElementById("readerPageInd");
     if (ind) ind.textContent = (reader.idx + 1) + " / " + reader.chapters.length;
     var prevBtn = document.getElementById("readerPrevBtn");
@@ -3111,6 +3129,89 @@
     });
   }
 
+  /* ---------------- per-page <title> / meta ----------------
+     The static index.html carries the site-wide title and meta tags; a book page replaces
+     them with "Swadhyay | स्वाध्याय — <book> | <publisher> | <author>" (publisher/author
+     parts are left out when the book doesn't name one) and every other page restores the
+     defaults captured on first use. */
+  var DEFAULT_META = null;
+
+  function metaNode(sel) { return document.querySelector(sel); }
+  function setMetaAttr(sel, attr, value) {
+    var el = metaNode(sel);
+    if (el && value != null) el.setAttribute(attr, value);
+  }
+
+  function captureDefaultMeta() {
+    if (DEFAULT_META) return;
+    function attr(sel, a) { var el = metaNode(sel); return el ? el.getAttribute(a) : null; }
+    DEFAULT_META = {
+      title: document.title,
+      desc: attr('meta[name="description"]', "content"),
+      canonical: attr('link[rel="canonical"]', "href"),
+      ogTitle: attr('meta[property="og:title"]', "content"),
+      ogDesc: attr('meta[property="og:description"]', "content"),
+      ogUrl: attr('meta[property="og:url"]', "content"),
+      twTitle: attr('meta[name="twitter:title"]', "content"),
+      twDesc: attr('meta[name="twitter:description"]', "content")
+    };
+  }
+
+  function applyMeta(m) {
+    document.title = m.title;
+    setMetaAttr('meta[name="description"]', "content", m.desc);
+    setMetaAttr('link[rel="canonical"]', "href", m.canonical);
+    setMetaAttr('meta[property="og:title"]', "content", m.ogTitle);
+    setMetaAttr('meta[property="og:description"]', "content", m.ogDesc);
+    setMetaAttr('meta[property="og:url"]', "content", m.ogUrl);
+    setMetaAttr('meta[name="twitter:title"]', "content", m.twTitle);
+    setMetaAttr('meta[name="twitter:description"]', "content", m.twDesc);
+  }
+
+  /* Titles/descriptions come from seo-meta.js (shared with the server-side renderer, so a
+     page's <title> is the same whether a crawler got it as HTML or the app set it here). */
+  function setMeta(title, desc, canonicalPath) {
+    captureDefaultMeta();
+    var url = location.origin + canonicalPath;
+    applyMeta({ title: title, desc: desc, canonical: url, ogTitle: title, ogDesc: desc, ogUrl: url, twTitle: title, twDesc: desc });
+  }
+
+  function setPageMeta(book, chapterLabel) {
+    setMeta(SwadhyayMeta.bookTitle(book, chapterLabel), SwadhyayMeta.bookDescription(book, chapterLabel),
+      /* A chapter URL is its own page (it has its own text on the server); the bare
+         /read/<slug> just resumes the book, so it points at the book page. */
+      chapterLabel ? readPath(book, reader.idx) : bookPath(book));
+  }
+
+  function resetPageMeta() {
+    if (!DEFAULT_META) return;
+    applyMeta(DEFAULT_META);
+  }
+
+  /* Title/meta for every non-book route: library (+ category), authors, one author, and
+     the fixed pages (panchang/help/feedback/chat); anything else gets the site default. */
+  function applyRouteMeta(seg, r, pageBook, pagePerson) {
+    if (pageBook) { setPageMeta(pageBook); return; }
+    if (pagePerson) {
+      setMeta(SwadhyayMeta.personTitle(pagePerson), SwadhyayMeta.personDescription(pagePerson), personPath(pagePerson.name));
+      return;
+    }
+    if (seg[0] === "library") {
+      var cat = r.params.get("cat");
+      var cm = cat && cat !== "all" ? CATEGORY_BY_KEY[cat] : null;
+      if (cm) {
+        var n = BOOKS.filter(function (b) { return b.categoryKeys.indexOf(cat) !== -1; }).length;
+        setMeta(SwadhyayMeta.categoryTitle(cm), SwadhyayMeta.categoryDescription(cm, n), "/library?cat=" + encodeURIComponent(cat));
+      } else {
+        var lr = SwadhyayMeta.STATIC_ROUTES.library;
+        setMeta(lr.title, lr.desc, "/library");
+      }
+      return;
+    }
+    var fixed = SwadhyayMeta.STATIC_ROUTES[seg[0]];
+    if (fixed && seg.length === 1) { setMeta(fixed.title, fixed.desc, "/" + seg[0]); return; }
+    resetPageMeta();
+  }
   var lastRenderedPath = null;
 
   function render() {
@@ -3132,6 +3233,7 @@
       var rBook = resolveBookParam(seg[1]);
       var rCh = seg[2] !== undefined ? parseInt(seg[2], 10) : null;
       if (!rBook) { navigate("/library"); return; }
+      setPageMeta(rBook);
       openReader(rBook.id, rCh);
       setActiveNav(r.path);
       return;
@@ -3139,6 +3241,7 @@
     closeReader();
 
     var html = "";
+    var pageBook = null, pagePerson = null;
     body.classList.toggle("is-home", seg[0] === "" || seg[0] === "home");
 
     if (seg[0] === "" || seg[0] === "home") { html = viewHome(); }
@@ -3152,6 +3255,7 @@
         var bSegDecoded; try { bSegDecoded = decodeURIComponent(seg[1]); } catch (e) { bSegDecoded = seg[1]; }
         if (bSegDecoded !== bBook.slug) { try { history.replaceState(null, "", bookPath(bBook) + location.search); } catch (e) {} }
         html = viewBook(bBook.id);
+        pageBook = bBook;
       }
     }
     else if (seg[0] === "favorites") { html = viewFavorites(); }
@@ -3168,7 +3272,7 @@
     else if (seg[0] === "authors") { html = viewAuthors(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
       var aPerson = resolvePerson(seg[1]);
-      if (aPerson) html = viewAuthor(aPerson);
+      if (aPerson) { html = viewAuthor(aPerson); pagePerson = aPerson; }
       else {
         /* An old /author/<number> link (from before authors were slugged by name) -- or a
            name that no longer exists -- lands on the full authors list instead. */
@@ -3189,6 +3293,7 @@
     else { html = viewHome(); }
 
     root.innerHTML = html;
+    applyRouteMeta(seg, r, pageBook, pagePerson);
     setActiveNav(r.path);
     if (!samePath) window.scrollTo(0, 0);
     lastRenderedPath = r.path;
@@ -3557,4 +3662,12 @@
       return syncProgressFromServer();
     }).then(onNavigate, onNavigate);
   });
+
+  /* Build-time hook: tools/gen-seo.js defines window.__SWADHYAY_EXPORT__ and runs this
+     file in a sandbox to get the catalogue, so the slugs, titles and people the server
+     renders are computed by this exact code instead of being re-implemented. A no-op in
+     the browser, where the hook doesn't exist. */
+  if (typeof window.__SWADHYAY_EXPORT__ === "function") {
+    window.__SWADHYAY_EXPORT__({ BOOKS: BOOKS, PEOPLE: PEOPLE, CATEGORY_META: CATEGORY_META });
+  }
 })();
