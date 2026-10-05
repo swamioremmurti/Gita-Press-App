@@ -1,4 +1,4 @@
-// Book catalogue -- 577 real book files. Per book: author, tikakar (commentator), translator and
+// Book catalogue -- 567 real book files. Per book: author, tikakar (commentator), translator and
 // publisher, as printed in the book itself (title page / front matter). Several people in one
 // field are separated by "; ". An empty string means the book does not state it.
 var SWADHYAY_BOOKS_RAW = [
@@ -1362,22 +1362,13 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  56.1
     },
     {
-        "file":  "गणेशस्तोत्ररत्नाकर (2).html",
+        "file":  "श्रीगणेशसहस्रनामस्तोत्रम्.html",
         "category":  "Stotra evam Naamavali",
         "author":  "",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  1034.3
-    },
-    {
-        "file":  "गणेशस्तोत्ररत्नाकर.html",
-        "category":  "Stotra evam Naamavali",
-        "author":  "",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  1658.8
     },
     {
         "file":  "गयाश्राद्धपद्धति_माहात्म्य तथा_गयायात्राविधानसहित.html",
@@ -2037,15 +2028,6 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  503.1
     },
     {
-        "file":  "नित्यकर्म-पूजाप्रकाश (2).html",
-        "category":  "Nitya Puja evam Karmakand",
-        "author":  "परमाचार्य पं. श्रीरामभवनजी मिश्र",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  1412.4
-    },
-    {
         "file":  "नित्यकर्म-पूजाप्रकाश.html",
         "category":  "Nitya Puja evam Karmakand",
         "author":  "परमाचार्य पं. श्रीरामभवनजी मिश्र",
@@ -2134,15 +2116,6 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  2583.7
-    },
-    {
-        "file":  "पद्मपुरा.html",
-        "category":  "Pravachan",
-        "author":  "",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  8164.5
     },
     {
         "file":  "परम पिता से प्रार्थना.html",
@@ -2577,15 +2550,6 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  329.2
     },
     {
-        "file":  "भक्त नरसिंह मेहता प्रथम पृष्ठ.html",
-        "category":  "Siksha evam Katha",
-        "author":  "",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  478
-    },
-    {
         "file":  "भक्त नरसिंह मेहता.html",
         "category":  "Siksha evam Katha",
         "author":  "",
@@ -2971,15 +2935,6 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  649.3
-    },
-    {
-        "file":  "भगवान् कैसे मिलें.html",
-        "category":  "Pravachan",
-        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  411.9
     },
     {
         "file":  "भगवान् क्या है.html",
@@ -3909,15 +3864,6 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  159.4
     },
     {
-        "file":  "श्रीगणेशसहस्रनामस्तोत्रम्.html",
-        "category":  "Stotra evam Naamavali",
-        "author":  "",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  155.8
-    },
-    {
         "file":  "श्रीगोविन्ददामोदरस्तोत्रम्.html",
         "category":  "Stotra evam Naamavali",
         "author":  "",
@@ -3954,22 +3900,13 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  29.3
     },
     {
-        "file":  "श्रीदुर्गासप्तशती (2).html",
-        "category":  "Siksha evam Katha",
-        "author":  "",
-        "tikakar":  "",
-        "translator":  "पं० श्रीरामनारायणदत्तजी शास्त्री पाण्डेय ‘राम’; तथा पाठ विधि सहित",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  916.4
-    },
-    {
         "file":  "श्रीदुर्गासप्तशती.html",
         "category":  "Siksha evam Katha",
         "author":  "",
         "tikakar":  "",
-        "translator":  "",
+        "translator":  "पं० श्रीरामनारायणदत्तजी शास्त्री पाण्डेय ‘राम’",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1152
+        "sizeKB":  916.4
     },
     {
         "file":  "श्रीनरसिंहपुराण.html",
@@ -4249,15 +4186,6 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  8316.6
-    },
-    {
-        "file":  "श्रीश्रीचैतन्य-चरितावली (2).html",
-        "category":  "Siksha evam Katha",
-        "author":  "प्रभुदत्त ब्रह्मचारी",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  5249.1
     },
     {
         "file":  "श्रीश्रीचैतन्य-चरितावली.html",
@@ -4843,24 +4771,6 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  8959.9
-    },
-    {
-        "file":  "साधन-नवनीत.html",
-        "category":  "Pravachan",
-        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  681.5
-    },
-    {
-        "file":  "साधन-सुधा-निधि.html",
-        "category":  "Pravachan",
-        "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  6469
     },
     {
         "file":  "साधना पथ.html",

@@ -286,6 +286,8 @@
   var COVER_OVERRIDES = {
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.png",
     "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
+    "साधन सुधा निधि.html": "assets/covers/sadhan-sudha-nidhi.jpg",
+    "साधन सुधा सिन्धु.html": "assets/covers/sadhan-sudha-sindhu.jpg",
     "अच्छे बनो.html": "assets/covers/achhe-bano.jpg",
     "अध्यात्म-पथ-प्रदर्शक.html": "assets/covers/adhyatma-path-pradarshak.png",
     "अध्यात्मरामायण.html": "assets/covers/adhyatma-ramayan.jpg",
