@@ -1,0 +1,21 @@
+# Not part of the site -- keep these out of every deployment (they're large and/or private).
+backups
+css-audit
+tools
+.claude
+.git
+.gitattributes
+.env*
+.vercel
+
+# Local-only server files (secrets, local database, search index, logs, helper scripts).
+# server/lib is what the API functions need and is still uploaded.
+server/.env
+server/node_modules
+server/index
+server/data
+server/*.log
+server/*.bat
+server/build-index.js
+server/check-status.js
+server/test-retrieval.js

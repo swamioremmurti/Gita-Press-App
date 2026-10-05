@@ -2964,13 +2964,13 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  472.5
     },
     {
-        "file":  "भगवान्_कैसे_मिलें.html",
+        "file":  "भगवान् कैसे मिलें.html",
         "category":  "Pravachan",
         "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1043.3
+        "sizeKB":  411.9
     },
     {
         "file":  "भजन-संग्रह.html",
