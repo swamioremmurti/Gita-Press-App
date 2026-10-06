@@ -1141,3 +1141,10 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
   .admin-sidenav-brand { display: none; }
   .admin-main { padding: 1.2rem 1rem 2.5rem; }
 }
+
+/* Crawler-facing copy of a page, put into #viewRoot by the server (server/lib/seo.js).
+   The app replaces it on first render; it only shows for visitors without JavaScript. */
+.seo-content { max-width: 860px; margin: 0 auto; padding: 1rem 1.25rem 3rem; color: var(--ink); line-height: 1.7; }
+.seo-content a { color: var(--accent); }
+.seo-content ul { padding-left: 1.2rem; }
+.seo-content nav { font-size: .9rem; color: var(--muted); margin: .5rem 0; }

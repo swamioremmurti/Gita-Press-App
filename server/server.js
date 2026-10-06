@@ -7,6 +7,7 @@ const path = require('path');
 const chat = require('./lib/chat');
 const db = require('./lib/db');
 const api = require('./lib/api');
+const seo = require('./lib/seo');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 5174;
@@ -75,6 +76,8 @@ const server = http.createServer((req, res) => {
     });
     return;
   }
+  // Same crawlable pages Vercel serves through api/seo.js (see vercel.json rewrites).
+  if ((req.method === 'GET' || req.method === 'HEAD') && seo.isSeoPath(pathname)) { seo.handle(req, res, { noCache: true }); return; }
   serveStatic(req, res);
 });
 

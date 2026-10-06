@@ -1,4 +1,4 @@
-// Book catalogue -- 567 real book files. Per book: author, tikakar (commentator), translator and
+// Book catalogue -- 568 real book files. Per book: author, tikakar (commentator), translator and
 // publisher, as printed in the book itself (title page / front matter). Several people in one
 // field are separated by "; ". An empty string means the book does not state it.
 var SWADHYAY_BOOKS_RAW = [
@@ -5104,5 +5104,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "डॉ. वी. जगन्नाथ रेड्डी",
         "publisher":  "",
         "sizeKB":  92.8
+    },
+    {
+        "file":  "प्रेमयोग.html",
+        "category":  "Vedant",
+        "author":  "स्वामी विवेकानन्द",
+        "tikakar":  "",
+        "translator":  "स्व. पं. द्वारकानाथ तिवारी",
+        "publisher":  "रामकृष्ण मठ",
+        "sizeKB":  434.2
     }
 ];

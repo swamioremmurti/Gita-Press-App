@@ -1,7 +1,21 @@
 {
   "regions": ["bom1"],
+  "functions": {
+    "api/seo.js": {
+      "includeFiles": "{index.html,seo-meta.js,swadhyay-data.js,swadhyay-app.js}"
+    }
+  },
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/router" },
+    { "source": "/sitemap.xml", "destination": "/api/seo" },
+    { "source": "/book/:slug", "destination": "/api/seo" },
+    { "source": "/author/:slug", "destination": "/api/seo" },
+    { "source": "/authors", "destination": "/api/seo" },
+    { "source": "/library", "destination": "/api/seo" },
+    { "source": "/panchang", "destination": "/api/seo" },
+    { "source": "/help", "destination": "/api/seo" },
+    { "source": "/feedback", "destination": "/api/seo" },
+    { "source": "/chat", "destination": "/api/seo" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
@@ -10,6 +24,14 @@
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]
+    },
+    {
+      "source": "/(favorites|myreads|settings|login|signup|subscribe|notes)",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
+    },
+    {
+      "source": "/admin/:path*",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }]
     }
   ]
 }

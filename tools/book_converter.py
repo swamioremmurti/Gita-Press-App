@@ -11,6 +11,10 @@ Supported inputs
    (Title, Author, Center, Heading 1-4, Quote, and any custom "Shlok"-named
    style). This is the preferred source: if you format the manuscript
    yourself in Word with these styles, conversion is close to 1:1.
+   Real Word footnotes (Insert > Footnote) are carried over: each citation point
+   becomes a superscript "[१]" marker and the note text is placed right after the
+   paragraph that cites it (Footnotes, with "- source" lines as Footnotes-Right).
+   A note cited from a heading goes directly under that heading, without a marker.
 
 2. .html / .htm -- a Zoho Writer / "Scroll" knowledge-base article export
    ("Extracted Content"). Real chapter titles live in
@@ -202,6 +206,68 @@ def classify_free_text(text: str) -> str:
 
 # ===================================================== .docx conversion ===
 
+# Word footnotes: python-docx's Paragraph.text silently drops <w:footnoteReference>, so the
+# reference points are re-inserted as private-use marker characters (NOTE_OPEN <word id>
+# NOTE_CLOSE) while reading, then turned into a "[१]"-style superscript at render time. The
+# note text itself lives in word/footnotes.xml and is read separately.
+NOTE_OPEN, NOTE_CLOSE = "", ""
+NOTE_RE = re.compile(NOTE_OPEN + r"(\d+)" + NOTE_CLOSE)
+_W_NS = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
+
+
+def to_deva(n: int) -> str:
+    return "".join(DEVA_DIGITS[int(d)] for d in str(n))
+
+
+def read_docx_footnotes(path: Path):
+    """{word footnote id (str): [paragraph text, ...]} from word/footnotes.xml ({} if none)."""
+    import zipfile
+    from xml.etree import ElementTree as ET
+    try:
+        z = zipfile.ZipFile(str(path))
+        if "word/footnotes.xml" not in z.namelist():
+            return {}
+        root = ET.fromstring(z.read("word/footnotes.xml"))
+    except Exception:
+        return {}
+    notes = {}
+    for fn in root.findall(_W_NS + "footnote"):
+        if fn.get(_W_NS + "type") in ("separator", "continuationSeparator", "continuationNotice"):
+            continue
+        paras = []
+        for p in fn.iter(_W_NS + "p"):
+            bits = []
+            for e in p.iter():
+                if e.tag == _W_NS + "t":
+                    bits.append(e.text or "")
+                elif e.tag == _W_NS + "tab":
+                    bits.append(" ")
+            t = re.sub(r"\s+", " ", "".join(bits)).strip()
+            if t:
+                paras.append(t)
+        if paras:
+            notes[fn.get(_W_NS + "id")] = paras
+    return notes
+
+
+def paragraph_text_with_notes(p):
+    """Like python-docx's Paragraph.text, but leaves a marker where a footnote is cited."""
+    from docx.text.run import Run
+    from docx.oxml.ns import qn
+    out = []
+    for r in p._p.xpath(".//w:r"):
+        for ref in r.xpath("w:footnoteReference"):
+            out.append(NOTE_OPEN + ref.get(qn("w:id")) + NOTE_CLOSE)
+        out.append(Run(r, p).text)
+    return "".join(out)
+
+
+def render_text(text: str) -> str:
+    """HTML-escape paragraph text and turn footnote markers (already renumbered to their
+    display number) into a superscript [१] marker."""
+    return NOTE_RE.sub(lambda m: f"<sup>[{to_deva(int(m.group(1)))}]</sup>", esc(text))
+
+
 def convert_docx(path: Path, args):
     try:
         import docx
@@ -209,8 +275,9 @@ def convert_docx(path: Path, args):
         sys.exit("python-docx is required for .docx input: pip install python-docx")
 
     doc = docx.Document(str(path))
-    raw = [(p.style.name, p.text.strip()) for p in doc.paragraphs]
-    raw = [(s, t) for s, t in raw if t]
+    footnotes = read_docx_footnotes(path)
+    raw = [(p.style.name, paragraph_text_with_notes(p).strip()) for p in doc.paragraphs]
+    raw = [(s, t) for s, t in raw if t.replace(NOTE_OPEN, "").replace(NOTE_CLOSE, "").strip()]
 
     chapter_styles = set(s.strip() for s in args.chapter_heading_styles.split(","))
     sub_styles = [s.strip() for s in args.sub_heading_styles.split(",") if s.strip()]
@@ -249,19 +316,50 @@ def convert_docx(path: Path, args):
                 subtitle = t
                 break
 
+    # Footnotes are numbered 1, 2, 3... in reading order (the number Word displays), not by
+    # Word's internal ids, and each note's text is placed straight after the paragraph that
+    # cites it so it stays on the same reader page. A note cited from a chapter heading goes
+    # right under that heading instead (a marker inside the heading would end up in the TOC).
+    note_no = [0]
+
+    def renumber(text):
+        def sub(m):
+            note_no[0] += 1
+            return NOTE_OPEN + str(note_no[0]) + NOTE_CLOSE
+        return NOTE_RE.sub(sub, text)
+
+    def note_paragraphs(word_id, number):
+        out = []
+        for i, t in enumerate(footnotes.get(word_id, [])):
+            cls = "Footnotes-Right" if DASH_RE.match(t) else "Footnotes"
+            if i == 0:
+                t = f"[{to_deva(number)}] {t}"
+            out.append((Para(t), cls))
+        return out
+
     chapters = []
     current = None
     for style, text in body_block:
+        word_ids = NOTE_RE.findall(text)
+        first_no = note_no[0] + 1
+        if word_ids:
+            text = renumber(text)
         if style in heading_style_class:
-            current = Chapter(text, heading_style_class[style])
+            current = Chapter(NOTE_RE.sub("", text).strip(), heading_style_class[style])
             chapters.append(current)
+            for k, wid in enumerate(word_ids):
+                for para, cls in note_paragraphs(wid, first_no + k):
+                    current.add(para, cls)
             continue
         if current is None:
             continue  # shouldn't happen: body_block starts at title_end
         if style in quote_like_styles or style == args.shlok_style:
             current.add(Para(text), "Shlok")
         else:
-            current.add(Para(text), classify_free_text(text))
+            current.add(Para(text), classify_free_text(NOTE_RE.sub("", text)))
+        for k, wid in enumerate(word_ids):
+            for para, cls in note_paragraphs(wid, first_no + k):
+                current.add(para, cls)
 
     return {
         "book_title": book_title, "subtitle": subtitle, "author_name": author_name,
@@ -413,7 +511,7 @@ def build_html(result, args) -> str:
         toc_counter += 1
         lines = [f'\t\t\t<p id="toc_marker-{toc_counter}" class="{ch.css_class}">{esc(ch.title)}</p>']
         for para, cls in ch.paras_with_class:
-            lines.append(f'\t\t\t<p class="{cls}">{esc(para.text)}</p>')
+            lines.append(f'\t\t\t<p class="{cls}">{render_text(para.text)}</p>')
         body_sections.append(
             f'<section class="epub-page" data-page="{i + 2}">\n<div>\n' + "\n".join(lines) + "\n\t\t</div>\n</section>"
         )

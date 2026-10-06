@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /login
+Disallow: /signup
+Disallow: /favorites
+Disallow: /myreads
+Disallow: /settings
 
 Sitemap: https://gitapress-app.vercel.app/sitemap.xml

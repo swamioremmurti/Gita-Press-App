@@ -284,6 +284,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "प्रेमयोग.html": "assets/covers/premyog.jpg",
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.png",
     "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
     "साधन सुधा निधि.html": "assets/covers/sadhan-sudha-nidhi.jpg",
@@ -363,6 +364,7 @@
   // Gita Prakashan, Tirumala Tirupati Devasthanam, etc.) — affiliate buy buttons are
   // hidden for these since Gita Press does not sell them.
   var NON_GITA_PRESS_BOOKS = {
+    "प्रेमयोग.html": true,
     "श्रीकृष्ण चैतन्य.html": true,
     "स्वामी विवेकानन्द संक्षिप्त जीवनी तथा उपदेश.html": true,
     "भक्तियोग.html": true,
@@ -3665,11 +3667,14 @@
     }).then(onNavigate, onNavigate);
   });
 
-  /* Build-time hook: tools/gen-seo.js defines window.__SWADHYAY_EXPORT__ and runs this
+  /* Server-side hook: server/lib/seo.js defines window.__SWADHYAY_EXPORT__ and runs this
      file in a sandbox to get the catalogue, so the slugs, titles and people the server
      renders are computed by this exact code instead of being re-implemented. A no-op in
      the browser, where the hook doesn't exist. */
   if (typeof window.__SWADHYAY_EXPORT__ === "function") {
-    window.__SWADHYAY_EXPORT__({ BOOKS: BOOKS, PEOPLE: PEOPLE, CATEGORY_META: CATEGORY_META });
+    window.__SWADHYAY_EXPORT__({
+      BOOKS: BOOKS, PEOPLE: PEOPLE, CATEGORY_META: CATEGORY_META,
+      genBlurb: genBlurb, HELP_FAQS: HELP_FAQS, personPath: personPath, bookPath: bookPath
+    });
   }
 })();
