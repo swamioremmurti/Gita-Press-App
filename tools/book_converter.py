@@ -173,12 +173,15 @@ def deva_num(s: str):
 
 
 class Para:
-    __slots__ = ("text", "bold", "align")
+    # `html=True` means `text` is already finished HTML (an image block or a table) and must
+    # be written out as-is instead of being escaped.
+    __slots__ = ("text", "bold", "align", "html")
 
-    def __init__(self, text, bold=False, align=None):
+    def __init__(self, text, bold=False, align=None, html=False):
         self.text = text
         self.bold = bold
         self.align = align
+        self.html = html
 
 
 class Chapter:
@@ -268,6 +271,119 @@ def render_text(text: str) -> str:
     return NOTE_RE.sub(lambda m: f"<sup>[{to_deva(int(m.group(1)))}]</sup>", esc(text))
 
 
+def image_block_html(src: str, alt: str) -> str:
+    return (f'<p class="TXT" style="text-align:center;text-indent:0;margin:1em 0">'
+            f'<img src="{esc(src)}" alt="{esc(alt)}" style="max-width:100%;height:auto"></p>')
+
+
+def image_row_html(srcs, alt: str) -> str:
+    """Several pictures in one row: side by side when there is room (desktop), wrapping into
+    a single column when there isn't (phones). Each picture asks for at least 300 px, so two
+    only share a line when the reading column is wide enough for both -- no media query needed."""
+    imgs = "".join(
+        f'<img src="{esc(src)}" alt="{esc(alt)}" '
+        f'style="flex:1 1 300px;min-width:0;max-width:100%;height:auto">' for src in srcs)
+    return (f'<div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;'
+            f'align-items:flex-start;margin:1em 0">{imgs}</div>')
+
+
+def table_html(rows) -> str:
+    """rows: [[cell text, ...], ...] -> a bordered table whose text is set in the book's
+    own body style (each cell holds a TXT paragraph, so it picks up master.css fonts).
+    The first row is treated as the header."""
+    def cell(tag, text, extra=""):
+        inner = "<br>".join(esc(t) for t in text.split("\n") if t.strip())
+        if tag == "th":
+            inner = f"<b>{inner}</b>"
+        return (f'<{tag} style="border:1px solid #b9a77a;padding:6px 10px;vertical-align:top;{extra}">'
+                f'<p class="TXT" style="text-indent:0;text-align:left;margin:0">{inner}</p></{tag}>')
+    out = ['<table style="border-collapse:collapse;margin:1em auto;width:92%">']
+    for i, row in enumerate(rows):
+        tag = "th" if i == 0 else "td"
+        extra = "background:#f6efdc;" if i == 0 else ""
+        out.append("<tr>" + "".join(cell(tag, c, extra) for c in row) + "</tr>")
+    out.append("</table>")
+    return "".join(out)
+
+
+MAX_IMAGE_BYTES = 200_000
+
+
+def optimize_image(blob: bytes, ext: str, max_bytes: int = MAX_IMAGE_BYTES):
+    """Keep every picture at or under `max_bytes` (default 200 KB) with as little visible loss
+    as possible. Word keeps originals (some are 3+ MB PNG scans), so anything larger is
+    re-saved as JPEG: try full size (max 1600 px wide) at high quality first, lowering quality
+    only a notch at a time, and shrinking the picture only if quality alone can't get there.
+    Pictures already within the limit are kept byte-for-byte."""
+    if len(blob) <= max_bytes:
+        return blob, ext
+    try:
+        import io
+        from PIL import Image
+        im = Image.open(io.BytesIO(blob))
+        if im.mode in ("RGBA", "LA", "P"):
+            im = im.convert("RGBA")
+            bg = Image.new("RGB", im.size, "white")
+            bg.paste(im, mask=im.split()[-1])
+            im = bg
+        else:
+            im = im.convert("RGB")
+        if im.width > 1600:
+            im = im.resize((1600, round(im.height * 1600 / im.width)), Image.LANCZOS)
+        best = None
+        for scale in (1.0, 0.92, 0.85, 0.78, 0.7, 0.62, 0.55, 0.48):
+            work = im if scale == 1.0 else im.resize(
+                (max(1, round(im.width * scale)), max(1, round(im.height * scale))), Image.LANCZOS)
+            for q in (92, 89, 86, 83, 80, 77, 74):
+                out = io.BytesIO()
+                work.save(out, "JPEG", quality=q, optimize=True, progressive=True)
+                data = out.getvalue()
+                if best is None or len(data) < len(best):
+                    best = data
+                if len(data) <= max_bytes:
+                    return data, ".jpg"
+        return best, ".jpg"
+    except Exception:
+        return blob, ext
+
+
+def read_docx_items(doc, image_slug: str, image_store: list):
+    """Walk the document body IN ORDER and return a list of items
+    {"style", "text", "images": [filename, ...], "table": [[cell, ...], ...] or None}.
+    Paragraph text keeps footnote markers; embedded pictures are recorded in `image_store`
+    as (filename, bytes) -- written to the book's image/ folder by cmd_convert -- and
+    tables are kept (python-docx's `doc.paragraphs` skips both)."""
+    from docx.table import Table
+    from docx.text.paragraph import Paragraph
+    from docx.oxml.ns import qn
+    items = []
+    for el in doc.element.body.iterchildren():
+        if el.tag == qn("w:p"):
+            p = Paragraph(el, doc)
+            names = []
+            for blip in el.xpath(".//a:blip"):
+                rid = blip.get(qn("r:embed"))
+                if not rid or rid not in doc.part.related_parts:
+                    continue
+                part = doc.part.related_parts[rid]
+                ext = part.partname.ext.lower()
+                ext = ext if ext.startswith(".") else "." + ext
+                blob, ext = optimize_image(part.blob, ext)
+                name = f"{image_slug}-{len(image_store) + 1}{ext}"
+                image_store.append((name, blob))
+                names.append(name)
+            items.append({"style": p.style.name, "text": paragraph_text_with_notes(p).strip(),
+                          "images": names, "table": None})
+        elif el.tag == qn("w:tbl"):
+            t = Table(el, doc)
+            rows = [[c.text.strip() for c in r.cells] for r in t.rows]
+            if any(any(c for c in r) for r in rows):
+                items.append({"style": "__table__", "text": "", "images": [], "table": rows})
+    keep = lambda it: (it["text"].replace(NOTE_OPEN, "").replace(NOTE_CLOSE, "").strip()
+                       or it["images"] or it["table"])
+    return [it for it in items if keep(it)]
+
+
 def convert_docx(path: Path, args):
     try:
         import docx
@@ -276,8 +392,13 @@ def convert_docx(path: Path, args):
 
     doc = docx.Document(str(path))
     footnotes = read_docx_footnotes(path)
-    raw = [(p.style.name, paragraph_text_with_notes(p).strip()) for p in doc.paragraphs]
-    raw = [(s, t) for s, t in raw if t.replace(NOTE_OPEN, "").replace(NOTE_CLOSE, "").strip()]
+    image_slug = devanagari_to_slug(args.out_name or args.title or "book")
+    image_store = []
+    items = read_docx_items(doc, image_slug, image_store)
+    # `raw` keeps the (style, text) shape the rest of this function was written around;
+    # `extras[i]` carries that paragraph's pictures / table.
+    raw = [(it["style"], it["text"]) for it in items]
+    extras = [(it["images"], it["table"]) for it in items]
 
     chapter_styles = set(s.strip() for s in args.chapter_heading_styles.split(","))
     sub_styles = [s.strip() for s in args.sub_heading_styles.split(",") if s.strip()]
@@ -303,6 +424,26 @@ def convert_docx(path: Path, args):
 
     title_block = raw[:title_end]
     body_block = raw[title_end:]
+    title_extras = extras[:title_end]
+    body_extras = extras[title_end:]
+    # pictures that sit on the title page (before the first heading) go on the cover
+    cover_images = [n for imgs, _tbl in title_extras for n in imgs]
+
+    # Safety check: the manuscript's own "Title" paragraph must be the book being imported.
+    # Without this, converting the wrong .docx under the right --title silently produces a
+    # book with one book's name on another book's text (this happened once: श्रीकृष्ण चैतन्य
+    # was built from the राजयोग manuscript).
+    def _norm_title(s):
+        return re.sub(r"[\s\-–—_.,:;!?()\[\]\"'‘’“”।॥]+", "", s)
+    doc_title = next((t for s, t in title_block if s == "Title"), "")
+    if doc_title and _norm_title(doc_title) != _norm_title(args.title) and not args.allow_title_mismatch:
+        sys.exit(f"STOP: the document's own title is '{doc_title}' but --title is '{args.title}'. "
+                 f"This looks like the wrong source file. Check the file, or pass "
+                 f"--allow-title-mismatch if the difference is intentional.")
+
+    drop_titles = set(s.strip() for s in args.drop_chapters.split(",") if s.strip())
+    right_styles = set(s.strip() for s in args.right_styles.split(",") if s.strip())
+    center_styles = set(s.strip() for s in args.center_styles.split(",") if s.strip())
 
     book_title = args.title
     subtitle = args.subtitle
@@ -339,22 +480,67 @@ def convert_docx(path: Path, args):
 
     chapters = []
     current = None
-    for style, text in body_block:
+    # Chapters named in --drop-chapters (e.g. a book's own contents list, which the reader's
+    # TOC drawer makes redundant) are left out -- but any picture inside one is carried over to
+    # the start of the next kept chapter instead of disappearing with it.
+    drop_current = False
+    carry = []
+    carry_names = []     # file names of those carried pictures (for --carried-images-chapter)
+    def image_paras(names):
+        return [(Para(image_block_html("image/" + n, f"{args.title} — चित्र"), html=True), "Image") for n in names]
+
+    for (style, text), (imgs, table) in zip(body_block, body_extras):
         word_ids = NOTE_RE.findall(text)
         first_no = note_no[0] + 1
         if word_ids:
             text = renumber(text)
+        if table is not None:
+            if current is not None:
+                current.add(Para(table_html(table), html=True), "Table")
+            continue
         if style in heading_style_class:
-            current = Chapter(NOTE_RE.sub("", text).strip(), heading_style_class[style])
-            chapters.append(current)
-            for k, wid in enumerate(word_ids):
-                for para, cls in note_paragraphs(wid, first_no + k):
+            if current is not None and drop_current:
+                carry += [pc for pc in current.paras_with_class if pc[1] == "Image"]
+            heading_text = NOTE_RE.sub("", text).strip()
+            current = Chapter(heading_text, heading_style_class[style])
+            drop_current = heading_text in drop_titles
+            if drop_current:
+                print(f"[drop] leaving out chapter: {heading_text}")
+                carry_names += imgs
+            else:
+                if carry_names and args.carried_images_chapter:
+                    # the pictures left over from dropped chapters get a chapter of their own,
+                    # placed just before this one, laid out in a responsive row
+                    gallery = Chapter(args.carried_images_chapter, "Heading")
+                    gallery.add(Para(image_row_html(["image/" + n for n in carry_names],
+                                                    f"{args.title} — चित्र"), html=True), "Image")
+                    chapters.append(gallery)
+                    print(f"[images] {len(carry_names)} picture(s) moved to new chapter: {args.carried_images_chapter}")
+                    carry, carry_names = [], []
+                chapters.append(current)
+                for k, wid in enumerate(word_ids):
+                    for para, cls in note_paragraphs(wid, first_no + k):
+                        current.add(para, cls)
+                for para, cls in carry:
                     current.add(para, cls)
+                carry, carry_names = [], []
+            for para, cls in image_paras(imgs):
+                current.add(para, cls)
             continue
         if current is None:
             continue  # shouldn't happen: body_block starts at title_end
+        if drop_current:
+            carry_names += imgs
+        for para, cls in image_paras(imgs):      # a picture goes just above its paragraph
+            current.add(para, cls)
+        if not NOTE_RE.sub("", text).strip():
+            continue                              # picture-only paragraph
         if style in quote_like_styles or style == args.shlok_style:
             current.add(Para(text), "Shlok")
+        elif style in right_styles:
+            current.add(Para(text), "TXT-Right")      # signature / attribution lines
+        elif style in center_styles:
+            current.add(Para(text), "Shlok")          # centred closing lines (e.g. शान्ति-पाठ)
         else:
             current.add(Para(text), classify_free_text(NOTE_RE.sub("", text)))
         for k, wid in enumerate(word_ids):
@@ -364,6 +550,7 @@ def convert_docx(path: Path, args):
     return {
         "book_title": book_title, "subtitle": subtitle, "author_name": author_name,
         "translator_line": translator_line, "chapters": chapters,
+        "cover_images": cover_images, "images": image_store,
     }
 
 
@@ -500,6 +687,8 @@ def build_html(result, args) -> str:
         sections.append(f'\t\t\t<p class="Title-Page---Author-Name">{esc(result["author_name"])}</p>')
     if result["translator_line"]:
         sections.append(f'\t\t\t<p class="Title-Page---Translater-Author-Name">{esc(result["translator_line"])}</p>')
+    for name in result.get("cover_images", []):
+        sections.append("\t\t\t" + image_block_html("image/" + name, f"{title} — मुखपृष्ठ चित्र"))
     if result["subtitle"]:
         sections.append(f'\t\t\t<p class="Title-Page---Publisher-Note">{esc(result["subtitle"])}</p>')
     sections.append("\t\t</div>\n</section>")
@@ -511,7 +700,10 @@ def build_html(result, args) -> str:
         toc_counter += 1
         lines = [f'\t\t\t<p id="toc_marker-{toc_counter}" class="{ch.css_class}">{esc(ch.title)}</p>']
         for para, cls in ch.paras_with_class:
-            lines.append(f'\t\t\t<p class="{cls}">{render_text(para.text)}</p>')
+            if para.html:
+                lines.append("\t\t\t" + para.text)
+            else:
+                lines.append(f'\t\t\t<p class="{cls}">{render_text(para.text)}</p>')
         body_sections.append(
             f'<section class="epub-page" data-page="{i + 2}">\n<div>\n' + "\n".join(lines) + "\n\t\t</div>\n</section>"
         )
@@ -529,6 +721,8 @@ def print_stats(result):
     if result["subtitle"]:
         print(f"Subtitle: {result['subtitle']}")
     print(f"Chapters: {len(result['chapters'])}")
+    if result.get("images"):
+        print(f"Pictures: {len(result['images'])}  (cover: {len(result.get('cover_images', []))})")
     stats = {}
     for ch in result["chapters"]:
         for _, cls in ch.paras_with_class:
@@ -759,6 +953,13 @@ def cmd_convert(args):
         args.out_dir.mkdir(parents=True, exist_ok=True)
         out_path.write_text(html_out, encoding="utf-8")
         print(f"Wrote {out_path}")
+        images = result.get("images") or []
+        if images:
+            img_dir = args.out_dir / "image"
+            img_dir.mkdir(parents=True, exist_ok=True)
+            for name, blob in images:
+                (img_dir / name).write_bytes(blob)
+            print(f"Wrote {len(images)} image(s) to {img_dir}")
 
     if not args.no_register:
         register_in_data_js(args.data_js, out_name, args.category, args.author, size_kb, args.dry_run)
@@ -804,6 +1005,20 @@ def build_arg_parser():
                              help="comma-separated Word style names to render as a display Shlok block")
     docx_group.add_argument("--shlok-style", default="Shlok",
                              help="Word style name (if any) the source already uses for verse/sutra lines")
+    docx_group.add_argument("--right-styles", default="right-text",
+                             help="comma-separated Word style names for right-aligned lines (signatures, "
+                                  "attributions) -> TXT-Right")
+    docx_group.add_argument("--center-styles", default="center-text",
+                             help="comma-separated Word style names for centred body lines -> Shlok")
+    docx_group.add_argument("--drop-chapters", default="",
+                             help="comma-separated exact heading texts to leave out (e.g. the book's own "
+                                  "contents list, 'विषय क्रम'); pictures inside them move to the next chapter")
+    docx_group.add_argument("--carried-images-chapter", default="",
+                             help="title for a NEW chapter that collects the pictures left over from "
+                                  "--drop-chapters (laid out side by side on wide screens, stacked on "
+                                  "phones); without it they join the start of the next chapter")
+    docx_group.add_argument("--allow-title-mismatch", action="store_true",
+                             help="don't stop when the document's own Title paragraph differs from --title")
 
     html_group = cv.add_argument_group(".html (Zoho/Aspose export) options")
     html_group.add_argument("--marker-class", default="z-fs:24 z-fw:700 z-txt:grey0",

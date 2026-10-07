@@ -1,4 +1,4 @@
-// Book catalogue -- 568 real book files. Per book: author, tikakar (commentator), translator and
+// Book catalogue -- 567 real book files. Per book: author, tikakar (commentator), translator and
 // publisher, as printed in the book itself (title page / front matter). Several people in one
 // field are separated by "; ". An empty string means the book does not state it.
 var SWADHYAY_BOOKS_RAW = [
@@ -3972,22 +3972,13 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  170.1
     },
     {
-        "file":  "श्रीभीष्मपितामह प्रथम पृष्ठ.html",
-        "category":  "Siksha evam Katha",
-        "author":  "स्वामी अखण्डानन्द सरस्वती",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  522.8
-    },
-    {
         "file":  "श्रीभीष्मपितामह.html",
         "category":  "Siksha evam Katha",
         "author":  "स्वामी अखण्डानन्द सरस्वती",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1149.4
+        "sizeKB":  522.8
     },
     {
         "file":  "श्रीमद्भगवद्गीता माहात्म्य की कहानियाँ.html",
@@ -4204,15 +4195,6 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  29.9
-    },
-    {
-        "file":  "श्रीहनुमानचालीसा (हिन्दी भावार्थसहित).html",
-        "category":  "Stotra evam Naamavali",
-        "author":  "",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीताप्रेस",
-        "sizeKB":  117.7
     },
     {
         "file":  "श्रीहरिवंशपुराण.html",
@@ -5102,8 +5084,8 @@ var SWADHYAY_BOOKS_RAW = [
         "author":  "डॉ. वै. वी. रमण राव",
         "tikakar":  "",
         "translator":  "डॉ. वी. जगन्नाथ रेड्डी",
-        "publisher":  "",
-        "sizeKB":  92.8
+        "publisher":  "तिरुमल तिरुपति देवस्थानम्",
+        "sizeKB":  96.3
     },
     {
         "file":  "प्रेमयोग.html",
@@ -5113,5 +5095,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "स्व. पं. द्वारकानाथ तिवारी",
         "publisher":  "रामकृष्ण मठ",
         "sizeKB":  434.2
+    },
+    {
+        "file":  "भक्त नंदनार.html",
+        "category":  "Balaupayogi",
+        "author":  "आचार्य के. सर्वोत्तम राव",
+        "tikakar":  "",
+        "translator":  "डॉ. एम. लक्ष्मणाचार्य",
+        "publisher":  "तिरुमल तिरुपति देवस्थानम्",
+        "sizeKB":  200.7
     }
 ];
