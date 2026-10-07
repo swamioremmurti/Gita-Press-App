@@ -1263,13 +1263,13 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  1075.2
     },
     {
-        "file":  "कल्याण_भक्त-चरिताङ्क.html",
+        "file":  "भक्त-चरिताङ्क.html",
         "category":  "Siksha evam Katha",
         "author":  "",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  8213.8
+        "sizeKB":  7380.8
     },
     {
         "file":  "कल्याणकारी आचरण.html",

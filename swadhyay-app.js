@@ -287,6 +287,7 @@
     "प्रेमयोग.html": "assets/covers/premyog.jpg",
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.png",
     "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
+    "भक्त-चरिताङ्क.html": "assets/covers/bhakt-charitank.jpg",
     "साधन सुधा निधि.html": "assets/covers/sadhan-sudha-nidhi.jpg",
     "साधन सुधा सिन्धु.html": "assets/covers/sadhan-sudha-sindhu.jpg",
     "अच्छे बनो.html": "assets/covers/achhe-bano.jpg",
@@ -1247,82 +1248,41 @@
   }
 
   /* ---------------- table of contents ----------------
-     Every converted book uses a shared heading convention (p.Heading / p.Sub-Heading /
-     p.Sub-Heading-2 / p.Sub-Heading-3), each already carrying its own id="toc_marker-N".
-     So rather than hand-maintaining a TOC per book (500+ titles), the TOC is extracted live
-     from the book's own HTML the first time its tab is opened, and each entry links straight
-     to that heading's existing anchor inside the book page. */
-  var TOC_LEVEL_CLASS = { "Heading": 1, "Sub-Heading": 2, "Sub-Heading-2": 3, "Sub-Heading-3": 4 };
-  var tocCache = {};
-
-  function extractTOC(htmlText) {
-    var doc = new DOMParser().parseFromString(htmlText, "text/html");
-    var nodes = doc.querySelectorAll("p.Heading, p.Sub-Heading, p.Sub-Heading-2, p.Sub-Heading-3");
-    var out = [];
-    nodes.forEach(function (el) {
-      var firstClass = (el.className || "").trim().split(/\s+/)[0];
-      var level = TOC_LEVEL_CLASS[firstClass] || 2;
-      var text = el.textContent.replace(/\s+/g, " ").trim();
-      if (!text) return;
-      out.push({ level: level, text: text, id: el.id || null });
-    });
-    return out;
+     The book page's विषय सूची mirrors the reader's own chapter list (buildReaderBook), so
+     every entry opens in the in-app reader -- the chapter at /read/<slug>/<n>, and a
+     Sub-Heading inside it at /read/<slug>/<n>?a=<anchor> -- instead of the raw .html file.
+     The parsed book goes into readerCache, so opening the reader afterwards is instant. */
+  function tocLink(href, text) {
+    return '<a href="' + href + '">' + esc(text) + '</a>';
   }
 
-  function tocLink(e, href) {
-    var label = esc(e.text);
-    return e.id
-      ? '<a href="' + href + '#' + e.id + '" target="_blank" rel="noopener">' + label + '</a>'
-      : '<span>' + label + '</span>';
-  }
-
-  // Groups the flat heading list into sections keyed by the topmost heading level actually
-  // used in this book (usually "Heading", but a book that only ever uses Sub-Heading works
-  // just as well) -- each section's deeper-level entries become its collapsible children.
-  function groupTOC(entries) {
-    if (!entries.length) return [];
-    var minLevel = Math.min.apply(null, entries.map(function (e) { return e.level; }));
-    var sections = [];
-    var current = null;
-    entries.forEach(function (e) {
-      if (e.level === minLevel || !current) {
-        current = { header: e, children: [] };
-        sections.push(current);
-      } else {
-        current.children.push(e);
-      }
-    });
-    return sections;
-  }
-
-  function renderTOCList(entries, href) {
-    if (!entries.length) return '<div class="empty-state small">इस पुस्तक की विषय-सूची उपलब्ध नहीं है।</div>';
-    var sections = groupTOC(entries);
-    return '<div class="toc-accordion">' + sections.map(function (sec) {
-      var hasChildren = sec.children.length > 0;
-      var childrenHTML = hasChildren
-        ? '<ul class="toc-children">' + sec.children.map(function (e) {
-            return '<li class="toc-item toc-level-' + e.level + '">' + tocLink(e, href) + '</li>';
+  function renderTOCList(book, chapters) {
+    if (!chapters.length) return '<div class="empty-state small">इस पुस्तक की विषय-सूची उपलब्ध नहीं है।</div>';
+    return '<div class="toc-accordion">' + chapters.map(function (ch, i) {
+      var chHref = readPath(book, i);
+      var subs = ch.subs || [];
+      var childrenHTML = subs.length
+        ? '<ul class="toc-children">' + subs.map(function (s) {
+            return '<li class="toc-item toc-level-2">' + tocLink(chHref + "?a=" + encodeURIComponent(s.anchorId), s.text) + '</li>';
           }).join("") + '</ul>'
         : '';
       return '<div class="toc-section">' +
         '<div class="toc-section-header">' +
-        (hasChildren ? '<button class="toc-toggle" type="button" aria-label="विस्तार करें">▸</button>' : '<span class="toc-toggle-spacer"></span>') +
-        tocLink(sec.header, href) +
+        (subs.length ? '<button class="toc-toggle" type="button" aria-label="विस्तार करें">▸</button>' : '<span class="toc-toggle-spacer"></span>') +
+        tocLink(chHref, ch.label) +
         '</div>' + childrenHTML + '</div>';
     }).join("") + '</div>';
   }
 
   function loadTOC(book, panel) {
-    if (tocCache[book.id]) { panel.innerHTML = renderTOCList(tocCache[book.id], book.href); return; }
+    if (readerCache[book.id]) { panel.innerHTML = renderTOCList(book, readerCache[book.id].chapters); return; }
     panel.innerHTML = '<div class="empty-state small">विषय-सूची लोड हो रही है…</div>';
     fetch(book.href).then(function (res) {
       if (!res.ok) throw new Error("fetch failed");
       return res.text();
     }).then(function (htmlText) {
-      var entries = extractTOC(htmlText);
-      tocCache[book.id] = entries;
-      panel.innerHTML = renderTOCList(entries, book.href);
+      var entry = readerCache[book.id] || buildReaderBook(book.id, htmlText);
+      panel.innerHTML = renderTOCList(book, entry.chapters);
     }).catch(function () {
       panel.innerHTML = '<div class="empty-state small">विषय-सूची लोड नहीं हो सकी। पुस्तक खोलकर देखें।</div>';
     });
@@ -1955,7 +1915,7 @@
     });
   }
 
-  function openReader(bookId, startIdx) {
+  function openReader(bookId, startIdx, anchorId) {
     var book = BOOKS_BY_ID[bookId];
     if (!book) { navigate("/library"); return; }
 
@@ -1989,7 +1949,8 @@
       var idx = !isResume ? startIdx : (saved && typeof saved.lastChapter === "number") ? saved.lastChapter : 0;
       reader.idx = Math.max(0, Math.min(entry.chapters.length - 1, idx));
       var restorePct = (isResume && saved && reader.idx === saved.lastChapter) ? (saved.scrollPct || 0) : 0;
-      readerRenderIframe(restorePct);
+      if (anchorId) restorePct = 0;
+      readerRenderIframe(restorePct, anchorId || null);
       readerUpdateChrome();
       readerSaveProgress(restorePct);
       try { history.replaceState(null, "", readPath(book, reader.idx)); } catch (e) {}
@@ -3238,7 +3199,7 @@
       var rCh = seg[2] !== undefined ? parseInt(seg[2], 10) : null;
       if (!rBook) { navigate("/library"); return; }
       setPageMeta(rBook);
-      openReader(rBook.id, rCh);
+      openReader(rBook.id, rCh, r.params.get("a"));
       setActiveNav(r.path);
       return;
     }
