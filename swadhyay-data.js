@@ -4032,7 +4032,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  12949.7
+        "sizeKB":  12907.9
     },
     {
         "file":  "श्रीमद्वाल्मीकीय रामायण.html",
@@ -5104,5 +5104,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "डॉ. एम. लक्ष्मणाचार्य",
         "publisher":  "तिरुमल तिरुपति देवस्थानम्",
         "sizeKB":  200.7
+    },
+    {
+        "file":  "श्रीहनुमान-अङ्क.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  5514.7
     }
 ];

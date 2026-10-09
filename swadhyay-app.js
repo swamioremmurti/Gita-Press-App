@@ -288,6 +288,7 @@
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.png",
     "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
     "भक्त-चरिताङ्क.html": "assets/covers/bhakt-charitank.jpg",
+    "श्रीहनुमान-अङ्क.html": "assets/covers/hanuman-ank.jpg",
     "साधन सुधा निधि.html": "assets/covers/sadhan-sudha-nidhi.jpg",
     "साधन सुधा सिन्धु.html": "assets/covers/sadhan-sudha-sindhu.jpg",
     "अच्छे बनो.html": "assets/covers/achhe-bano.jpg",
@@ -598,6 +599,7 @@
     readerLineHeight: "swadhyay_reader_line_height_v1",
     bookmarks: "swadhyay_bookmarks_v1",
     highlights: "swadhyay_highlights_v1",
+    readerLayout: "swadhyay_reader_layout_v1",
     panchangCity: "swadhyay_panchang_city_v1",
     feedback: "swadhyay_feedback_v1",
     taxLang: "swadhyay_taxonomy_lang_v1"
@@ -1150,9 +1152,12 @@
     html += todaysSpecialSection(panchang);
     html += carousel("नये आगमन", "New Additions", "", newAdd, "/library?cat=all&sort=latest", "new-arrivals-row");
     if (favBooks.length) html += carousel("आपके प्रिय ग्रंथ", "Your Favorites", "", favBooks, "/favorites");
-    html += suggestedReadBanner();
-    html += specialCollectionsSection();
-    html += popularAuthorsSection();
+    html += '<div class="home-lower-grid">' +
+      '<div class="hl-cta">' + suggestedReadBanner() + '</div>' +
+      '<div class="hl-coll">' + specialCollectionsSection() + '</div>' +
+      '<div class="hl-auth">' + popularAuthorsSection() + '</div>' +
+      (window.SwadhyayAudio ? window.SwadhyayAudio.homePanelHtml() : '') +
+      '</div>';
     html += '</main>';
     return html;
   }
@@ -1252,25 +1257,39 @@
      every entry opens in the in-app reader -- the chapter at /read/<slug>/<n>, and a
      Sub-Heading inside it at /read/<slug>/<n>?a=<anchor> -- instead of the raw .html file.
      The parsed book goes into readerCache, so opening the reader afterwards is instant. */
+  /* Pages are flat in reader.chapters; the contents show them grouped by the chapter they were
+     cut from -- the chapter's first page is the group header, its Sub-Heading pages are the
+     children. Returns [{idx, subIdx:[page indexes]}]. */
+  function groupPages(pages) {
+    var groups = [];
+    pages.forEach(function (pg, i) {
+      if (!pg.isSub || !groups.length) groups.push({ idx: i, subIdx: [] });
+      else groups[groups.length - 1].subIdx.push(i);
+    });
+    return groups;
+  }
+
   function tocLink(href, text) {
     return '<a href="' + href + '">' + esc(text) + '</a>';
   }
 
   function renderTOCList(book, chapters) {
     if (!chapters.length) return '<div class="empty-state small">इस पुस्तक की विषय-सूची उपलब्ध नहीं है।</div>';
-    return '<div class="toc-accordion">' + chapters.map(function (ch, i) {
-      var chHref = readPath(book, i);
-      var subs = ch.subs || [];
-      var childrenHTML = subs.length
-        ? '<ul class="toc-children">' + subs.map(function (s) {
-            return '<li class="toc-item toc-level-2">' + tocLink(chHref + "?a=" + encodeURIComponent(s.anchorId), s.text) + '</li>';
-          }).join("") + '</ul>'
-        : '';
+    function deeper(pg, i, level) {
+      return (pg.subs || []).map(function (sb) {
+        return '<li class="toc-item toc-level-' + level + '">' + tocLink(readPath(book, i) + "?a=" + encodeURIComponent(sb.anchorId), sb.text) + '</li>';
+      }).join("");
+    }
+    return '<div class="toc-accordion">' + groupPages(chapters).map(function (g) {
+      var head = chapters[g.idx];
+      var kids = deeper(head, g.idx, 3) + g.subIdx.map(function (j) {
+        return '<li class="toc-item toc-level-2">' + tocLink(readPath(book, j), chapters[j].label) + '</li>' + deeper(chapters[j], j, 3);
+      }).join("");
       return '<div class="toc-section">' +
         '<div class="toc-section-header">' +
-        (subs.length ? '<button class="toc-toggle" type="button" aria-label="विस्तार करें">▸</button>' : '<span class="toc-toggle-spacer"></span>') +
-        tocLink(chHref, ch.label) +
-        '</div>' + childrenHTML + '</div>';
+        (kids ? '<button class="toc-toggle" type="button" aria-label="विस्तार करें">▸</button>' : '<span class="toc-toggle-spacer"></span>') +
+        tocLink(readPath(book, g.idx), head.label) +
+        '</div>' + (kids ? '<ul class="toc-children">' + kids + '</ul>' : '') + '</div>';
     }).join("") + '</div>';
   }
 
@@ -1448,20 +1467,139 @@
     return { html: newHtml, subs: subs };
   }
 
+  /* Cuts one chapter's HTML at every <p class="Sub-Heading"> (only that level -- the
+     deeper Sub-Heading-2/3/4 stay inside their page, still reachable from the contents).
+     A page shorter than READER_MIN_PAGE_CHARS is never closed, so a bare Heading followed
+     straight away by a Sub-Heading, or a one-line section, rides along with the next
+     section rather than becoming a page of its own.
+     Returns [{html, label, len}] -- label is the Sub-Heading text for pages that open with one. */
+  var READER_MIN_PAGE_CHARS = 800;
+  var READER_LAYOUT = 2;   // 1 = one page per chapter (old), 2 = pages cut at Sub-Headings
+  function splitAtSubHeadings(html) {
+    var re = /<p\b[^>]*\bclass="(?:[^"]*\s)?Sub-Heading(?:\s[^"]*)?"[^>]*>/g;
+    var starts = [], m;
+    while ((m = re.exec(html))) starts.push(m.index);
+    if (!starts.length) return [{ html: html, label: null, len: stripTagsForLabel(html).length }];
+    var segs = [{ html: html.slice(0, starts[0]), label: null }];
+    starts.forEach(function (st, k) {
+      var seg = html.slice(st, k + 1 < starts.length ? starts[k + 1] : html.length);
+      var inner = seg.match(/<p[^>]*>([\s\S]*?)<\/p>/);
+      var text = inner ? stripTagsForLabel(inner[1]) : "";
+      segs.push({ html: seg, label: text.length > 60 ? text.slice(0, 57) + "…" : text });
+    });
+    var pages = [];
+    var cur = null;
+    segs.forEach(function (seg) {
+      seg.len = stripTagsForLabel(seg.html).length;
+      if (cur && cur.len >= READER_MIN_PAGE_CHARS) { pages.push(cur); cur = null; }
+      if (!cur) { cur = { html: seg.html, label: seg.label, len: seg.len }; return; }
+      cur.html += seg.html;
+      cur.len += seg.len;
+      if (!cur.label) cur.label = seg.label;
+    });
+    if (cur) pages.push(cur);
+    // Whatever opened the chapter before its first Sub-Heading is the chapter's own page.
+    pages.forEach(function (pg, i) { if (i === 0) pg.label = null; });
+    return pages.filter(function (pg) { return pg.len > 0 || pg.html.indexOf("<img") !== -1; });
+  }
+
+  /* A book whose headings are not separated by page-break markers (e.g. one long run of
+     paragraphs with Heading paragraphs in it) still gets one reader page per Heading: the
+     chunk is cut at every Heading / Chapter-Number / Book-Name paragraph. A cut-off piece
+     that is only a title (a Heading straight followed by another) rides along with the next
+     piece so a two-line title never becomes a page of its own. */
+  var HEADING_START_RE = /<p\b[^>]*\bclass="(?:[^"]*\s)?(?:Title-Page---Book-Name|Heading|Chapter-Number)(?:\s[^"]*)?"[^>]*>/g;
+  var TITLE_ONLY_CHARS = 100;
+  function splitAtHeadings(html) {
+    var starts = [], m;
+    HEADING_START_RE.lastIndex = 0;
+    while ((m = HEADING_START_RE.exec(html))) starts.push(m.index);
+    // Whatever sits between the page break and the chunk's first Heading (an invocation line,
+    // verses, a picture) belongs to that Heading, exactly as before -- so the first cut is
+    // at the SECOND heading, never at the first.
+    if (starts.length < 2) return [html];
+    var cuts = [0].concat(starts.slice(1));
+    var pieces = cuts.map(function (st, k) { return html.slice(st, k + 1 < cuts.length ? cuts[k + 1] : html.length); });
+    var out = [], carry = "";
+    pieces.forEach(function (pc, k) {
+      pc = carry + pc;
+      carry = "";
+      var txt = stripTagsForLabel(pc);
+      if (k < pieces.length - 1 && txt.length < TITLE_ONLY_CHARS && pc.indexOf("<img") === -1) { carry = pc; return; }
+      if (txt.length || pc.indexOf("<img") !== -1) out.push(pc);
+    });
+    // A title-only leftover at the very end stays on the page before it, as it always did.
+    if (carry) { if (out.length) out[out.length - 1] += carry; else out.push(carry); }
+    return out.length ? out : [html];
+  }
+
+  var SAMBANDH_START_RE = /^\s*<p\s[^>]*\bclass="(?:[^"]*\s)?Sambandh(?:\s[^"]*)?"/;
+
+  // "श्लोक-४" / "श्लोक-४–५" from the Shlok-Number lines of a सम्बन्ध-led page; falls back to
+  // the opening words of the सम्बन्ध paragraph itself.
+  function sambandhLabel(html) {
+    var nums = [], re = /<p\s[^>]*\bclass="(?:[^"]*\s)?Shlok-Number(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/p>/g, m;
+    while ((m = re.exec(html))) {
+      var t = stripTagsForLabel(m[1]).replace(/^[\(\[\s]+|[\)\]\s]+$/g, "");
+      if (t) nums.push(t);
+    }
+    if (nums.length) {
+      var first = nums[0], last = nums[nums.length - 1].split(/[-–]/).pop();
+      return nums.length > 1 && last && first.indexOf(last) === -1 ? first + "–" + last : first;
+    }
+    // Verses numbered inline at the end of their last line ("…सञ्जय॥१") -> "श्लोक-१" / "श्लोक-४–६"
+    var vre = /<p\s[^>]*\bclass="(?:[^"]*\s)?(?:Shlok|Etalic)[^"]*"[^>]*>([\s\S]*?)<\/p>/g, vn = [];
+    while ((m = vre.exec(html))) {
+      var vm = stripTagsForLabel(m[1]).replace(/\*/g, "").match(/॥\s*([०-९]+)$/);
+      if (vm) vn.push(vm[1]);
+    }
+    if (vn.length) return "श्लोक-" + vn[0] + (vn.length > 1 && vn[vn.length - 1] !== vn[0] ? "–" + vn[vn.length - 1] : "");
+    var sm = html.match(/<p[^>]*>([\s\S]*?)<\/p>/);
+    var text = sm ? stripTagsForLabel(sm[1]) : "";
+    return text.length > 60 ? text.slice(0, 57) + "…" : (text || "सम्बन्ध");
+  }
+
   function buildReaderBook(bookId, htmlText) {
     var doc = new DOMParser().parseFromString(htmlText, "text/html");
     var headHtml = doc.head ? doc.head.innerHTML : "";
     var bodyHtml = doc.body ? doc.body.innerHTML : htmlText;
-    var chunks = splitBookChapters(bodyHtml);
+    var rawChunks = splitBookChapters(bodyHtml);
+
+    /* "Legacy" chapter numbers (one chapter per page-break chunk, before pages were cut at
+       Headings / Sub-Headings) are still what an old bookmark, highlight or resume point
+       refers to, so every chunk remembers which legacy chapter it came from. */
+    var rawLegacy = [], legacyCount = 0, sawLegacyHeading = false;
+    rawChunks.forEach(function (html, r) {
+      var h = findChapterHeading(html);
+      if (h && isTocLabel(h)) { rawLegacy[r] = -1; return; }
+      if (h) { legacyCount++; sawLegacyHeading = true; }
+      else if (!(sawLegacyHeading && legacyCount)) legacyCount++;
+      rawLegacy[r] = legacyCount - 1;
+    });
+
+    var chunks = [];
+    rawChunks.forEach(function (html, r) {
+      if (rawLegacy[r] === -1) return;           // the book's own built-in contents page
+      splitAtHeadings(html).forEach(function (piece) { chunks.push({ html: piece, legacy: rawLegacy[r] }); });
+    });
+
     var chapters = [];
     var sawRealHeading = false;
-    chunks.forEach(function (html) {
+    var lastHeadingLabel = "";
+    chunks.forEach(function (chunk) {
+      var html = chunk.html;
       var heading = findChapterHeading(html);
-      if (heading && isTocLabel(heading)) return; // drop the book's own built-in TOC page
+      if (heading && isTocLabel(heading)) return;
 
       if (heading) {
-        chapters.push({ html: html, label: heading });
+        chapters.push({ html: html, label: heading, legacy: chunk.legacy });
+        lastHeadingLabel = heading;
         sawRealHeading = true;
+      } else if (sawRealHeading && chapters.length && SAMBANDH_START_RE.test(html)) {
+        // A page break placed right before a "सम्बन्ध—" paragraph is a deliberate section
+        // start (one per verse group in साधक-संजीवनी), not a print-pagination leftover: it
+        // becomes its own page, listed under the chapter above and named after its श्लोक numbers.
+        chapters.push({ html: html, label: sambandhLabel(html), parentLabel: lastHeadingLabel, sub: true, legacy: chunk.legacy });
       } else if (sawRealHeading && chapters.length) {
         // No heading here -- just a leftover page-break inside the chapter above
         // (e.g. print-pagination remnants), so fold it into that chapter instead of
@@ -1470,17 +1608,95 @@
       } else {
         // Nothing headed has appeared yet (or this book has no headings anywhere) --
         // keep the old per-page fallback so headless books still paginate sensibly.
-        chapters.push({ html: html, label: "पृष्ठ " + (chapters.length + 1) });
+        chapters.push({ html: html, label: "पृष्ठ " + (chapters.length + 1), legacy: chunk.legacy });
       }
     });
-    chapters.forEach(function (ch, i) {
-      var extracted = extractSubHeadings(ch.html, i);
-      ch.html = extracted.html;
-      ch.subs = extracted.subs;
+
+    /* Each chapter is then cut into reader pages at every Sub-Heading, so a long chapter is
+       a run of short pages instead of one endless scroll. The books themselves stay as they
+       are -- this only changes how the reader slices them. */
+    var pages = [], legacyFirst = [], legacyPieces = [];
+    chapters.forEach(function (ch) {
+      splitAtSubHeadings(ch.html).forEach(function (piece, j) {
+        var extracted = extractSubHeadings(piece.html, pages.length);
+        var subs = extracted.subs;
+        // A sub page opens with its own Sub-Heading, which is already the page's label.
+        if (j > 0 && subs.length) subs = subs.slice(1);
+        pages.push({
+          html: extracted.html,
+          label: j === 0 ? ch.label : piece.label,
+          parentLabel: ch.parentLabel || ch.label,
+          legacy: ch.legacy,
+          isSub: j > 0 || !!ch.sub,
+          subs: subs
+        });
+        var L = ch.legacy;
+        if (legacyFirst[L] === undefined) legacyFirst[L] = pages.length - 1;
+        (legacyPieces[L] = legacyPieces[L] || []).push({ idx: pages.length - 1, len: piece.len });
+      });
     });
-    var entry = { headHtml: headHtml, chapters: chapters };
+    var entry = { headHtml: headHtml, chapters: pages, legacyFirst: legacyFirst, legacyPieces: legacyPieces };
     readerCache[bookId] = entry;
     return entry;
+  }
+
+  /* Saved bookmarks, highlights and the resume point are keyed by page number. Before the
+     reader cut chapters at Sub-Headings (layout 1) a "page" was a whole chapter, so those
+     numbers are re-pointed once per book at the page that now holds the same spot. */
+  function migrateReaderLayout(bookId, entry) {
+    var done = readJSON(LS.readerLayout, {});
+    if (done[bookId] === READER_LAYOUT) return;
+    var first = entry.legacyFirst, pieces = entry.legacyPieces;
+
+    var reads = getReads();
+    var r = reads[bookId];
+    if (r && typeof r.lastChapter === "number" && pieces[r.lastChapter]) {
+      var list = pieces[r.lastChapter];
+      var total = list.reduce(function (n, p) { return n + p.len; }, 0) || 1;
+      var target = (r.scrollPct || 0) * total, acc = 0, hit = list[list.length - 1], within = 1;
+      for (var k = 0; k < list.length; k++) {
+        if (target <= acc + list[k].len || k === list.length - 1) { hit = list[k]; within = list[k].len ? Math.min(1, (target - acc) / list[k].len) : 0; break; }
+        acc += list[k].len;
+      }
+      r.lastChapter = hit.idx;
+      r.scrollPct = Math.max(0, within);
+      setReads(reads);
+    }
+
+    var marks = getAllBookmarks();
+    if (marks[bookId] && marks[bookId].length) {
+      var seen = {};
+      marks[bookId] = marks[bookId].map(function (b) {
+        return typeof first[b.chapterIdx] === "number" ? { chapterIdx: first[b.chapterIdx], label: b.label, ts: b.ts } : null;
+      }).filter(function (b) {
+        if (!b || seen[b.chapterIdx]) return false;
+        seen[b.chapterIdx] = true;
+        return true;
+      }).sort(function (a, b) { return a.chapterIdx - b.chapterIdx; });
+      writeJSON(LS.bookmarks, marks);
+    }
+
+    var hl = getAllHighlights();
+    var old = hl[bookId];
+    if (old) {
+      var moved = {};
+      Object.keys(old).forEach(function (key) {
+        var plist = pieces[key];
+        if (!plist || !plist.length) return;
+        (old[key] || []).forEach(function (h) {
+          var dest = plist[0].idx;
+          for (var k = 0; k < plist.length; k++) {
+            if (stripTagsForLabel(entry.chapters[plist[k].idx].html).indexOf(h.text) !== -1) { dest = plist[k].idx; break; }
+          }
+          (moved[dest] = moved[dest] || []).push(h);
+        });
+      });
+      hl[bookId] = moved;
+      writeJSON(LS.highlights, hl);
+    }
+
+    done[bookId] = READER_LAYOUT;
+    writeJSON(LS.readerLayout, done);
   }
 
   function readerBaseUrl(book) {
@@ -1702,21 +1918,25 @@
 
   function readerTocHtml() {
     var marks = getBookmarks(reader.bookId);
-    return reader.chapters.map(function (c, i) {
-      var isBm = marks.some(function (b) { return b.chapterIdx === i; });
-      var isActive = i === reader.idx;
-      var hasSubs = c.subs && c.subs.length > 0;
-      var expanded = hasSubs && (isActive || reader.expandedChapters[i]);
-      var subsHtml = hasSubs
-        ? '<ul class="reader-toc-subs' + (expanded ? " open" : "") + '">' + c.subs.map(function (s) {
-            return '<li class="reader-toc-subitem" data-idx="' + i + '" data-anchor="' + esc(s.anchorId) + '">' + esc(s.text) + '</li>';
-          }).join("") + '</ul>'
-        : '';
+    function star(i) { return marks.some(function (b) { return b.chapterIdx === i; }) ? '<span class="reader-toc-star">★</span> ' : ''; }
+    function deeper(pg, i) {
+      return (pg.subs || []).map(function (sb) {
+        return '<li class="reader-toc-subitem" data-idx="' + i + '" data-anchor="' + esc(sb.anchorId) + '">' + esc(sb.text) + '</li>';
+      }).join("");
+    }
+    return groupPages(reader.chapters).map(function (g) {
+      var head = reader.chapters[g.idx];
+      var kids = deeper(head, g.idx) + g.subIdx.map(function (j) {
+        return '<li class="reader-toc-subitem' + (j === reader.idx ? " active" : "") + '" data-idx="' + j + '">' + star(j) + esc(reader.chapters[j].label) + '</li>' + deeper(reader.chapters[j], j);
+      }).join("");
+      var hasKids = kids !== "";
+      var holdsActive = reader.idx === g.idx || g.subIdx.indexOf(reader.idx) !== -1;
+      var expanded = hasKids && (holdsActive || reader.expandedChapters[g.idx]);
       return '<li class="reader-toc-group">' +
-        '<div class="reader-toc-item' + (isActive ? " active" : "") + '" data-idx="' + i + '">' +
-        (hasSubs ? '<button class="reader-toc-expand" data-toggle="' + i + '">' + (expanded ? "▾" : "▸") + '</button>' : '<span class="reader-toc-expand-spacer"></span>') +
-        (isBm ? '<span class="reader-toc-star">★</span> ' : '') + esc(c.label) +
-        '</div>' + subsHtml + '</li>';
+        '<div class="reader-toc-item' + (reader.idx === g.idx ? " active" : "") + '" data-idx="' + g.idx + '">' +
+        (hasKids ? '<button class="reader-toc-expand" data-toggle="' + g.idx + '">' + (expanded ? "▾" : "▸") + '</button>' : '<span class="reader-toc-expand-spacer"></span>') +
+        star(g.idx) + esc(head.label) +
+        '</div>' + (hasKids ? '<ul class="reader-toc-subs' + (expanded ? " open" : "") + '">' + kids + '</ul>' : '') + '</li>';
     }).join("");
   }
 
@@ -1745,8 +1965,10 @@
 
   function readerUpdateChrome() {
     var titleEl = document.getElementById("readerTitleText");
-    if (titleEl) titleEl.textContent = reader.book.title + " · " + reader.chapters[reader.idx].label;
-    setPageMeta(reader.book, reader.chapters[reader.idx].label);
+    var cur = reader.chapters[reader.idx];
+    var curLabel = cur.isSub ? cur.parentLabel + " › " + cur.label : cur.label;
+    if (titleEl) titleEl.textContent = reader.book.title + " · " + curLabel;
+    setPageMeta(reader.book, curLabel);
     var ind = document.getElementById("readerPageInd");
     if (ind) ind.textContent = (reader.idx + 1) + " / " + reader.chapters.length;
     var prevBtn = document.getElementById("readerPrevBtn");
@@ -1944,6 +2166,7 @@
     function proceed(entry) {
       reader.headHtml = entry.headHtml;
       reader.chapters = entry.chapters;
+      migrateReaderLayout(bookId, entry);
       var saved = getReads()[bookId];
       var isResume = !(startIdx !== null && startIdx !== undefined && !isNaN(startIdx));
       var idx = !isResume ? startIdx : (saved && typeof saved.lastChapter === "number") ? saved.lastChapter : 0;
@@ -3087,7 +3310,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -3235,6 +3458,7 @@
     else if (seg[0] === "login") { if (isLoggedIn()) { navigate("/"); return; } html = viewLogin(); }
     else if (seg[0] === "signup") { if (isLoggedIn()) { navigate("/"); return; } html = viewSignup(); }
     else if (seg[0] === "authors") { html = viewAuthors(); }
+    else if (seg[0] === "audio") { html = window.SwadhyayAudio ? window.SwadhyayAudio.pageHtml() : viewHome(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
       var aPerson = resolvePerson(seg[1]);
       if (aPerson) { html = viewAuthor(aPerson); pagePerson = aPerson; }
@@ -3264,6 +3488,7 @@
     lastRenderedPath = r.path;
     wireView(r);
     applyHeroBanner();
+    if (window.SwadhyayAudio) window.SwadhyayAudio.mount({ tx: tx, toast: toast });
     if (seg[0] === "chat") wireChatView();
 
     if (focusedId) {

@@ -93,6 +93,10 @@
       title: BRAND + " — विषय सुधार | Feedback",
       desc: "ग्रंथों में त्रुटि बताएँ या सुझाव दें। Report an error in a text or send feedback."
     },
+    audio: {
+      title: BRAND + " — ऑडियो | Bhajan, Satsang, Pravachan, Katha & Audio Books",
+      desc: "भजन, सत्संग, प्रवचन, कथा एवं ऑडियो बुक — स्वाध्याय में सुनें। Listen to bhajans, satsang, pravachan, katha and audio books on Swadhyay."
+    },
     chat: {
       title: BRAND + " — प्रश्नोत्तर | Ask the Granths",
       desc: "ग्रंथों के आधार पर प्रश्न पूछें। Ask questions answered from the scriptures in the Swadhyay library."
