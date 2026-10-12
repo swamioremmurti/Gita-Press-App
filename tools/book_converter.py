@@ -928,7 +928,9 @@ def cmd_convert(args):
         list_docx_styles(args.source)
         return
 
-    missing = [n for n, v in (("--title", args.title), ("--author", args.author), ("--category", args.category)) if not v]
+    # --author may be passed as "" for a book that has no named author (it is simply left off the cover)
+    missing = [n for n, v in (("--title", args.title), ("--author", args.author), ("--category", args.category))
+               if (v is None if n == "--author" else not v)]
     if missing:
         sys.exit(f"Missing required argument(s): {', '.join(missing)}")
 

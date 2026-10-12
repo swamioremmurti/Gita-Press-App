@@ -656,6 +656,9 @@ body.is-home .cover-mark { font-size: max(1rem, calc(.8rem * 1.12)); }
   body { padding-bottom: 64px; }
   .content-pad { padding: 1rem 1rem 3rem; }
   .hero-overlay { margin: 0 1rem; max-width: none; }
+  /* The fixed top bar floats over the hero picture, so the white card starts below it
+     instead of sliding underneath. */
+  .hero-banner { align-items: flex-start; padding: calc(var(--topbar-h, 64px) + .6rem) 0 1.1rem; min-height: 0; }
   .hero-banner { background-image: url('assets/hero_banner_mobile_light.webp'); }
   :root[data-theme="dark"] .hero-banner { background-image: url('assets/hero_banner_mobile_dark.webp'); }
   /* clamp(), not a fixed size, so the title shrinks to fit its one line (white-space:
@@ -1350,3 +1353,101 @@ body.audio-sheet-open { overflow: hidden; }
 
 .ap-deck-big .ap-eq { gap: 5px; padding-bottom: 28%; }
 .ap-deck-big .ap-eq i { width: 6px; }
+
+/* =====================================================================
+   Quote of the day -- a slide per revered saint inside the white hero card
+   ===================================================================== */
+.hero-quote { margin: 0; min-height: 9.5rem; display: flex; flex-direction: column; justify-content: center; }
+.hero-quote .hero-sub { margin: 0; white-space: normal; }
+.qs {
+  position: relative; padding: .7rem 1rem .5rem; border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 252, 244, .92), rgba(251, 242, 223, .86));
+  border: 1px solid rgba(196, 89, 17, .28); box-shadow: 0 6px 18px -10px rgba(122, 15, 13, .45);
+}
+.qs::before {
+  content: ""; position: absolute; left: 0; top: .8rem; bottom: .8rem; width: 4px; border-radius: 0 4px 4px 0;
+  background: linear-gradient(var(--accent), var(--gold));
+}
+.qs-label { display: flex; align-items: center; gap: .35rem; font-size: .78rem; letter-spacing: .05em; font-weight: bold; color: var(--gold); margin-bottom: .2rem; }
+.qs-mark { font-size: 1.6rem; line-height: .6; color: var(--accent); }
+.qs-track { display: grid; }
+.qs-slide { grid-area: 1 / 1; margin: 0; opacity: 0; visibility: hidden; transform: translateY(4px); transition: opacity .55s ease, transform .55s ease, visibility 0s linear .55s; }
+.qs-slide.is-active { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.qs-text { margin: 0; font-size: 1.08rem; line-height: 1.55; color: var(--ink); font-style: italic; }
+.qs-by { margin-top: .35rem; font-size: .88rem; color: var(--muted); }
+.qs-name { font-weight: bold; color: var(--accent-dark); }
+.qs-name a, .qs-book a { color: inherit; }
+.qs-name a:hover, .qs-book a:hover { text-decoration: underline; }
+.qs-nav { display: flex; align-items: center; justify-content: space-between; margin-top: .3rem; }
+.qs-dots { display: flex; gap: .45rem; }
+.qs-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: rgba(138, 127, 106, .45); transition: width .25s, background .25s; }
+.qs-dot.is-active { width: 22px; border-radius: 6px; background: var(--accent); }
+.qs-arrow { width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--accent-dark); font-size: 1.35rem; line-height: 1; }
+.qs-arrow:hover { background: rgba(165, 21, 18, .1); }
+:root[data-theme="dark"] .qs { background: linear-gradient(135deg, rgba(34, 26, 22, .88), rgba(26, 20, 18, .84)); border-color: rgba(224, 138, 62, .35); }
+:root[data-theme="dark"] .qs-name { color: #ffb199; }
+:root[data-theme="dark"] .qs-arrow { color: #ffb199; }
+body.is-home .qs-text { font-size: max(1rem, 1.08rem); }
+@media (max-width: 760px) {
+  .hero-quote { min-height: 11.5rem; }
+  .qs { padding: .6rem .8rem .45rem; }
+  .qs-text { font-size: 1rem; line-height: 1.5; }
+}
+@media (prefers-reduced-motion: reduce) { .qs-slide { transition: none; } }
+
+/* hero motto: the verse, with its source underneath */
+.hero-title-src { margin: -.25rem 0 .8rem; color: var(--gold); font-style: italic; font-size: .95rem; }
+body.is-home .hero-title-src { font-size: max(.95rem, calc(.95rem * 1.12)); }
+
+/* hero motto: verse centred, its source on the right */
+.hero-title { text-align: center; }
+.hero-title-src { text-align: right; }
+
+/* =====================================================================
+   Quote share: the button on the quote card and the share dialog
+   (swadhyay-quote-share.js)
+   ===================================================================== */
+.qs-share {
+  position: absolute; top: .45rem; right: .55rem; z-index: 2; width: 32px; height: 32px; padding: 0;
+  display: grid; place-items: center; border: 1px solid rgba(196, 89, 17, .35); border-radius: 50%;
+  background: rgba(255, 255, 255, .8); color: var(--accent-dark); transition: background .15s, transform .1s;
+}
+.qs-share:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.qs-share:active { transform: scale(.93); }
+:root[data-theme="dark"] .qs-share { background: rgba(34, 26, 22, .9); color: #ffb199; border-color: rgba(224, 138, 62, .45); }
+.qs-label { padding-right: 2.4rem; }
+
+.qsh { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+.qsh-scrim { position: absolute; inset: 0; background: rgba(24, 8, 8, .62); backdrop-filter: blur(5px); }
+.qsh-card {
+  position: relative; width: min(460px, 100%); max-height: 100%; overflow-y: auto; padding: 1.1rem 1.1rem 1rem;
+  background: var(--surface); color: var(--ink); border-radius: 22px; box-shadow: 0 24px 60px rgba(0, 0, 0, .5);
+}
+.qsh-x { position: absolute; top: .55rem; right: .6rem; width: 34px; height: 34px; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.1rem; }
+.qsh-x:hover { background: var(--surface-2); color: var(--ink); }
+.qsh-h { margin: 0 0 .7rem; font-size: 1.15rem; color: var(--gold); }
+.qsh-tabs { display: flex; gap: .4rem; overflow-x: auto; scrollbar-width: none; margin-bottom: .8rem; }
+.qsh-tabs::-webkit-scrollbar { display: none; }
+.qsh-tab {
+  flex: none; display: flex; align-items: baseline; gap: .35rem; padding: .35rem .75rem; border-radius: 99px;
+  border: 1px solid var(--rule); background: var(--surface-2); color: var(--ink); font-size: .92rem;
+}
+.qsh-tab small { opacity: .6; font-size: .75rem; }
+.qsh-tab.is-active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.qsh-preview { display: grid; place-items: center; margin: 0 auto .9rem; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 22px -8px rgba(0, 0, 0, .5); background: var(--surface-2); }
+.qsh-preview canvas { display: block; width: 100%; height: auto; max-height: 52vh; object-fit: contain; }
+.qsh-preview.ratio-story { width: min(100%, 240px); }
+.qsh-preview.ratio-post { width: min(100%, 300px); }
+.qsh-preview.ratio-square { width: min(100%, 340px); }
+.qsh-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.qsh-actions button {
+  padding: .6rem .5rem; border-radius: 12px; border: 1px solid var(--rule); background: var(--surface-2); color: var(--ink); font-size: .95rem;
+}
+.qsh-actions button:hover { border-color: var(--accent); }
+.qsh-actions .qsh-primary { grid-column: 1 / -1; background: linear-gradient(135deg, var(--accent-dark), var(--accent)); color: #fff; border-color: transparent; font-weight: bold; padding: .75rem; }
+.qsh-hint { margin: .7rem 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; text-align: center; }
+body.qsh-open { overflow: hidden; }
+@media (max-width: 760px) {
+  .qsh { align-items: flex-end; padding: 0; }
+  .qsh-card { width: 100%; border-radius: 22px 22px 0 0; }
+}

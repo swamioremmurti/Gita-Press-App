@@ -403,10 +403,10 @@
     "रजत जयन्ती स्मारिका.html": true,
     "सत्संग और साधन.html": true,
     "सन्त उद्बोधन.html": true,
+    "क्रान्तिकारी सन्तवाणी.html": true,
     "सन्त पत्रावली - 1.html": true,
     "सन्त पत्रावली - 2.html": true,
     "सन्त पत्रावली - 3.html": true,
-    "सन्त वाणी   -Cassette Reference.html": true,
     "सन्त वाणी भाग -1.html": true,
     "सन्त वाणी भाग -2.html": true,
     "सन्त वाणी भाग -3.html": true,
@@ -1136,14 +1136,10 @@
     var html = '';
     html += '<section class="hero-banner">' +
       '<div class="hero-overlay">' +
-      '<h1 class="hero-title">' + bilingual("शाश्वत ज्ञान, उज्ज्वल भविष्य के लिए", "Timeless Wisdom for a Brighter Tomorrow") + '</h1>' +
-      '<p class="hero-sub">“ज्ञानं परमं बलम्” — ज्ञान ही परम बल है।</p>' +
-      '<div class="hero-search"><input id="homeSearch" type="text" placeholder="पुस्तकें, लेखक, विषय खोजें…"></div>' +
-      '<div class="hero-chips">' +
-      ["गीता", "रामायण", "उपनिषद्", "विवेकानन्द", "स्तोत्र", "बालोपयोगी"].map(function (t) {
-        return '<button class="chip" data-q="' + esc(t) + '">' + esc(t) + '</button>';
-      }).join("") +
-      '</div></div></section>';
+      '<h1 class="hero-title">' + bilingual("स्वाध्यायान्मा प्रमदः") + '</h1>' +
+      '<p class="hero-title-src">— तैत्तिरीयोपनिषद्</p>' +
+      '<div class="hero-quote" id="heroQuote"><p class="hero-sub">“ज्ञानं परमं बलम्” — ज्ञान ही परम बल है।</p></div>' +
+      '</div></section>';
 
     html += '<main class="content-pad">';
     html += '<div class="home-top-grid">' + panchangCard(panchang) + aiAskCard() + '</div>';
@@ -1160,6 +1156,99 @@
       '</div>';
     html += '</main>';
     return html;
+  }
+
+  /* ---------------- quote of the day (hero card) ----------------
+     /api/quote-of-the-day returns one short saying per revered saint, the same for everyone on a
+     given day. Each becomes a slide in the white hero card; until they arrive (or if the request
+     fails) the card keeps its original "ज्ञानं परमं बलम्" line. */
+  var QOTD_KEY = "swadhyay_qotd_v1";
+  var qotdTimer = null;
+
+  function quoteSlidesHtml(list) {
+    return list.map(function (q, i) {
+      var book = q.book && findByFile(q.book.file);
+      var person = q.author && PEOPLE_BY_NAME[q.author] ? personLink(q.author).replace(esc(q.author), esc(q.name)) : esc(q.name);
+      return '<figure class="qs-slide' + (i === 0 ? " is-active" : "") + '" aria-hidden="' + (i === 0 ? "false" : "true") + '">' +
+        '<blockquote class="qs-text">' + esc(q.text) + '</blockquote>' +
+        '<figcaption class="qs-by"><span class="qs-name">' + person + '</span>' +
+        (q.book ? ' · <span class="qs-book">' + (book ? '<a href="' + bookPath(book) + '">' + esc(q.book.title) + '</a>' : esc(q.book.title)) + '</span>' : '') +
+        '</figcaption></figure>';
+    }).join("");
+  }
+
+  function renderQuoteSlider(box, list) {
+    box.innerHTML =
+      '<div class="qs" role="region" aria-roledescription="carousel" aria-label="' + esc(tx("आज का सुविचार", "Quote of the day")) + '">' +
+      '<div class="qs-label"><span class="qs-mark" aria-hidden="true">“</span>' + esc(tx("आज का सुविचार", "Quote of the day")) + '</div>' +
+      '<button type="button" class="qs-share" data-qs="share" aria-label="' + esc(tx("शेयर करें", "Share")) + '" title="' + esc(tx("शेयर करें", "Share")) + '"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M18 8a3 3 0 1 0-2.82-4H15a3 3 0 0 0 .1.76L8.9 8.3a3 3 0 1 0 0 7.4l6.2 3.54A3 3 0 0 0 15 20a3 3 0 1 0 .9-2.14L9.7 14.3a3 3 0 0 0 0-4.6l6.2-3.56A3 3 0 0 0 18 8z" fill="currentColor"/></svg></button>' +
+      '<div class="qs-track" aria-live="off">' + quoteSlidesHtml(list) + '</div>' +
+      (list.length > 1
+        ? '<div class="qs-nav"><button type="button" class="qs-arrow" data-qs="prev" aria-label="' + esc(tx("पिछला", "Previous")) + '">‹</button>' +
+          '<span class="qs-dots">' + list.map(function (q, i) {
+            return '<button type="button" class="qs-dot' + (i === 0 ? " is-active" : "") + '" data-qs="' + i + '" aria-label="' + esc(q.name) + '"></button>';
+          }).join("") + '</span>' +
+          '<button type="button" class="qs-arrow" data-qs="next" aria-label="' + esc(tx("अगला", "Next")) + '">›</button></div>'
+        : '') +
+      '</div>';
+    wireQuoteSlider(box.querySelector(".qs"), list);
+  }
+
+  function wireQuoteSlider(root, list) {
+    var n = list.length;
+    if (!root) return;
+    var idx = 0, paused = false;
+    function show(i) {
+      idx = (i + n) % n;
+      Array.prototype.forEach.call(root.querySelectorAll(".qs-slide"), function (s, k) {
+        s.classList.toggle("is-active", k === idx);
+        s.setAttribute("aria-hidden", k === idx ? "false" : "true");
+      });
+      Array.prototype.forEach.call(root.querySelectorAll(".qs-dot"), function (d, k) { d.classList.toggle("is-active", k === idx); });
+    }
+    root.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest("[data-qs]") : null;
+      if (!b) return;
+      var v = b.getAttribute("data-qs");
+      if (v === "share") {
+        if (window.SwadhyayQuoteShare) window.SwadhyayQuoteShare.open(list[idx], { tx: tx, toast: toast });
+        return;
+      }
+      show(v === "next" ? idx + 1 : v === "prev" ? idx - 1 : parseInt(v, 10));
+    });
+    if (n < 2) return;
+    root.addEventListener("mouseenter", function () { paused = true; });
+    root.addEventListener("mouseleave", function () { paused = false; });
+    root.addEventListener("focusin", function () { paused = true; });
+    root.addEventListener("focusout", function () { paused = false; });
+    var sx = 0, sy = 0;
+    root.addEventListener("touchstart", function (e) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+    root.addEventListener("touchend", function (e) {
+      var dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) show(idx + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+    clearInterval(qotdTimer);
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduce) {
+      qotdTimer = setInterval(function () {
+        if (!document.body.contains(root)) { clearInterval(qotdTimer); return; }
+        if (!paused && !document.hidden) show(idx + 1);
+      }, 8000);
+    }
+  }
+
+  function loadQuoteOfTheDay() {
+    var box = document.getElementById("heroQuote");
+    if (!box) return;
+    var cached = null;
+    try { cached = JSON.parse(sessionStorage.getItem(QOTD_KEY)); } catch (e) {}
+    if (cached && cached.quotes && cached.quotes.length) renderQuoteSlider(box, cached.quotes);
+    fetch("/api/quote-of-the-day").then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (!d || !d.quotes || !d.quotes.length) return;
+      try { sessionStorage.setItem(QOTD_KEY, JSON.stringify(d)); } catch (e) {}
+      var live = document.getElementById("heroQuote");
+      if (live && !(cached && cached.date === d.date)) renderQuoteSlider(live, d.quotes);
+    }).catch(function () {});
   }
 
   function matchesQuery(book, q) {
@@ -3489,6 +3578,7 @@
     wireView(r);
     applyHeroBanner();
     if (window.SwadhyayAudio) window.SwadhyayAudio.mount({ tx: tx, toast: toast });
+    loadQuoteOfTheDay();
     if (seg[0] === "chat") wireChatView();
 
     if (focusedId) {

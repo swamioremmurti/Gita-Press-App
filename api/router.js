@@ -9,6 +9,7 @@
 require('../server/lib/env').loadEnv(); // no-op on Vercel (env vars come from its dashboard); used by `vercel dev` locally
 const api = require('../server/lib/api');
 const chat = require('../server/lib/chat');
+const quotes = require('../server/lib/quotes');
 const db = require('../server/lib/db');
 
 let initPromise = null;
@@ -24,6 +25,7 @@ module.exports = async (req, res) => {
 
   if (req.method === 'POST' && pathname === '/api/chat') { await chat.handleChat(req, res); return; }
   if (req.method === 'GET' && pathname === '/api/health') { chat.handleHealth(req, res); return; }
+  if (req.method === 'GET' && pathname === '/api/quote-of-the-day') { quotes.handle(req, res); return; }
 
   try {
     await ensureInit();

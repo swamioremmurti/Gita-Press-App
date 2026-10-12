@@ -408,15 +408,6 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  290.4
     },
     {
-        "file":  "सन्त वाणी   -Cassette Reference.html",
-        "category":  "Swami Sharnanand Sahitya",
-        "author":  "स्वामी शरणानन्द जी महाराज",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  6.1
-    },
-    {
         "file":  "सन्त वाणी भाग -1.html",
         "category":  "Swami Sharnanand Sahitya",
         "author":  "स्वामी शरणानन्द जी महाराज",
@@ -5113,5 +5104,23 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  5514.7
+    },
+    {
+        "file":  "संक्षिप्त श्रीगणेशपुराण.html",
+        "category":  "Upa Puran",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  4835.0
+    },
+    {
+        "file":  "क्रान्तिकारी सन्तवाणी.html",
+        "category":  "Swami Sharnanand Sahitya",
+        "author":  "स्वामी शरणानन्द जी महाराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "करनाल मानव सेवा संघ",
+        "sizeKB":  1215.0
     }
 ];

@@ -8,6 +8,7 @@ const chat = require('./lib/chat');
 const db = require('./lib/db');
 const api = require('./lib/api');
 const seo = require('./lib/seo');
+const quotes = require('./lib/quotes');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 5174;
@@ -67,6 +68,7 @@ const server = http.createServer((req, res) => {
   const pathname = requestPathname(req);
   if (req.method === 'POST' && pathname === '/api/chat') { chat.handleChat(req, res); return; }
   if (req.method === 'GET' && pathname === '/api/health') { chat.handleHealth(req, res); return; }
+  if (req.method === 'GET' && pathname === '/api/quote-of-the-day') { quotes.handle(req, res); return; }
   if (pathname.startsWith('/api/')) {
     api.handle(req, res, pathname).then((handled) => {
       if (!handled) { res.writeHead(404, { 'Content-Type': 'application/json' }); res.end(JSON.stringify({ error: 'Unknown API route' })); }
