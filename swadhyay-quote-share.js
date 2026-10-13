@@ -72,9 +72,9 @@
 
   // where things sit on each format (the arch is at the top, the river scene at the bottom)
   var LAYOUT = {
-    story:  { label: 420, areaTop: 500, areaBottom: 1300, pillY: 1590 },
-    post:   { label: 270, areaTop: 340, areaBottom: 1010, pillY: 1225 },
-    square: { label: 190, areaTop: 250, areaBottom: 830,  pillY: 960 }
+    story:  { logoY: 290, logoH: 124, label: 530, areaTop: 590, areaBottom: 1300, pillY: 1590 },
+    post:   { logoY: 165, logoH: 108, label: 350, areaTop: 395, areaBottom: 1050, pillY: 1240 },
+    square: { logoY: 125, logoH: 100, label: 295, areaTop: 335, areaBottom: 880,  pillY: 1000 }
   };
   var INK = "#4a120d", GOLD = "#a8590d";
 
@@ -94,12 +94,20 @@
     }
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
 
+    if (logo) {                                           // brand logo at the top
+      var lw2 = Math.round(L.logoH * 543 / 329);
+      ctx.drawImage(logo, (W - lw2) / 2, L.logoY, lw2, L.logoH);
+    } else {
+      ctx.fillStyle = INK; ctx.font = "bold " + Math.round(W * 0.06) + "px " + FONT;
+      ctx.fillText("स्वाध्याय", W / 2, L.logoY + L.logoH * 0.8);
+    }
+
     ctx.fillStyle = GOLD; ctx.font = Math.round(W * 0.036) + "px " + FONT;            // label
     ctx.fillText(T("आज का सुविचार", "Quote of the day"), W / 2, L.label);
     ctx.fillRect(W / 2 - 60, L.label + 26, 120, 3);
 
     // the saying, as large as fits
-    var maxW = W * 0.74, markH = Math.round(W * 0.14), nameH = Math.round(W * 0.2);
+    var maxW = W * 0.74, markH = Math.round(W * 0.12), nameH = Math.round(W * 0.18);
     var maxTextH = L.areaBottom - L.areaTop - markH - nameH;
     var size = Math.round(W * 0.075), lines, lh;
     for (; size >= Math.round(W * 0.036); size -= 2) {
@@ -124,19 +132,13 @@
       ctx.fillText(q.book.title, W / 2, y + Math.round(W * 0.14));
     }
 
-    var pw = Math.round(W * 0.46), ph = Math.round(W * 0.2);   // brand mark on a soft cream pill
+    ctx.font = Math.round(W * 0.03) + "px Arial, sans-serif";
+    var pw = Math.round(Math.max(W * 0.3, ctx.measureText(location.host).width + W * 0.1)), ph = Math.round(W * 0.085);   // web address on a soft cream pill
     var px = (W - pw) / 2, py = L.pillY - ph / 2;
     ctx.fillStyle = "rgba(255,248,232,.88)"; roundRect(ctx, px, py, pw, ph, ph / 2); ctx.fill();
     ctx.strokeStyle = "rgba(168,89,13,.45)"; ctx.lineWidth = 2; ctx.stroke();
-    if (logo) {
-      var lh2 = Math.round(W * 0.11), lw2 = Math.round(lh2 * 543 / 329);
-      ctx.drawImage(logo, (W - lw2) / 2, py + Math.round(W * 0.028), lw2, lh2);
-    } else {
-      ctx.fillStyle = INK; ctx.font = "bold " + Math.round(W * 0.05) + "px " + FONT;
-      ctx.fillText("स्वाध्याय", W / 2, py + Math.round(W * 0.1));
-    }
-    ctx.fillStyle = "rgba(74,18,13,.7)"; ctx.font = Math.round(W * 0.026) + "px Arial, sans-serif";
-    ctx.fillText(location.host, W / 2, py + ph - Math.round(W * 0.03));
+    ctx.fillStyle = INK; ctx.font = Math.round(W * 0.03) + "px Arial, sans-serif";
+    ctx.fillText(location.host, W / 2, L.pillY + Math.round(W * 0.011));
   }
   /* ---------------- sharing ---------------- */
   function shareText(q) {
