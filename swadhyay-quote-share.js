@@ -55,70 +55,89 @@
     return lines;
   }
 
-  function draw(canvas, fmt, q) {
-    var W = fmt.w, H = fmt.h, story = fmt.key === "story";
+  // The background picture (compressed webp). Loaded once; the share picture falls back to a plain
+  // warm gradient if it cannot be fetched.
+  var BG_SRC = "assets/images/quote/quote-bg.webp", LOGO_SRC = "assets/images/quote/logo-mark.svg";
+  var imgCache = {};
+  function loadImg(src) {
+    if (!imgCache[src]) imgCache[src] = new Promise(function (res) {
+      var im = new Image();
+      im.onload = function () { res(im); };
+      im.onerror = function () { res(null); };
+      im.src = src;
+    });
+    return imgCache[src];
+  }
+  function loadBg() { return Promise.all([loadImg(BG_SRC), loadImg(LOGO_SRC)]); }
+
+  // where things sit on each format (the arch is at the top, the river scene at the bottom)
+  var LAYOUT = {
+    story:  { label: 420, areaTop: 500, areaBottom: 1300, pillY: 1590 },
+    post:   { label: 270, areaTop: 340, areaBottom: 1010, pillY: 1225 },
+    square: { label: 190, areaTop: 250, areaBottom: 830,  pillY: 960 }
+  };
+  var INK = "#4a120d", GOLD = "#a8590d";
+
+  function draw(canvas, fmt, q, bg, logo) {
+    var W = fmt.w, H = fmt.h, L = LAYOUT[fmt.key] || LAYOUT.post;
     canvas.width = W; canvas.height = H;
     var ctx = canvas.getContext("2d");
     var pal = PALETTE[q.key] || ["#c45911", "#6f130c"];
 
-    var bg = ctx.createLinearGradient(0, 0, W * 0.8, H);
-    bg.addColorStop(0, pal[0]); bg.addColorStop(1, pal[1]);
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-    var glow = ctx.createRadialGradient(W * 0.5, H * 0.22, 0, W * 0.5, H * 0.22, W * 0.9);
-    glow.addColorStop(0, "rgba(255,255,255,.22)"); glow.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = glow; ctx.fillRect(0, 0, W, H);
-
-    ctx.save();                                           // ॐ watermark
-    ctx.globalAlpha = .07; ctx.fillStyle = "#fff"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.font = "bold " + Math.round(W * 0.95) + "px " + FONT;
-    ctx.fillText("ॐ", W / 2, H * 0.6);
-    ctx.restore();
-
-    var inset = Math.round(W * 0.045);                    // thin gold frame
-    ctx.strokeStyle = "rgba(255,217,138,.6)"; ctx.lineWidth = 3;
-    roundRect(ctx, inset, inset, W - inset * 2, H - inset * 2, 36); ctx.stroke();
-
-    var safeTop = story ? 250 : Math.round(H * 0.08), safeBottom = story ? 270 : Math.round(H * 0.08);
+    if (bg) {                                             // fill the width, keep the top (the arch)
+      var sc = Math.max(W / bg.naturalWidth, H / bg.naturalHeight);
+      ctx.drawImage(bg, (W - bg.naturalWidth * sc) / 2, 0, bg.naturalWidth * sc, bg.naturalHeight * sc);
+    } else {
+      var g = ctx.createLinearGradient(0, 0, 0, H);
+      g.addColorStop(0, "#fff3d6"); g.addColorStop(1, "#f0b36a");
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
 
-    ctx.fillStyle = "#ffd98a"; ctx.font = Math.round(W * 0.036) + "px " + FONT;   // label
-    ctx.fillText(T("आज का सुविचार", "Quote of the day"), W / 2, safeTop + 30);
-    ctx.fillRect(W / 2 - 60, safeTop + 56, 120, 3);
+    ctx.fillStyle = GOLD; ctx.font = Math.round(W * 0.036) + "px " + FONT;            // label
+    ctx.fillText(T("आज का सुविचार", "Quote of the day"), W / 2, L.label);
+    ctx.fillRect(W / 2 - 60, L.label + 26, 120, 3);
 
     // the saying, as large as fits
-    var maxW = W * 0.78;
-    var areaTop = safeTop + 90, areaBottom = H - safeBottom - Math.round(H * 0.17);
-    var maxTextH = areaBottom - areaTop - Math.round(W * 0.2);
+    var maxW = W * 0.74, markH = Math.round(W * 0.14), nameH = Math.round(W * 0.2);
+    var maxTextH = L.areaBottom - L.areaTop - markH - nameH;
     var size = Math.round(W * 0.075), lines, lh;
-    for (; size >= Math.round(W * 0.04); size -= 2) {
+    for (; size >= Math.round(W * 0.036); size -= 2) {
       ctx.font = size + "px " + FONT;
       lines = wrap(ctx, q.text, maxW); lh = size * 1.55;
       if (lines.length * lh <= maxTextH) break;
     }
-    var textH = lines.length * lh, markH = Math.round(W * 0.16);
-    var blockH = markH + textH, top = areaTop + Math.max(0, (areaBottom - areaTop - blockH) / 2);
+    var textH = lines.length * lh, blockH = markH + textH + nameH;
+    var top = L.areaTop + Math.max(0, (L.areaBottom - L.areaTop - blockH) / 2);
 
-    ctx.fillStyle = "#ffd98a"; ctx.font = "bold " + Math.round(W * 0.2) + "px Georgia, serif";
+    ctx.fillStyle = "#c9822b"; ctx.font = "bold " + Math.round(W * 0.2) + "px Georgia, serif";
     ctx.fillText("“", W / 2, top + markH * 0.95);
-    ctx.fillStyle = "#fff"; ctx.font = size + "px " + FONT;
+    ctx.fillStyle = INK; ctx.font = size + "px " + FONT;
     lines.forEach(function (ln, i) { ctx.fillText(ln, W / 2, top + markH + lh * (i + 0.8)); });
 
-    var y = top + blockH + Math.round(H * 0.025);          // who said it
-    ctx.fillStyle = "rgba(255,217,138,.85)"; ctx.fillRect(W / 2 - 90, y, 180, 3);
-    ctx.fillStyle = "#ffd98a"; ctx.font = Math.round(W * 0.05) + "px " + FONT;
+    var y = top + markH + textH + Math.round(W * 0.02);    // who said it
+    ctx.fillStyle = "rgba(168,89,13,.7)"; ctx.fillRect(W / 2 - 90, y, 180, 3);
+    ctx.fillStyle = pal[1]; ctx.font = Math.round(W * 0.05) + "px " + FONT;
     ctx.fillText("— " + q.name, W / 2, y + Math.round(W * 0.085));
     if (q.book && q.book.title) {
-      ctx.fillStyle = "rgba(255,255,255,.82)"; ctx.font = "italic " + Math.round(W * 0.038) + "px " + FONT;
+      ctx.fillStyle = "rgba(74,18,13,.78)"; ctx.font = "italic " + Math.round(W * 0.038) + "px " + FONT;
       ctx.fillText(q.book.title, W / 2, y + Math.round(W * 0.14));
     }
 
-    var fy = H - safeBottom;                              // brand footer
-    ctx.fillStyle = "#fff"; ctx.font = "bold " + Math.round(W * 0.06) + "px " + FONT;
-    ctx.fillText("स्वाध्याय", W / 2, fy - Math.round(W * 0.03));
-    ctx.fillStyle = "rgba(255,255,255,.75)"; ctx.font = Math.round(W * 0.03) + "px Arial, sans-serif";
-    ctx.fillText(location.host, W / 2, fy + Math.round(W * 0.025));
+    var pw = Math.round(W * 0.46), ph = Math.round(W * 0.2);   // brand mark on a soft cream pill
+    var px = (W - pw) / 2, py = L.pillY - ph / 2;
+    ctx.fillStyle = "rgba(255,248,232,.88)"; roundRect(ctx, px, py, pw, ph, ph / 2); ctx.fill();
+    ctx.strokeStyle = "rgba(168,89,13,.45)"; ctx.lineWidth = 2; ctx.stroke();
+    if (logo) {
+      var lh2 = Math.round(W * 0.11), lw2 = Math.round(lh2 * 543 / 329);
+      ctx.drawImage(logo, (W - lw2) / 2, py + Math.round(W * 0.028), lw2, lh2);
+    } else {
+      ctx.fillStyle = INK; ctx.font = "bold " + Math.round(W * 0.05) + "px " + FONT;
+      ctx.fillText("स्वाध्याय", W / 2, py + Math.round(W * 0.1));
+    }
+    ctx.fillStyle = "rgba(74,18,13,.7)"; ctx.font = Math.round(W * 0.026) + "px Arial, sans-serif";
+    ctx.fillText(location.host, W / 2, py + ph - Math.round(W * 0.03));
   }
-
   /* ---------------- sharing ---------------- */
   function shareText(q) {
     return "“" + q.text + "”\n— " + q.name + (q.book ? " (" + q.book.title + ")" : "") + "\n\n" + T("स्वाध्याय पर और पढ़ें:", "Read more on Swadhyay:") + " " + location.origin;
@@ -149,19 +168,6 @@
       }
     });
   }
-  function saveImage() {
-    toFile(function (file) { if (file) { download(file); toast(T("इमेज सेव हो गई", "Image saved")); } });
-  }
-  function whatsappText() {
-    window.open("https://wa.me/?text=" + encodeURIComponent(shareText(state.quote)), "_blank", "noopener");
-  }
-  function copyText() {
-    var t = shareText(state.quote);
-    var done = function () { toast(T("कॉपी हो गया", "Copied")); };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, done);
-    else { var ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); } catch (e) {} ta.remove(); done(); }
-  }
-
   /* ---------------- dialog ---------------- */
   function render() {
     var f = state.fmt;
@@ -177,19 +183,14 @@
       '<div class="qsh-preview ratio-' + f.key + '"></div>' +
       '<div class="qsh-actions">' +
       '<button type="button" class="qsh-primary" data-qsh="share">' + esc(T("शेयर करें", "Share")) + '</button>' +
-      '<button type="button" data-qsh="save">' + esc(T("इमेज सेव करें", "Save image")) + '</button>' +
-      '<button type="button" data-qsh="wa">' + esc(T("WhatsApp (टेक्स्ट)", "WhatsApp (text)")) + '</button>' +
-      '<button type="button" data-qsh="copy">' + esc(T("कॉपी करें", "Copy text")) + '</button>' +
       '</div>' +
-      '<p class="qsh-hint">' + esc(T("स्टेटस / स्टोरी के लिए ‘शेयर करें’ दबाकर WhatsApp या Instagram चुनें; कंप्यूटर पर इमेज सेव करके अपलोड करें।",
-        "Tap Share and choose WhatsApp or Instagram for a status or story; on a computer, save the image and upload it.")) + '</p>' +
       '</div>';
     state.canvas = document.createElement("canvas");
     state.el.querySelector(".qsh-preview").appendChild(state.canvas);
     var fontsReady = document.fonts && document.fonts.load
       ? Promise.all([document.fonts.load("40px 'Tiro Devanagari Sanskrit'", "स्वाध्याय"), document.fonts.load("italic 40px 'Tiro Devanagari Sanskrit'", "स्वाध्याय")]).catch(function () {})
       : Promise.resolve();
-    fontsReady.then(function () { if (state && state.canvas) draw(state.canvas, state.fmt, state.quote); });
+    Promise.all([fontsReady, loadBg()]).then(function (r) { if (state && state.canvas) draw(state.canvas, state.fmt, state.quote, r[1][0], r[1][1]); });
   }
 
   function close() {
@@ -211,9 +212,6 @@
       render();
     }
     else if (a === "share") shareNow();
-    else if (a === "save") saveImage();
-    else if (a === "wa") whatsappText();
-    else if (a === "copy") copyText();
   }
 
   window.SwadhyayQuoteShare = {

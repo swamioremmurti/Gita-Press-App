@@ -1445,7 +1445,6 @@ body.is-home .hero-title-src { font-size: max(.95rem, calc(.95rem * 1.12)); }
 }
 .qsh-actions button:hover { border-color: var(--accent); }
 .qsh-actions .qsh-primary { grid-column: 1 / -1; background: linear-gradient(135deg, var(--accent-dark), var(--accent)); color: #fff; border-color: transparent; font-weight: bold; padding: .75rem; }
-.qsh-hint { margin: .7rem 0 0; color: var(--muted); font-size: .82rem; line-height: 1.45; text-align: center; }
 body.qsh-open { overflow: hidden; }
 @media (max-width: 760px) {
   .qsh { align-items: flex-end; padding: 0; }
