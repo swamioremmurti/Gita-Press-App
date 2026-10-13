@@ -317,6 +317,7 @@
   function refresh() {
     ensureShell();
     Array.prototype.forEach.call(document.querySelectorAll("[data-audio-mount]"), renderMount);
+    try { document.dispatchEvent(new CustomEvent("swadhyay-audio-state")); } catch (e) {}   // lets other cards show play / pause
     var has = !!S.cur;
     dock.hidden = !has;
     dock.innerHTML = has ? dockHtml() : "";
@@ -424,6 +425,13 @@
     pageHtml: function () {
       return '<main class="content-pad audio-page-wrap"><section class="audio-panel audio-panel-page" data-audio-mount="page"></section></main>';
     },
-    hasTracks: function () { return TRACKS.length > 0; }
+    hasTracks: function () { return TRACKS.length > 0; },
+    /* for the home page's daily-bhajan card */
+    tracks: function (cat) { return (cat ? tracksIn(cat) : TRACKS).slice(); },
+    play: function (id) { playTrack(id); },
+    isPlaying: function (id) { return !!(S.cur && S.cur.id === id && playing()); },
+    isActive: function () { return !!(S.cur && playing()); },
+    pause: function () { if (S.cur && !audio.paused) audio.pause(); },
+    setCategory: function (key) { if (CAT_BY_KEY[key]) S.cat = key; }
   };
 })();

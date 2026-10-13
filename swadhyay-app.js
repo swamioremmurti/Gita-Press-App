@@ -285,41 +285,41 @@
 
   var COVER_OVERRIDES = {
     "प्रेमयोग.html": "assets/covers/premyog.jpg",
-    "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.png",
+    "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.webp",
     "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
     "भक्त-चरिताङ्क.html": "assets/covers/bhakt-charitank.jpg",
     "श्रीहनुमान-अङ्क.html": "assets/covers/hanuman-ank.jpg",
     "साधन सुधा निधि.html": "assets/covers/sadhan-sudha-nidhi.jpg",
     "साधन सुधा सिन्धु.html": "assets/covers/sadhan-sudha-sindhu.jpg",
     "अच्छे बनो.html": "assets/covers/achhe-bano.jpg",
-    "अध्यात्म-पथ-प्रदर्शक.html": "assets/covers/adhyatma-path-pradarshak.png",
+    "अध्यात्म-पथ-प्रदर्शक.html": "assets/covers/adhyatma-path-pradarshak.webp",
     "अध्यात्मरामायण.html": "assets/covers/adhyatma-ramayan.jpg",
-    "अध्यात्मविषयक पत्र.html": "assets/covers/adhyatma-vishayak-patra.png",
+    "अध्यात्मविषयक पत्र.html": "assets/covers/adhyatma-vishayak-patra.webp",
     "अनन्य भक्तिसे भगवत्प्राप्ति.html": "assets/covers/ananya-bhakti-se-bhagwatprapti.jpg",
     "अनन्यभक्ति कैसे प्राप्त हो.html": "assets/covers/ananyabhakti-kaise-prapt-ho.jpg",
     "अनुराग पदावली.html": "assets/covers/anurag-padavali.jpg",
     "अन्त्यकर्म श्राद्धप्रकाश.html": "assets/covers/antyakarma-shraddhaprakash.jpg",
-    "u_बृहदारण्यकोपनिषत्.html": "assets/covers/brihadaranyakopanishat.png",
+    "u_बृहदारण्यकोपनिषत्.html": "assets/covers/brihadaranyakopanishat.webp",
     "अमरता की ओर.html": "assets/covers/amarata-ki-or.jpg",
     "अमूल्य वचन.html": "assets/covers/amulya-vachan.jpg",
-    "अपात्रको भी भगवत्प्राप्ति.html": "assets/covers/apatra-ko-bhi-bhagwatprapti.png",
-    "ऋग्वेद.html": "assets/covers/rigved.png",
+    "अपात्रको भी भगवत्प्राप्ति.html": "assets/covers/apatra-ko-bhi-bhagwatprapti.webp",
+    "ऋग्वेद.html": "assets/covers/rigved.webp",
     "अमूल्य शिक्षा.html": "assets/covers/amulya-shiksha.jpg",
-    "एकादशी व्रत का माहात्म्य.html": "assets/covers/ekadashi-vrat-mahatmya.png",
-    "गयाश्राद्धपद्धति_माहात्म्य तथा_गयायात्राविधानसहित.html": "assets/covers/gaya-shraddha-paddhati-mahatmya.png",
-    "गुरु और माता-पिता के भक्त बालक.html": "assets/covers/guru-aur-mata-pita-ke-bhakt-balak.png",
+    "एकादशी व्रत का माहात्म्य.html": "assets/covers/ekadashi-vrat-mahatmya.webp",
+    "गयाश्राद्धपद्धति_माहात्म्य तथा_गयायात्राविधानसहित.html": "assets/covers/gaya-shraddha-paddhati-mahatmya.webp",
+    "गुरु और माता-पिता के भक्त बालक.html": "assets/covers/guru-aur-mata-pita-ke-bhakt-balak.webp",
     "बाल अमृत वचन.html": "assets/covers/baal-amrit-vachan.jpg",
     "बाल प्रश्नोत्तरी.html": "assets/covers/baal-prashnottari.jpg",
     "बालकों की बोलचाल.html": "assets/covers/balakon-ki-bolchaal.jpg",
     "संक्षिप्त शिवपुराण.html": "assets/covers/sankshipt-shivpuran.jpg",
     "संध्योपासनविधि और तर्पण एवं बलिवैश्वदेव विधि.html": "assets/covers/sandhyopasan-vidhi-tarpan-balivaishvadev-vidhi.jpg",
-    "शिव-आराधना.html": "assets/covers/shiv-aradhana.png",
-    "यजुर्वेद.html": "assets/covers/yajurved.png",
-    "श्रीविष्णुपुराण.html": "assets/covers/shri-vishnu-puran.png",
-    "शिव स्मरण.html": "assets/covers/shiv-smaran.png",
-    "शिवमहिम्नस्तोत्र.html": "assets/covers/shiv-mahimna-stotra.png",
-    "श्रीशिवचालीसा.html": "assets/covers/shri-shiv-chalisa.png",
-    "श्रीशिवसहस्रनामस्तोत्रम्.html": "assets/covers/shri-shiv-sahasranama-stotram.png",
+    "शिव-आराधना.html": "assets/covers/shiv-aradhana.webp",
+    "यजुर्वेद.html": "assets/covers/yajurved.webp",
+    "श्रीविष्णुपुराण.html": "assets/covers/shri-vishnu-puran.webp",
+    "शिव स्मरण.html": "assets/covers/shiv-smaran.webp",
+    "शिवमहिम्नस्तोत्र.html": "assets/covers/shiv-mahimna-stotra.webp",
+    "श्रीशिवचालीसा.html": "assets/covers/shri-shiv-chalisa.webp",
+    "श्रीशिवसहस्रनामस्तोत्रम्.html": "assets/covers/shri-shiv-sahasranama-stotram.webp",
     "श्रीमद्देवीभागवतमहापुराण.html": "assets/covers/shrimad-devi-bhagwat-mahapuran.jpg",
     "संक्षिप्त स्कन्दपुराण.html": "assets/covers/sankshipt-skanda-puran.jpg",
     "संक्षिप्त श्रीवराहपुराण.html": "assets/covers/sankshipt-shri-varah-puran.jpg",
@@ -334,7 +334,7 @@
     "श्रीमद‍्भागवतमहापुराण.html": "assets/covers/shrimad-bhagwat-mahapuran.jpg",
     "मत्स्यमहापुराण.html": "assets/covers/matsya-mahapuran.jpg",
     "श्रीनरसिंहपुराण.html": "assets/covers/shri-narasimha-puran.jpg",
-    "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "assets/covers/shri-linga-mahapuran.png",
+    "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "assets/covers/shri-linga-mahapuran.webp",
     "दत्तात्रेय वज्र कवच.html": "assets/covers/dattatreya-vajra-kavach.jpg",
     "सामवेद.html": "assets/covers/samved.jpg",
     "अथर्ववेद.html": "assets/covers/atharvaved.jpg",
@@ -352,14 +352,14 @@
     "ऐतरेयोपनिषद्.html": "assets/covers/aitareyopanishad.jpg",
     "तैत्तिरीयोपनिषद्.html": "assets/covers/taittiriyopanishad.jpg",
     "श्वेताश्वतरोपनिषद्.html": "assets/covers/shvetashvataropanishad.jpg",
-    "ईस्वर अंस जीव अबिनासी.html": "assets/covers/ishwar-ansh-jeev-abinasi.png",
-    "मेरे नाथ! मेरे प्रभो.html": "assets/covers/mere-nath-mere-prabho.png",
+    "ईस्वर अंस जीव अबिनासी.html": "assets/covers/ishwar-ansh-jeev-abinasi.webp",
+    "मेरे नाथ! मेरे प्रभो.html": "assets/covers/mere-nath-mere-prabho.webp",
     "अयोध्या-माहात्म्य.html": "assets/covers/ayodhya-mahatmya.jpg",
     "शिव स्तोत्र रत्नाकर.html": "assets/covers/shiv-stotra-ratnakar.jpg",
-    "जीवन्मुक्तिके रहस्य.html": "assets/covers/jivanmukti-ke-rahasya.png",
-    "यह कलियुग है!.html": "assets/covers/yah-kaliyug-hai.png",
-    "मानस-मुक्ता.html": "assets/covers/manas-mukta.png",
-    "श्रीहनुमानचालीसा.html": "assets/covers/shri-hanuman-chalisa.png"
+    "जीवन्मुक्तिके रहस्य.html": "assets/covers/jivanmukti-ke-rahasya.webp",
+    "यह कलियुग है!.html": "assets/covers/yah-kaliyug-hai.webp",
+    "मानस-मुक्ता.html": "assets/covers/manas-mukta.webp",
+    "श्रीहनुमानचालीसा.html": "assets/covers/shri-hanuman-chalisa.webp"
   };
 
   // Books whose text credits a publisher other than Gita Press (Manav Seva Sangh,
@@ -628,6 +628,7 @@
     myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Authors"], chat: ["प्रश्नोत्तर", "Q & A"],
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
     help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
+    sankalp: ["पाठ-संकल्प", "Path Sankalp"],
     prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"]
   };
   var SHELL_TITLES = [
@@ -1014,7 +1015,7 @@
   /* ---------------- home: ग्रंथों से पूछें AI कार्ड ---------------- */
   function aiAskCard() {
     return '<div class="ai-ask-card">' +
-      '<div class="ai-head"><img class="ai-head-icon-badge" src="assets/om-medallion.webp" alt="ॐ"><h3>' + bilingual("ग्रंथों से पूछें") + '</h3><span class="ai-badge">AI</span></div>' +
+      '<div class="ai-head"><img class="ai-head-icon-badge" src="assets/om-medallion-s.webp" alt="ॐ"><h3>' + bilingual("ग्रंथों से पूछें") + '</h3><span class="ai-badge">AI</span></div>' +
       '<p class="ai-sub">' + bilingual("स्वाध्याय के ग्रंथों के आधार पर संदर्भ सहित उत्तर प्राप्त करें") + '</p>' +
       '<form class="ai-ask-form" id="homeAiForm">' +
       '<span class="ai-ask-search-ic">🔍</span>' +
@@ -1130,6 +1131,7 @@
 
     html += '<main class="content-pad">';
     html += '<div class="home-top-grid">' + panchangCard(panchang) + aiAskCard() + '</div>';
+    if (window.SwadhyayDaily) html += window.SwadhyayDaily.homeHtml();      // gita study, manas pathways, daily bhajan
     html += categoryGrid();
     if (recentBooks.length) html += carousel("हाल में पढ़ा", "Recently Read", ["जहाँ से छोड़ा था, वहाँ से आगे पढ़ें", "Pick up where you left off"], recentBooks, "/myreads");
     html += todaysSpecialSection(panchang);
@@ -1673,6 +1675,37 @@
     return text.length > 60 ? text.slice(0, 57) + "…" : (text || "सम्बन्ध");
   }
 
+  /* A chapter with no Headings or Sub-Headings inside it (the Ramcharitmanas kandas: one 1.5 MB, 6,000-paragraph,
+     400,000 px-tall page) is slow to open and to scroll. Any page longer than READER_LONG_PAGE characters is
+     cut into parts of about READER_PAGE_TARGET characters, always between two paragraphs and, when it can, right
+     after a numbered unit (a doha: "... ॥ ३६॥"). The parts are named by the numbers they hold ("दोहा ३७–७२"),
+     or "भाग N". Returns null when the page is short enough. */
+  var READER_LONG_PAGE = 60000, READER_PAGE_TARGET = 40000;
+  var UNIT_END_RE = /॥\s*[०-९0-9]+\s*(?:\([^)<]{0,6}\))?\s*॥?\s*(?:<[^>]*>\s*)*$/;
+  var UNIT_NUM_RE = /(?:दो०|सो०)[^॥]{0,400}?॥\s*([०-९0-9]+)/g;     // the number that closes a doha / sortha
+  function splitLongPage(html) {
+    if (html.length <= READER_LONG_PAGE) return null;
+    var re = /<\/p>/g, m, cuts = [], last = 0;
+    while ((m = re.exec(html))) {
+      var end = m.index + 4, acc = end - last;
+      if (acc < READER_PAGE_TARGET) continue;
+      if (acc >= READER_LONG_PAGE || UNIT_END_RE.test(html.slice(Math.max(last, end - 300), m.index))) { cuts.push(end); last = end; }
+    }
+    if (!cuts.length) return null;
+    if (html.length - cuts[cuts.length - 1] < READER_PAGE_TARGET * 0.3) cuts.pop();      // no tiny last part
+    if (!cuts.length) return null;
+    var edges = [0].concat(cuts, [html.length]), parts = [];
+    for (var k = 0; k + 1 < edges.length; k++) {
+      var seg = html.slice(edges[k], edges[k + 1]), text = stripTagsForLabel(seg), nums = [], nm;
+      UNIT_NUM_RE.lastIndex = 0;
+      while ((nm = UNIT_NUM_RE.exec(text))) nums.push(nm[1]);
+      var label = "भाग " + (k + 1);
+      if (nums.length) label = "दोहा " + nums[0] + (nums[nums.length - 1] !== nums[0] ? "–" + nums[nums.length - 1] : "");
+      parts.push({ html: seg, label: label, len: text.length });
+    }
+    return parts;
+  }
+
   function buildReaderBook(bookId, htmlText) {
     var doc = new DOMParser().parseFromString(htmlText, "text/html");
     var headHtml = doc.head ? doc.head.innerHTML : "";
@@ -1732,15 +1765,23 @@
     var pages = [], legacyFirst = [], legacyPieces = [];
     /* l2First / l2Pieces: where each page of the previous layout (cut at Sub-Headings only,
        READER_LAYOUT 2) went, so saved positions in a bhajan book can be carried over. */
-    var l2First = [], l2Pieces = [], l2Count = 0, hasBhajans = false;
+    var l2First = [], l2Pieces = [], l2Count = 0, hasBhajans = false, hasLongSplit = false;
     chapters.forEach(function (ch) {
       var bhajanPages = splitAtBhajans(ch.html);
       var l2 = bhajanPages ? splitAtSubHeadings(ch.html) : null, firstNew = pages.length;
-      (bhajanPages || splitAtSubHeadings(ch.html)).forEach(function (piece, j) {
+      var base = bhajanPages || splitAtSubHeadings(ch.html), list = [];
+      base.forEach(function (bp, bi) {                 // very long pages are cut into parts (never bhajan pages)
+        var parts = bhajanPages ? null : splitLongPage(bp.html);
+        if (!parts) { list.push({ html: bp.html, label: bp.label, len: bp.len, bi: bi, part: 0 }); return; }
+        hasLongSplit = true;
+        parts.forEach(function (pt, pi) { list.push({ html: pt.html, label: pi === 0 ? bp.label : pt.label, len: pt.len, bi: bi, part: pi }); });
+      });
+      var l2Map = {};
+      list.forEach(function (piece, j) {
         var extracted = extractSubHeadings(piece.html, pages.length);
         var subs = extracted.subs;
         // A sub page opens with its own Sub-Heading, which is already the page's label.
-        if (j > 0 && subs.length) subs = subs.slice(1);
+        if (j > 0 && piece.part === 0 && subs.length) subs = subs.slice(1);
         if (bhajanPages) { subs = []; hasBhajans = true; }
         pages.push({
           html: extracted.html,
@@ -1753,12 +1794,11 @@
         var L = ch.legacy;
         if (legacyFirst[L] === undefined) legacyFirst[L] = pages.length - 1;
         (legacyPieces[L] = legacyPieces[L] || []).push({ idx: pages.length - 1, len: piece.len });
-        if (!bhajanPages) {
-          l2First[l2Count] = pages.length - 1;
-          l2Pieces[l2Count] = [{ idx: pages.length - 1, len: piece.len }];
-          l2Count++;
-        }
+        if (!bhajanPages) (l2Map[piece.bi] = l2Map[piece.bi] || []).push({ idx: pages.length - 1, len: piece.len });
       });
+      if (!bhajanPages) {                              // each layout-2 page -> the page(s) it became
+        base.forEach(function (bp, bi) { l2First[l2Count] = l2Map[bi][0].idx; l2Pieces[l2Count] = l2Map[bi]; l2Count++; });
+      }
       if (bhajanPages) {
         // old page -> the bhajan pages that overlap it (by running text length)
         var newEnds = [], acc = 0;
@@ -1779,7 +1819,7 @@
       }
     });
     var entry = { headHtml: headHtml, chapters: pages, legacyFirst: legacyFirst, legacyPieces: legacyPieces,
-      l2First: l2First, l2Pieces: l2Pieces, layout: hasBhajans ? 3 : READER_LAYOUT };
+      l2First: l2First, l2Pieces: l2Pieces, layout: hasBhajans ? 3 : hasLongSplit ? 4 : READER_LAYOUT };
     readerCache[bookId] = entry;
     return entry;
   }
@@ -1789,10 +1829,10 @@
      numbers are re-pointed once per book at the page that now holds the same spot. */
   function migrateReaderLayout(bookId, entry) {
     var done = readJSON(LS.readerLayout, {});
-    var target = entry.layout || READER_LAYOUT;      // 3 = one page per bhajan (भजन-संग्रह)
-    if (done[bookId] === target) return;
+    var layoutTarget = entry.layout || READER_LAYOUT;      // 3 = one page per bhajan (भजन-संग्रह); 4 = very long pages cut into parts
+    if (done[bookId] === layoutTarget) return;
     // saved positions already in layout 2 (cut at Sub-Headings) move from there, older ones from the chapters
-    var fromL2 = target === 3 && done[bookId] === 2;
+    var fromL2 = (layoutTarget === 3 || layoutTarget === 4) && done[bookId] === 2;
     var first = fromL2 ? entry.l2First : entry.legacyFirst, pieces = fromL2 ? entry.l2Pieces : entry.legacyPieces;
 
     var reads = getReads();
@@ -1842,7 +1882,7 @@
       writeJSON(LS.highlights, hl);
     }
 
-    done[bookId] = target;
+    done[bookId] = layoutTarget;
     writeJSON(LS.readerLayout, done);
   }
 
@@ -1870,6 +1910,21 @@
       'var HL=' + JSON.stringify(highlightList) + ';' +
       'var RESTORE_PCT=' + JSON.stringify(restoreScrollPct || 0) + ';' +
       'var ANCHOR_ID=' + JSON.stringify(anchorId || null) + ';' +
+      /* Gita shlokas that have a recording get a small play button after the shloka number
+         (swadhyay-shloka-audio.js lists them by their anchor id; this is a no-op for every other book) */
+      'var SHA=' + JSON.stringify(window.SwadhyayShlokaAudio ? window.SwadhyayShlokaAudio.anchors() : {}) + ';' +
+      '(function(){try{var P=parent.SwadhyayShlokaAudio;if(!P)return;var ids=Object.keys(SHA),btns={},any=false;' +
+      'var st=document.createElement("style");' +
+      'st.textContent=".rdr-sh-play{display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;margin-left:.7em;border:0;border-radius:50%;background:#8f1a12;color:#fff;font-size:.6em;line-height:1;vertical-align:middle;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}.rdr-sh-play.on{background:#176b3d}";' +
+      'document.head.appendChild(st);' +
+      'ids.forEach(function(id){var el=document.getElementById(id);if(!el)return;any=true;' +
+      'var b=document.createElement("button");b.type="button";b.className="rdr-sh-play";b.setAttribute("aria-label","श्लोक सुनें");b.textContent="▶";' +
+      'b.addEventListener("click",function(ev){ev.stopPropagation();P.play(SHA[id]);});' +
+      'b.addEventListener("mousedown",function(ev){ev.stopPropagation();});' +
+      'el.appendChild(b);btns[id]=b;});' +
+      'if(any)P.onState(function(k){ids.forEach(function(id){var b=btns[id];if(!b)return;var on=SHA[id]===k;b.classList.toggle("on",on);b.textContent=on?"❚❚":"▶";});},"reader");' +
+      'if(any)window.addEventListener("pagehide",function(){try{P.onState(function(){},"reader");}catch(e){}});' +
+      '}catch(err){}})();' +
       'var sx=0,sy=0,t0=0;' +
       'document.addEventListener("touchstart",function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;t0=Date.now();},{passive:true});' +
       'document.addEventListener("touchend",function(e){var t=e.changedTouches[0];var dx=t.clientX-sx,dy=t.clientY-sy;' +
@@ -1886,8 +1941,14 @@
       '},400);' +
       '},{passive:true});' +
       'if(ANCHOR_ID){setTimeout(function(){' +
-      'var el=document.getElementById(ANCHOR_ID);' +
-      'if(el) el.scrollIntoView({block:"start"});' +
+      'var el=null;' +
+      'if(ANCHOR_ID.indexOf("txt:")===0){' +      /* "txt:<some words>": the first paragraph containing them */
+      'var q=ANCHOR_ID.slice(4),ps=document.querySelectorAll("p");' +
+      'for(var i=0;i<ps.length;i++){if(ps[i].textContent.replace(/\\s+/g," ").indexOf(q)!==-1){el=ps[i];break;}}' +
+      '}else{el=document.getElementById(ANCHOR_ID);}' +
+      /* behavior:"instant" -- the books' own master.css makes the page scroll smoothly, and a smooth scroll over
+         thousands of pixels is cut short (the page stayed at the top for a shloka far down the page) */
+      'if(el) el.scrollIntoView({block:"start",behavior:"instant"});' +
       '},30);}' +
       'else if(RESTORE_PCT>0){setTimeout(function(){' +
       'var max=document.documentElement.scrollHeight-window.innerHeight;' +
@@ -2291,6 +2352,43 @@
     });
   }
 
+  /* Opens a book in the reader at a given spot -- used by the home page's daily cards.
+     where = { id: "<element id>" } (a shloka, a विश्राम ...) or { text: "<words from the opening line>" }.
+     It loads the book if needed, finds the reader page that holds the spot, and goes there. */
+  function openBookAt(file, where) {
+    var book = findByFile(file);
+    if (!book) { navigate("/library"); return; }
+    function go(entry) {
+      var idx = 0, anchor = null;
+      if (where && where.id) {
+        anchor = where.id;
+        for (var i = 0; i < entry.chapters.length; i++) {
+          if (entry.chapters[i].html.indexOf('id="' + where.id + '"') !== -1) { idx = i; break; }
+        }
+      } else if (where && where.text) {
+        anchor = "txt:" + where.text;
+        for (var k = 0; k < entry.chapters.length; k++) {
+          if (stripTagsForLabel(entry.chapters[k].html).indexOf(where.text) !== -1) { idx = k; break; }
+        }
+      }
+      navigate(readPath(book, idx) + (anchor ? "?a=" + encodeURIComponent(anchor) : ""));
+    }
+    if (readerCache[book.id]) { go(readerCache[book.id]); return; }
+    toast("पुस्तक खुल रही है…");
+    fetch(book.href).then(function (res) {
+      if (!res.ok) throw new Error("fetch failed");
+      return res.text();
+    }).then(function (text) { go(readerCache[book.id] || buildReaderBook(book.id, text)); })
+      .catch(function () { navigate(bookPath(book)); });
+  }
+  window.__swadhyayApp = {
+    openBookAt: openBookAt,
+    navigate: function (p) { navigate(p); },
+    bookPath: function (file) { var b = findByFile(file); return b ? bookPath(b) : "/library"; },
+    readPath: function (file) { var b = findByFile(file); return b ? readPath(b) : "/library"; },
+    bookProgress: function (file) { var b = findByFile(file), r = b && getReads()[b.id]; return r && typeof r.progress === "number" ? r.progress : 0; }
+  };
+
   function openReader(bookId, startIdx, anchorId) {
     var book = BOOKS_BY_ID[bookId];
     if (!book) { navigate("/library"); return; }
@@ -2314,6 +2412,7 @@
     var iframe = document.getElementById("readerIframe");
     iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;color:#888;text-align:center;">लोड हो रहा है…</body></html>';
     document.getElementById("readerTitleText").textContent = book.title;
+    if (window.SwadhyaySankalp) window.SwadhyaySankalp.readerBar(book.file);   // today's portion of an active पाठ-संकल्प
 
     recordOpen(bookId);
 
@@ -2352,6 +2451,7 @@
     if (!reader.open) return;
     reader.open = false;
     document.body.classList.remove("reader-active");
+    var skBar = document.getElementById("skReadBar"); if (skBar) skBar.remove();
     var overlay = document.getElementById("readerOverlay");
     if (overlay) overlay.classList.remove("show");
   }
@@ -3464,7 +3564,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "sankalp": "home", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -3624,6 +3724,7 @@
     else if (seg[0] === "signup") { if (isLoggedIn()) { navigate("/"); return; } html = viewSignup(); }
     else if (seg[0] === "authors") { html = viewAuthors(); }
     else if (seg[0] === "audio") { html = window.SwadhyayAudio ? window.SwadhyayAudio.pageHtml() : viewHome(); }
+    else if (seg[0] === "sankalp") { html = window.SwadhyaySankalp ? window.SwadhyaySankalp.pageHtml() : viewHome(); }
     else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
@@ -3656,6 +3757,8 @@
     wireView(r);
     applyHeroBanner();
     if (window.SwadhyayAudio) window.SwadhyayAudio.mount({ tx: tx, toast: toast });
+    if (window.SwadhyayDaily) window.SwadhyayDaily.mount({ tx: tx, toast: toast });
+    if (window.SwadhyaySankalp && seg[0] === "sankalp") window.SwadhyaySankalp.mount({ tx: tx, toast: toast });
     if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
     loadQuoteOfTheDay();
@@ -4019,6 +4122,11 @@
        re-rendering. Both calls swallow their own errors (see applyBookMetaOverrides /
        refreshCurrentUser) so a server that isn't running just means the app behaves
        exactly like it did before any of this existed -- it never blocks startup. */
+    /* ...but never for long: on a cold serverless start these calls can take several seconds, and the
+       whole page used to sit on the loading screen until they came back. The first render now waits at
+       most BOOT_WAIT_MS; if the data arrives later the page is drawn again (unless a book is open). */
+    var BOOT_WAIT_MS = 1200, firstDone = false;
+    function firstRender() { if (firstDone) return; firstDone = true; onNavigate(); }
     Promise.all([
       apiGet("/api/book-meta").then(function (data) { applyBookMetaOverrides(data.meta || {}); }).catch(function () {}),
       apiGet("/api/auth/config").then(function (data) { GOOGLE_CLIENT_ID = data.googleClientId || null; }).catch(function () {}),
@@ -4026,7 +4134,11 @@
     ]).then(function () {
       updateAuthChrome();
       return syncProgressFromServer();
-    }).then(onNavigate, onNavigate);
+    }).then(function () {
+      if (!firstDone) firstRender();
+      else if (!reader.open) { updateAuthChrome(); render(); }
+    }, function () { firstRender(); });
+    setTimeout(firstRender, BOOT_WAIT_MS);
   });
 
   /* Server-side hook: server/lib/seo.js defines window.__SWADHYAY_EXPORT__ and runs this

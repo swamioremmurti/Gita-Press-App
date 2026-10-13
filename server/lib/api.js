@@ -543,6 +543,19 @@ async function handleAdminCommentDelete(req, res, id) {
 // =========================================================================
 
 /**
+ * Two calls the page makes on every load that need no database when there is nothing to look up:
+ * /api/auth/config (an environment variable) and /api/auth/me for a visitor with no session cookie.
+ * The router answers them BEFORE the database is opened, so on a cold start the first screen is
+ * not held up by the database connection. Returns true if it answered.
+ */
+function handleWithoutDb(req, res, pathname) {
+  if (req.method !== 'GET') return false;
+  if (pathname === '/api/auth/config') { handleAuthConfig(req, res); return true; }
+  if (pathname === '/api/auth/me' && !auth.currentSessionToken(req)) { handleMe(req, res, null); return true; }
+  return false;
+}
+
+/**
  * Returns true if this module handled the request (caller should stop),
  * false if the path didn't match anything here (caller falls through).
  */
@@ -627,4 +640,4 @@ async function handle(req, res, pathname) {
   return false;
 }
 
-module.exports = { handle };
+module.exports = { handle, handleWithoutDb };

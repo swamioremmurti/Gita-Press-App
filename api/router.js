@@ -27,6 +27,8 @@ module.exports = async (req, res) => {
   if (req.method === 'GET' && pathname === '/api/health') { chat.handleHealth(req, res); return; }
   if (req.method === 'GET' && pathname === '/api/quote-of-the-day') { quotes.handle(req, res); return; }
 
+  if (api.handleWithoutDb(req, res, pathname)) return;     // page-load calls that need no database
+
   try {
     await ensureInit();
   } catch (err) {

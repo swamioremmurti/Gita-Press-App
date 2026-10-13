@@ -101,6 +101,10 @@
       title: BRAND + " — श्री हनुमान प्रश्नावली यन्त्र | Hanuman Prashnavali",
       desc: "श्री हनुमान प्रश्नावली यन्त्र — ४९ अंकों में प्रश्नों के उत्तर। जप करें, प्रश्न सोचें और अपना अंक पाएँ। Shri Hanuman Prashnavali Yantra: 49 numbered answers as an interactive game."
     },
+    sankalp: {
+      title: BRAND + " — श्रीरामचरितमानस पाठ-संकल्प | Ramcharitmanas Path Sankalp",
+      desc: "मासिक, नवाह्न और अखण्ड श्रीरामचरितमानस पाठ — विधि, समय-सारणी, दैनिक स्मरण और प्रगति। Monthly, nine-day and akhand Ramcharitmanas path: vidhi, schedule, daily reminders and progress."
+    },
     shalaka: {
       title: BRAND + " — श्रीरामशलाका-प्रश्नावली | Ram Shalaka Prashnavali",
       desc: "श्रीरामचरितमानस की श्रीरामशलाका-प्रश्नावली — ध्यान करें, कोष्ठक चुनें और चौपाई से उत्तर पाएँ। Shri Ram Shalaka Prashnavali of the Ramcharitmanas as an interactive game."
