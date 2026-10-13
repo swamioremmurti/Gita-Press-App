@@ -97,6 +97,14 @@
       title: BRAND + " — ऑडियो | Bhajan, Satsang, Pravachan, Katha & Audio Books",
       desc: "भजन, सत्संग, प्रवचन, कथा एवं ऑडियो बुक — स्वाध्याय में सुनें। Listen to bhajans, satsang, pravachan, katha and audio books on Swadhyay."
     },
+    hanuman: {
+      title: BRAND + " — श्री हनुमान प्रश्नावली यन्त्र | Hanuman Prashnavali",
+      desc: "श्री हनुमान प्रश्नावली यन्त्र — ४९ अंकों में प्रश्नों के उत्तर। जप करें, प्रश्न सोचें और अपना अंक पाएँ। Shri Hanuman Prashnavali Yantra: 49 numbered answers as an interactive game."
+    },
+    shalaka: {
+      title: BRAND + " — श्रीरामशलाका-प्रश्नावली | Ram Shalaka Prashnavali",
+      desc: "श्रीरामचरितमानस की श्रीरामशलाका-प्रश्नावली — ध्यान करें, कोष्ठक चुनें और चौपाई से उत्तर पाएँ। Shri Ram Shalaka Prashnavali of the Ramcharitmanas as an interactive game."
+    },
     chat: {
       title: BRAND + " — प्रश्नोत्तर | Ask the Granths",
       desc: "ग्रंथों के आधार पर प्रश्न पूछें। Ask questions answered from the scriptures in the Swadhyay library."

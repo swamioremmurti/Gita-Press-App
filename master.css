@@ -7626,3 +7626,25 @@ p.TXT-Right-3 {
 	text-indent:18px;
 }
 
+/* श्रीरामशलाका-प्रश्नावली: the 15 x 15 grid of syllables (श्रीरामचरितमानस) */
+table.Shalaka-Table {
+	width:100%;
+	table-layout:fixed;
+	margin:12px 0px 12px 0px;
+	border-collapse:collapse;
+	font-family:ChanakyaUni, serif;
+}
+td.Shalaka-Cell {
+	border:1px solid currentColor;
+	padding:5px 0px;
+	text-align:center;
+	vertical-align:middle;
+	font-size:clamp(0.62em, 3vw, 1.05em);
+	line-height:1.25;
+	overflow:hidden;
+	white-space:nowrap;
+}
+td.Shalaka-Cell-Mark {
+	background-color:rgba(224, 170, 60, 0.4);
+	font-weight:bold;
+}

@@ -627,15 +627,16 @@
     home: ["होम", "Home"], library: ["पुस्तकालय", "Library"], favorites: ["पसंदीदा", "Favorites"],
     myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Authors"], chat: ["प्रश्नोत्तर", "Q & A"],
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
-    help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"]
+    help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
+    prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"]
   };
   var SHELL_TITLES = [
     ["#appDrawerBtn", "मेनू", "Menu"], [".global-search-btn", "खोजें", "Search"], [".theme-switch", "डार्क मोड", "Dark mode"],
     ["#notifyBtn", "सूचनाएँ", "Notifications"], ["#profileBtn", "प्रोफ़ाइल", "Profile"]
   ];
   function applyShellLanguage() {
-    document.querySelectorAll("[data-nav]").forEach(function (el) {
-      var pair = SHELL_LABELS[el.getAttribute("data-nav")];
+    document.querySelectorAll("[data-nav], [data-label-key]").forEach(function (el) {
+      var pair = SHELL_LABELS[el.getAttribute("data-nav") || el.getAttribute("data-label-key")];
       var label = el.querySelector("span:not(.ic)");
       if (pair && label) label.textContent = tx(pair[0], pair[1]);
     });
@@ -829,22 +830,8 @@
     var favIds = favSeed.map(findByFile).filter(Boolean).map(function (b) { return b.id; });
     if (favIds.length) setFavorites(favIds);
 
-    var readSeed = [
-      ["श्रीमद्भगवद्गीता_साधक_संजीवनी.html", 65, 0],
-      ["श्रीरामचरितमानस.html", 32, 2],
-      ["श्रीविष्णुसहस्रनामस्तोत्रम्.html", 78, 5],
-      ["संक्षिप्त श्रीमद्देवीभागवत.html", 40, 7],
-      ["श्रीभक्तमाल.html", 15, 9]
-    ];
-    var reads = {};
-    var now = Date.now();
-    readSeed.forEach(function (r) {
-      var b = findByFile(r[0]);
-      if (!b) return;
-      var ts = now - r[2] * 86400000;
-      reads[b.id] = { progress: r[1], lastOpenedAt: ts, firstOpenedAt: ts - 3 * 86400000 };
-    });
-    setReads(reads);
+    /* Reading history is intentionally NOT seeded: My Reads starts at zero and
+       only reflects what the user actually opens. */
   }
 
   var NEW_ADDITIONS_FILES = [
@@ -1597,6 +1584,44 @@
      chunk is cut at every Heading / Chapter-Number / Book-Name paragraph. A cut-off piece
      that is only a title (a Heading straight followed by another) rides along with the next
      piece so a two-line title never becomes a page of its own. */
+  /* Bhajan books (भजन-संग्रह): every bhajan is a paragraph carrying id="bhajan_<section>_<no>".
+     Each bhajan is its own reader page, whatever its length (no minimum-size merging). A
+     Sub-Heading sitting just above a bhajan's number ("स्तुति", "नाम" ...) opens that bhajan's
+     page rather than closing the previous one. The first bhajan of a chapter stays on the
+     chapter's own page, with the section Heading. Returns null when the chapter has none. */
+  var BHAJAN_ID_RE = /<p\b[^>]*\bid="bhajan_[^"]*"[^>]*>/g;
+  function bhajanLabel(html) {
+    var num = html.match(/<p\b[^>]*\bid="bhajan_\d+_(\d+)"[^>]*>/);
+    var NUM_DIGITS = "०१२३४५६७८९";
+    var no = num ? num[1].replace(/\d/g, function (d) { return NUM_DIGITS.charAt(+d); }) : "";
+    var first = html.match(/<p\b[^>]*\bclass="(?:[^"]*\s)?Shlok(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/p>/);
+    var line = first ? stripTagsForLabel(first[1]) : "";
+    var label = (no ? no + ". " : "") + line;
+    return label.length > 60 ? label.slice(0, 57) + "…" : label;
+  }
+  function splitAtBhajans(html) {
+    var starts = [], m;
+    BHAJAN_ID_RE.lastIndex = 0;
+    while ((m = BHAJAN_ID_RE.exec(html))) starts.push(m.index);
+    if (!starts.length) return null;
+    var cuts = starts.slice(1).map(function (st) {
+      for (;;) {                                  // take in the Sub-Heading(s) right above it
+        var before = html.slice(0, st).replace(/\s+$/, "");
+        if (before.slice(-4) !== "</p>") return st;
+        var ps = before.lastIndexOf("<p");
+        if (ps < 0 || !/^<p\b[^>]*\bclass="(?:[^"]*\s)?Sub-Heading/.test(before.slice(ps))) return st;
+        st = ps;
+      }
+    });
+    var edges = [0].concat(cuts, [html.length]);
+    var pages = [];
+    for (var k = 0; k + 1 < edges.length; k++) {
+      var seg = html.slice(edges[k], edges[k + 1]);
+      pages.push({ html: seg, label: k === 0 ? null : bhajanLabel(seg), len: stripTagsForLabel(seg).length });
+    }
+    return pages.filter(function (pg) { return pg.len > 0 || pg.html.indexOf("<img") !== -1; });
+  }
+
   var HEADING_START_RE = /<p\b[^>]*\bclass="(?:[^"]*\s)?(?:Title-Page---Book-Name|Heading|Chapter-Number)(?:\s[^"]*)?"[^>]*>/g;
   var TITLE_ONLY_CHARS = 100;
   function splitAtHeadings(html) {
@@ -1705,12 +1730,18 @@
        a run of short pages instead of one endless scroll. The books themselves stay as they
        are -- this only changes how the reader slices them. */
     var pages = [], legacyFirst = [], legacyPieces = [];
+    /* l2First / l2Pieces: where each page of the previous layout (cut at Sub-Headings only,
+       READER_LAYOUT 2) went, so saved positions in a bhajan book can be carried over. */
+    var l2First = [], l2Pieces = [], l2Count = 0, hasBhajans = false;
     chapters.forEach(function (ch) {
-      splitAtSubHeadings(ch.html).forEach(function (piece, j) {
+      var bhajanPages = splitAtBhajans(ch.html);
+      var l2 = bhajanPages ? splitAtSubHeadings(ch.html) : null, firstNew = pages.length;
+      (bhajanPages || splitAtSubHeadings(ch.html)).forEach(function (piece, j) {
         var extracted = extractSubHeadings(piece.html, pages.length);
         var subs = extracted.subs;
         // A sub page opens with its own Sub-Heading, which is already the page's label.
         if (j > 0 && subs.length) subs = subs.slice(1);
+        if (bhajanPages) { subs = []; hasBhajans = true; }
         pages.push({
           html: extracted.html,
           label: j === 0 ? ch.label : piece.label,
@@ -1722,9 +1753,33 @@
         var L = ch.legacy;
         if (legacyFirst[L] === undefined) legacyFirst[L] = pages.length - 1;
         (legacyPieces[L] = legacyPieces[L] || []).push({ idx: pages.length - 1, len: piece.len });
+        if (!bhajanPages) {
+          l2First[l2Count] = pages.length - 1;
+          l2Pieces[l2Count] = [{ idx: pages.length - 1, len: piece.len }];
+          l2Count++;
+        }
       });
+      if (bhajanPages) {
+        // old page -> the bhajan pages that overlap it (by running text length)
+        var newEnds = [], acc = 0;
+        bhajanPages.forEach(function (bp, q) { acc += bp.len; newEnds.push({ idx: firstNew + q, from: acc - bp.len, to: acc }); });
+        var oldAcc = 0;
+        l2.forEach(function (op) {
+          var a = oldAcc, b = oldAcc + op.len, hits = [];
+          oldAcc = b;
+          newEnds.forEach(function (ne) {
+            var ov = Math.min(b, ne.to) - Math.max(a, ne.from);
+            if (ov > 0 || (op.len === 0 && ne.from <= a && a < ne.to)) hits.push({ idx: ne.idx, len: Math.max(ov, 0) });
+          });
+          if (!hits.length) hits.push({ idx: firstNew, len: 0 });
+          l2First[l2Count] = hits[0].idx;
+          l2Pieces[l2Count] = hits;
+          l2Count++;
+        });
+      }
     });
-    var entry = { headHtml: headHtml, chapters: pages, legacyFirst: legacyFirst, legacyPieces: legacyPieces };
+    var entry = { headHtml: headHtml, chapters: pages, legacyFirst: legacyFirst, legacyPieces: legacyPieces,
+      l2First: l2First, l2Pieces: l2Pieces, layout: hasBhajans ? 3 : READER_LAYOUT };
     readerCache[bookId] = entry;
     return entry;
   }
@@ -1734,8 +1789,11 @@
      numbers are re-pointed once per book at the page that now holds the same spot. */
   function migrateReaderLayout(bookId, entry) {
     var done = readJSON(LS.readerLayout, {});
-    if (done[bookId] === READER_LAYOUT) return;
-    var first = entry.legacyFirst, pieces = entry.legacyPieces;
+    var target = entry.layout || READER_LAYOUT;      // 3 = one page per bhajan (भजन-संग्रह)
+    if (done[bookId] === target) return;
+    // saved positions already in layout 2 (cut at Sub-Headings) move from there, older ones from the chapters
+    var fromL2 = target === 3 && done[bookId] === 2;
+    var first = fromL2 ? entry.l2First : entry.legacyFirst, pieces = fromL2 ? entry.l2Pieces : entry.legacyPieces;
 
     var reads = getReads();
     var r = reads[bookId];
@@ -1784,7 +1842,7 @@
       writeJSON(LS.highlights, hl);
     }
 
-    done[bookId] = READER_LAYOUT;
+    done[bookId] = target;
     writeJSON(LS.readerLayout, done);
   }
 
@@ -1910,6 +1968,9 @@
       '})();';
   }
 
+  var READER_PARA_INDENT = "2.2em";
+  var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.TXT,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.Question,p.Answer";
+
   function renderIframeDoc(book, headHtml, chapterHtml, fontSize, lineHeight, theme, highlightList, restoreScrollPct, anchorId) {
     var themeClass = theme === "night" ? "rdr-night" : theme === "sepia" ? "rdr-sepia" : "";
     var bg = theme === "sepia" ? "#f4ecd8" : "#ffffff";
@@ -1924,6 +1985,10 @@
          almost every paragraph class, so a plain body{line-height} rule would be overridden
          by those more specific selectors -- this reading-comfort control needs to win everywhere. */
       'body, body *{line-height:' + lineHeight + 'em !important;}' +
+      /* Paragraph indent: master.css indents body text only 12-18px (about 0.5em), which reads as barely
+         indented on screen. Prose paragraphs (justified, indented in master.css; not footnotes, verses
+         or titles) get a deeper first-line indent that grows with the font size. */
+      READER_INDENT_SELECTORS + '{text-indent:' + READER_PARA_INDENT + ' !important;}' +
       '@media (min-width:900px){body{max-width:1100px;padding:1.4rem 2rem 4rem;}}' +
       'mark.rdr-hl{background:#ffe58a;border-radius:2px;}' +
       readerThemeCSS() +
@@ -3399,11 +3464,22 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
     });
+    // a sidebar group (e.g. प्रश्नावली) opens by itself when the page you are on is inside it
+    document.querySelectorAll(".side-group").forEach(function (g) {
+      var inside = !!g.querySelector("[data-nav].active");
+      g.classList.toggle("has-active", inside);
+      if (inside) setSideGroup(g, true);
+    });
+  }
+  function setSideGroup(g, open) {
+    g.classList.toggle("is-open", open);
+    var b = g.querySelector(".side-group-btn");
+    if (b) b.setAttribute("aria-expanded", open ? "true" : "false");
   }
 
   /* ---------------- per-page <title> / meta ----------------
@@ -3548,6 +3624,8 @@
     else if (seg[0] === "signup") { if (isLoggedIn()) { navigate("/"); return; } html = viewSignup(); }
     else if (seg[0] === "authors") { html = viewAuthors(); }
     else if (seg[0] === "audio") { html = window.SwadhyayAudio ? window.SwadhyayAudio.pageHtml() : viewHome(); }
+    else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
+    else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
       var aPerson = resolvePerson(seg[1]);
       if (aPerson) { html = viewAuthor(aPerson); pagePerson = aPerson; }
@@ -3578,6 +3656,8 @@
     wireView(r);
     applyHeroBanner();
     if (window.SwadhyayAudio) window.SwadhyayAudio.mount({ tx: tx, toast: toast });
+    if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
+    if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
     loadQuoteOfTheDay();
     if (seg[0] === "chat") wireChatView();
 
@@ -3907,6 +3987,12 @@
     if (scrim) scrim.addEventListener("click", closeSidebarDrawer);
     document.querySelectorAll(".sidebar [data-nav]").forEach(function (link) {
       link.addEventListener("click", closeSidebarDrawer);
+    });
+    document.querySelectorAll(".side-group-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var g = btn.closest(".side-group");
+        if (g) setSideGroup(g, !g.classList.contains("is-open"));
+      });
     });
 
     window.addEventListener("scroll", updateTopbarSolidity, { passive: true });

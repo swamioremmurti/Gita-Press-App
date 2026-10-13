@@ -26,12 +26,16 @@ function quotesFor(date) {
   });
 }
 
+// The day's four sayings are computed once per date, not on every request.
+let memo = { date: null, body: null };
+
 function handle(req, res) {
   const date = istDate();
+  if (memo.date !== date) memo = { date, body: JSON.stringify({ date, quotes: quotesFor(date) }) };
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
   res.setHeader('Cache-Control', 'public, max-age=600, s-maxage=600');
-  res.end(JSON.stringify({ date, quotes: quotesFor(date) }));
+  res.end(memo.body);
 }
 
 module.exports = { handle, quotesFor, istDate };
