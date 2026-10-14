@@ -81,7 +81,7 @@
     }).join("") + '</nav>';
   }
   function shell(o) {
-    return '<header class="dd-head"><h3>' + esc(o.title) + '</h3><p>' + esc(o.sub) + '</p></header>' +
+    return '<header class="dd-head"><h3>' + esc(o.title) + '</h3><p>' + esc(o.sub).replace(/\n/g, "<br>") + '</p></header>' +
       (o.pills || "") +
       '<div class="dd-badge"><span class="dd-badge-ic" aria-hidden="true">' + (o.badgeIc || ICON.lamp) + '</span><div><b>' + esc(o.badgeT) + '</b><span>' + esc(o.badgeS || "") + '</span></div></div>' +
       '<div class="dd-text' + (o.cls ? " " + o.cls : "") + '">' + o.body + '</div>' +
@@ -139,7 +139,7 @@
           }
         }
         put("gita", shell({
-          title: T("दैनिक गीता अध्ययन", "Daily Gita Study"), sub: T("प्रतिदिन एक श्लोक, जीवन के लिए एक सीख", "One shloka a day, one lesson for life"),
+          title: T("दैनिक गीता अध्ययन", "Daily Gita Study"), sub: T("प्रतिदिन एक श्लोक,\nजीवन के लिए एक सीख", "One shloka a day,\none lesson for life"),
           badgeT: T("आज का श्लोक", "Today's shloka"), badgeS: T("अध्याय ", "Chapter ") + dev(w.ch) + ", " + T("श्लोक ", "Shloka ") + dev(e.v),
           body: body, cls: V.gita === "shloka" ? fit(e.t) : "is-panel",
           cta: learnedToday ? T("आज का श्लोक पढ़ें", "Read today's shloka") : T("आज का गीता अध्ययन", "Today's Gita study"), ctaK: "gita-open", arg: e.id,
@@ -152,11 +152,11 @@
         }));
         card("gita").setAttribute("data-anchor", e.id);
       });
-    }).catch(function () { failed("gita", T("दैनिक गीता अध्ययन", "Daily Gita Study"), T("प्रतिदिन एक श्लोक, जीवन के लिए एक सीख", "One shloka a day, one lesson for life"), "/library", T("गीता पुस्तकें देखें", "Browse Gita books")); });
+    }).catch(function () { failed("gita", T("दैनिक गीता अध्ययन", "Daily Gita Study"), T("प्रतिदिन एक श्लोक,\nजीवन के लिए एक सीख", "One shloka a day,\none lesson for life"), "/library", T("गीता पुस्तकें देखें", "Browse Gita books")); });
   }
   function renderGitaDone(index) {
     put("gita", shell({
-      title: T("दैनिक गीता अध्ययन", "Daily Gita Study"), sub: T("प्रतिदिन एक श्लोक, जीवन के लिए एक सीख", "One shloka a day, one lesson for life"),
+      title: T("दैनिक गीता अध्ययन", "Daily Gita Study"), sub: T("प्रतिदिन एक श्लोक,\nजीवन के लिए एक सीख", "One shloka a day,\none lesson for life"),
       badgeIc: "🪷", badgeT: T("पूर्ण", "Complete"), badgeS: dev(index.total) + " " + T("श्लोक", "shlokas"),
       body: '<p class="dd-meaning">' + esc(T("🙏 आपने गीता के सभी श्लोक सीख लिए। यात्रा फिर से आरम्भ कर सकते हैं।", "🙏 You have learned every shloka of the Gita. You can begin the journey again.")) + '</p>',
       cls: "is-panel", cta: T("फिर से आरम्भ करें", "Begin again"), ctaK: "gita-restart",
@@ -219,7 +219,7 @@
       ctaK = "audio-cat"; cta = T("ऑडियो खोलें", "Open audio");
     }
     put("bhajan", shell({
-      title: T("नित्य भगवत् संकीर्तन", "Daily Sankirtan"), sub: T("भक्ति रस में डूबें, मन को शुद्ध और प्रसन्न बनाएँ", "Dive into devotion; make the mind pure and glad"),
+      title: T("नित्य भगवत् संकीर्तन", "Daily Sankirtan"), sub: T("भक्ति रस में डूबें,\nमन को शुद्ध और प्रसन्न बनाएँ", "Dive into devotion;\nmake the mind pure and glad"),
       badgeT: T("आज का भजन", "Today's bhajan"), badgeS: T("संकीर्तन", "Sankirtan"), badgeIc: ICON.lamp,
       body: body, cls: "is-track", cta: cta, ctaK: ctaK, acts: catActs
     }));

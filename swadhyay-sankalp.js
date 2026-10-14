@@ -337,17 +337,19 @@
       return '<li class="sr-step' + (n === cur ? " is-cur" : n < cur ? " is-done" : "") + '"><span class="sr-dot">' + (n < cur ? "✓" : dev(n)) + '</span><span>' + esc(tt(nm)) + '</span></li>';
     }).join("") + '</ol>';
   }
+  function titleHtml() { return esc(T("श्रीरामचरितमानस", "Ramcharitmanas")) + "<br>" + esc(T("पाठ-संकल्प", "Path Sankalp")); }
+  function taglineHtml() { return esc(T("मानस पढ़ें,", "Read the Manas,")) + "<br>" + esc(T("मन को राममय बनाएँ।", "fill the mind with Ram.")); }
   function hero() {
     return '<header class="sk-hero"><div class="sk-hero-in"><small>' + esc(T("स्वाध्याय · विशेष साधना", "Swadhyay · Special sadhana")) + '</small>' +
-      '<h1>' + esc(T("श्रीरामचरितमानस पाठ-संकल्प", "Ramcharitmanas Path Sankalp")) + '</h1>' +
-      '<p>' + esc(T("मानस पढ़ें, मन को राममय बनाएँ।", "Read the Manas, fill the mind with Ram.")) + '</p></div></header>';
+      '<h1>' + titleHtml() + '</h1>' +
+      '<p>' + taglineHtml() + '</p></div></header>';
   }
 
   /* ================================================================== the home card */
   function renderCard() {
     if (!cardEl) return;
     var a = S.active;
-    var head = '<header class="dd-head"><small class="sk-eyebrow">' + esc(T("स्वाध्याय · विशेष साधना", "Swadhyay · Special sadhana")) + '</small><h3>' + esc(T("श्रीरामचरितमानस पाठ-संकल्प", "Ramcharitmanas Path Sankalp")) + '</h3><p>' + esc(T("मानस पढ़ें, मन को राममय बनाएँ।", "Read the Manas, fill the mind with Ram.")) + '</p></header>';
+    var head = '<header class="dd-head"><small class="sk-eyebrow">' + esc(T("स्वाध्याय · विशेष साधना", "Swadhyay · Special sadhana")) + '</small><h3>' + titleHtml() + '</h3><p>' + taglineHtml() + '</p></header>';
     var html;
     if (!a) {
       html = head + '<div class="dd-text is-panel sk-pitch"><p>' + esc(T("अपनी सुविधा और परम्परा के अनुसार पाठ चुनें। हम आपको विधि, समय-स्मरण और प्रगति में सहयोग देंगे।", "Choose a path to suit you and your tradition. We help with the विधि, reminders and progress.")) + '</p>' +
