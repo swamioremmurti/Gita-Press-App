@@ -933,32 +933,105 @@
   }
   /* the lunar state at the hour an observance goes by: "moonrise" (Sankashti, Karwa Chauth), "pradosh" (a little after
      sunset: Pradosh, Diwali, Holika Dahan) or "night" (about midnight: Mahashivratri, Janmashtami) */
+  var VRAT_STATES = {};
   function vratStateAt(kind, date, city) {
-    var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate(), h;
+    var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate(), key = kind + "|" + city.key + "|" + y + "-" + m + "-" + d;
+    if (VRAT_STATES[key]) return VRAT_STATES[key];
+    var h;
     if (kind === "moonrise") h = moonriseLocalHour(y, m, d, city.lat, city.lon, city.tz) || 21;
     else if (kind === "pradosh") { h = sunEventLocalHour(y, m, d, city.lat, city.lon, city.tz, false); h = (h == null ? 18 : h) + 0.75; }
+    else if (kind === "sunrise") { h = sunEventLocalHour(y, m, d, city.lat, city.lon, city.tz, true); if (h == null) h = 6; }
+    else if (kind === "noon") h = 12;
     else h = 23.9;
-    return lunarStateAt(y, m, d, h, city.tz);
+    return (VRAT_STATES[key] = lunarStateAt(y, m, d, h, city.tz));
+  }
+  /* The same for a vrat that goes by the tithi at noon (most of them). It falls on the first day whose noon has the tithi.
+     A tithi shorter than a day can slip between two noons -- the Purnima of 25-26 Oct 2026 does -- and must still be
+     observed: then it counts on the day it is there in the evening or at night, or, if it is there only in the morning,
+     on that day. */
+  function vratNoonHitOne(r, p, dedupe) {
+    var c = p.city, day = function (n) { return new Date(p.date.getFullYear(), p.date.getMonth(), p.date.getDate() + n); };
+    var noon = function (n) { return vratStateHit(r, n === 0 ? p : vratStateAt("noon", day(n), c)); };
+    var at = function (kind, n) { return vratStateHit(r, vratStateAt(kind, day(n), c)); };
+    if (noon(0)) return dedupe ? !noon(-1) : true;
+    if (noon(1)) return false;
+    if (at("pradosh", 0) || at("night", 0)) return true;
+    return !noon(-1) && !at("pradosh", -1) && !at("night", -1) && at("sunrise", 0);
   }
   /* Such an observance falls on the day whose moonrise / pradosh / midnight has the tithi. A tithi longer than a day touches
      two of them: the first day counts. A short one that begins after one moonrise and ends before the next touches none: then
      the day it begins at night counts -- so every month has its day. */
-  function vratAtHit(r, p) {
+  function vratAtHitOne(r, p, dedupe) {
     var day = function (n) { return new Date(p.date.getFullYear(), p.date.getMonth(), p.date.getDate() + n); };
-    var here = vratStateHit(r, vratStateAt(r.at, p.date, p.city));
-    if (here) return !vratStateHit(r, vratStateAt(r.at, day(-1), p.city));
-    return r.at === "moonrise" && vratStateHit(r, vratStateAt("night", p.date, p.city)) && !vratStateHit(r, vratStateAt(r.at, day(1), p.city));
+    var at = function (kind, n) { return vratStateHit(r, vratStateAt(kind, day(n), p.city)); };
+    var kind = r.at;
+    if (at(kind, 0)) return dedupe ? !at(kind, -1) : true;
+    if (kind === "moonrise") return at("night", 0) && !at(kind, 1);
+    // pradosh / midnight: a tithi that slips between two of them counts on the day whose daytime has it
+    return !at(kind, -1) && (at("sunrise", 0) || at("noon", 0) || (kind === "pradosh" ? at("night", -1) : at("pradosh", 0)));
   }
+  /* A rule is tried tithi by tithi. With one tithi the vrat is a single day: the first day that has it. With several (Navratri,
+     पितृपक्ष ...) it lasts as long as any of them is there, so every such day counts. */
+  function vratEachTithi(fn) {
+    return function (r, p) {
+      var t = r.tithis || [];
+      for (var i = 0; i < t.length; i++) if (fn({ maas: r.maas, tithis: [t[i]], at: r.at }, p, t.length === 1)) return true;
+      return false;
+    };
+  }
+  var vratNoonHit = vratEachTithi(vratNoonHitOne), vratAtHit = vratEachTithi(vratAtHitOne);
   function vratRuleHit(r, p, wd) {
     var hasM = r.maas && r.maas.length, hasT = r.tithis && r.tithis.length;
     if (!hasM && !hasT && r.vaar == null) return false;
     if (r.vaar != null && r.vaar !== wd) return false;
-    return r.at && hasT ? vratAtHit(r, p) : vratStateHit(r, p);
+    if (!hasT) return vratStateHit(r, p);                    // a weekday, or a whole month
+    return r.at ? vratAtHit(r, p) : vratNoonHit(r, p);
   }
   function vratsFor(p) {
     var wd = p.date.getDay();
     return VRATS.filter(function (v) { return VRAT_AUTO[v.kind] && v.rules.some(function (r) { return vratRuleHit(r, p, wd); }); })
       .sort(function (a, b) { return a.priority - b.priority || a.order - b.order; });
+  }
+  /* When is a vrat next observed? The panchang of every coming day is worked out once (and kept for the day) and each
+     vrat's rules are tried against it. A vrat that runs over several days counts from its first day. */
+  var VRAT_DAYS = { key: "", list: [] }, VRAT_NEXT = {};
+  function vratDay(i) {
+    var city = getPanchangCity(), t = new Date(), key = city.key + dayKeyOf(t);
+    if (VRAT_DAYS.key !== key) { VRAT_DAYS = { key: key, list: [] }; VRAT_NEXT = {}; }
+    return VRAT_DAYS.list[i] || (VRAT_DAYS.list[i] = getPanchang(new Date(t.getFullYear(), t.getMonth(), t.getDate() + i), city));
+  }
+  function dayKeyOf(d) { return d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate(); }
+  function vratHitOn(v, i) {
+    var p = vratDay(i), wd = p.date.getDay();
+    return v.rules.some(function (r) { return vratRuleHit(r, p, wd); });
+  }
+  /* the first days (up to `count`) on which a vrat starts, within `span` days from today: [{ date, days }] */
+  function vratOccurrences(v, count, span) {
+    vratDay(0);
+    var out = [], prev = false;
+    for (var i = 0; i < span && out.length < count; i++) {
+      var hit = vratHitOn(v, i);
+      if (hit && !prev) out.push({ date: vratDay(i).date, days: i });
+      prev = hit;
+    }
+    return out;
+  }
+  function vratNext(v) {
+    vratDay(0);
+    if (!(v.slug in VRAT_NEXT)) VRAT_NEXT[v.slug] = VRAT_AUTO[v.kind] ? (vratOccurrences(v, 1, 420)[0] || null) : null;   // the list looks a year ahead; the vrat's own page, further
+    return VRAT_NEXT[v.slug];
+  }
+  /* an adhika-month vrat is not due within the year: look further (an adhika month comes about every three years) */
+  function vratNextFar(v) {
+    if (!VRAT_AUTO[v.kind] || !(v.rules || []).some(function (r) { return (r.maas || []).indexOf("अधिक") !== -1; })) return null;
+    var key = v.slug + "#far";
+    if (!(key in VRAT_NEXT)) VRAT_NEXT[key] = vratOccurrences(v, 1, 1250)[0] || null;
+    return VRAT_NEXT[key];
+  }
+  function vratNextText(o) {
+    if (!o) return "";
+    var ds = o.date.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" });
+    return ds + " · " + (o.days === 0 ? tx("आज", "today") : o.days === 1 ? tx("कल", "tomorrow") : tx(o.days + " दिन में", "in " + o.days + " days"));
   }
   function vratWhen(p) { return (p.adhika ? "अधिक मास" : p.maas) + " " + p.paksha + " पक्ष " + p.tithiName + " · " + p.weekdayHi; }
   function vratPath(v) { return "/vrat/" + encodeURIComponent(v.slug); }
@@ -3004,56 +3077,129 @@
     if (!t) return 999;
     return (t.charAt(0) === "K" ? 0 : 100) + parseInt(t.slice(2), 10);
   }
-  function vratCard(v) {
-    var sub = [v.maas, v.tithi].filter(Boolean).join(" · ");
-    return '<a class="vrat-card" href="' + vratPath(v) + '" data-q="' + esc((v.name + " " + (v.aliases || []).join(" ") + " " + v.maas + " " + v.tithi).toLowerCase()) + '">' +
-      '<span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span><span class="vc-tx"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + '</span></a>';
+  /* ---- the list page: a hero with search, "today", then the months from the running one on ----
+     Three card shapes: a wide card for today's vrats, an upright tile for the running month, a row for everything else.
+     Every group shows its first few and opens to the rest with "देखें सभी". */
+  function vratSearchText(v) { return esc((v.name + " " + (v.aliases || []).join(" ") + " " + v.maas + " " + v.tithi).toLowerCase()); }
+  function vratSub(v) { return [v.maas, v.tithi].filter(Boolean).join(" · "); }
+  function vratNextHtml(v) {
+    var nx = vratNext(v) || vratNextFar(v);
+    return nx ? '<small class="vc-next">📅 ' + esc(vratNextText(nx)) + '</small>' : "";
   }
-  function vratGroup(title, list, extraCls) {
-    if (!list.length) return "";
-    return '<section class="vrat-group' + (extraCls ? " " + extraCls : "") + '"><h2>' + esc(title) + ' <span>' + list.length + '</span></h2><div class="vrat-grid">' + list.map(vratCard).join("") + '</div></section>';
+  function vratRow(v) {
+    var sub = vratSub(v);
+    return '<a class="vrow" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+      '<span class="vc-tx"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '</span><i class="vc-go" aria-hidden="true">›</i></a>';
+  }
+  function vratTile(v) {
+    var sub = vratSub(v);
+    return '<a class="vtile" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+      '<b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '<i class="vc-go" aria-hidden="true">›</i></a>';
+  }
+  function vratTodayCard(v) {
+    var sub = vratSub(v);
+    return '<a class="vtoday" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '"><span class="vt-thumb" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+      '<span class="vt-body"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") +
+      '<span class="vt-btn">' + esc(tx("विवरण देखें", "View details")) + ' →</span></span><i class="vc-go" aria-hidden="true">›</i></a>';
+  }
+  /* the month a vrat is filed under: of the months it is observed in, the one that comes first from the running month on */
+  function vratMonthFrom(v, now) {
+    var best = -1, bestD = 99;
+    (v.rules || []).forEach(function (r) {
+      (r.maas || []).forEach(function (m) {
+        var i = HINDU_MONTHS.indexOf(m);
+        if (i === -1) return;
+        var d = (i - now + 12) % 12;
+        if (d < bestD) { bestD = d; best = i; }
+      });
+    });
+    if (best !== -1) return best;
+    return (v.rules || []).some(function (r) { return (r.maas || []).indexOf("अधिक") !== -1; }) ? 12 : 13;
+  }
+  function vratByNext(a, b) {
+    var na = vratNext(a), nb = vratNext(b);
+    return (na ? na.days : 99999) - (nb ? nb.days : 99999) || vratDayKey(a) - vratDayKey(b) || a.order - b.order;
+  }
+  /* o = { title, icon, list, shape: "today" | "tile" | "row", limit, cls, aside (html next to the title) } */
+  function vratSection(o) {
+    if (!o.list.length) return "";
+    var card = o.shape === "today" ? vratTodayCard : o.shape === "tile" ? vratTile : vratRow;
+    return '<section class="vs vs-' + o.shape + (o.cls ? " " + o.cls : "") + '"><header class="vs-head"><span class="vs-ic" aria-hidden="true">' + o.icon + '</span><h2>' + esc(o.title) + '</h2>' +
+      '<span class="vs-pill">' + o.list.length + ' ' + esc(tx("व्रत / पर्व", "vrats / festivals")) + '</span>' + (o.aside || "") +
+      (o.list.length > o.limit ? '<button type="button" class="vs-all" data-vs-all>' + esc(tx("देखें सभी", "See all")) + ' <i>›</i></button>' : "") + '</header>' +
+      '<div class="vs-grid">' + o.list.map(function (v, i) { return i < o.limit ? card(v) : card(v).replace("<a ", '<a data-extra ') ; }).join("") + '</div></section>';
+  }
+  var VRAT_POPULAR = [["एकादशी", "एकादशी"], ["नवरात्रि", "नवरात्र"], ["शिवरात्रि", "शिवरात्रि"], ["करवा चौथ", "करवा चौथ"], ["दीपावली", "दीपावली"], ["संकष्टी चतुर्थी", "संकष्ट"]];
+  function vratHero() {
+    return '<header class="vrat-hero"><div class="vrat-hero-in"><span class="vh-lotus" aria-hidden="true">🪷</span>' +
+      '<h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1>' +
+      '<p>' + esc(tx("भारतीय सनातन परम्परा के पवित्र व्रत, पर्व और तिथियों का विस्तृत मार्गदर्शन", "A detailed guide to the sacred vrats, festivals and tithis of the Sanatan tradition")) + '</p>' +
+      '<form class="vh-search" role="search" id="vratForm"><span aria-hidden="true">🔍</span><input id="vratSearch" type="search" autocomplete="off" placeholder="' + esc(tx("व्रत, पर्व, मास या तिथि खोजें…", "Search a vrat, festival, month or tithi…")) + '" aria-label="' + esc(tx("खोजें", "Search")) + '">' +
+      '<button type="submit">' + esc(tx("खोजें", "Search")) + '</button></form>' +
+      '<div class="vh-pop"><span>' + esc(tx("लोकप्रिय खोज:", "Popular:")) + '</span>' + VRAT_POPULAR.map(function (c) {
+        return '<button type="button" class="vh-chip" data-vq="' + esc(c[1]) + '">' + esc(c[0]) + '</button>';
+      }).join("") + '</div></div></header>';
   }
 
   function viewVratList() {
     if (!VRATS.length) {
       loadVrats().then(function () { if (parsePath().path.split("/")[0] === "vrat") render(); });
-      return '<main class="content-pad vrat-wrap"><div class="page-header"><h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1></div><p class="vrat-loading">' + esc(tx("लोड हो रहा है…", "Loading…")) + '</p></main>';
+      return '<section class="vrat-page">' + vratHero() + '<main class="content-pad vrat-wrap vrat-sheet"><p class="vrat-loading">' + esc(tx("लोड हो रहा है…", "Loading…")) + '</p></main></section>';
     }
     var p = getPanchang(new Date(), getPanchangCity());
     var todays = vratsFor(p), show = VRATS.filter(function (v) { return v.kind !== "variant"; });
-    var html = '<main class="content-pad vrat-wrap"><div class="page-header"><h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1></div>' +
-      '<p class="vrat-sub">' + esc(tx("आज: ", "Today: ")) + esc(vratWhen(p)) + ' · ' + show.length + esc(tx(" प्रविष्टियाँ", " entries")) + '</p>' +
-      '<input id="vratSearch" class="vrat-search" type="search" placeholder="' + esc(tx("व्रत, पर्व, मास या तिथि खोजें…", "Search a vrat, festival, month or tithi…")) + '" aria-label="' + esc(tx("खोजें", "Search")) + '">';
-    html += vratGroup(tx("आज के व्रत एवं पर्व", "Today"), todays.slice(0, 12), "is-today");
+    var html = '<section class="vrat-page">' + vratHero() + '<main class="content-pad vrat-wrap vrat-sheet">';
+    html += vratSection({
+      title: tx("आज के व्रत एवं पर्व", "Today's vrats & festivals"), icon: "🗓️", list: todays, shape: "today", limit: 4, cls: "is-today",
+      aside: '<a class="vs-date" href="/panchang">📅 ' + esc(tx("आज: ", "Today: ")) + esc(p.weekdayHi + ", " + formatHindiDate(p.date)) + ' <i>›</i></a>'
+    });
     var festivals = show.filter(function (v) { return v.kind === "festival"; });
     var now = HINDU_MONTHS.indexOf(p.maas), order = [];
     for (var k = 0; k < 12; k++) order.push(((now === -1 ? 0 : now) + k) % 12);
-    order.push(12, 13);
+    if (p.adhika) order.unshift(12); else order.push(12);          // in an adhika month that group is the running one
+    order.push(13);
+    var curNow = now === -1 ? 0 : now, first = true;
     order.forEach(function (mi) {
-      var list = festivals.filter(function (v) { return vratMonthIndex(v) === mi; }).sort(function (a, b) { return vratDayKey(a) - vratDayKey(b) || a.order - b.order; });
+      var list = festivals.filter(function (v) { return vratMonthFrom(v, curNow) === mi; }).sort(vratByNext);
+      var running = mi === (p.adhika ? 12 : now);
       var title = mi < 12 ? HINDU_MONTHS[mi] + tx(" मास", " month") : mi === 12 ? tx("अधिक मास", "Adhika month") : tx("अन्य", "Other");
-      html += vratGroup(title, list, mi === now ? "is-now" : "");
+      html += vratSection({ title: title, icon: running ? "📖" : "🪔", list: list, shape: running ? "tile" : "row", limit: 6, cls: running ? "is-now" : "",
+        aside: running ? '<span class="vs-now">' + esc(tx("चल रहा है", "running now")) + '</span>' : "" });
     });
-    html += vratGroup(tx("प्रत्येक मास की तिथियों के व्रत", "Monthly tithi vrats"), show.filter(function (v) { return v.kind === "tithi"; }).sort(function (a, b) { return vratDayKey(a) - vratDayKey(b) || a.order - b.order; }));
-    html += vratGroup(tx("साप्ताहिक व्रत", "Weekly vrats"), show.filter(function (v) { return v.kind === "weekly"; }).sort(function (a, b) {
-      var wa = a.rules[0] ? a.rules[0].vaar : 9, wb = b.rules[0] ? b.rules[0].vaar : 9; return wa - wb || a.priority - b.priority;
-    }));
-    html += vratGroup(tx("शास्त्रीय सन्दर्भ एवं नियम", "Scriptural references & rules"), show.filter(function (v) { return v.kind === "reference" || v.kind === "other"; }));
-    html += vratGroup(tx("शास्त्रों में वर्णित तिथियाँ एवं घटनाएँ", "Dated events in the scriptures"), show.filter(function (v) { return v.kind === "event"; }));
-    html += '<p class="vrat-empty" hidden>' + esc(tx("कोई प्रविष्टि नहीं मिली।", "Nothing found.")) + '</p></main>';
+    html += vratSection({ title: tx("प्रत्येक मास की तिथियों के व्रत", "Monthly tithi vrats"), icon: "🌙", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "tithi"; }).sort(vratByNext) });
+    html += vratSection({ title: tx("साप्ताहिक व्रत", "Weekly vrats"), icon: "🪷", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "weekly"; }).sort(vratByNext) });
+    html += vratSection({ title: tx("शास्त्रीय सन्दर्भ एवं नियम", "Scriptural references & rules"), icon: "📜", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "reference" || v.kind === "other"; }) });
+    html += vratSection({ title: tx("शास्त्रों में वर्णित तिथियाँ एवं घटनाएँ", "Dated events in the scriptures"), icon: "🏹", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "event"; }) });
+    html += '<p class="vrat-empty" hidden>' + esc(tx("कोई प्रविष्टि नहीं मिली।", "Nothing found.")) + '</p>' +
+      '<p class="vrat-note">📅 ' + esc(tx("चल रहे मास से आरम्भ करके आगे के मास क्रम से। हर व्रत के नीचे उसकी अगली सम्भावित अंग्रेज़ी तिथि दी गयी है — यह खगोलीय गणना (" + getPanchangCity().hi + ") से निकली अनुमानित तिथि है; पर्व-निर्णय के लिए स्थानीय पंचांग देखें।",
+        "Starting from the running month and following the months in order. Under each vrat is its next probable English date, worked out from an astronomical calculation (" + getPanchangCity().key + "); check a local panchang for the final date.")) + '</p>' +
+      '</main></section>';
     return html;
   }
   function wireVratList() {
-    var box = document.getElementById("vratSearch");
-    if (!box) return;
-    box.addEventListener("input", function () {
+    var page = document.querySelector(".vrat-page"), box = document.getElementById("vratSearch");
+    if (!page || !box) return;
+    function filter() {
       var q = box.value.trim().toLowerCase(), any = false;
-      document.querySelectorAll(".vrat-card").forEach(function (c) {
+      page.classList.toggle("is-searching", !!q);
+      page.querySelectorAll("[data-q]").forEach(function (c) {
         var hit = !q || c.getAttribute("data-q").indexOf(q) !== -1;
         c.hidden = !hit; if (hit) any = true;
       });
-      document.querySelectorAll(".vrat-group").forEach(function (g) { g.hidden = !g.querySelector(".vrat-card:not([hidden])"); });
-      var none = document.querySelector(".vrat-empty"); if (none) none.hidden = any;
+      page.querySelectorAll(".vs").forEach(function (g) { g.hidden = !g.querySelector("[data-q]:not([hidden])"); });
+      var none = page.querySelector(".vrat-empty"); if (none) none.hidden = any;
+    }
+    box.addEventListener("input", filter);
+    var form = document.getElementById("vratForm");
+    if (form) form.addEventListener("submit", function (e) { e.preventDefault(); filter(); var first = page.querySelector("[data-q]:not([hidden])"); if (first && box.value.trim()) first.scrollIntoView({ block: "center", behavior: "smooth" }); });
+    page.addEventListener("click", function (e) {
+      var chip = e.target.closest ? e.target.closest("[data-vq]") : null;
+      if (chip) { box.value = chip.getAttribute("data-vq"); filter(); return; }
+      var all = e.target.closest ? e.target.closest("[data-vs-all]") : null;
+      if (all) {
+        var sec = all.closest(".vs"), open = sec.classList.toggle("is-open");
+        all.innerHTML = esc(open ? tx("कम दिखाएँ", "Show less") : tx("देखें सभी", "See all")) + " <i>" + (open ? "‹" : "›") + "</i>";
+      }
     });
   }
 
@@ -3070,12 +3216,20 @@
       row(tx("अनुष्ठान", "Observance"), s.anushthan) + row(tx("फल", "Fruit"), s.phal) +
       ((s.tags || []).length ? '<div class="vs-tags">' + s.tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join("") + '</div>' : "") + '</article>';
   }
+  function vratNextBlock(v) {
+    if (!VRAT_AUTO[v.kind]) return "";
+    var list = vratOccurrences(v, v.kind === "festival" ? 2 : 3, 1250);
+    if (!list.length) return "";
+    return '<p class="vrat-next">📅 <b>' + esc(tx("अगली सम्भावित तिथि: ", "Next probable date: ")) + '</b>' +
+      list.map(function (o) { return esc(vratNextText(o)); }).join(' &nbsp;•&nbsp; ') + '</p>';
+  }
   function vratDetailHtml(v) {
     var p = getPanchang(new Date(), getPanchangCity());
     var isToday = vratsFor(p).some(function (x) { return x.slug === v.slug; });
     var chips = [v.maas, v.tithi].filter(Boolean).map(function (c) { return '<span class="vrat-chip">' + esc(c) + '</span>'; }).join("");
     var html = '<header class="vrat-head"><span class="vh-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span><div><h1>' + esc(v.name) + '</h1>' +
       '<div class="vrat-chips">' + chips + (isToday ? '<span class="vrat-chip is-today">' + esc(tx("आज", "Today")) + '</span>' : "") + '</div>' +
+      vratNextBlock(v) +
       ((v.aliases || []).length ? '<p class="vrat-alias">' + esc(tx("अन्य नाम: ", "Also known as: ")) + esc(v.aliases.join(" · ")) + '</p>' : "") + '</div></header>';
     html += vratParts(v);
     (v.extras || []).forEach(function (x) {
