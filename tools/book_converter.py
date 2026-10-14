@@ -29,7 +29,7 @@ template (see any existing file under Gita Press Books\\Gita Press Books\\
 for reference): a DOCTYPE/head linking ../../master.css, body made of
 <section class="epub-page" data-page="N"><div> ... </div></section> blocks
 separated by <hr class="page-break">, one section per chapter. Each chapter
-starts with a <p class="Heading" id="toc_marker-N"> paragraph (this is what
+starts with a <p class="Heading" id="Chapter_N"> paragraph (this is what
 the in-app reader's chapter-splitter and TOC look for) followed by content
 paragraphs classed from this fixed vocabulary (all styled by master.css):
 
@@ -698,7 +698,7 @@ def build_html(result, args) -> str:
     toc_counter = 0
     for i, ch in enumerate(result["chapters"]):
         toc_counter += 1
-        lines = [f'\t\t\t<p id="toc_marker-{toc_counter}" class="{ch.css_class}">{esc(ch.title)}</p>']
+        lines = [f'\t\t\t<p id="Chapter_{toc_counter}" class="{ch.css_class}">{esc(ch.title)}</p>']
         for para, cls in ch.paras_with_class:
             if para.html:
                 lines.append("\t\t\t" + para.text)

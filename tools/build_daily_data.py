@@ -15,9 +15,10 @@ the home page never waits on a function):
                                     printed विश्राम marks, each with the kanda / doha range of the day
 
 It also puts invisible anchors into the two books so the cards can open the reader at the right place:
-  id="gita_<chapter>_<verse>"   on the few shlokas of the Gita book that had no id (the rest already have toc_marker-N-V)
+  id="gita_<chapter>_<verse>"   on the few shlokas of the Gita book that had no id (the rest already have Chapter_N_V)
   id="manas_navah_N" / "manas_masa_N"   on the first paragraph of each विश्राम of the Manas book
-(the original books are copied to backups/before-daily-ids/ first). Re-running starts again from those copies.
+(the original books are copied to backups/before-daily-ids/ first). Re-running starts again from those copies --
+which still carry the old toc_marker-N-V ids, so run tools/rename_toc_ids.py after a re-run.
 
 Run:  python tools/build_daily_data.py
 """
@@ -121,7 +122,7 @@ def build_gita():
         meaning = paras[j]["text"] if j < len(paras) and re.match(r"(Bhav|Arth)", paras[j]["cls"]) else ""
         if not lines:
             continue
-        # most shloka-number paragraphs already carry an id ("toc_marker-6-47"); reuse it, add one where it is missing
+        # most shloka-number paragraphs already carry an id ("Chapter_6_47"); reuse it, add one where it is missing
         have = re.search(r'id="([^"]+)"', paras[i]["m"].group(1))
         anchor = have.group(1) if have else "gita_%d_%d" % (ch, v1)
         if not have:

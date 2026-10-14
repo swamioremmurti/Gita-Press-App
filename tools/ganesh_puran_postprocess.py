@@ -93,7 +93,7 @@ def main(path):
             c = cls(p)
             if c in ("Heading", "Sub-Heading", "Sub-Heading-2", "Sub-Heading-3"):
                 toc += 1
-                p = re.sub(r'^<p\b[^>]*class="([^"]*)"[^>]*>', lambda m: f'<p id="toc_marker-{toc}" class="{m.group(1)}">', p)
+                p = re.sub(r'^<p\b[^>]*class="([^"]*)"[^>]*>', lambda m: f'<p id="Chapter_{toc}" class="{m.group(1)}">', p)
             lines.append("\t\t\t" + p)
         sec_html.append(f'<section class="epub-page" data-page="{i + 2}">\n<div>\n' + "\n".join(lines) + "\n\t\t</div>\n</section>")
     path.write_text(prefix + HR.join([cover] + sec_html) + suffix, encoding="utf-8")

@@ -291,7 +291,7 @@ def main():
             elif kind in ("Heading", "Sub-Heading"):
                 hn += 1
                 title = re.sub("\\d+", "", val)     # a note marker never stays in a title
-                lines.append(f'\t\t\t<p id="toc_marker-{hn}" class="{kind}">{title}</p>')
+                lines.append(f'\t\t\t<p id="Chapter_{hn}" class="{kind}">{title}</p>')
             else:
                 lines.append(f'\t\t\t<p class="{kind}">{render(val)}</p>')
         out_sections.append(f'<section class="epub-page" data-page="{si + 2}">\n' + "\n".join(lines) + "\n</section>")

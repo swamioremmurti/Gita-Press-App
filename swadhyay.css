@@ -402,8 +402,9 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .festival-icon { font-size: 2.2rem; flex: 0 0 auto; }
 .festival-body h4 { margin: 0 0 .35rem; font-size: 1.05rem; }
 .festival-body p { margin: 0 0 .8rem; font-size: 1rem; opacity: .92; line-height: 1.5; }
-.festival-cta { border-color: #fff; color: #fff; background: rgba(255,255,255,.12); }
-.festival-cta:hover { background: #fff; color: var(--accent); }
+/* .btn-outline (defined further down) would otherwise win and paint the button red on the red card */
+.btn-outline.festival-cta { border-color: #fff; color: #fff; background: rgba(255,255,255,.12); }
+.btn-outline.festival-cta:hover { background: #fff; color: var(--accent); }
 .special-book-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: .8rem; }
 .special-book-tile {
   background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius);

@@ -316,6 +316,8 @@
     "शिव-आराधना.html": "assets/covers/shiv-aradhana.webp",
     "यजुर्वेद.html": "assets/covers/yajurved.webp",
     "श्रीविष्णुपुराण.html": "assets/covers/shri-vishnu-puran.webp",
+    "संक्षिप्त श्रीगणेशपुराण.html": "assets/covers/sankshipt-shri-ganesh-puran.webp",
+    "श्रीगणेशसहस्रनामस्तोत्रम्.html": "assets/covers/shri-ganesh-sahasranama-stotram.webp",
     "शिव स्मरण.html": "assets/covers/shiv-smaran.webp",
     "शिवमहिम्नस्तोत्र.html": "assets/covers/shiv-mahimna-stotra.webp",
     "श्रीशिवचालीसा.html": "assets/covers/shri-shiv-chalisa.webp",
@@ -969,7 +971,7 @@
   }
 
   function categoryGrid() {
-    return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("श्रेणियाँ", "Categories")) +
+    return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("ग्रंथ श्रेणियाँ", "Granth Categories")) +
       '</h2><a class="view-all" href="/library">' + esc(tx("सभी देखें", "View All")) + ' →</a></div>' +
       '<div class="row-scroll-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
@@ -1520,7 +1522,7 @@
 
   // Finds every Sub-Heading-class paragraph in a (already chapter-merged) chunk of HTML,
   // gives each one a stable anchor id (reusing an existing id="" if the source already had
-  // one, e.g. "toc_marker-8-1"), and returns the patched HTML plus the {text, anchorId} list.
+  // one, e.g. "Chapter_8_1"), and returns the patched HTML plus the {text, anchorId} list.
   function extractSubHeadings(html, chapterIdx) {
     var subs = [];
     var counter = 0;

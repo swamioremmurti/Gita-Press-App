@@ -316,7 +316,7 @@ def main():
                              'style="width:70%;min-width:240px;max-width:520px;height:auto"></p>')
             elif kind in ("Heading", "Sub-Heading"):
                 hn += 1
-                lines.append(f'\t\t\t<p id="toc_marker-{hn}" class="{kind}">{strip_markers(val)}</p>')
+                lines.append(f'\t\t\t<p id="Chapter_{hn}" class="{kind}">{strip_markers(val)}</p>')
             elif kind == "Sub-Heading-2":
                 lines.append(f'\t\t\t<p class="{kind}">{strip_markers(val)}</p>')
             else:
