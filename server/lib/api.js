@@ -13,6 +13,7 @@ const { OAuth2Client } = require('google-auth-library');
 const db = require('./db');
 const auth = require('./auth');
 const registry = require('./bookRegistry');
+const vrats = require('./vrats');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const AUTHORS_DIR = path.join(PROJECT_ROOT, 'assets', 'authors');
@@ -32,6 +33,8 @@ function sendJSON(res, status, obj, extraHeaders) {
 // Public, user-independent catalog data: let Vercel's edge cache serve it for a minute
 // (and serve a stale copy while revalidating) instead of hitting the database each time.
 const PUBLIC_CACHE = { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300' };
+// The vrat catalogue only changes when the site is deployed, so it can be kept longer.
+const VRAT_CACHE = { 'Cache-Control': 'public, s-maxage=600, stale-while-revalidate=86400' };
 
 function readBody(req, limitBytes) {
   return new Promise((resolve, reject) => {
@@ -574,6 +577,16 @@ async function handle(req, res, pathname) {
     if (method === 'GET' && pathname === '/api/book-meta') { await handleBookMeta(req, res); return true; }
     if (method === 'GET' && pathname === '/api/categories') { await handleAllCategories(req, res); return true; }
     if (method === 'GET' && pathname === '/api/tags') { await handleAllTags(req, res); return true; }
+
+    // vrat / festival catalogue: public, the same for everyone -> cached at the edge like the book metadata
+    if (method === 'GET' && pathname === '/api/vrats') { sendJSON(res, 200, { vrats: await vrats.listVrats() }, VRAT_CACHE); return true; }
+    const vm = pathname.match(/^\/api\/vrats\/([^/]+)$/);
+    if (method === 'GET' && vm) {
+      const one = await vrats.getVrat(decodeURIComponent(vm[1]));
+      if (!one) { sendJSON(res, 404, { error: 'Unknown vrat' }); return true; }
+      sendJSON(res, 200, { vrat: one }, VRAT_CACHE);
+      return true;
+    }
 
     if (method === 'GET' && pathname === '/api/authors') { await handleAuthorsList(req, res); return true; }
     let m = pathname.match(/^\/api\/authors\/(\d+)$/);

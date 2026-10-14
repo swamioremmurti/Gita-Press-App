@@ -79,6 +79,42 @@ const SCHEMA_STATEMENTS = [
     first_opened_at INTEGER,
     PRIMARY KEY (user_id, book_file)
   )`,
+  // vrat / festival catalogue (loaded from server/lib/vrat-catalogue.json by server/lib/vrats.js)
+  `CREATE TABLE IF NOT EXISTS vrats (
+    id                  INTEGER PRIMARY KEY AUTOINCREMENT,
+    slug                TEXT NOT NULL UNIQUE,
+    name                TEXT NOT NULL,
+    aliases             TEXT NOT NULL DEFAULT '[]',
+    maas                TEXT NOT NULL DEFAULT '',
+    tithi               TEXT NOT NULL DEFAULT '',
+    intro               TEXT NOT NULL DEFAULT '',
+    pooja_vidhan        TEXT NOT NULL DEFAULT '',
+    vrat_katha          TEXT,
+    historic_importance TEXT,
+    extras              TEXT NOT NULL DEFAULT '[]',
+    kind                TEXT NOT NULL,
+    parent              TEXT,
+    rules               TEXT NOT NULL DEFAULT '[]',
+    keywords            TEXT NOT NULL DEFAULT '[]',
+    icon                TEXT NOT NULL DEFAULT '',
+    priority            INTEGER NOT NULL DEFAULT 50,
+    sort_order          INTEGER NOT NULL DEFAULT 0,
+    created_at          INTEGER NOT NULL,
+    updated_at          INTEGER NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS vrat_sources (
+    id        TEXT PRIMARY KEY,
+    granth    TEXT, kand TEXT, adhyay TEXT, tithi TEXT, paksh TEXT, maas TEXT, nakshatra TEXT, muhurta TEXT,
+    parv      TEXT, ghatna TEXT, vivran TEXT, mahatva TEXT, anushthan TEXT, phal TEXT,
+    tags      TEXT NOT NULL DEFAULT '[]'
+  )`,
+  `CREATE TABLE IF NOT EXISTS vrat_source_links (
+    vrat_slug TEXT NOT NULL,
+    source_id TEXT NOT NULL,
+    PRIMARY KEY (vrat_slug, source_id)
+  )`,
+  'CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY, value TEXT)',
+  'CREATE INDEX IF NOT EXISTS idx_vrats_parent ON vrats(parent)',
   'CREATE INDEX IF NOT EXISTS idx_book_categories_cat ON book_categories(category_key)',
   'CREATE INDEX IF NOT EXISTS idx_book_tags_tag ON book_tags(tag_id)',
   'CREATE INDEX IF NOT EXISTS idx_comments_book ON comments(book_file)',

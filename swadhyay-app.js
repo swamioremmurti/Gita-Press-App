@@ -127,6 +127,60 @@
   }
   function addHours(h, delta) { return ((h + delta) % 24 + 24) % 24; }
 
+  /* The lunar month (चैत्र ... फाल्गुन), named the northern way -- purnimanta, the month ends at the full moon, so the
+     कृष्ण पक्ष belongs to the NEXT amanta month. The amanta month is named after the Sun's sidereal sign at the new moon that
+     begins it (Meena -> चैत्र, Mesha -> वैशाख ...); a month in which the Sun changes no sign is the extra, अधिक मास. */
+  var HINDU_MONTHS = ["चैत्र", "वैशाख", "ज्येष्ठ", "आषाढ़", "श्रावण", "भाद्रपद", "आश्विन", "कार्तिक", "मार्गशीर्ष", "पौष", "माघ", "फाल्गुन"];
+  function elongationAt(JD) {
+    var T = (JD - 2451545.0) / 36525, s = sunLongitudeAt(T);
+    return normDeg(moonLongitudeAt(T, s.meanAnomaly) - s.longitude);
+  }
+  function newMoonNear(jd) {
+    for (var i = 0; i < 12; i++) {
+      var e = elongationAt(jd);
+      if (e > 180) e -= 360;
+      jd -= e / 12.19;
+      if (Math.abs(e) < 0.001) break;
+    }
+    return jd;
+  }
+  function sunRashiAt(JD) {
+    var T = (JD - 2451545.0) / 36525;
+    var ay = lahiriAyanamsa(new Date((JD - 2440587.5) * 86400000));
+    return Math.floor(normDeg(sunLongitudeAt(T).longitude - ay) / 30);
+  }
+  function lunarMonthAt(JD, elongation) {
+    var prevNM = newMoonNear(JD - elongation / 12.19);
+    var nextNM = newMoonNear(prevNM + 29.53);
+    var r1 = sunRashiAt(prevNM);
+    return { amanta: (r1 + 1) % 12, adhika: r1 === sunRashiAt(nextNM) };
+  }
+
+  /* Local hour (can pass 24) at which the Moon rises on that date, or null. The Moon is taken on the ecliptic (its latitude,
+     up to 5 degrees, is ignored): good to about 20 minutes, which is all the tithi at moonrise needs. */
+  function moonriseLocalHour(y, m, d, lat, lon, tz) {
+    var jd = toJulianDay(y, m, d, 20 - tz), eps = 23.4393, rate = 360.98564736629;
+    for (var i = 0; i < 6; i++) {
+      var T = (jd - 2451545.0) / 36525, lam = moonLongitudeAt(T, sunLongitudeAt(T).meanAnomaly);
+      var sinDec = sinDeg(eps) * sinDeg(lam), cosDec = Math.sqrt(1 - sinDec * sinDec);
+      var ra = normDeg(Math.atan2(cosDeg(eps) * sinDeg(lam), cosDeg(lam)) * 180 / Math.PI);
+      var cosH = (sinDeg(0.125) - sinDeg(lat) * sinDec) / (cosDeg(lat) * cosDec);
+      if (cosH > 1 || cosH < -1) return null;
+      var diff = normDeg(ra - acosDeg(cosH) - (280.46061837 + rate * (jd - 2451545.0) + lon));
+      if (diff > 180) diff -= 360;
+      jd += diff / rate;
+    }
+    return (jd - toJulianDay(y, m, d, 0)) * 24 + tz;
+  }
+
+  /* paksha, tithi and month at another hour of the same day (local time) -- for vrats observed in the evening or at midnight */
+  function lunarStateAt(y, m, d, hourLocal, tz) {
+    var jd = toJulianDay(y, m, d, hourLocal - tz), T = (jd - 2451545.0) / 36525, sun = sunLongitudeAt(T);
+    var ang = normDeg(moonLongitudeAt(T, sun.meanAnomaly) - sun.longitude), idx = Math.floor(ang / 12);
+    var pk = idx < 15 ? "शुक्ल" : "कृष्ण", lm = lunarMonthAt(jd, ang);
+    return { paksha: pk, tithiNum: (idx % 15) + 1, adhika: lm.adhika, maas: lm.adhika ? "अधिक" : HINDU_MONTHS[pk === "शुक्ल" ? lm.amanta : (lm.amanta + 1) % 12] };
+  }
+
   function getPanchang(date, city) {
     city = city || PANCHANG_CITIES[0];
     var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate();
@@ -142,6 +196,8 @@
     var paksha = tithiIdx < 15 ? "शुक्ल" : "कृष्ण";
     var tithiInPaksha = (tithiIdx % 15) + 1;
     var tithiName = tithiInPaksha === 15 ? (paksha === "शुक्ल" ? "पूर्णिमा" : "अमावस्या") : TITHI_NAMES[tithiInPaksha - 1];
+    var lm = lunarMonthAt(JD, tithiAngle);
+    var maas = lm.adhika ? "अधिक" : HINDU_MONTHS[paksha === "शुक्ल" ? lm.amanta : (lm.amanta + 1) % 12];
 
     var ayanamsa = lahiriAyanamsa(new Date(Date.UTC(y, m - 1, d, hourUTC)));
     var siderealMoon = normDeg(moonLong - ayanamsa);
@@ -173,7 +229,7 @@
     return {
       date: date, city: city,
       weekdayHi: WEEKDAY_HI[weekday],
-      paksha: paksha, tithiName: tithiName, tithiNum: tithiInPaksha,
+      paksha: paksha, tithiName: tithiName, paksha: paksha, tithiNum: tithiInPaksha, maas: maas, adhika: lm.adhika,
       nakshatraName: NAKSHATRA_NAMES[nakshatraIdx % 27], nakshatraPada: nakshatraPada,
       yogaName: YOGA_NAMES[yogaIdx % 27],
       karanName: karanName,
@@ -630,7 +686,7 @@
     myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Authors"], chat: ["प्रश्नोत्तर", "Q & A"],
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
     help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
-    sankalp: ["पाठ-संकल्प", "Path Sankalp"],
+    sankalp: ["पाठ-संकल्प", "Path Sankalp"], vrat: ["व्रत एवं पर्व", "Vrats & Festivals"],
     prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"]
   };
   var SHELL_TITLES = [
@@ -852,7 +908,73 @@
     "अमावस्या": { title: "अमावस्या", desc: "आज अमावस्या है। पितृ-तर्पण और स्नान-दानका विशेष महत्व है।", keyword: "पितर" },
     "अष्टमी": { title: "अष्टमी व्रत", desc: "आज अष्टमी है। देवी भगवतीके पूजनका विशेष महत्व है।", keyword: "देवी" }
   };
+  /* ---------- vrat / festival catalogue (from the database, /api/vrats): which vrat falls on a day ----------
+     Each vrat carries `rules` -- { maas, tithis, vaar } -- and is observed when ANY rule matches the panchang of the day:
+     maas = purnimanta month name ("अधिक" for an adhika month), tithis = "S:10" (शुक्ल दशमी) / "K:4" (कृष्ण चतुर्थी),
+     vaar = weekday (0 = रविवार). A rule with only a month covers the whole month. The list is kept in localStorage so
+     the home page has it at once on the next visit, and refreshed from the API on every load. */
+  var LS_VRATS = "swadhyay_vrats_v1";
+  var VRATS = [];
+  var VRAT_AUTO = { festival: 1, tithi: 1, weekly: 1 };      // kinds shown by themselves; the others are list / reference entries
+  try { var cachedVrats = JSON.parse(localStorage.getItem(LS_VRATS)); if (cachedVrats && Array.isArray(cachedVrats.vrats)) VRATS = cachedVrats.vrats; } catch (e) {}
+  function loadVrats() {
+    return apiGet("/api/vrats").then(function (data) {
+      if (data && Array.isArray(data.vrats) && data.vrats.length) {
+        VRATS = data.vrats;
+        try { localStorage.setItem(LS_VRATS, JSON.stringify({ vrats: VRATS })); } catch (e) {}
+      }
+    }).catch(function () {});
+  }
+  /* month and tithi of a rule against a lunar state { maas, paksha, tithiNum } */
+  function vratStateHit(r, q) {
+    if (r.maas && r.maas.length && r.maas.indexOf(q.maas) === -1) return false;
+    if (r.tithis && r.tithis.length && r.tithis.indexOf((q.paksha === "शुक्ल" ? "S:" : "K:") + q.tithiNum) === -1) return false;
+    return true;
+  }
+  /* the lunar state at the hour an observance goes by: "moonrise" (Sankashti, Karwa Chauth), "pradosh" (a little after
+     sunset: Pradosh, Diwali, Holika Dahan) or "night" (about midnight: Mahashivratri, Janmashtami) */
+  function vratStateAt(kind, date, city) {
+    var y = date.getFullYear(), m = date.getMonth() + 1, d = date.getDate(), h;
+    if (kind === "moonrise") h = moonriseLocalHour(y, m, d, city.lat, city.lon, city.tz) || 21;
+    else if (kind === "pradosh") { h = sunEventLocalHour(y, m, d, city.lat, city.lon, city.tz, false); h = (h == null ? 18 : h) + 0.75; }
+    else h = 23.9;
+    return lunarStateAt(y, m, d, h, city.tz);
+  }
+  /* Such an observance falls on the day whose moonrise / pradosh / midnight has the tithi. A tithi longer than a day touches
+     two of them: the first day counts. A short one that begins after one moonrise and ends before the next touches none: then
+     the day it begins at night counts -- so every month has its day. */
+  function vratAtHit(r, p) {
+    var day = function (n) { return new Date(p.date.getFullYear(), p.date.getMonth(), p.date.getDate() + n); };
+    var here = vratStateHit(r, vratStateAt(r.at, p.date, p.city));
+    if (here) return !vratStateHit(r, vratStateAt(r.at, day(-1), p.city));
+    return r.at === "moonrise" && vratStateHit(r, vratStateAt("night", p.date, p.city)) && !vratStateHit(r, vratStateAt(r.at, day(1), p.city));
+  }
+  function vratRuleHit(r, p, wd) {
+    var hasM = r.maas && r.maas.length, hasT = r.tithis && r.tithis.length;
+    if (!hasM && !hasT && r.vaar == null) return false;
+    if (r.vaar != null && r.vaar !== wd) return false;
+    return r.at && hasT ? vratAtHit(r, p) : vratStateHit(r, p);
+  }
+  function vratsFor(p) {
+    var wd = p.date.getDay();
+    return VRATS.filter(function (v) { return VRAT_AUTO[v.kind] && v.rules.some(function (r) { return vratRuleHit(r, p, wd); }); })
+      .sort(function (a, b) { return a.priority - b.priority || a.order - b.order; });
+  }
+  function vratWhen(p) { return (p.adhika ? "अधिक मास" : p.maas) + " " + p.paksha + " पक्ष " + p.tithiName + " · " + p.weekdayHi; }
+  function vratPath(v) { return "/vrat/" + encodeURIComponent(v.slug); }
+  /* the books shown beside a vrat: the व्रत परिचय book, then books whose title has one of the vrat's keywords */
+  function vratBooks(v) {
+    var out = [], seen = {};
+    function add(b) { if (b && !seen[b.id] && out.length < 4) { seen[b.id] = 1; out.push(b); } }
+    add(findByFile("व्रत परिचय.html"));
+    (v.keywords || []).forEach(function (kw) { BOOKS.forEach(function (b) { if (b.title.indexOf(kw) !== -1) add(b); }); });
+    pickN(BOOKS, 4, 13).forEach(add);
+    return out;
+  }
   function getTodaysSpecial(panchang) {
+    var list = vratsFor(panchang);
+    if (list.length) return { vrat: list[0], others: list.slice(1, 6), books: vratBooks(list[0]) };
+    // the catalogue has not arrived (offline / first visit with the server down): the small built-in table
     var v = VRAT_BY_TITHI[panchang.tithiName];
     if (!v) return null;
     var matches = BOOKS.filter(function (b) { return b.title.indexOf(v.keyword) !== -1; });
@@ -995,7 +1117,7 @@
       '<div class="pc-head"><span class="pc-head-icon">📅</span><h3>' + bilingual("आज का पंचांग") + '</h3>' +
       '<select class="pc-city" id="panchangCitySelect">' + cityOpts + '</select></div>' +
       '<div class="pc-date">' + esc(p.weekdayHi) + ', ' + esc(formatHindiDate(p.date)) + '</div>' +
-      '<div class="pc-tithi-line">' + esc(p.paksha) + ' पक्ष • ' + esc(p.tithiName) + '</div>' +
+      '<div class="pc-tithi-line">' + esc(p.adhika ? "अधिक मास" : p.maas) + ' • ' + esc(p.paksha) + ' पक्ष • ' + esc(p.tithiName) + '</div>' +
       '<div class="pc-grid">' +
       '<div class="pc-col">' +
       '<div class="pc-fact"><span class="pc-ic">🌙</span><span class="pc-fact-data"><b>तिथि</b>' + esc(p.tithiName) + '</span></div>' +
@@ -1045,14 +1167,29 @@
   function todaysSpecialSection(panchang) {
     var special = getTodaysSpecial(panchang);
     if (!special) return "";
+    var banner;
+    if (special.vrat) {
+      var v = special.vrat;
+      var more = special.others.length
+        ? '<div class="festival-more"><span>' + esc(tx("आज के अन्य व्रत:", "Also today:")) + '</span>' +
+          special.others.map(function (o) { return '<a href="' + vratPath(o) + '">' + esc(o.name) + '</a>'; }).join("") + '</div>'
+        : "";
+      banner = '<div class="festival-banner">' +
+        '<div class="festival-icon">' + esc(v.icon || "🔱") + '</div>' +
+        '<div class="festival-body"><small class="festival-when">' + esc(vratWhen(panchang)) + '</small><h4>' + esc(v.name) + '</h4><p>' + esc(v.intro) + '</p>' + more +
+        '<a class="btn-outline festival-cta" href="' + vratPath(v) + '">' + esc(tx("विस्तार देखें", "View details")) + ' →</a></div>' +
+        '</div>';
+    } else {
+      banner = '<div class="festival-banner">' +
+        '<div class="festival-icon">🔱</div>' +
+        '<div class="festival-body"><h4>' + esc(special.title) + '</h4><p>' + esc(special.desc) + '</p>' +
+        '<a class="btn-outline festival-cta" href="/library?q=' + encodeURIComponent(special.title) + '">' + esc(tx("विस्तार देखें", "View details")) + ' →</a></div>' +
+        '</div>';
+    }
     return '<section class="row-section"><div class="row-head"><h2>' + esc(tx("आज के लिए विशेष", "Special for Today")) +
-      ' <span class="row-sub">| ' + esc(tx("आज के पंचांग के अनुसार अनुशंसित ग्रंथ और पाठ", "Books and readings recommended by today's Panchang")) + '</span></h2></div>' +
-      '<div class="today-special-grid">' +
-      '<div class="festival-banner">' +
-      '<div class="festival-icon">🔱</div>' +
-      '<div class="festival-body"><h4>' + esc(special.title) + '</h4><p>' + esc(special.desc) + '</p>' +
-      '<a class="btn-outline festival-cta" href="/library?q=' + encodeURIComponent(special.title) + '">' + esc(tx("विस्तार देखें", "View details")) + ' →</a></div>' +
-      '</div>' +
+      ' <span class="row-sub">| ' + esc(tx("आज के पंचांग के अनुसार अनुशंसित ग्रंथ और पाठ", "Books and readings recommended by today's Panchang")) + '</span></h2>' +
+      (VRATS.length ? '<a class="view-all" href="/vrat">' + esc(tx("सभी व्रत एवं पर्व", "All vrats & festivals")) + ' →</a>' : "") + '</div>' +
+      '<div class="today-special-grid">' + banner +
       '<div class="special-book-row">' + special.books.map(specialBookTile).join("") + '</div>' +
       '</div></section>';
   }
@@ -2385,6 +2522,8 @@
   }
   window.__swadhyayApp = {
     openBookAt: openBookAt,
+    getPanchang: function (d) { return getPanchang(d || new Date(), getPanchangCity()); },
+    vratsFor: function (p) { return vratsFor(p); },
     navigate: function (p) { navigate(p); },
     bookPath: function (file) { var b = findByFile(file); return b ? bookPath(b) : "/library"; },
     readPath: function (file) { var b = findByFile(file); return b ? readPath(b) : "/library"; },
@@ -2767,6 +2906,13 @@
   function panchangDetailRow(icon, label, value) {
     return '<div class="pd-row"><span class="pd-ic">' + icon + '</span><span class="pd-label">' + bilingual(label) + '</span><span class="pd-val">' + esc(value) + '</span></div>';
   }
+  /* the vrats and festivals of the selected day, each linking to its page */
+  function panchangVratBlock(p) {
+    var list = vratsFor(p).slice(0, 8);
+    if (!list.length) return "";
+    return '<div class="pd-section-title">' + bilingual("व्रत एवं पर्व") + '</div><div class="pd-vrats">' +
+      list.map(function (v) { return '<a class="pd-vrat" href="' + vratPath(v) + '"><span aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' + esc(v.name) + '</a>'; }).join("") + '</div>';
+  }
   function viewPanchang() {
     var city = getPanchangCity();
     var today = new Date();
@@ -2809,7 +2955,9 @@
       panchangDetailRow("☯", "योग", p.yogaName) +
       panchangDetailRow("◐", "करण", p.karanName) +
       panchangDetailRow("📆", "वार", p.weekdayHi) +
+      panchangDetailRow("🗓", "मास", p.adhika ? "अधिक मास" : p.maas) +
       '</div>' +
+      panchangVratBlock(p) +
       '<div class="pd-section-title">' + bilingual("सूर्य एवं मुहूर्त") + '</div>' +
       '<div class="pd-rows">' +
       panchangDetailRow("🌅", "सूर्योदय", p.sunrise) +
@@ -2834,6 +2982,132 @@
     ["पंचांग की जानकारी कितनी सटीक है?", "यहाँ दिखाया गया पंचांग खगोलीय सन्निकटन पर आधारित एक अनुमान है — यह सामान्य जानकारी के लिए उपयोगी है, परन्तु महत्वपूर्ण मुहूर्तों हेतु प्रामाणिक पंचांग से पुष्टि करें।"],
     ["मुझे किसी ग्रंथ में त्रुटि मिली, क्या करूँ?", "कृपया \"विषय सुधार\" पृष्ठ से हमें सूचित करें — हम उसे यथाशीघ्र सुधारने का प्रयास करेंगे।"]
   ];
+  /* ---------------- vrats & festivals: /vrat (everything) and /vrat/<slug> (one) ---------------- */
+  var VRAT_DETAIL = {};
+  var VRAT_PARTS = [
+    ["intro", "परिचय", "About"], ["poojaVidhan", "पूजा विधान", "How it is observed"],
+    ["vratKatha", "व्रत कथा", "The story"], ["historicImportance", "पौराणिक एवं ऐतिहासिक महत्व", "Scriptural & historical significance"]
+  ];
+  function vratParas(t) { return String(t || "").split(/\n+/).filter(Boolean).map(function (x) { return "<p>" + esc(x) + "</p>"; }).join(""); }
+  function vratParts(o) {
+    return VRAT_PARTS.map(function (s) {
+      return o[s[0]] ? '<section class="vrat-sec"><h3>' + esc(tx(s[1], s[2])) + '</h3>' + vratParas(o[s[0]]) + '</section>' : "";
+    }).join("");
+  }
+  function vratMonthIndex(v) {
+    var r = v.rules && v.rules[0], m = r && r.maas && r.maas[0];
+    var i = HINDU_MONTHS.indexOf(m);
+    return i !== -1 ? i : m === "अधिक" ? 12 : 13;
+  }
+  function vratDayKey(v) {                      // within a purnimanta month the कृष्ण पक्ष comes first
+    var r = v.rules && v.rules[0], t = r && r.tithis && r.tithis[0];
+    if (!t) return 999;
+    return (t.charAt(0) === "K" ? 0 : 100) + parseInt(t.slice(2), 10);
+  }
+  function vratCard(v) {
+    var sub = [v.maas, v.tithi].filter(Boolean).join(" · ");
+    return '<a class="vrat-card" href="' + vratPath(v) + '" data-q="' + esc((v.name + " " + (v.aliases || []).join(" ") + " " + v.maas + " " + v.tithi).toLowerCase()) + '">' +
+      '<span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span><span class="vc-tx"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + '</span></a>';
+  }
+  function vratGroup(title, list, extraCls) {
+    if (!list.length) return "";
+    return '<section class="vrat-group' + (extraCls ? " " + extraCls : "") + '"><h2>' + esc(title) + ' <span>' + list.length + '</span></h2><div class="vrat-grid">' + list.map(vratCard).join("") + '</div></section>';
+  }
+
+  function viewVratList() {
+    if (!VRATS.length) {
+      loadVrats().then(function () { if (parsePath().path.split("/")[0] === "vrat") render(); });
+      return '<main class="content-pad vrat-wrap"><div class="page-header"><h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1></div><p class="vrat-loading">' + esc(tx("लोड हो रहा है…", "Loading…")) + '</p></main>';
+    }
+    var p = getPanchang(new Date(), getPanchangCity());
+    var todays = vratsFor(p), show = VRATS.filter(function (v) { return v.kind !== "variant"; });
+    var html = '<main class="content-pad vrat-wrap"><div class="page-header"><h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1></div>' +
+      '<p class="vrat-sub">' + esc(tx("आज: ", "Today: ")) + esc(vratWhen(p)) + ' · ' + show.length + esc(tx(" प्रविष्टियाँ", " entries")) + '</p>' +
+      '<input id="vratSearch" class="vrat-search" type="search" placeholder="' + esc(tx("व्रत, पर्व, मास या तिथि खोजें…", "Search a vrat, festival, month or tithi…")) + '" aria-label="' + esc(tx("खोजें", "Search")) + '">';
+    html += vratGroup(tx("आज के व्रत एवं पर्व", "Today"), todays.slice(0, 12), "is-today");
+    var festivals = show.filter(function (v) { return v.kind === "festival"; });
+    var now = HINDU_MONTHS.indexOf(p.maas), order = [];
+    for (var k = 0; k < 12; k++) order.push(((now === -1 ? 0 : now) + k) % 12);
+    order.push(12, 13);
+    order.forEach(function (mi) {
+      var list = festivals.filter(function (v) { return vratMonthIndex(v) === mi; }).sort(function (a, b) { return vratDayKey(a) - vratDayKey(b) || a.order - b.order; });
+      var title = mi < 12 ? HINDU_MONTHS[mi] + tx(" मास", " month") : mi === 12 ? tx("अधिक मास", "Adhika month") : tx("अन्य", "Other");
+      html += vratGroup(title, list, mi === now ? "is-now" : "");
+    });
+    html += vratGroup(tx("प्रत्येक मास की तिथियों के व्रत", "Monthly tithi vrats"), show.filter(function (v) { return v.kind === "tithi"; }).sort(function (a, b) { return vratDayKey(a) - vratDayKey(b) || a.order - b.order; }));
+    html += vratGroup(tx("साप्ताहिक व्रत", "Weekly vrats"), show.filter(function (v) { return v.kind === "weekly"; }).sort(function (a, b) {
+      var wa = a.rules[0] ? a.rules[0].vaar : 9, wb = b.rules[0] ? b.rules[0].vaar : 9; return wa - wb || a.priority - b.priority;
+    }));
+    html += vratGroup(tx("शास्त्रीय सन्दर्भ एवं नियम", "Scriptural references & rules"), show.filter(function (v) { return v.kind === "reference" || v.kind === "other"; }));
+    html += vratGroup(tx("शास्त्रों में वर्णित तिथियाँ एवं घटनाएँ", "Dated events in the scriptures"), show.filter(function (v) { return v.kind === "event"; }));
+    html += '<p class="vrat-empty" hidden>' + esc(tx("कोई प्रविष्टि नहीं मिली।", "Nothing found.")) + '</p></main>';
+    return html;
+  }
+  function wireVratList() {
+    var box = document.getElementById("vratSearch");
+    if (!box) return;
+    box.addEventListener("input", function () {
+      var q = box.value.trim().toLowerCase(), any = false;
+      document.querySelectorAll(".vrat-card").forEach(function (c) {
+        var hit = !q || c.getAttribute("data-q").indexOf(q) !== -1;
+        c.hidden = !hit; if (hit) any = true;
+      });
+      document.querySelectorAll(".vrat-group").forEach(function (g) { g.hidden = !g.querySelector(".vrat-card:not([hidden])"); });
+      var none = document.querySelector(".vrat-empty"); if (none) none.hidden = any;
+    });
+  }
+
+  function viewVrat(slug) {
+    return '<main class="content-pad vrat-wrap"><a class="vrat-back" href="/vrat">← ' + esc(tx("सभी व्रत एवं पर्व", "All vrats & festivals")) + '</a>' +
+      '<div id="vratBody" class="vrat-body" data-slug="' + esc(slug) + '"><p class="vrat-loading">' + esc(tx("लोड हो रहा है…", "Loading…")) + '</p></div></main>';
+  }
+  function vratSourceHtml(s) {
+    var head = [s.granth, s.kand, s.adhyay].filter(Boolean).join(" · ");
+    var meta = [s.tithi, s.paksh, s.maas, s.nakshatra, s.muhurta].filter(Boolean).join(" · ");
+    function row(label, val) { return val ? '<p><b>' + esc(label) + ':</b> ' + esc(val) + '</p>' : ""; }
+    return '<article class="vrat-src"><div class="vs-head">' + esc(head) + '</div>' + (meta ? '<div class="vs-meta">' + esc(meta) + '</div>' : "") +
+      row(tx("घटना", "Event"), s.ghatna) + (s.vivran ? '<p>' + esc(s.vivran) + '</p>' : "") + row(tx("महत्व", "Significance"), s.mahatva) +
+      row(tx("अनुष्ठान", "Observance"), s.anushthan) + row(tx("फल", "Fruit"), s.phal) +
+      ((s.tags || []).length ? '<div class="vs-tags">' + s.tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join("") + '</div>' : "") + '</article>';
+  }
+  function vratDetailHtml(v) {
+    var p = getPanchang(new Date(), getPanchangCity());
+    var isToday = vratsFor(p).some(function (x) { return x.slug === v.slug; });
+    var chips = [v.maas, v.tithi].filter(Boolean).map(function (c) { return '<span class="vrat-chip">' + esc(c) + '</span>'; }).join("");
+    var html = '<header class="vrat-head"><span class="vh-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span><div><h1>' + esc(v.name) + '</h1>' +
+      '<div class="vrat-chips">' + chips + (isToday ? '<span class="vrat-chip is-today">' + esc(tx("आज", "Today")) + '</span>' : "") + '</div>' +
+      ((v.aliases || []).length ? '<p class="vrat-alias">' + esc(tx("अन्य नाम: ", "Also known as: ")) + esc(v.aliases.join(" · ")) + '</p>' : "") + '</div></header>';
+    html += vratParts(v);
+    (v.extras || []).forEach(function (x) {
+      html += '<details class="vrat-more"><summary>' + esc(x.label) + (x.name ? " — " + esc(x.name) : "") + '</summary>' + vratParts(x) + '</details>';
+    });
+    if ((v.variants || []).length) {
+      var monthOf = function (x) { var r = x.rules && x.rules[0], i = r && r.maas ? HINDU_MONTHS.indexOf(r.maas[0]) : -1; return i === -1 ? 99 : i; };
+      html += '<section class="vrat-sec"><h3>' + esc(tx("मासानुसार विशेष जानकारी", "Month-wise details")) + '</h3>' + v.variants.slice().sort(function (a, b) { return monthOf(a) - monthOf(b); }).map(function (x) {
+        var now = (x.rules || []).some(function (r) { return r.maas && r.maas.indexOf(p.maas) !== -1; });
+        return '<details class="vrat-more"' + (now ? " open" : "") + '><summary>' + esc(x.name) + (now ? ' <span class="vrat-chip is-today">' + esc(tx("इस मास", "this month")) + '</span>' : "") + '</summary>' + vratParts(x) + '</details>';
+      }).join("") + '</section>';
+    }
+    if ((v.sources || []).length) {
+      html += '<section class="vrat-sec"><h3>' + esc(tx("शास्त्रीय सन्दर्भ", "Scriptural references")) + ' <span class="vrat-count">' + v.sources.length + '</span></h3>' + v.sources.map(vratSourceHtml).join("") + '</section>';
+    }
+    html += '<section class="row-section"><div class="row-head"><h2>' + esc(tx("सम्बन्धित ग्रंथ", "Related books")) + '</h2></div><div class="special-book-row">' + vratBooks(v).map(specialBookTile).join("") + '</div></section>';
+    return html;
+  }
+  function loadVratDetail(slug) {
+    function show(v) {
+      var host = document.getElementById("vratBody");
+      if (!host || host.getAttribute("data-slug") !== slug) return;
+      host.innerHTML = vratDetailHtml(v);
+      setMeta(v.name + " — व्रत एवं पर्व | स्वाध्याय", String(v.intro || "").slice(0, 160), vratPath(v));
+    }
+    if (VRAT_DETAIL[slug]) { show(VRAT_DETAIL[slug]); return; }
+    apiGet("/api/vrats/" + encodeURIComponent(slug)).then(function (d) { VRAT_DETAIL[slug] = d.vrat; show(d.vrat); }).catch(function () {
+      var host = document.getElementById("vratBody");
+      if (host && host.getAttribute("data-slug") === slug) host.innerHTML = '<p class="vrat-loading">' + esc(tx("यह प्रविष्टि नहीं मिली।", "This entry could not be found.")) + ' <a href="/vrat">' + esc(tx("सभी व्रत देखें", "See all")) + '</a></p>';
+    });
+  }
+
   function viewHelp() {
     return '<main class="content-pad"><div class="page-header"><h1>' + bilingual("सहायता") + '</h1></div>' +
       '<div class="help-faq-list">' + HELP_FAQS.map(function (f) {
@@ -3566,7 +3840,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "sankalp": "home", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -3726,6 +4000,7 @@
     else if (seg[0] === "signup") { if (isLoggedIn()) { navigate("/"); return; } html = viewSignup(); }
     else if (seg[0] === "authors") { html = viewAuthors(); }
     else if (seg[0] === "audio") { html = window.SwadhyayAudio ? window.SwadhyayAudio.pageHtml() : viewHome(); }
+    else if (seg[0] === "vrat") { html = seg[1] ? viewVrat(decodeURIComponent(seg[1])) : viewVratList(); }
     else if (seg[0] === "sankalp") { html = window.SwadhyaySankalp ? window.SwadhyaySankalp.pageHtml() : viewHome(); }
     else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
@@ -3760,6 +4035,7 @@
     applyHeroBanner();
     if (window.SwadhyayAudio) window.SwadhyayAudio.mount({ tx: tx, toast: toast });
     if (window.SwadhyayDaily) window.SwadhyayDaily.mount({ tx: tx, toast: toast });
+    if (seg[0] === "vrat") { if (seg[1]) loadVratDetail(decodeURIComponent(seg[1])); else wireVratList(); }
     if (window.SwadhyaySankalp && seg[0] === "sankalp") window.SwadhyaySankalp.mount({ tx: tx, toast: toast });
     if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
@@ -4131,6 +4407,7 @@
     function firstRender() { if (firstDone) return; firstDone = true; onNavigate(); }
     Promise.all([
       apiGet("/api/book-meta").then(function (data) { applyBookMetaOverrides(data.meta || {}); }).catch(function () {}),
+      loadVrats(),
       apiGet("/api/auth/config").then(function (data) { GOOGLE_CLIENT_ID = data.googleClientId || null; }).catch(function () {}),
       refreshCurrentUser()
     ]).then(function () {

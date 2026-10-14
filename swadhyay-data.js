@@ -3901,7 +3901,7 @@ var SWADHYAY_BOOKS_RAW = [
     },
     {
         "file":  "श्रीनरसिंहपुराण.html",
-        "category":  "Purans",
+        "category":  "Upa Puran",
         "author":  "महर्षि वेदव्यास",
         "tikakar":  "",
         "translator":  "",
