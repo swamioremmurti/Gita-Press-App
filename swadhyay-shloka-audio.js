@@ -16,7 +16,7 @@
 (function () {
   "use strict";
 
-  var BASE = "/assets/audio/gita/";
+  var BASE = window.swadhyayMedia ? window.swadhyayMedia("/assets/audio/gita/") : "/assets/audio/gita/";
   var index = {};
   var loading = null;
   var audio = new Audio();

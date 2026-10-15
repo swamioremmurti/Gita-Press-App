@@ -8,6 +8,12 @@ tools
 .env*
 .vercel
 
+# Books and media served from the CDN (tools/cdn/upload.mjs, then swadhyay-config.js).
+# Uncomment ONLY after the upload is done and swadhyay-config.js points at it -- otherwise the site loses its books.
+# Gita Press Books
+# assets/audio
+# assets/video
+
 # Local-only server files (secrets, local database, search index, logs, helper scripts).
 # server/lib is what the API functions need and is still uploaded.
 server/.env

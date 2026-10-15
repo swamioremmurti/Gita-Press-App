@@ -2,7 +2,10 @@
 (function () {
   "use strict";
 
-  var BOOKS_DIR = "Gita Press Books/Gita Press Books/";
+  /* Book files come from the site itself, or from a CDN folder when swadhyay-config.js names one. */
+  var CDN_BOOKS = (typeof window !== "undefined" && window.SWADHYAY_CDN && window.SWADHYAY_CDN.books) || "";
+  if (CDN_BOOKS && CDN_BOOKS.slice(-1) !== "/") CDN_BOOKS += "/";
+  var BOOKS_DIR = CDN_BOOKS || "Gita Press Books/Gita Press Books/";
 
   var CATEGORY_META = [
     { key: "all", hi: "सभी", en: "All", icon: "ॐ" },
@@ -1921,6 +1924,9 @@
   function buildReaderBook(bookId, htmlText) {
     var doc = new DOMParser().parseFromString(htmlText, "text/html");
     var headHtml = doc.head ? doc.head.innerHTML : "";
+    /* Every book links its stylesheet as ../../master.css, which only resolves to the site root when the book is
+       served from the site. From a CDN folder that path would land on the CDN, so point it back at the site. */
+    if (CDN_BOOKS) headHtml = headHtml.replace(/(["'])(?:\.\.\/)+master\.css/g, function (m, q) { return q + new URL("master.css", document.baseURI).href; });
     var bodyHtml = doc.body ? doc.body.innerHTML : htmlText;
     var rawChunks = splitBookChapters(bodyHtml);
 

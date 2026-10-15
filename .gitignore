@@ -3,3 +3,10 @@ node_modules/
 .backups/
 .vercel
 .env*
+
+# CDN upload tool
+tools/cdn/node_modules/
+tools/cdn/.env
+
+# safety copies made before bulk edits -- kept locally, not in the repo
+backups/

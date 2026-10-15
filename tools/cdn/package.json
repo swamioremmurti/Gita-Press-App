@@ -1,0 +1,8 @@
+{
+  "name": "swadhyay-cdn-tools",
+  "private": true,
+  "type": "module",
+  "description": "Uploads the books and media to Vercel Blob. Dev tool only -- tools/ is not deployed.",
+  "scripts": { "upload": "node upload.mjs" },
+  "dependencies": { "@vercel/blob": "^2.0.0" }
+}

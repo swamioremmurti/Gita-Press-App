@@ -15,7 +15,11 @@
   "use strict";
 
   var CATS = window.SWADHYAY_AUDIO_CATEGORIES || [];
-  var TRACKS = (window.SWADHYAY_AUDIO_RAW || []).slice();
+  var TRACKS = (window.SWADHYAY_AUDIO_RAW || []).map(function (t) {
+    /* tracks under assets/ move to the CDN with the rest of the media (see swadhyay-config.js) */
+    if (window.swadhyayMedia && t.src) { t = Object.assign({}, t); t.src = window.swadhyayMedia(t.src); }
+    return t;
+  });
   var CAT_BY_KEY = {}, BY_ID = {};
   CATS.forEach(function (c) { CAT_BY_KEY[c.key] = c; });
   TRACKS.forEach(function (t) { BY_ID[t.id] = t; });
