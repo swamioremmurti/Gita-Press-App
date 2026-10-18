@@ -1,4 +1,4 @@
-/* Swadhyay -- page titles / descriptions, shared by the browser (swadhyay-app.js) and the
+/* Kalyan -- page titles / descriptions, shared by the browser (swadhyay-app.js) and the
    server-side renderer (server/lib/seo.js) so a page's <title> is identical whether it was
    served as HTML to a crawler or set by the app after a client-side navigation.
    Pure functions only: they take plain objects (a book / person with the same field names
@@ -9,9 +9,9 @@
 })(typeof self !== "undefined" ? self : this, function () {
   "use strict";
 
-  var BRAND = "Swadhyay | स्वाध्याय";
-  var TAGLINE_EN = "Read free online on Swadhyay.";
-  var TAGLINE_HI = "स्वाध्याय पर निःशुल्क ऑनलाइन पढ़ें।";
+  var BRAND = "Kalyan | कल्याण";
+  var TAGLINE_EN = "Read free online on Kalyan.";
+  var TAGLINE_HI = "कल्याण पर निःशुल्क ऑनलाइन पढ़ें।";
 
   /* Whoever the book credits first: author, else commentator, else translator. */
   function credited(book) {
@@ -20,7 +20,7 @@
     return book.translators || [];
   }
 
-  /* "Swadhyay | स्वाध्याय — <book> | <publisher> | <author> | <chapter>" -- every part after
+  /* "Kalyan | कल्याण — <book> | <publisher> | <author> | <chapter>" -- every part after
      the book name is left out when the book (or page) doesn't have one. */
   function bookTitle(book, chapterLabel) {
     var parts = [BRAND + " — " + book.title];
@@ -68,7 +68,7 @@
   }
   function personDescription(person) {
     return person.name + " (" + rolesSummary(person) + ") — " + personBookCount(person) +
-      " ग्रंथ स्वाध्याय पर निःशुल्क पढ़ें। " + TAGLINE_EN;
+      " ग्रंथ कल्याण पर निःशुल्क पढ़ें। " + TAGLINE_EN;
   }
 
   /* Pages with a fixed title/description, keyed by their first URL segment. */
@@ -79,7 +79,7 @@
     },
     authors: {
       title: BRAND + " — लेखक, टीकाकार एवं अनुवादक | Authors, Commentators & Translators",
-      desc: "ग्रंथकार, टीकाकार, अनुवादक एवं प्रकाशक — और उनके ग्रंथ। Authors, commentators, translators and publishers of the scriptures in the Swadhyay library."
+      desc: "ग्रंथकार, टीकाकार, अनुवादक एवं प्रकाशक — और उनके ग्रंथ। Authors, commentators, translators and publishers of the scriptures in the Kalyan library."
     },
     panchang: {
       title: BRAND + " — पंचांग | Hindu Panchang, Tithi & Festivals",
@@ -87,7 +87,7 @@
     },
     help: {
       title: BRAND + " — सहायता | Help",
-      desc: "स्वाध्याय पुस्तकालय का उपयोग कैसे करें। How to use the Swadhyay digital library."
+      desc: "कल्याण पुस्तकालय का उपयोग कैसे करें। How to use the Kalyan digital library."
     },
     feedback: {
       title: BRAND + " — विषय सुधार | Feedback",
@@ -95,7 +95,7 @@
     },
     audio: {
       title: BRAND + " — ऑडियो | Bhajan, Satsang, Pravachan, Katha & Audio Books",
-      desc: "भजन, सत्संग, प्रवचन, कथा एवं ऑडियो बुक — स्वाध्याय में सुनें। Listen to bhajans, satsang, pravachan, katha and audio books on Swadhyay."
+      desc: "भजन, सत्संग, प्रवचन, कथा एवं ऑडियो बुक — कल्याण में सुनें। Listen to bhajans, satsang, pravachan, katha and audio books on Kalyan."
     },
     hanuman: {
       title: BRAND + " — श्री हनुमान प्रश्नावली यन्त्र | Hanuman Prashnavali",
@@ -115,7 +115,7 @@
     },
     chat: {
       title: BRAND + " — प्रश्नोत्तर | Ask the Granths",
-      desc: "ग्रंथों के आधार पर प्रश्न पूछें। Ask questions answered from the scriptures in the Swadhyay library."
+      desc: "ग्रंथों के आधार पर प्रश्न पूछें। Ask questions answered from the scriptures in the Kalyan library."
     }
   };
 

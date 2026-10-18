@@ -71,15 +71,15 @@ button { cursor: pointer; font: inherit; }
   transition: width .18s ease, box-shadow .18s ease;
 }
 .sidebar::-webkit-scrollbar { display: none; }
-.sidebar-header { display: flex; align-items: center; gap: .4rem; padding: .2rem .9rem .6rem; }
+.sidebar-header { display: flex; align-items: center; justify-content: center; height: 62px; padding: .2rem .4rem .4rem; }
 .sidebar-logo-mark {
-  display: inline-block; width: 24px; height: 24px; flex-shrink: 0;
+  display: inline-block; width: 54px; height: 22px; flex-shrink: 0; transition: width .18s ease, height .18s ease;
   background-color: var(--sidebar-ink);
   -webkit-mask: url('assets/logo-mark.svg') no-repeat center / contain;
   mask: url('assets/logo-mark.svg') no-repeat center / contain;
 }
 .sidebar-wordmark {
-  font-size: 1.1rem; color: var(--sidebar-ink); letter-spacing: .01em; white-space: nowrap;
+  display: none; font-size: 1.1rem; color: var(--sidebar-ink); letter-spacing: .01em; white-space: nowrap;
   opacity: 0; transition: opacity .1s ease;
 }
 .sidebar-nav { display: flex; flex-direction: column; gap: .05rem; width: 100%; padding: 0 .5rem; }
@@ -113,6 +113,7 @@ button.side-link { background: none; border: 0; font-family: inherit; text-align
    scoped out of that range entirely rather than relying on specificity to not collide. */
 @media (min-width: 861px) {
   .sidebar:hover { width: var(--sidebar-w); box-shadow: 6px 0 24px rgba(0,0,0,.3); }
+  .sidebar:hover .sidebar-logo-mark { width: 128px; height: 51px; }
   .sidebar:hover .sidebar-wordmark,
   .sidebar:hover .side-link span:not(.ic) { opacity: 1; transition-delay: .06s; }
   .sidebar:hover .side-caret { opacity: .75; transition-delay: .06s; }
@@ -150,14 +151,14 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .topbar-left { display: flex; align-items: center; gap: .6rem; margin-right: auto; color: #fff; transition: color .25s ease; }
 .topbar.scrolled .topbar-left { color: var(--accent); }
 .logo-mark {
-  display: inline-block; width: 62px; height: 37px; flex-shrink: 0;
+  display: inline-block; width: 90px; height: 36px; flex-shrink: 0;
   background-color: currentColor; transition: width .25s ease, height .25s ease;
   -webkit-mask: url('assets/logo-mark.svg') no-repeat center / contain;
   mask: url('assets/logo-mark.svg') no-repeat center / contain;
 }
 @media (min-width: 861px) {
   /* desktop: logo starts oversized over the transparent hero, then shrinks to fit the bar on scroll */
-  .topbar:not(.scrolled) .logo-mark { width: 150px; height: 91px; }
+  .topbar:not(.scrolled) .logo-mark { width: 160px; height: 64px; }
 }
 
 /* transparent (unscrolled, home) control styling */
@@ -630,6 +631,7 @@ body.is-home .cover-mark { font-size: max(1rem, calc(.8rem * 1.12)); }
   /* The off-canvas drawer always shows full labels -- it has no hover affordance on
      touch, so it doesn't use the desktop icon-rail collapse (≥861px, above). */
   .sidebar-wordmark, .side-link span:not(.ic), .side-caret { opacity: 1; }
+  .sidebar-logo-mark { width: 128px; height: 51px; }
   .sidebar.open { left: 0; }
   .sidebar-scrim { display: block; }
   .hamburger-btn { display: flex; align-items: center; justify-content: center; }

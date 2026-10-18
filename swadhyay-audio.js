@@ -1,4 +1,4 @@
-/* Swadhyay audio: catalogue lists, favourites and one site-wide player.
+/* Kalyan audio: catalogue lists, favourites and one site-wide player.
 
    One <audio> element lives for the whole session, so a track keeps playing while the reader
    moves between pages (a mini-player "dock" follows them). Everything that shows audio state --
@@ -166,7 +166,7 @@
     if (!("mediaSession" in navigator) || typeof MediaMetadata === "undefined") return;
     try {
       navigator.mediaSession.metadata = new MediaMetadata({
-        title: t.title, artist: t.artist || "स्वाध्याय", album: (CAT_BY_KEY[t.category] || {}).hi || ""
+        title: t.title, artist: t.artist || "कल्याण", album: (CAT_BY_KEY[t.category] || {}).hi || ""
       });
       navigator.mediaSession.setActionHandler("play", function () { audio.play(); });
       navigator.mediaSession.setActionHandler("pause", function () { audio.pause(); });
@@ -215,7 +215,7 @@
       '<div class="ap-deck-top">' + artHtml(t, "ap-art-lg") +
       '<div class="ap-meta"><div class="ap-kicker">' + esc(T(catOf(t).hi, catOf(t).en)) + (on ? " · " + esc(T("अभी चल रहा है", "Now playing")) : "") + '</div>' +
       '<div class="ap-title">' + esc(t.title) + '</div>' +
-      '<div class="ap-artist">' + esc(t.artist || "स्वाध्याय") + '</div></div>' +
+      '<div class="ap-artist">' + esc(t.artist || "कल्याण") + '</div></div>' +
       btn("fav", isFav(t.id) ? I.heart : I.heartLine, T("पसंदीदा", "Favourite"), "ap-fav-btn" + (isFav(t.id) ? " is-on" : "")).replace('data-ap="fav"', 'data-ap="fav" data-id="' + esc(t.id) + '"') +
       '</div>' +
       '<div class="ap-seekrow"><span class="ap-t ap-cur">' + fmt(cur) + '</span>' +
@@ -236,7 +236,7 @@
     return '<div class="ap-row' + (cur ? " is-current" : "") + (on ? " is-playing" : "") + '" data-ap="play" data-id="' + esc(t.id) + '" role="button" tabindex="0">' +
       artHtml(t, "ap-art-sm") +
       '<span class="ap-row-info"><span class="ap-row-title">' + esc(t.title) + '</span>' +
-      '<span class="ap-row-sub">' + esc(t.artist || "स्वाध्याय") + (d ? " · " + fmt(d) : "") + '</span></span>' +
+      '<span class="ap-row-sub">' + esc(t.artist || "कल्याण") + (d ? " · " + fmt(d) : "") + '</span></span>' +
       '<button type="button" class="ap-heart' + (isFav(t.id) ? " is-on" : "") + '" data-ap="fav" data-id="' + esc(t.id) + '" aria-label="' + esc(T("पसंदीदा", "Favourite")) + '" aria-pressed="' + (isFav(t.id) ? "true" : "false") + '">' + (isFav(t.id) ? I.heart : I.heartLine) + '</button>' +
       '</div>';
   }
@@ -281,7 +281,7 @@
     var on = playing();
     return '<div class="ap-dock-bar"><i></i></div>' +
       '<button type="button" class="ap-dock-main" data-ap="sheet" aria-label="' + esc(T("प्लेयर खोलें", "Open player")) + '">' + artHtml(t, "ap-art-sm") +
-      '<span class="ap-dock-info"><span class="ap-dock-title">' + esc(t.title) + '</span><span class="ap-dock-sub">' + esc(t.artist || "स्वाध्याय") + '</span></span></button>' +
+      '<span class="ap-dock-info"><span class="ap-dock-title">' + esc(t.title) + '</span><span class="ap-dock-sub">' + esc(t.artist || "कल्याण") + '</span></span></button>' +
       btn("prev", I.prev, T("पिछला", "Previous"), "ap-dock-hide-sm") +
       btn("toggle", on ? I.pause : I.play, on ? T("रोकें", "Pause") : T("चलाएँ", "Play"), "ap-btn-main ap-btn-dock") +
       btn("next", I.next, T("अगला", "Next"), "ap-dock-hide-sm") +

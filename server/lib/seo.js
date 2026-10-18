@@ -12,7 +12,7 @@ const vm = require('vm');
 const SwadhyayMeta = require('../../seo-meta.js'); // same file the browser loads; static require so Vercel bundles it
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const SITE = 'https://gitapress-app.vercel.app';
+const SITE = (process.env.SITE_URL || 'https://www.kalyanseva.com').replace(/\/+$/, '');
 const SOURCE_FILES = ['index.html', 'swadhyay-data.js', 'swadhyay-app.js'];
 const HERO_IMAGE = SITE + '/assets/hero_banner_light.webp';
 const FALLBACK_IMAGE = SITE + '/assets/apple-touch-icon.png';
@@ -187,7 +187,7 @@ function crumbNav(items) {
     i === items.length - 1 ? '<span>' + esc(it[1]) + '</span>' : a(it[0], it[1])).join(' › ') + '</nav>';
 }
 function siteNav() {
-  return '<nav aria-label="Swadhyay">' + NAV_LINKS.map((l) => a(l[0], l[1])).join(' · ') + '</nav>';
+  return '<nav aria-label="Kalyan">' + NAV_LINKS.map((l) => a(l[0], l[1])).join(' · ') + '</nav>';
 }
 function bookLinks(cat, books) {
   return '<ul>' + books.map((b) => '<li>' + a(cat.bookPath(b), b.title) + (b.author ? ' — ' + esc(b.author) : '') + '</li>').join('') + '</ul>';
@@ -304,7 +304,7 @@ function pageLibrary(cat, catKey, noindex) {
 
 const STATIC_INTRO = {
   panchang: ['पंचांग', 'आज की तिथि, नक्षत्र, योग, करण, सूर्योदय-सूर्यास्त, राहुकाल एवं पर्व-त्योहार — दिल्ली, मुंबई, वाराणसी, चेन्नई, कोलकाता और बैंगलोर के लिए। यह खगोलीय सन्निकटन पर आधारित एक अनुमान है; महत्वपूर्ण मुहूर्तों हेतु प्रामाणिक पंचांग से पुष्टि करें।'],
-  chat: ['प्रश्नोत्तर — ग्रंथों से पूछें', 'स्वाध्याय पुस्तकालय के ग्रंथों के आधार पर अपने प्रश्न पूछिए और उत्तर के साथ संबंधित ग्रंथ के स्रोत देखिए।'],
+  chat: ['प्रश्नोत्तर — ग्रंथों से पूछें', 'कल्याण पुस्तकालय के ग्रंथों के आधार पर अपने प्रश्न पूछिए और उत्तर के साथ संबंधित ग्रंथ के स्रोत देखिए।'],
   feedback: ['विषय सुधार', 'किसी ग्रंथ में त्रुटि, अशुद्ध पाठ या कोई अन्य सुझाव हो तो कृपया हमें बताएँ। आपका सुझाव हमारी टीम द्वारा देखा जाएगा।']
 };
 
@@ -393,7 +393,7 @@ async function render(rawUrl, opts) {
   // Not a page we describe (unknown book/author, odd path): hand back the plain app shell so
   // the client router deals with it, but flag it noindex and, where it's a real miss, 404.
   const shell = (status) => html(status, assemble(cat.template, {
-    title: 'Swadhyay | स्वाध्याय — A Digital Library of Sanatan Wisdom', desc: SwadhyayMeta.STATIC_ROUTES.library.desc,
+    title: 'Kalyan | कल्याण — A Digital Library of Sanatan Wisdom', desc: SwadhyayMeta.STATIC_ROUTES.library.desc,
     canonical: '/', image: HERO_IMAGE, ogType: 'website', noindex: true, content: '', ld: []
   }), SHORT_CACHE_CONTROL);
 
@@ -438,7 +438,7 @@ async function handle(req, res, opts) {
     try {
       out = { status: 200, headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store' }, body: await fallbackShell() };
     } catch (err2) {
-      res.statusCode = 500; res.setHeader('Content-Type', 'text/plain; charset=utf-8'); res.end('Swadhyay is temporarily unavailable.');
+      res.statusCode = 500; res.setHeader('Content-Type', 'text/plain; charset=utf-8'); res.end('Kalyan is temporarily unavailable.');
       return;
     }
   }

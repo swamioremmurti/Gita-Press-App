@@ -1,4 +1,4 @@
-// Swadhyay app server: static file serving (same behavior as .claude/dev-server.js)
+// Kalyan app server: static file serving (same behavior as .claude/dev-server.js)
 // plus a retrieval-augmented /api/chat endpoint backed by the local vector index.
 require('./lib/env').loadEnv();
 const http = require('http');
@@ -9,6 +9,7 @@ const db = require('./lib/db');
 const api = require('./lib/api');
 const seo = require('./lib/seo');
 const quotes = require('./lib/quotes');
+const gate = require('./lib/gate');
 
 const ROOT = path.resolve(__dirname, '..');
 const PORT = process.env.PORT || 5174;
@@ -64,7 +65,28 @@ function serveStatic(req, res) {
   });
 }
 
-const server = http.createServer((req, res) => {
+// Pre-launch password gate (same code as the Vercel middleware); only active while SITE_PASSWORD is set.
+async function runGate(req, res) {
+  const origin = 'http://' + (req.headers.host || 'localhost');
+  let body;
+  if (req.method === 'POST' && requestPathname(req) === '/__gate') {
+    const chunks = [];
+    for await (const c of req) chunks.push(c);
+    body = Buffer.concat(chunks);
+  }
+  const headers = new Headers();
+  for (const [k, v] of Object.entries(req.headers)) headers.set(k, Array.isArray(v) ? v.join(', ') : v);
+  const out = await gate.handle(new Request(origin + req.url, { method: req.method, headers, body }), process.env);
+  if (!out) return false;
+  res.writeHead(out.status, Object.fromEntries(out.headers));
+  res.end(Buffer.from(await out.arrayBuffer()));
+  return true;
+}
+
+const server = http.createServer(async (req, res) => {
+  if (process.env.SITE_PASSWORD) {
+    try { if (await runGate(req, res)) return; } catch (err) { res.writeHead(500); res.end('Gate error'); return; }
+  }
   const pathname = requestPathname(req);
   if (req.method === 'POST' && pathname === '/api/chat') { chat.handleChat(req, res); return; }
   if (req.method === 'GET' && pathname === '/api/health') { chat.handleHealth(req, res); return; }
@@ -84,5 +106,5 @@ const server = http.createServer((req, res) => {
 });
 
 db.init()
-  .then(() => server.listen(PORT, () => console.log('Swadhyay (with AI chat + admin API) running at http://localhost:' + PORT)))
+  .then(() => server.listen(PORT, () => console.log('Kalyan (with AI chat + admin API) running at http://localhost:' + PORT)))
   .catch((err) => { console.error('Failed to initialize database:', err); process.exit(1); });

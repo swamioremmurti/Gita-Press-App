@@ -95,11 +95,11 @@
     ctx.textAlign = "center"; ctx.textBaseline = "alphabetic";
 
     if (logo) {                                           // brand logo at the top
-      var lw2 = Math.round(L.logoH * 543 / 329);
+      var lw2 = Math.round(L.logoH * 356.16 / 142.38);
       ctx.drawImage(logo, (W - lw2) / 2, L.logoY, lw2, L.logoH);
     } else {
       ctx.fillStyle = INK; ctx.font = "bold " + Math.round(W * 0.06) + "px " + FONT;
-      ctx.fillText("स्वाध्याय", W / 2, L.logoY + L.logoH * 0.8);
+      ctx.fillText("कल्याण", W / 2, L.logoY + L.logoH * 0.8);
     }
 
     ctx.fillStyle = GOLD; ctx.font = Math.round(W * 0.036) + "px " + FONT;            // label
@@ -142,7 +142,7 @@
   }
   /* ---------------- sharing ---------------- */
   function shareText(q) {
-    return "“" + q.text + "”\n— " + q.name + (q.book ? " (" + q.book.title + ")" : "") + "\n\n" + T("स्वाध्याय पर और पढ़ें:", "Read more on Swadhyay:") + " " + location.origin;
+    return "“" + q.text + "”\n— " + q.name + (q.book ? " (" + q.book.title + ")" : "") + "\n\n" + T("कल्याण पर और पढ़ें:", "Read more on Kalyan:") + " " + location.origin;
   }
   function toFile(cb) {
     state.canvas.toBlob(function (b) {
@@ -190,7 +190,7 @@
     state.canvas = document.createElement("canvas");
     state.el.querySelector(".qsh-preview").appendChild(state.canvas);
     var fontsReady = document.fonts && document.fonts.load
-      ? Promise.all([document.fonts.load("40px 'Tiro Devanagari Sanskrit'", "स्वाध्याय"), document.fonts.load("italic 40px 'Tiro Devanagari Sanskrit'", "स्वाध्याय")]).catch(function () {})
+      ? Promise.all([document.fonts.load("40px 'Tiro Devanagari Sanskrit'", "कल्याण"), document.fonts.load("italic 40px 'Tiro Devanagari Sanskrit'", "कल्याण")]).catch(function () {})
       : Promise.resolve();
     Promise.all([fontsReady, loadBg()]).then(function (r) { if (state && state.canvas) draw(state.canvas, state.fmt, state.quote, r[1][0], r[1][1]); });
   }

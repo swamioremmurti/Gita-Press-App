@@ -1,4 +1,4 @@
-/* Swadhyay — app shell logic. Vanilla JS, hash-router, localStorage-backed. */
+/* Kalyan — app shell logic. Vanilla JS, hash-router, localStorage-backed. */
 (function () {
   "use strict";
 
@@ -685,8 +685,8 @@
   /* The side menu, bottom bar and top-bar buttons are static markup in index.html (Hindi),
      so they are relabelled here whenever the language changes. */
   var SHELL_LABELS = {
-    home: ["होम", "Home"], library: ["पुस्तकालय", "Library"], favorites: ["पसंदीदा", "Favorites"],
-    myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Authors"], chat: ["प्रश्नोत्तर", "Q & A"],
+    home: ["होम", "Home"], granth: ["ग्रंथ", "Granth"], library: ["ग्रंथालय", "Granthalay"], favorites: ["पसंदीदा", "Favorites"],
+    myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Lekhak"], chat: ["प्रश्नोत्तर", "Q & A"],
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
     help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
     sankalp: ["पाठ-संकल्प", "Path Sankalp"], vrat: ["व्रत एवं पर्व", "Vrats & Festivals"],
@@ -1216,7 +1216,7 @@
   function aiAskCard() {
     return '<div class="ai-ask-card">' +
       '<div class="ai-head"><img class="ai-head-icon-badge" src="assets/om-medallion-s.webp" alt="ॐ"><h3>' + bilingual("ग्रंथों से पूछें") + '</h3><span class="ai-badge">AI</span></div>' +
-      '<p class="ai-sub">' + bilingual("स्वाध्याय के ग्रंथों के आधार पर संदर्भ सहित उत्तर प्राप्त करें") + '</p>' +
+      '<p class="ai-sub">' + bilingual("कल्याण के ग्रंथों के आधार पर संदर्भ सहित उत्तर प्राप्त करें") + '</p>' +
       '<form class="ai-ask-form" id="homeAiForm">' +
       '<span class="ai-ask-search-ic">🔍</span>' +
       '<input type="text" id="homeAiInput" placeholder="आप क्या जानना चाहते हैं?">' +
@@ -3055,7 +3055,7 @@
 
   /* ---------------- सहायता ---------------- */
   var HELP_FAQS = [
-    ["स्वाध्याय क्या है?", "स्वाध्याय गीता प्रेस की पुस्तकों का एक डिजिटल पुस्तकालय है, जहाँ आप सैकड़ों धार्मिक ग्रंथ निःशुल्क पढ़ सकते हैं।"],
+    ["कल्याण क्या है?", "कल्याण गीता प्रेस की पुस्तकों का एक डिजिटल पुस्तकालय है, जहाँ आप सैकड़ों धार्मिक ग्रंथ निःशुल्क पढ़ सकते हैं।"],
     ["क्या मुझे पढ़ने के लिए खाता बनाना ज़रूरी है?", "नहीं, आप बिना खाता बनाये भी सभी ग्रंथ पढ़ सकते हैं। आपकी पठन-प्रगति और पसंदीदा सूची इसी ब्राउज़र में सुरक्षित रहती है।"],
     ["मैं अपनी पठन-स्थिति कैसे जारी रखूँ?", "\"अध्ययन\" अनुभागमें आपको वे सभी ग्रंथ मिलेंगे जो आपने पहले पढ़ने शुरू किये हैं — जहाँसे छोड़ा था, वहींसे आगे पढ़ सकते हैं।"],
     ["पंचांग की जानकारी कितनी सटीक है?", "यहाँ दिखाया गया पंचांग खगोलीय सन्निकटन पर आधारित एक अनुमान है — यह सामान्य जानकारी के लिए उपयोगी है, परन्तु महत्वपूर्ण मुहूर्तों हेतु प्रामाणिक पंचांग से पुष्टि करें।"],
@@ -3087,6 +3087,37 @@
      Three card shapes: a wide card for today's vrats, an upright tile for the running month, a row for everything else.
      Every group shows its first few and opens to the rest with "देखें सभी". */
   function vratSearchText(v) { return esc((v.name + " " + (v.aliases || []).join(" ") + " " + v.maas + " " + v.tithi).toLowerCase()); }
+  /* English / Roman search: the Hindi text transliterated, the slug (which is already an English name), and the
+     other spellings people type for the bigger festivals. */
+  var VRAT_EN = {
+    diwali: "deepavali dipawali lakshmi puja", dussehra: "dasara vijayadashami dashain", "karva-chauth": "karwa chauth karak chaturthi",
+    mahashivratri: "maha shivaratri shiv ratri", janmashtami: "krishna janmashtami gokulashtami", holi: "holika dahan", navratri: "navaratri durga puja sharad navratri",
+    "raksha-bandhan": "rakhi", "ram-navami": "rama navami", "ganesh-chaturthi": "vinayak chaturthi ganeshotsav", "vinayaka-chaturthi": "ganesh chaturthi",
+    "sankashti-chaturthi": "sankashta sankat chauth sakat", "basant-panchami": "vasant panchami saraswati puja", "akshaya-tritiya": "akshay tritiya akha teej",
+    "bhai-dooj": "bhaiya dooj bhau beej yama dwitiya", "guru-purnima": "vyasa purnima", "sharad-purnima": "kojagiri kaumudi", "kartik-purnima": "dev deepawali tripurari",
+    "mauni-amavasya": "magh amavasya", "nag-panchami": "naga panchami", "anant-chaturdashi": "anant chaudas", "vat-savitri": "vat purnima savitri",
+    "govardhan-puja": "annakut", "ahoi-ashtami": "ahoi mata", "dhanteras": "dhanatrayodashi dhan teras", "haritalika": "hartalika teej", "pradosh-vrat": "pradosham",
+    "ekadashi-vrat": "ekadasi", "purnima-vrat": "poornima full moon", "amavasya-vrat": "new moon", "somvar-vrat": "monday", "mangalvar-vrat": "tuesday",
+    "budhvar-vrat": "wednesday", "brihaspativar-vrat": "thursday guruvar", "shukravar-vrat": "friday", "shanivar-vrat": "saturday", "ravivar-vrat": "sunday", "solah-somvar": "16 monday",
+    "jagannath-rath-yatra": "rath yatra", "tulsi-vivah": "tulsi marriage", "satyanarayan-vrat": "satyanarayana katha"
+  };
+  var VRAT_EN_MONTH = ["chaitra", "vaishakh", "jyeshtha", "ashadh", "shravan", "bhadrapad", "ashwin", "kartik", "margashirsha agahan", "paush", "magh", "phalgun"];
+  function vratRomanIndex(v) {
+    var m = HINDU_MONTHS.indexOf(v.maas);
+    var s = devanagariToRoman([v.name, (v.aliases || []).join(" "), v.maas, v.tithi].join(" ")) + " " + String(v.slug || "").replace(/-/g, " ") + " " + (VRAT_EN[v.slug] || "") + " " + (m === -1 ? "" : VRAT_EN_MONTH[m]);
+    return normalizeRoman(s);
+  }
+  /* every typed word must appear in the index; trailing "a" and inner "a"s are forgiven (same as the library search) */
+  function vratRomanHit(hay, qRoman) {
+    var skelHay = hay.replace(/a/g, "");
+    return qRoman.split(" ").every(function (w) {
+      if (hay.indexOf(w) !== -1) return true;
+      var bare = w.replace(/a$/, "");
+      if (bare.length >= 2 && bare !== w && hay.indexOf(bare) !== -1) return true;
+      var skel = w.replace(/a/g, "");
+      return skel.length >= 3 && skelHay.indexOf(skel) !== -1;
+    });
+  }
   function vratSub(v) { return [v.maas, v.tithi].filter(Boolean).join(" · "); }
   function vratNextHtml(v) {
     var nx = vratNext(v) || vratNextFar(v);
@@ -3094,17 +3125,17 @@
   }
   function vratRow(v) {
     var sub = vratSub(v);
-    return '<a class="vrow" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+    return '<a class="vrow" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
       '<span class="vc-tx"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '</span><i class="vc-go" aria-hidden="true">›</i></a>';
   }
   function vratTile(v) {
     var sub = vratSub(v);
-    return '<a class="vtile" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+    return '<a class="vtile" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
       '<b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '<i class="vc-go" aria-hidden="true">›</i></a>';
   }
   function vratTodayCard(v) {
     var sub = vratSub(v);
-    return '<a class="vtoday" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '"><span class="vt-thumb" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+    return '<a class="vtoday" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vt-thumb" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
       '<span class="vt-body"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") +
       '<span class="vt-btn">' + esc(tx("विवरण देखें", "View details")) + ' →</span></span><i class="vc-go" aria-hidden="true">›</i></a>';
   }
@@ -3186,10 +3217,10 @@
     var page = document.querySelector(".vrat-page"), box = document.getElementById("vratSearch");
     if (!page || !box) return;
     function filter() {
-      var q = box.value.trim().toLowerCase(), any = false;
+      var q = box.value.trim().toLowerCase(), any = false, qRoman = normalizeRoman(devanagariToRoman(q));
       page.classList.toggle("is-searching", !!q);
       page.querySelectorAll("[data-q]").forEach(function (c) {
-        var hit = !q || c.getAttribute("data-q").indexOf(q) !== -1;
+        var hit = !q || c.getAttribute("data-q").indexOf(q) !== -1 || (qRoman && vratRomanHit(c.getAttribute("data-r") || "", qRoman));
         c.hidden = !hit; if (hit) any = true;
       });
       page.querySelectorAll(".vs").forEach(function (g) { g.hidden = !g.querySelector("[data-q]:not([hidden])"); });
@@ -3259,7 +3290,7 @@
       var host = document.getElementById("vratBody");
       if (!host || host.getAttribute("data-slug") !== slug) return;
       host.innerHTML = vratDetailHtml(v);
-      setMeta(v.name + " — व्रत एवं पर्व | स्वाध्याय", String(v.intro || "").slice(0, 160), vratPath(v));
+      setMeta(v.name + " — व्रत एवं पर्व | कल्याण", String(v.intro || "").slice(0, 160), vratPath(v));
     }
     if (VRAT_DETAIL[slug]) { show(VRAT_DETAIL[slug]); return; }
     apiGet("/api/vrats/" + encodeURIComponent(slug)).then(function (d) { VRAT_DETAIL[slug] = d.vrat; show(d.vrat); }).catch(function () {
@@ -3559,7 +3590,7 @@
 
     if (!isEdit) {
       body += '<div class="admin-form-section"><h3>' + bilingual("पुस्तक फ़ाइल", "Book file") + '</h3>' +
-        '<p class="muted-note">पहले से तैयार (स्वाध्याय प्रारूप में) पुस्तक की HTML फ़ाइल संलग्न करें। कच्चे .docx से बदलाव हेतु tools/book_converter.py का उपयोग करें।</p>' +
+        '<p class="muted-note">पहले से तैयार (कल्याण प्रारूप में) पुस्तक की HTML फ़ाइल संलग्न करें। कच्चे .docx से बदलाव हेतु tools/book_converter.py का उपयोग करें।</p>' +
         '<label class="admin-form-field"><input type="file" id="bookHtmlFile" accept=".html,.htm" required></label>' +
         '</div>';
     } else {
@@ -4020,7 +4051,7 @@
 
   /* ---------------- per-page <title> / meta ----------------
      The static index.html carries the site-wide title and meta tags; a book page replaces
-     them with "Swadhyay | स्वाध्याय — <book> | <publisher> | <author>" (publisher/author
+     them with "Kalyan | कल्याण — <book> | <publisher> | <author>" (publisher/author
      parts are left out when the book doesn't name one) and every other page restores the
      defaults captured on first use. */
   var DEFAULT_META = null;
@@ -4469,7 +4500,7 @@
       '<button class="modal-close" id="subscribeModalClose" aria-label="बंद करें">✕</button>' +
       '<div class="subscribe-modal-icon">🎧</div>' +
       '<h3>' + bilingual("यह सुविधा सदस्यों के लिए है", "This feature is for subscribers") + '</h3>' +
-      '<p>' + bilingual("पुस्तकें सुनने के लिए स्वाध्याय सदस्यता लें।", "Subscribe to Swadhyay to listen to books.") + '</p>' +
+      '<p>' + bilingual("पुस्तकें सुनने के लिए कल्याण सदस्यता लें।", "Subscribe to Kalyan to listen to books.") + '</p>' +
       '<a href="/subscribe" class="btn-primary" id="subscribeModalCta">' + bilingual("सदस्यता लें", "Subscribe now") + '</a>' +
       '</div>';
     document.body.appendChild(overlay);

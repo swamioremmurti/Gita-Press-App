@@ -19,7 +19,7 @@
    Saved in localStorage (swadhyay_sankalp_v1) -- on this device only: the active संकल्प, which portions were
    confirmed (with the date), schedule changes, and the private history of finished पाठ.
 
-   Reminders (no server): a browser notification while Swadhyay is open, an in-page "today's portion is pending"
+   Reminders (no server): a browser notification while Kalyan is open, an in-page "today's portion is pending"
    notice, and a calendar file (.ics) with a repeating event that works on any device even when the site is closed.
 
    Public API: window.SwadhyaySankalp.pageHtml(), .mount({ tx, toast }), .mountCard(el, { tx, toast })        */
@@ -247,7 +247,7 @@
     }
     ev.push("SUMMARY:" + icsEsc(name), "DESCRIPTION:" + icsEsc("आज का पाठ देखें और पूर्णता दर्ज करें: " + link), "URL:" + link,
       "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc(name), "TRIGGER:PT0M", "END:VALARM", "END:VEVENT");
-    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Swadhyay//Sankalp//HI", "CALSCALE:GREGORIAN"].concat(ev, ["END:VCALENDAR"]);
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Kalyan//Sankalp//HI", "CALSCALE:GREGORIAN"].concat(ev, ["END:VCALENDAR"]);
     var blob = new Blob([lines.map(icsFold).join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
     var u = URL.createObjectURL(blob), el = document.createElement("a");
     el.href = u; el.download = "swadhyay-manas-path.ics"; document.body.appendChild(el); el.click();
@@ -340,7 +340,7 @@
   function titleHtml() { return esc(T("श्रीरामचरितमानस", "Ramcharitmanas")) + "<br>" + esc(T("पाठ-संकल्प", "Path Sankalp")); }
   function taglineHtml() { return esc(T("मानस पढ़ें,", "Read the Manas,")) + "<br>" + esc(T("मन को राममय बनाएँ।", "fill the mind with Ram.")); }
   function hero() {
-    return '<header class="sk-hero"><div class="sk-hero-in"><small>' + esc(T("स्वाध्याय · विशेष साधना", "Swadhyay · Special sadhana")) + '</small>' +
+    return '<header class="sk-hero"><div class="sk-hero-in"><small>' + esc(T("कल्याण · विशेष साधना", "Kalyan · Special sadhana")) + '</small>' +
       '<h1>' + titleHtml() + '</h1>' +
       '<p>' + taglineHtml() + '</p></div></header>';
   }
@@ -349,7 +349,7 @@
   function renderCard() {
     if (!cardEl) return;
     var a = S.active;
-    var head = '<header class="dd-head"><small class="sk-eyebrow">' + esc(T("स्वाध्याय · विशेष साधना", "Swadhyay · Special sadhana")) + '</small><h3>' + titleHtml() + '</h3><p>' + taglineHtml() + '</p></header>';
+    var head = '<header class="dd-head"><small class="sk-eyebrow">' + esc(T("कल्याण · विशेष साधना", "Kalyan · Special sadhana")) + '</small><h3>' + titleHtml() + '</h3><p>' + taglineHtml() + '</p></header>';
     var html;
     if (!a) {
       html = head + '<div class="dd-text is-panel sk-pitch"><p>' + esc(T("अपनी सुविधा और परम्परा के अनुसार पाठ चुनें। हम आपको विधि, समय-स्मरण और प्रगति में सहयोग देंगे।", "Choose a path to suit you and your tradition. We help with the विधि, reminders and progress.")) + '</p>' +
@@ -569,7 +569,7 @@
       '<label>' + esc(T("प्रतिदिन पाठ का समय", "Daily reading time")) + '<input type="time" data-sk-in="a-time" value="' + (a.time || "07:00") + '"></label>' +
       '<label class="sk-check"><input type="checkbox" data-sk-in="a-remind"' + (a.remind ? " checked" : "") + '> <span>' + esc(T("स्मरण चालू", "Reminders on")) + '</span></label>' +
       '<label class="sk-check"><input type="checkbox" data-sk-in="a-follow"' + (a.follow ? " checked" : "") + '> <span>' + esc(T("एक अनुवर्ती स्मरण", "One follow-up")) + '</span></label></div>' +
-      '<p class="sk-sm">🔔 ' + esc(T("ब्राउज़र सूचना: ", "Browser notification: ")) + esc(permWords()) + ' — ' + esc(T("यह तब आती है जब स्वाध्याय आपके ब्राउज़र में खुला हो।", "it works while Swadhyay is open in your browser.")) + '</p>' +
+      '<p class="sk-sm">🔔 ' + esc(T("ब्राउज़र सूचना: ", "Browser notification: ")) + esc(permWords()) + ' — ' + esc(T("यह तब आती है जब कल्याण आपके ब्राउज़र में खुला हो।", "it works while Kalyan is open in your browser.")) + '</p>' +
       '<div class="sk-row sk-wrap-row">' + (typeof Notification !== "undefined" && Notification.permission === "default" ? '<button type="button" class="sk-btn sk-btn-ghost" data-sk="perm">🔔 ' + esc(T("सूचना की अनुमति दें", "Allow notifications")) + '</button>' : '') +
       '<button type="button" class="sk-btn sk-btn-ghost" data-sk="ics">📅 ' + esc(T("कैलेंडर में जोड़ें (हर स्थिति में स्मरण)", "Add to calendar (works even when the site is closed)")) + '</button>' +
       '<button type="button" class="sk-btn sk-btn-ghost" data-sk="vidhi">📖 ' + esc(T("विधि देखें", "See the विधि")) + '</button>' +
@@ -615,7 +615,7 @@
       '<p class="sk-center"><b>' + esc(tn(t)) + '</b></p><dl class="sk-dl">' + rows.map(function (r) { return '<div><dt>' + esc(r[0]) + '</dt><dd>' + esc(r[1]) + '</dd></div>'; }).join("") + '</dl>' +
       '<div class="sk-card sk-inner"><b>' + esc(T("समापन विधि का स्मरण", "A reminder of the closing observance")) + '</b><p>' + esc(T("पुस्तक में दी गयी आरती तथा क्षमा-प्रार्थना करें; हवन, प्रसाद आदि की परम्परा हो तो अपने गुरुजन/कुल-परम्परा के अनुसार करें।", "Do the आरती and the prayer for forgiveness given in the book; for हवन, prasad and the like, follow your guru or family tradition.")) + '</p></div>' +
       '<label class="sk-check"><input type="checkbox" data-sk-in="keep" checked> <span>' + esc(T("इस संकल्प का निजी रिकॉर्ड इस उपकरण पर रखें", "Keep a private record of this sankalp on this device")) + '</span></label>' +
-      '<div class="sk-row sk-wrap-row"><button type="button" class="sk-btn" data-sk="finish" data-arg="new">' + esc(T("नया पाठ आरम्भ करें", "Begin another path")) + '</button><button type="button" class="sk-btn sk-btn-ghost" data-sk="finish" data-arg="lib">' + esc(T("स्वाध्याय पुस्तकालय में लौटें", "Return to the library")) + '</button></div>' +
+      '<div class="sk-row sk-wrap-row"><button type="button" class="sk-btn" data-sk="finish" data-arg="new">' + esc(T("नया पाठ आरम्भ करें", "Begin another path")) + '</button><button type="button" class="sk-btn sk-btn-ghost" data-sk="finish" data-arg="lib">' + esc(T("कल्याण पुस्तकालय में लौटें", "Return to the library")) + '</button></div>' +
       '<p class="sk-sm sk-center">' + esc(T("यह पूर्णता-स्क्रीन प्रमाणपत्र नहीं है; यह केवल आपके द्वारा दर्ज पाठ का सार है और किसी अनुष्ठान की पूर्ति प्रमाणित नहीं करता।", "This screen is not a certificate; it only summarises what you recorded and does not certify any ritual.")) + '</p></section>';
   }
   function finish(keep, dest) {

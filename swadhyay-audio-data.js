@@ -20,10 +20,10 @@ var SWADHYAY_AUDIO_CATEGORIES = [
 ];
 
 var SWADHYAY_AUDIO_RAW = [
-  { id: "bhajan-ek-tattva-do-tanu", title: "एक तत्त्व दो तनु", artist: "स्वाध्याय संग्रह", category: "bhajan",
+  { id: "bhajan-ek-tattva-do-tanu", title: "एक तत्त्व दो तनु", artist: "कल्याण संग्रह", category: "bhajan",
     src: "assets/audio/ek-tattva-do-tanu.mp3", duration: 160 },
-  { id: "bhajan-palane-rang-khelat", title: "पालनैं रँग खेलत", artist: "स्वाध्याय संग्रह", category: "bhajan",
+  { id: "bhajan-palane-rang-khelat", title: "पालनैं रँग खेलत", artist: "कल्याण संग्रह", category: "bhajan",
     src: "assets/audio/palane-rang-khelat.mp3", duration: 167 },
-  { id: "bhajan-radha-charan-suchi-sukhkand", title: "राधा चरन सुचि सुखकंद", artist: "स्वाध्याय संग्रह", category: "bhajan",
+  { id: "bhajan-radha-charan-suchi-sukhkand", title: "राधा चरन सुचि सुखकंद", artist: "कल्याण संग्रह", category: "bhajan",
     src: "assets/audio/radha-charan-suchi-sukhkand.mp3", duration: 160 }
 ];
