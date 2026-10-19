@@ -504,6 +504,12 @@
     return String(s || "").split(";").map(function (x) { return x.trim(); }).filter(Boolean);
   }
 
+  /* Books that stay in the library folder and in swadhyay-data.js but are switched off on the site: not listed,
+     searched, linked, or put in the sitemap. Remove the line to switch a book back on. */
+  var HIDDEN_BOOKS = {
+    "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true   // replaced by the पदच्छेद-अन्वयसहित edition
+  };
+
   var seenBookSlugs = {};
   var BOOKS = (window.SWADHYAY_BOOKS_RAW || []).map(function (b, i) {
     var cat = CATEGORY_BY_KEY[b.category] || { key: b.category, hi: b.category, en: b.category, icon: "📖" };
@@ -552,7 +558,7 @@
       coverImage: COVER_OVERRIDES[b.file] || null,
       isGitaPress: !NON_GITA_PRESS_BOOKS[b.file]
     };
-  });
+  }).filter(function (b) { return !HIDDEN_BOOKS[b.file]; });   // ids were fixed by the map above, so hiding a book never renumbers the rest
   var BOOKS_BY_ID = {};
   var BOOKS_BY_FILE = {};
   var BOOKS_BY_SLUG = {};
@@ -2117,7 +2123,7 @@
   }
 
   function readerThemeCSS() {
-    return ".rdr-night{filter:invert(0.93) hue-rotate(180deg);}" +
+    return ".rdr-night{background:#fff;filter:invert(0.93) hue-rotate(180deg);}" +
       ".rdr-sepia{filter:sepia(0.55) saturate(1.15) brightness(0.98);}";
   }
 
@@ -2254,7 +2260,8 @@
 
   function renderIframeDoc(book, headHtml, chapterHtml, fontSize, lineHeight, theme, highlightList, restoreScrollPct, anchorId) {
     var themeClass = theme === "night" ? "rdr-night" : theme === "sepia" ? "rdr-sepia" : "";
-    var bg = theme === "sepia" ? "#f4ecd8" : "#ffffff";
+    // night: the page is a white body that the filter below inverts; the canvas around it must match what that gives (#121212)
+    var bg = theme === "sepia" ? "#f4ecd8" : theme === "night" ? "#121212" : "#ffffff";
     return '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
       '<base href="' + esc(readerBaseUrl(book)) + '">' +
       headHtml +
@@ -2625,7 +2632,8 @@
     reader.open = true;
     reader.bookId = bookId;
     reader.book = book;
-    reader.theme = getReaderTheme();
+    // opened from the dark site -> the book opens in night view too; otherwise the reader's own saved choice
+    reader.theme = getTheme() === "dark" ? "night" : getReaderTheme();
     reader.fontSize = getReaderFontSize();
     reader.lineHeight = getReaderLineHeight();
     reader.chapters = null;
