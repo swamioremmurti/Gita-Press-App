@@ -295,6 +295,33 @@ async function handleProgressPost(req, res, user) {
   sendJSON(res, 200, { ok: true });
 }
 
+// ================================================================ Gita LMS (per-user learning progress)
+
+const GITA_LMS_MAX_BYTES = 200 * 1024;
+
+async function handleGitaLmsGet(req, res, user) {
+  const row = await db.get('SELECT data, updated_at FROM gita_lms WHERE user_id = ?', [user.id]);
+  let data = null;
+  if (row) { try { data = JSON.parse(row.data); } catch (e) { data = null; } }
+  sendJSON(res, 200, { data, updatedAt: row ? row.updated_at : 0 });
+}
+
+async function handleGitaLmsPut(req, res, user) {
+  let payload;
+  try { payload = await readJSONBody(req, GITA_LMS_MAX_BYTES + 4096); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
+  const data = payload && payload.data;
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return sendJSON(res, 400, { error: 'Missing data' });
+  const text = JSON.stringify(data);
+  if (Buffer.byteLength(text, 'utf8') > GITA_LMS_MAX_BYTES) return sendJSON(res, 413, { error: 'Too large' });
+  const now = Date.now();
+  await db.run(
+    `INSERT INTO gita_lms (user_id, data, updated_at) VALUES (?, ?, ?)
+     ON CONFLICT(user_id) DO UPDATE SET data = excluded.data, updated_at = excluded.updated_at`,
+    [user.id, text, now]
+  );
+  sendJSON(res, 200, { ok: true, updatedAt: now });
+}
+
 // ============================================================== admin: books
 
 function slugFilename(name) {
@@ -603,6 +630,12 @@ async function handle(req, res, pathname) {
       if (!user) { sendJSON(res, 401, { error: 'साइन इन करना आवश्यक है' }); return true; }
       if (method === 'GET') { await handleProgressGet(req, res, user); return true; }
       if (method === 'POST') { await handleProgressPost(req, res, user); return true; }
+    }
+
+    if (pathname === '/api/gita-lms') {
+      if (!user) { sendJSON(res, 401, { error: 'साइन इन करना आवश्यक है' }); return true; }
+      if (method === 'GET') { await handleGitaLmsGet(req, res, user); return true; }
+      if (method === 'PUT' || method === 'POST') { await handleGitaLmsPut(req, res, user); return true; }
     }
 
     // ---- admin routes: everything below requires role === 'admin' ----

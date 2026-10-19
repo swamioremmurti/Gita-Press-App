@@ -697,7 +697,7 @@
     myreads: ["अध्ययन", "My Reading"], authors: ["लेखक", "Lekhak"], chat: ["प्रश्नोत्तर", "Q & A"],
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
     help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
-    sankalp: ["पाठ-संकल्प", "Path Sankalp"], vrat: ["व्रत एवं पर्व", "Vrats & Festivals"],
+    gita: ["गीता LMS", "Gita LMS"], sankalp: ["पाठ-संकल्प", "Path Sankalp"], vrat: ["व्रत एवं पर्व", "Vrats & Festivals"],
     prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"]
   };
   var SHELL_TITLES = [
@@ -2258,11 +2258,21 @@
   var READER_PARA_INDENT = "2.2em";
   var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.TXT,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.Question,p.Answer";
 
+  // night: the page is a white body that a filter inverts; the canvas around it must match what that gives (#121212)
+  function readerBg(theme) { return theme === "sepia" ? "#f4ecd8" : theme === "night" ? "#121212" : "#ffffff"; }
+  /* The iframe element itself is the colour you see while a page is being swapped, so it follows the theme too
+     (it used to be white, which flashed on every page turn in night view). */
+  function readerPaintFrame(iframe, theme) {
+    iframe.style.background = readerBg(theme);
+    iframe.style.colorScheme = theme === "night" ? "dark" : "light";
+  }
+
   function renderIframeDoc(book, headHtml, chapterHtml, fontSize, lineHeight, theme, highlightList, restoreScrollPct, anchorId) {
     var themeClass = theme === "night" ? "rdr-night" : theme === "sepia" ? "rdr-sepia" : "";
-    // night: the page is a white body that the filter below inverts; the canvas around it must match what that gives (#121212)
-    var bg = theme === "sepia" ? "#f4ecd8" : theme === "night" ? "#121212" : "#ffffff";
-    return '<!DOCTYPE html><html><head><meta charset="UTF-8">' +
+    var bg = readerBg(theme);
+    // the canvas colour comes first, ahead of the book's own (render-blocking) stylesheet, so nothing paints white while that loads
+    return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="color-scheme" content="' + (theme === "night" ? "dark" : "light") + '">' +
+      '<style>html{background:' + bg + ';}</style>' +
       '<base href="' + esc(readerBaseUrl(book)) + '">' +
       headHtml +
       '<style>' +
@@ -2461,6 +2471,7 @@
     if (!iframe) return;
     var chapter = reader.chapters[reader.idx];
     var highlights = getChapterHighlights(reader.bookId, reader.idx);
+    readerPaintFrame(iframe, reader.theme);
     iframe.srcdoc = renderIframeDoc(reader.book, reader.headHtml, chapter.html, reader.fontSize, reader.lineHeight, reader.theme, highlights, restoreScrollPct || 0, anchorId);
   }
 
@@ -2613,6 +2624,9 @@
     getPanchang: function (d) { return getPanchang(d || new Date(), getPanchangCity()); },
     vratsFor: function (p) { return vratsFor(p); },
     navigate: function (p) { navigate(p); },
+    isLoggedIn: function () { return isLoggedIn(); },
+    getUser: function () { return getCurrentUser(); },
+    api: function (method, path, body) { return apiCall(method, path, body); },
     bookPath: function (file) { var b = findByFile(file); return b ? bookPath(b) : "/library"; },
     readPath: function (file) { var b = findByFile(file); return b ? readPath(b) : "/library"; },
     bookProgress: function (file) { var b = findByFile(file), r = b && getReads()[b.id]; return r && typeof r.progress === "number" ? r.progress : 0; }
@@ -2640,7 +2654,8 @@
     reader.expandedChapters = {};
 
     var iframe = document.getElementById("readerIframe");
-    iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;color:#888;text-align:center;">लोड हो रहा है…</body></html>';
+    readerPaintFrame(iframe, reader.theme);
+    iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;color:#888;text-align:center;' + (reader.theme === "night" ? "background:#121212;" : "") + '">लोड हो रहा है…</body></html>';
     document.getElementById("readerTitleText").textContent = book.title;
     if (window.SwadhyaySankalp) window.SwadhyaySankalp.readerBar(book.file);   // today's portion of an active पाठ-संकल्प
 
@@ -4041,7 +4056,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "gita": "gita", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -4203,6 +4218,7 @@
     else if (seg[0] === "audio") { html = window.SwadhyayAudio ? window.SwadhyayAudio.pageHtml() : viewHome(); }
     else if (seg[0] === "vrat") { html = seg[1] ? viewVrat(decodeURIComponent(seg[1])) : viewVratList(); }
     else if (seg[0] === "sankalp") { html = window.SwadhyaySankalp ? window.SwadhyaySankalp.pageHtml() : viewHome(); }
+    else if (seg[0] === "gita") { html = window.SwadhyayGita ? window.SwadhyayGita.pageHtml() : viewHome(); }
     else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
@@ -4238,6 +4254,7 @@
     if (window.SwadhyayDaily) window.SwadhyayDaily.mount({ tx: tx, toast: toast });
     if (seg[0] === "vrat") { if (seg[1]) loadVratDetail(decodeURIComponent(seg[1])); else wireVratList(); }
     if (window.SwadhyaySankalp && seg[0] === "sankalp") window.SwadhyaySankalp.mount({ tx: tx, toast: toast });
+    if (window.SwadhyayGita && seg[0] === "gita") window.SwadhyayGita.mount({ tx: tx, toast: toast });
     if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
     loadQuoteOfTheDay();

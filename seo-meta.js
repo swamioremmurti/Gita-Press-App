@@ -109,6 +109,10 @@
       title: BRAND + " — श्रीरामचरितमानस पाठ-संकल्प | Ramcharitmanas Path Sankalp",
       desc: "मासिक, नवाह्न और अखण्ड श्रीरामचरितमानस पाठ — विधि, समय-सारणी, दैनिक स्मरण और प्रगति। Monthly, nine-day and akhand Ramcharitmanas path: vidhi, schedule, daily reminders and progress."
     },
+    gita: {
+      title: BRAND + " — गीता LMS: प्रतिदिन 20 मिनट, श्रीमद्भगवद्गीता सीखें | Daily Gita Study",
+      desc: "प्रतिदिन 20 मिनट, रोज़ 2 श्लोक, सरल हिंदी अर्थ और हर 20 श्लोक पर पुनरावृत्ति — संकल्प, रिमाइंडर और प्रगति के साथ श्रीमद्भगवद्गीता का पूरा अध्ययन। A 20-minutes-a-day course through the whole Bhagavad Gita: 2 shlokas a day, revision after every 20, with a pledge, reminders and progress."
+    },
     shalaka: {
       title: BRAND + " — श्रीरामशलाका-प्रश्नावली | Ram Shalaka Prashnavali",
       desc: "श्रीरामचरितमानस की श्रीरामशलाका-प्रश्नावली — ध्यान करें, कोष्ठक चुनें और चौपाई से उत्तर पाएँ। Shri Ram Shalaka Prashnavali of the Ramcharitmanas as an interactive game."

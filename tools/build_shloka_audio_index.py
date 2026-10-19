@@ -35,7 +35,9 @@ def main():
         if not entry:
             print("no such shloka in the book data:", f.name)
             continue
-        out["%d_%s" % (ch, v)] = {"id": entry["id"]}
+        # a recording gets its play button next to the book's sub-chapter only when it is that sub-chapter's first
+        # shloka (a group such as "श्लोक ४-६" has one anchor)
+        out["%d_%s" % (ch, v)] = {"id": entry["id"]} if entry.get("f", 1) else {}
     (AUDIO / "index.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
     print("indexed %d recording(s):" % len(out), ", ".join(out))
 

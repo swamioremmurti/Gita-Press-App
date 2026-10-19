@@ -1,6 +1,6 @@
 /* The three "daily" cards on the home page, above the categories:
 
-     1. दैनिक गीता अध्ययन   -- a self-paced Gita course: one shloka a day, in order, with its Hindi meaning
+     1. दैनिक गीता अध्ययन   -- drawn by swadhyay-gita.js: the Gita LMS (20 minutes a day, 2 shlokas, revision, progress)
      2. श्रीरामचरितमानस पाठ-संकल्प -- drawn by swadhyay-sankalp.js: choose मासिक / नवाह्न / अखण्ड, or, once a
                                संकल्प is taken, today's portion, progress and the next reminder
      3. नित्य भगवत् संकीर्तन -- today's bhajan from the audio library, with one tap to play
@@ -9,15 +9,14 @@
    cost the home page a few KB and never wait on a server function. "Open in the reader" uses
    window.__swadhyayApp.openBookAt (swadhyay-app.js); the bhajan card uses window.SwadhyayAudio.
 
-   Saved in localStorage (swadhyay_daily_v1): where you are in the Gita course (and a streak). The पाठ-संकल्प is
-   saved by swadhyay-sankalp.js. Nothing leaves the device.
+   The Gita LMS (swadhyay-gita.js) and the पाठ-संकल्प (swadhyay-sankalp.js) save their own progress.
 
    Public API: window.SwadhyayDaily.homeHtml(), .mount({ tx, toast })                                    */
 (function () {
   "use strict";
 
   var DATA = "/assets/data/v1/";
-  var GITA_FILE = "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html";
+  var GITA_FILE = "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html";
   var MANAS_FILE = "श्रीरामचरितमानस.html";
   var IMG = "/assets/images/daily/";
   var LS = "swadhyay_daily_v1";
@@ -100,79 +99,15 @@
       '<button type="button" class="dd-cta" data-dd="go" data-arg="' + esc(link) + '">' + esc(linkText) + ' <i aria-hidden="true">→</i></button>');
   }
 
-  /* ================================================================== 1. Gita */
-  function gitaWhere(index, pos) {
-    var left = pos;
-    for (var i = 0; i < index.chapters.length; i++) {
-      if (left < index.chapters[i].n) return { ch: index.chapters[i].ch, i: left, name: index.chapters[i].name };
-      left -= index.chapters[i].n;
-    }
-    return null;
-  }
+  /* ================================================================== 1. Gita -- the गीता LMS card */
+  // The card (an invitation before joining; today's lesson, streak and progress after) is drawn by
+  // swadhyay-gita.js, which also owns the /gita page (the Gita LMS).
   function renderGita() {
-    var SA = window.SwadhyayShlokaAudio;
-    (SA ? SA.load() : Promise.resolve()).then(function () { return getJSON("gita/index.json"); }).then(function (index) {
-      var g = state.gita;
-      if (g.pos >= index.total) { renderGitaDone(index); return; }
-      var showPos = g.shown && g.shown.date === today() ? g.shown.pos : g.pos;
-      if (!g.shown || g.shown.date !== today()) { g.shown = { date: today(), pos: g.pos }; save(); showPos = g.pos; }
-      var w = gitaWhere(index, showPos);
-      return getJSON("gita/ch" + (w.ch < 10 ? "0" : "") + w.ch + ".json").then(function (data) {
-        var e = data.shlokas[w.i];
-        var learnedToday = g.last === today();
-        var body;
-        if (V.gita === "meaning") {
-          body = '<div class="dd-sub-h">' + esc(T("भावार्थ", "Meaning")) + '</div><p class="dd-meaning">' + esc(e.m || T("इस श्लोक का भावार्थ पुस्तक में पढ़ें।", "Read the meaning in the book.")) + '</p>';
-        } else if (V.gita === "progress") {
-          var pct = Math.round(g.learned / index.total * 100);
-          body = '<div class="dd-sub-h">' + esc(T("आपकी प्रगति", "Your progress")) + '</div>' +
-            '<div class="dd-meter"><i style="width:' + pct + '%"></i></div>' +
-            '<p class="dd-stat">' + esc(T("सीखे गए श्लोक: ", "Shlokas learned: ")) + '<b>' + dev(g.learned) + ' / ' + dev(index.total) + '</b></p>' +
-            '<p class="dd-stat">🔥 ' + dev(g.streak.count) + ' ' + esc(T("दिन लगातार", "day streak")) + ' · ' + esc(T("सबसे लम्बी: ", "best: ")) + dev(g.streak.best) + '</p>';
-        } else {
-          body = (e.s ? '<p class="dd-speaker">' + esc(e.s) + '</p>' : '') + lines(e.t);
-          var akey = w.ch + "_" + e.v;
-          if (SA && SA.has(akey)) {        // a recitation exists: tap the shloka or the small button to hear it
-            var on = SA.playingKey() === akey;
-            body = '<div class="dd-shloka" data-dd="gita-audio" data-arg="' + akey + '" role="button" tabindex="0" aria-label="' + esc(T("श्लोक सुनें", "Listen to the shloka")) + '">' + body + '</div>' +
-              '<button type="button" class="dd-sh-play' + (on ? " is-playing" : "") + '" data-dd="gita-audio" data-arg="' + akey + '" data-key="' + akey + '" aria-label="' + esc(T("श्लोक सुनें", "Listen to the shloka")) + '">' + (on ? "❚❚" : "▶") + '</button>';
-          }
-        }
-        put("gita", shell({
-          title: T("दैनिक गीता अध्ययन", "Daily Gita Study"), sub: T("प्रतिदिन एक श्लोक,\nजीवन के लिए एक सीख", "One shloka a day,\none lesson for life"),
-          badgeT: T("आज का श्लोक", "Today's shloka"), badgeS: T("अध्याय ", "Chapter ") + dev(w.ch) + ", " + T("श्लोक ", "Shloka ") + dev(e.v),
-          body: body, cls: V.gita === "shloka" ? fit(e.t) : "is-panel",
-          cta: learnedToday ? T("आज का श्लोक पढ़ें", "Read today's shloka") : T("आज का गीता अध्ययन", "Today's Gita study"), ctaK: "gita-open", arg: e.id,
-          acts: [
-            { k: "gita-view", arg: "shloka", ic: ICON.book, l: T("श्लोक", "Shloka"), on: V.gita === "shloka" },
-            { k: "gita-view", arg: "meaning", ic: ICON.bulb, l: T("भावार्थ", "Meaning"), on: V.gita === "meaning" },
-            { k: "gita-learned", ic: learnedToday ? "🪷" : ICON.check, l: learnedToday ? T("सीखा ✓", "Learned ✓") : T("सीख लिया", "Learned"), on: learnedToday },
-            { k: "gita-view", arg: "progress", ic: ICON.chart, l: T("प्रगति", "Progress"), on: V.gita === "progress" }
-          ]
-        }));
-        card("gita").setAttribute("data-anchor", e.id);
-      });
-    }).catch(function () { failed("gita", T("दैनिक गीता अध्ययन", "Daily Gita Study"), T("प्रतिदिन एक श्लोक,\nजीवन के लिए एक सीख", "One shloka a day,\none lesson for life"), "/library", T("गीता पुस्तकें देखें", "Browse Gita books")); });
-  }
-  function renderGitaDone(index) {
-    put("gita", shell({
-      title: T("दैनिक गीता अध्ययन", "Daily Gita Study"), sub: T("प्रतिदिन एक श्लोक,\nजीवन के लिए एक सीख", "One shloka a day,\none lesson for life"),
-      badgeIc: "🪷", badgeT: T("पूर्ण", "Complete"), badgeS: dev(index.total) + " " + T("श्लोक", "shlokas"),
-      body: '<p class="dd-meaning">' + esc(T("🙏 आपने गीता के सभी श्लोक सीख लिए। यात्रा फिर से आरम्भ कर सकते हैं।", "🙏 You have learned every shloka of the Gita. You can begin the journey again.")) + '</p>',
-      cls: "is-panel", cta: T("फिर से आरम्भ करें", "Begin again"), ctaK: "gita-restart",
-      acts: [{ k: "gita-view", arg: "shloka", ic: ICON.book, l: T("श्लोक", "Shloka") }, { k: "gita-view", arg: "meaning", ic: ICON.bulb, l: T("भावार्थ", "Meaning") },
-        { k: "gita-learned", ic: ICON.check, l: T("सीखा ✓", "Learned ✓"), on: true }, { k: "gita-view", arg: "progress", ic: ICON.chart, l: T("प्रगति", "Progress") }]
-    }));
-  }
-  function gitaLearned() {
-    var g = state.gita;
-    if (g.last === today()) { toast(T("आज का श्लोक आप सीख चुके हैं — कल नया श्लोक मिलेगा 🙏", "You have learned today's shloka — a new one tomorrow 🙏")); return; }
-    g.pos++; g.learned++; g.last = today();
-    var s = g.streak;
-    s.count = s.last === yesterday() ? s.count + 1 : 1; s.last = today(); if (s.count > s.best) s.best = s.count;
-    save();
-    toast("🪷 " + T("श्लोक सीख लिया! कल नया श्लोक मिलेगा।", "Shloka learned! A new one tomorrow."));
-    renderGita();
+    var el = card("gita");
+    if (!el) return;
+    var G = window.SwadhyayGita;
+    if (G) { G.mountCard(el, helpers); return; }
+    failed("gita", T("दैनिक गीता अध्ययन", "Daily Gita Study"), T("प्रतिदिन एक श्लोक, जीवन के लिए एक सीख", "One shloka a day, one lesson for life"), "/library", T("गीता पुस्तकें देखें", "Browse Gita books"));
   }
 
   /* ================================================================== 2. Manas -- the पाठ-संकल्प card */
@@ -231,24 +166,11 @@
     if (!b || !root || !root.contains(b)) return;
     var k = b.getAttribute("data-dd"), arg = b.getAttribute("data-arg"), a = app();
     var cardEl = b.closest("[data-card]");
-    if (k === "gita-view") { V.gita = arg; renderGita(); }
-    else if (k === "gita-audio") { if (window.SwadhyayShlokaAudio && arg) window.SwadhyayShlokaAudio.play(arg); }
-    else if (k === "gita-learned") gitaLearned();
-    else if (k === "gita-restart") { state.gita.pos = 0; state.gita.shown = null; V.gita = "shloka"; save(); renderGita(); }
-    else if (k === "gita-open") { var id = cardEl && cardEl.getAttribute("data-anchor"); if (a) a.openBookAt(GITA_FILE, id ? { id: id } : null); }
-    else if (k === "audio-play" || k === "audio-open") { var t = todaysTrack(); if (t && window.SwadhyayAudio) window.SwadhyayAudio.play(t.id); }
+    if (k === "audio-play" || k === "audio-open") { var t = todaysTrack(); if (t && window.SwadhyayAudio) window.SwadhyayAudio.play(t.id); }
     else if (k === "audio-cat") { if (window.SwadhyayAudio && arg) window.SwadhyayAudio.setCategory(arg); if (a) a.navigate("/audio"); }
     else if (k === "go") { if (a) a.navigate(arg); }
   }
   document.addEventListener("swadhyay-audio-state", function () { if (root && root.isConnected && card("bhajan")) renderBhajan(); });
-  // the shloka recitation started / paused / ended: keep the small play button in step
-  document.addEventListener("swadhyay-shloka-audio-state", function (ev) {
-    if (!root || !root.isConnected) return;
-    Array.prototype.forEach.call(root.querySelectorAll(".dd-sh-play"), function (b) {
-      var on = ev.detail === b.getAttribute("data-key");
-      b.classList.toggle("is-playing", on); b.textContent = on ? "❚❚" : "▶";
-    });
-  });
   document.addEventListener("keydown", function (e) {
     if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("dd-shloka")) { e.preventDefault(); e.target.click(); }
   });
@@ -260,7 +182,7 @@
   window.SwadhyayDaily = {
     homeHtml: function () {
       return '<section class="dd-trio" data-daily aria-label="' + esc(T("आज के पाठ और संकीर्तन", "Today's readings and sankirtan")) + '">' +
-        skeleton("gita", "dd-gita", "gita.webp") + skeleton("manas", "dd-manas", "manas.webp") + skeleton("bhajan", "dd-bhajan", "bhajan.webp") + '</section>';
+        '<article class="gl-card is-loading" data-card="gita"></article>' + skeleton("manas", "dd-manas", "manas.webp") + skeleton("bhajan", "dd-bhajan", "bhajan.webp") + '</section>';
     },
     mount: function (h) {
       if (h) { helpers.tx = h.tx || helpers.tx; helpers.toast = h.toast || helpers.toast; }

@@ -79,6 +79,12 @@ const SCHEMA_STATEMENTS = [
     first_opened_at INTEGER,
     PRIMARY KEY (user_id, book_file)
   )`,
+  // Gita LMS: one JSON document per user (plan progress, pledge, reminder choices) -- see swadhyay-gita.js
+  `CREATE TABLE IF NOT EXISTS gita_lms (
+    user_id    INTEGER PRIMARY KEY,
+    data       TEXT NOT NULL,
+    updated_at INTEGER NOT NULL
+  )`,
   // vrat / festival catalogue (loaded from server/lib/vrat-catalogue.json by server/lib/vrats.js)
   `CREATE TABLE IF NOT EXISTS vrats (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,
