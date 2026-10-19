@@ -135,7 +135,7 @@
   function ready() {
     if (!readyP) {
       var SA = window.SwadhyayShlokaAudio;
-      readyP = Promise.all([getJSON("index.json"), SA ? SA.load() : Promise.resolve()]).then(function (r) {
+      readyP = Promise.all([getJSON("index.json"), SA ? SA.load() : Promise.resolve(), asrConfig()]).then(function (r) {
         INDEX = r[0]; PLAN = buildPlan(INDEX); return INDEX;
       });
       readyP.catch(function () { readyP = null; });
@@ -688,7 +688,8 @@
   function endJob(j) {
     if (!j) return;
     j.done = true; clearInterval(j.tick);
-    if (j.rec) { j.rec.onresult = j.rec.onerror = j.rec.onend = null; try { j.rec.abort(); } catch (e) {} }
+    if (j.cleanup) { try { j.cleanup(); } catch (e) {} }
+    if (j.rec && !j.cloud) { j.rec.onresult = j.rec.onerror = j.rec.onend = null; try { j.rec.abort(); } catch (e) {} }
     if (job === j) job = null;
   }
   function stopSpeech() {               // leaving the view: drop whatever was being listened to
@@ -709,11 +710,13 @@
       (q != null ? ' · ' + esc(T("परिणाम ", "result in ")) + '<b>' + dev(q) + '</b>' + esc(T(" सेकंड में", " s")) : '') + '</small>' + (r.live ? '<br><i>' + esc(r.live) + '</i>' : '');
   }
   function speakHtml(key, lines) {
-    if (!SR) return '';
+    if (!SR && !cloudOK()) return '';
     var r = sp[key] || { state: "idle" };
     var listening = r.state === "listening";
     var out = '';
     if (listening) out = '<p class="gl-sp-live">' + liveHtml(r) + '</p>';
+    else if (r.state === "checking") out = '<p class="gl-sp-live">⏳ ' + esc(r.note === "wake" ? T("आवाज़-जाँच जाग रही है — आपकी रिकॉर्डिंग सुरक्षित है, थोड़ी देर…", "The speech check is waking up — your recording is safe, one moment…")
+      : r.note === "recording" ? T("रिकॉर्डिंग तैयार हो रही है…", "Preparing your recording…") : T("संस्कृत पहचान से जाँच हो रही है…", "Checking with the Sanskrit recogniser…")) + '</p>';
     else if (r.state === "error") out = '<p class="gl-sp-err">⚠️ ' + esc(r.msg) + '</p>';
     else if (r.state === "done") {
       var good = r.score >= 75, ok = r.score >= 50;
@@ -726,6 +729,9 @@
     return '<div class="gl-sp" data-sp="' + esc(key) + '"><button type="button" class="gl-btn gl-ghost gl-sm' + (listening ? " is-live" : "") + '" data-gl="speak" data-arg="' + esc(key) + '">' + (listening ? "■ " + esc(T("रोकें और परिणाम देखें", "Stop and see the result")) : "🎤 " + esc(T("बोलकर जाँचें", "Check by speaking"))) + '</button><div class="gl-sp-out">' + out + '</div></div>';
   }
   function speakNote() {
+    if (cloudOK()) {
+      return '<p class="gl-note gl-sp-note">' + esc(T("बोलकर जाँच संस्कृत के लिए बनी AI4Bharat की IndicConformer पहचान से होती है। बटन दबाकर पूरा श्लोक बोलें — बीच में रुकने पर भी वह सुनती रहेगी; 5 सेकंड चुप रहने पर परिणाम आ जाएगा। आपकी आवाज़ Kalyan की अपनी आवाज़-जाँच सेवा को भेजी जाती है, जाँच के बाद सहेजी नहीं जाती। यह अभ्यास का सहायक है, उच्चारण का निर्णायक नहीं।", "The speaking check uses AI4Bharat's IndicConformer, a recogniser built for Sanskrit. Press the button and recite the whole shloka — it keeps listening through pauses and gives the result after 5 seconds of silence. Your voice is sent to Kalyan's own speech service and is not kept after the check. It is a practice aid, not a judge of pronunciation.")) + '</p><p class="gl-sp-asr" data-asr-status></p>';
+    }
     return SR ? '<label class="gl-sp-lang">' + esc(T("पहचान की भाषा: ", "Recognition language: ")) + '<select data-gl-in="sp-lang">' + SP_LANGS.map(function (l) { return '<option value="' + l[0] + '"' + (spLang() === l[0] ? " selected" : "") + '>' + esc(tt(l[1])) + '</option>'; }).join("") + '</select></label>' +
       '<p class="gl-note gl-sp-note">' + esc(T("बोलकर जाँच ब्राउज़र की स्पीच-पहचान से होती है (हिन्दी)। बटन दबाकर पूरा श्लोक बोलें — बीच में रुकने पर भी वह सुनता रहेगा; 5 सेकंड चुप रहने पर परिणाम आ जाएगा। आपकी आवाज़ ब्राउज़र की स्पीच सेवा तक जा सकती है; Kalyan उसे सहेजता नहीं। संस्कृत शब्द पूरी तरह सटीक नहीं पहचाने जाते — इसे अभ्यास का सहायक समझें।", "The speaking check uses your browser's speech recognition (Hindi). Press the button and recite the whole shloka — it keeps listening through pauses and gives the result after 5 seconds of silence. Your voice may go to the browser's speech service; Kalyan does not store it. Sanskrit words are not recognised perfectly — treat it as a practice aid.")) + '</p>'
       : '<p class="gl-note gl-sp-note">🎤 ' + esc(T("इस ब्राउज़र में बोलकर जाँच उपलब्ध नहीं — Chrome, Edge या Safari में आज़माएँ।", "Speaking check is not available in this browser — try Chrome, Edge or Safari.")) + '</p>';
@@ -735,6 +741,196 @@
     if (box) box.outerHTML = speakHtml(key, spLines[key] || []);
   }
   function speakBlock(key, lines) { spLines[key] = lines; return speakHtml(key, lines); }
+
+  /* ================================================================== the Sanskrit speech service (cloud engine)
+     When the site has an ASR_URL (see /api/asr/config) the check runs on AI4Bharat's Sanskrit IndicConformer, hosted as its
+     own service (asr-service/), instead of the browser's Hindi recogniser:
+       - when a lesson opens the page pings the service's /health so a sleeping host is awake by the time the learner recites
+         (and again when the mic button is pressed; at most one ping series every 10 minutes);
+       - the browser records the recitation, finds the silence itself (5 s after the last speech, or the longest time
+         allowed = standard reading time x 1.5), trims it, makes a 16 kHz mono WAV;
+       - the site hands out a short-lived signed token (rate-limited), the WAV goes to the service, the text comes back
+         and goes through the same phonetic scoring as before;
+       - if the service cannot be reached the next tap uses the browser recogniser for a while. */
+  var asr = { cfg: null, cfgP: null, ready: false, readyAt: 0, status: "idle", polling: 0, failedAt: 0 };
+  function asrConfig() {
+    if (!asr.cfgP) asr.cfgP = fetch("/api/asr/config", { credentials: "same-origin" }).then(function (r) { return r.ok ? r.json() : { enabled: false }; })
+      .catch(function () { return { enabled: false }; }).then(function (c) { asr.cfg = c; return c; });
+    return asr.cfgP;
+  }
+  function cloudOK() {
+    return !!(asr.cfg && asr.cfg.enabled && asr.cfg.url && navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder &&
+      (window.AudioContext || window.webkitAudioContext) && Date.now() - asr.failedAt > 5 * 60 * 1000);
+  }
+  function paintAsrStatus() {
+    var words = asr.status === "ready" ? "🟢 " + T("संस्कृत आवाज़-जाँच तैयार", "Sanskrit speech check ready")
+      : asr.status === "error" ? "⚠️ " + T("संस्कृत आवाज़-जाँच अभी उपलब्ध नहीं — ब्राउज़र की जाँच प्रयोग होगी।", "Sanskrit speech check unavailable — the browser's check will be used.")
+      : "⏳ " + T("संस्कृत आवाज़-जाँच जाग रही है… (पहली बार 1–2 मिनट लग सकते हैं — तब तक श्लोक पढ़ते रहें)", "Sanskrit speech check is waking up… (the first time can take 1–2 minutes — keep reading meanwhile)");
+    if (!root) return;
+    Array.prototype.forEach.call(root.querySelectorAll("[data-asr-status]"), function (el) { el.textContent = asr.status === "idle" ? "" : words; });
+  }
+  function ping() {
+    return fetch(asr.cfg.url + "/health", { cache: "no-store" }).then(function (r) { return r.ok ? r.json() : null; }).catch(function () { return null; }).then(function (j) {
+      if (j && j.ready) { asr.ready = true; asr.readyAt = Date.now(); asr.status = "ready"; }
+      else if (j && j.error && !j.loading) asr.status = "error";
+      else asr.status = "waking";
+      paintAsrStatus();
+      return j;
+    });
+  }
+  /* wake the service (if it is asleep) and keep asking until it says it is ready -- gently: every 4 s, for at most 3 minutes */
+  function warmUp() {
+    asrConfig().then(function (c) {
+      if (!c.enabled || !cloudOK() || asr.polling) return;
+      if (asr.ready && Date.now() - asr.readyAt < 10 * 60 * 1000) { asr.status = "ready"; paintAsrStatus(); return; }
+      asr.ready = false; asr.status = "waking"; paintAsrStatus();
+      var tries = 0;
+      asr.polling = 1;
+      (function loop() {
+        ping().then(function (j) {
+          if ((j && j.ready) || ++tries > 45 || !(root && root.isConnected)) { asr.polling = 0; if (!(j && j.ready) && tries > 45) { asr.status = "error"; paintAsrStatus(); } return; }
+          setTimeout(loop, 4000);
+        });
+      })();
+    });
+  }
+  function waitReady(ms) {                         // after the recitation: the audio is kept while the service finishes waking
+    var t0 = Date.now();
+    return new Promise(function (resolve, reject) {
+      (function loop() {
+        if (asr.ready) { resolve(); return; }
+        if (Date.now() - t0 > ms) { reject(new Error("timeout")); return; }
+        ping().then(function (j) { if (j && j.ready) resolve(); else setTimeout(loop, 3000); });
+      })();
+    });
+  }
+
+  /* ---- audio: what the page recorded -> mono 16 kHz 16-bit WAV (trimmed around the speech) */
+  function toWav16k(blob, fromSec, toSec) {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    return blob.arrayBuffer().then(function (ab) {
+      var ctx = new AC();
+      return new Promise(function (res, rej) { ctx.decodeAudioData(ab, res, rej); }).then(function (buf) {
+        try { ctx.close(); } catch (e) {}
+        var n = Math.max(1, Math.ceil(buf.duration * 16000));
+        var off = new OfflineAudioContext(1, n, 16000), src = off.createBufferSource();
+        src.buffer = buf; src.connect(off.destination); src.start();
+        return off.startRendering();
+      });
+    }).then(function (out) {
+      var x = out.getChannelData(0), a = Math.max(0, Math.floor(fromSec * 16000)), b = Math.min(x.length, Math.ceil(toSec * 16000));
+      if (b - a < 4800) { a = 0; b = x.length; }                                // too short to trim safely: keep it all
+      var pcm = new Int16Array(b - a);
+      for (var i = a; i < b; i++) { var v = Math.max(-1, Math.min(1, x[i])); pcm[i - a] = v < 0 ? v * 32768 : v * 32767; }
+      var hdr = new ArrayBuffer(44), dv = new DataView(hdr);
+      function str(o, s) { for (var k = 0; k < s.length; k++) dv.setUint8(o + k, s.charCodeAt(k)); }
+      str(0, "RIFF"); dv.setUint32(4, 36 + pcm.length * 2, true); str(8, "WAVE"); str(12, "fmt "); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true); dv.setUint16(22, 1, true);
+      dv.setUint32(24, 16000, true); dv.setUint32(28, 32000, true); dv.setUint16(32, 2, true); dv.setUint16(34, 16, true); str(36, "data"); dv.setUint32(40, pcm.length * 2, true);
+      return new Blob([hdr, pcm.buffer], { type: "audio/wav" });
+    });
+  }
+
+  function startCloud(key, dayN) {
+    if (job && job.key === key) { finishCloud(job, "stop"); return; }              // pressed again: stop and check
+    stopSpeech();
+    var lines = spLines[key] || [], plan = speechPlan(lines);
+    var j = { key: key, dayN: dayN, lines: lines, cloud: true, t0: Date.now(), first: 0, last: 0, spoke: false, loud: 0, done: false, chunks: [], tick: null, cleanup: null, floor: 0.01, n0: 0 };
+    job = j;
+    sp[key] = { state: "listening", engine: "cloud", max: plan.max, left: plan.max, quiet: null, live: "" };
+    paintSpeak(key);
+    warmUp();
+    navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true } }).then(function (stream) {
+      if (j.done) { stream.getTracks().forEach(function (t) { t.stop(); }); return; }
+      var AC = window.AudioContext || window.webkitAudioContext, ctx = new AC(), an = ctx.createAnalyser(), buf = new Float32Array(1024);
+      an.fftSize = 1024; ctx.createMediaStreamSource(stream).connect(an);
+      if (ctx.state === "suspended" && ctx.resume) ctx.resume().catch(function () {});       // some browsers start it paused
+      var rec = new MediaRecorder(stream);
+      rec.ondataavailable = function (e) { if (e.data && e.data.size) j.chunks.push(e.data); };
+      j.rec = rec;
+      j.cleanup = function () { try { if (rec.state !== "inactive") rec.stop(); } catch (e) {} stream.getTracks().forEach(function (t) { t.stop(); }); try { ctx.close(); } catch (e) {} };
+      rec.start(250);
+      j.t0 = Date.now();
+      j.tick = setInterval(function () {
+        if (j.done) return;
+        an.getFloatTimeDomainData(buf);
+        var s = 0; for (var i = 0; i < buf.length; i++) s += buf[i] * buf[i];
+        var rms = Math.sqrt(s / buf.length), now = Date.now(), el = (now - j.t0) / 1000;
+        if (el < 0.6) { j.floor = Math.max(j.floor * 0.7 + rms * 0.3, 0.003); }                // the room's own noise, from the first moments
+        else if (rms < j.floor * 1.5) j.floor = j.floor * 0.98 + rms * 0.02;
+        var voiced = rms > Math.max(0.02, j.floor * 3);
+        j.loud = voiced ? Math.min(j.loud + 1, 10) : Math.max(j.loud - 1, 0);
+        if (j.loud >= 3) { if (!j.spoke) { j.spoke = true; j.first = el; } j.last = now; }
+        var r = sp[key];
+        if (r && r.state === "listening") {
+          r.left = Math.ceil(plan.max - el);
+          r.quiet = j.spoke ? Math.max(0, Math.ceil((SP_SILENCE_MS - (now - j.last)) / 1000)) : null;
+          r.live = j.loud >= 3 ? "🔊" : "";
+          var elx = root && root.querySelector('[data-sp="' + key + '"] .gl-sp-live'); if (elx) elx.innerHTML = liveHtml(r);
+        }
+        if (j.spoke && now - j.last >= SP_SILENCE_MS) finishCloud(j, "silence");
+        else if (el >= plan.max) finishCloud(j, "max");
+      }, 100);
+    }).catch(function (e) {
+      if (j.done) return;
+      endJob(j);
+      sp[key] = { state: "error", msg: speakErr(e && e.name === "NotFoundError" ? "audio-capture" : "not-allowed") };
+      paintSpeak(key);
+    });
+  }
+  function finishCloud(j, why) {
+    if (!j || j.done) return;
+    var key = j.key, spokeAt = j.first, lastAt = (j.last - j.t0) / 1000;
+    var rec = j.rec;
+    j.done = true; clearInterval(j.tick);
+    if (job === j) job = null;
+    if (!rec || !j.spoke) {                                    // nothing was said
+      if (j.cleanup) j.cleanup();
+      sp[key] = { state: "error", msg: speakErr("no-speech") }; paintSpeak(key); return;
+    }
+    sp[key] = { state: "checking", note: "recording" }; paintSpeak(key);
+    var stopped = new Promise(function (res) { rec.onstop = res; try { if (rec.state !== "inactive") rec.stop(); else res(); } catch (e) { res(); } });
+    stopped.then(function () {
+      j.cleanup && j.cleanup();
+      var blob = new Blob(j.chunks, { type: (rec.mimeType || "audio/webm") });
+      return toWav16k(blob, Math.max(0, spokeAt - 0.6), lastAt + 0.9);
+    }).then(function (wav) { return sendToService(j, wav); }).catch(function (e) {
+      asr.failedAt = e && e.code === "429" ? asr.failedAt : Date.now();
+      sp[key] = { state: "error", msg: e && e.userMsg ? e.userMsg : T("संस्कृत आवाज़-जाँच तक पहुँच नहीं हो सकी — अगली बार ब्राउज़र की जाँच प्रयोग होगी; कुछ देर बाद फिर प्रयास करें।", "The Sanskrit speech check could not be reached — the browser's check will be used next time; try again in a moment.") };
+      paintSpeak(key);
+    });
+  }
+  function userErr(code, msg) { var e = new Error(msg || code); e.code = code; e.userMsg = msg; return e; }
+  function sendToService(j, wav) {
+    var key = j.key;
+    function token() {
+      return fetch("/api/asr/token", { method: "POST", credentials: "same-origin" }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (r.status === 429) throw userErr("429", d.error || T("इस घण्टे की सीमा पूरी हो गयी — कुछ देर बाद फिर प्रयास करें।", "Hourly limit reached — try again later."));
+          if (!r.ok || !d.token) throw userErr("token");
+          return d;
+        });
+      });
+    }
+    function upload(d, retry) {
+      return fetch(d.url + "/transcribe", { method: "POST", headers: { Authorization: "Bearer " + d.token, "Content-Type": "audio/wav" }, body: wav }).then(function (r) {
+        if (r.status === 401 && retry) return token().then(function (d2) { return upload(d2, false); });
+        if (r.status === 503 || r.status === 502 || r.status === 504) throw userErr("wake");
+        if (!r.ok) throw userErr("http" + r.status);
+        return r.json();
+      });
+    }
+    sp[key] = { state: "checking", note: asr.ready ? "check" : "wake" }; paintSpeak(key);
+    return waitReady(90000).then(function () { sp[key] = { state: "checking", note: "check" }; paintSpeak(key); return token(); }).then(function (d) {
+      return upload(d, true).catch(function (e) { if (e.code === "wake") return waitReady(60000).then(function () { return upload(d, true); }); throw e; });
+    }).then(function (res) {
+      var heard = (res.text || "").trim();
+      if (!heard) { sp[key] = { state: "error", msg: speakErr("no-speech") }; paintSpeak(key); return; }
+      var best = scoreSpeech(j.lines, heard);
+      sp[key] = { state: "done", score: best.score, words: best.words, heard: heard, engine: "cloud" };
+      noteResult(key, j.dayN, best.score);
+      paintSpeak(key);
+    });
+  }
 
   function textOf(j) { return j.base.concat(j.cur.finals, j.cur.interim ? [j.cur.interim] : []).join(" ").replace(/\s+/g, " ").trim(); }
   function finishSpeech(j, why) {
@@ -749,6 +945,7 @@
     paintSpeak(key);
   }
   function startSpeech(key, dayN) {
+    if (cloudOK()) { startCloud(key, dayN); return; }
     if (!SR) return;
     if (job && job.key === key) { finishSpeech(job, "stop"); return; }          // the button was pressed again: stop and show the result
     stopSpeech();
@@ -902,7 +1099,7 @@
       }
       if (V.view === "day" && V.day) {
         var d = PLAN[V.day - 1];
-        return versesOf(d).then(function (vs) { if (id !== drawing) return; main.innerHTML = lessonHtml(d, vs); });
+        return versesOf(d).then(function (vs) { if (id !== drawing) return; main.innerHTML = lessonHtml(d, vs); if (cloudOK()) { warmUp(); paintAsrStatus(); } });
       }
       main.innerHTML = dashHtml();
     }).catch(function () {
@@ -1010,6 +1207,6 @@
       renderCard();
       start();
     },
-    __test: { plan: function () { return PLAN; }, state: function () { return S; }, merge: mergeRemote, build: buildPlan, speechScore: scoreSpeech, speechNorm: speechNorm, phon: phon, fitness: fitness, setSR: function (c) { SR = c; }, nextFire: nextFire, ics: downloadIcs, stats: function () { return stats(); }, streak: streakInfo, setState: function (v) { S = normalize(v); }, normalize: normalize }
+    __test: { plan: function () { return PLAN; }, state: function () { return S; }, merge: mergeRemote, build: buildPlan, speechScore: scoreSpeech, speechNorm: speechNorm, asr: asr, cloudOK: cloudOK, toWav16k: toWav16k, phon: phon, fitness: fitness, setSR: function (c) { SR = c; }, nextFire: nextFire, ics: downloadIcs, stats: function () { return stats(); }, streak: streakInfo, setState: function (v) { S = normalize(v); }, normalize: normalize }
   };
 })();

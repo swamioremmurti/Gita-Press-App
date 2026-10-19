@@ -85,6 +85,13 @@ const SCHEMA_STATEMENTS = [
     data       TEXT NOT NULL,
     updated_at INTEGER NOT NULL
   )`,
+  // how many speech-check tokens a learner (or an address) has asked for this hour -- see /api/asr/token
+  `CREATE TABLE IF NOT EXISTS asr_usage (
+    who  TEXT NOT NULL,
+    hour INTEGER NOT NULL,
+    n    INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (who, hour)
+  )`,
   // vrat / festival catalogue (loaded from server/lib/vrat-catalogue.json by server/lib/vrats.js)
   `CREATE TABLE IF NOT EXISTS vrats (
     id                  INTEGER PRIMARY KEY AUTOINCREMENT,

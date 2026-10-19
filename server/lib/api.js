@@ -322,6 +322,39 @@ async function handleGitaLmsPut(req, res, user) {
   sendJSON(res, 200, { ok: true, updatedAt: now });
 }
 
+// ================================================================ Sanskrit speech check (the separate ASR service)
+// The recogniser runs in its own service (asr-service/, a Hugging Face Space). The site only (a) says where it is, so the
+// page can wake it, and (b) hands out short-lived signed tokens, rate-limited per learner / address, that the service checks.
+
+const ASR_URL = (process.env.ASR_URL || '').replace(/\/+$/, '');
+const ASR_SECRET = process.env.ASR_SHARED_SECRET || '';
+const ASR_TOKENS_PER_HOUR = parseInt(process.env.ASR_TOKENS_PER_HOUR, 10) || 40;
+const ASR_TOKEN_TTL_S = 600;
+
+function handleAsrConfig(req, res) {
+  sendJSON(res, 200, { enabled: !!(ASR_URL && ASR_SECRET), url: ASR_URL && ASR_SECRET ? ASR_URL : '' }, { 'Cache-Control': 'no-store' });
+}
+
+function clientAddress(req) {
+  const xf = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
+  return xf || (req.socket && req.socket.remoteAddress) || 'unknown';
+}
+
+async function handleAsrToken(req, res, user) {
+  if (!(ASR_URL && ASR_SECRET)) return sendJSON(res, 200, { enabled: false });
+  const who = user ? 'u:' + user.id : 'ip:' + crypto.createHash('sha256').update(clientAddress(req) + ASR_SECRET).digest('hex').slice(0, 16);
+  const hour = Math.floor(Date.now() / 3600000);
+  await db.run('INSERT INTO asr_usage (who, hour, n) VALUES (?, ?, 1) ON CONFLICT(who, hour) DO UPDATE SET n = n + 1', [who, hour]);
+  const row = await db.get('SELECT n FROM asr_usage WHERE who = ? AND hour = ?', [who, hour]);
+  if (Math.random() < 0.02) db.run('DELETE FROM asr_usage WHERE hour < ?', [hour - 48]).catch(() => {});
+  if (row && row.n > ASR_TOKENS_PER_HOUR) {
+    return sendJSON(res, 429, { error: 'इस घण्टे की सीमा पूरी हो गयी — कुछ देर बाद फिर प्रयास करें।' }, { 'Retry-After': '600' });
+  }
+  const body = Buffer.from(JSON.stringify({ e: Math.floor(Date.now() / 1000) + ASR_TOKEN_TTL_S, n: crypto.randomBytes(6).toString('hex') })).toString('base64url');
+  const sig = crypto.createHmac('sha256', ASR_SECRET).update(body).digest('hex');
+  sendJSON(res, 200, { enabled: true, url: ASR_URL, token: body + '.' + sig, expiresIn: ASR_TOKEN_TTL_S }, { 'Cache-Control': 'no-store' });
+}
+
 // ============================================================== admin: books
 
 function slugFilename(name) {
@@ -581,6 +614,7 @@ async function handleAdminCommentDelete(req, res, id) {
 function handleWithoutDb(req, res, pathname) {
   if (req.method !== 'GET') return false;
   if (pathname === '/api/auth/config') { handleAuthConfig(req, res); return true; }
+  if (pathname === '/api/asr/config') { handleAsrConfig(req, res); return true; }
   if (pathname === '/api/auth/me' && !auth.currentSessionToken(req)) { handleMe(req, res, null); return true; }
   return false;
 }
@@ -631,6 +665,9 @@ async function handle(req, res, pathname) {
       if (method === 'GET') { await handleProgressGet(req, res, user); return true; }
       if (method === 'POST') { await handleProgressPost(req, res, user); return true; }
     }
+
+    if (method === 'GET' && pathname === '/api/asr/config') { handleAsrConfig(req, res); return true; }
+    if (method === 'POST' && pathname === '/api/asr/token') { await handleAsrToken(req, res, user); return true; }
 
     if (pathname === '/api/gita-lms') {
       if (!user) { sendJSON(res, 401, { error: 'साइन इन करना आवश्यक है' }); return true; }

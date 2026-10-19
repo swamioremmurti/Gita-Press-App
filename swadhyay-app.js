@@ -2112,6 +2112,253 @@
     writeJSON(LS.readerLayout, done);
   }
 
+  /* ---------------- search within the open book ----------------
+     Each reader page's text is matched forgivingly (case, zero-width joiners and the visarga/colon spelling are
+     ignored). A result is (page, nth occurrence on that page); the page's iframe later re-runs the same match on
+     its own DOM (__readerFindLocate) to find and mark exactly that occurrence. */
+  var FIND_SKIP_TAGS = { SCRIPT: 1, STYLE: 1, BUTTON: 1, NOSCRIPT: 1, TEMPLATE: 1 };
+  var FIND_COMBINING_RE = /[ऀ-ःऺ-ॏ॑-ॗॢॣ]/;
+  var FIND_BATCH = 200;
+  var findTpl = null;
+
+  function findTextEligible(node) {
+    for (var p = node.parentNode; p && p.nodeType === 1; p = p.parentNode) {
+      if (FIND_SKIP_TAGS[p.nodeName] || (p.classList && p.classList.contains("rdr-bar"))) return false;
+    }
+    return true;
+  }
+
+  // All the text under root as one string, plus where each text node starts inside it.
+  function findCollect(doc, root) {
+    var walker = doc.createTreeWalker(root, 4 /* NodeFilter.SHOW_TEXT */);
+    var segs = [], parts = [], len = 0, n;
+    while ((n = walker.nextNode())) {
+      if (!findTextEligible(n)) continue;
+      var v = n.nodeValue;
+      segs.push({ node: n, start: len });
+      parts.push(v);
+      len += v.length;
+    }
+    return { raw: parts.join(""), segs: segs };
+  }
+
+  // Lower-cases, drops zero-width characters, maps visarga to ":" (the books often spell it "दु:ख"), splits
+  // precomposed nukta letters and collapses whitespace. map[i] = index in `str` that normalised char i came from.
+  function findNorm(str, wantMap) {
+    var out = [], map = wantMap ? [] : null, lastSpace = false;
+    for (var i = 0; i < str.length; i++) {
+      var code = str.charCodeAt(i), r;
+      if (code === 0xAD || (code >= 0x200B && code <= 0x200D) || code === 0x2060 || code === 0xFEFF) continue;
+      if (code === 32 || (code >= 9 && code <= 13) || code === 0xA0) {
+        if (lastSpace) continue;
+        lastSpace = true; r = " ";
+      } else {
+        lastSpace = false;
+        if (code < 128) r = (code >= 65 && code <= 90) ? String.fromCharCode(code + 32) : str.charAt(i);
+        else if (code === 0x0903) r = ":";
+        else if (code >= 0x0900 && code <= 0x097F && !(code >= 0x0958 && code <= 0x095F)) r = str.charAt(i);
+        else r = str.charAt(i).toLowerCase().normalize("NFD");
+      }
+      out.push(r);
+      if (map) for (var k = 0; k < r.length; k++) map.push(i);
+    }
+    return { text: out.join(""), map: map };
+  }
+
+  // Non-overlapping occurrences of query in raw, as [start, end) offsets into raw.
+  function findMatches(raw, query) {
+    var nq = findNorm(query).text.trim();
+    if (nq.length < 2) return [];
+    var nr = findNorm(raw, true), hay = nr.text, map = nr.map, res = [], p = 0;
+    while ((p = hay.indexOf(nq, p)) !== -1) {
+      var e = map[p + nq.length - 1] + 1;
+      // a match that stops before a vowel sign / anusvara / virama would leave it dangling outside the highlight
+      while (e < raw.length && FIND_COMBINING_RE.test(raw.charAt(e))) e++;
+      res.push({ s: map[p], e: e });
+      p += nq.length;
+    }
+    return res;
+  }
+
+  function findChapterRaw(ch) {
+    if (typeof ch._raw === "string") return ch._raw;
+    if (!findTpl) findTpl = document.createElement("template");
+    findTpl.innerHTML = ch.html;
+    ch._raw = findCollect(document, findTpl.content).raw;
+    findTpl.innerHTML = "";
+    return ch._raw;
+  }
+
+  // Wraps raw[s, e) in <mark class="rdr-find"> (one per text node it spans); returns the first mark.
+  function findMark(doc, segs, s, e) {
+    var hit = [], first = null, i;
+    for (i = 0; i < segs.length; i++) {
+      var a = segs[i].start, b = a + segs[i].node.nodeValue.length;
+      if (b <= s) continue;
+      if (a >= e) break;
+      hit.push({ node: segs[i].node, from: Math.max(s, a) - a, to: Math.min(e, b) - a });
+    }
+    for (i = hit.length - 1; i >= 0; i--) {     // last first, so splitting never shifts a pending offset
+      var t = hit[i], node = t.node;
+      if (t.to < node.nodeValue.length) node.splitText(t.to);
+      var mid = t.from > 0 ? node.splitText(t.from) : node;
+      var mk = doc.createElement("mark");
+      mk.className = "rdr-find";
+      mid.parentNode.insertBefore(mk, mid);
+      mk.appendChild(mid);
+      first = mk;
+    }
+    return first;
+  }
+
+  window.__readerFindLocate = function (doc, n) {
+    var f = reader.find;
+    if (!reader.open || !f || !f.query) return null;
+    var col = findCollect(doc, doc.body);
+    var hits = findMatches(col.raw, f.query);
+    if (!hits.length) return null;
+    var h = hits[Math.min(n, hits.length - 1)];
+    return findMark(doc, col.segs, h.s, h.e);
+  };
+
+  function readerPageLabel(ch) { return ch.isSub ? ch.parentLabel + " › " + ch.label : ch.label; }
+
+  function readerFindSnippet(raw, s, e) {
+    var a = Math.max(0, s - 36), b = Math.min(raw.length, e + 70);
+    while (a < s && FIND_COMBINING_RE.test(raw.charAt(a))) a++;
+    while (b < raw.length && FIND_COMBINING_RE.test(raw.charAt(b))) b++;
+    function sp(x) { return esc(x.replace(/\s+/g, " ")); }
+    return (a > 0 ? "…" : "") + sp(raw.slice(a, s)) + "<mark>" + sp(raw.slice(s, e)) + "</mark>" + sp(raw.slice(e, b)) + (b < raw.length ? "…" : "");
+  }
+
+  function readerFindStatus(st) {
+    var el = document.getElementById("readerFindStatus"), more = document.getElementById("readerFindMore");
+    if (!el) return;
+    var msg, showMore = false;
+    if (!st) msg = "किसी शब्द या वाक्यांश को खोजें (कम से कम 2 अक्षर)।";
+    else if (st.tooShort) msg = "कम से कम 2 अक्षर लिखें।";
+    else if (st.running) msg = "खोज रहे हैं… " + Math.round(100 * st.next / reader.chapters.length) + "%" + (st.results.length ? " · " + st.results.length + " परिणाम" : "");
+    else if (!st.results.length) msg = "“" + st.query + "” के लिए कोई परिणाम नहीं मिला।";
+    else if (st.next >= reader.chapters.length) msg = st.results.length + " परिणाम";
+    else { msg = "पहले " + st.results.length + " परिणाम दिखाए गए हैं।"; showMore = true; }
+    el.textContent = msg;
+    if (more) more.hidden = !showMore;
+  }
+
+  function readerFindRender(st, reset) {
+    var ul = document.getElementById("readerFindResults");
+    if (!ul) return;
+    if (reset) { ul.innerHTML = ""; st.rendered = 0; }
+    var html = "", total = reader.chapters.length;
+    for (var i = st.rendered; i < st.results.length; i++) {
+      var r = st.results[i], ch = reader.chapters[r.idx];
+      html += '<li class="reader-find-item" data-i="' + i + '" tabindex="0" role="button">' +
+        '<div class="reader-find-meta">' + esc(readerPageLabel(ch)) + ' <span>· ' + (r.idx + 1) + ' / ' + total + '</span></div>' +
+        '<div class="reader-find-snippet">' + readerFindSnippet(ch._raw, r.s, r.e) + '</div></li>';
+    }
+    st.rendered = st.results.length;
+    if (html) ul.insertAdjacentHTML("beforeend", html);
+    readerFindStatus(st);
+  }
+
+  // Scans pages in short time slices (so the UI stays responsive) until the result limit or the end of the book.
+  function readerFindScan(st) {
+    var chapters = reader.chapters, bookId = reader.bookId, token = ++st.token;
+    st.running = true;
+    function step() {
+      if (token !== st.token || reader.bookId !== bookId) return;
+      var t0 = Date.now();
+      while (st.next < chapters.length && st.results.length < st.limit && Date.now() - t0 < 40) {
+        var i = st.next++, hits = findMatches(findChapterRaw(chapters[i]), st.query);
+        for (var k = 0; k < hits.length; k++) st.results.push({ idx: i, n: k, s: hits[k].s, e: hits[k].e });
+      }
+      var finished = st.next >= chapters.length || st.results.length >= st.limit;
+      if (finished) st.running = false;
+      readerFindRender(st);
+      if (!finished) setTimeout(step, 0);
+    }
+    step();
+  }
+
+  function readerFindSubmit(q) {
+    q = (q || "").trim();
+    if (reader.find) reader.find.token++;
+    var ul = document.getElementById("readerFindResults");
+    if (ul) ul.innerHTML = "";
+    if (!q) { reader.find = null; readerFindStatus(null); return; }
+    var st = { query: q, results: [], next: 0, limit: FIND_BATCH, running: false, token: 0, rendered: 0, tooShort: false };
+    reader.find = st;
+    if (findNorm(q).text.trim().length < 2) { st.tooShort = true; readerFindStatus(st); return; }
+    readerFindScan(st);
+  }
+
+  function readerFindGo(i) {
+    var st = reader.find, r = st && st.results[i];
+    if (!r) return;
+    readerFindClose();
+    readerGo(r.idx, "find:" + r.n);
+  }
+
+  function readerFindClose() {
+    var ov = document.getElementById("readerFindOverlay");
+    if (ov) ov.remove();
+    document.removeEventListener("keydown", readerFindKey);
+  }
+  function readerFindKey(e) { if (e.key === "Escape") readerFindClose(); }
+
+  function readerFindOpen() {
+    if (!reader.chapters || document.getElementById("readerFindOverlay")) return;
+    closeDrawerAndSettings();
+    var ov = document.createElement("div");
+    ov.className = "modal-overlay reader-find-overlay";
+    ov.id = "readerFindOverlay";
+    ov.innerHTML =
+      '<div class="modal-card reader-find-card" role="dialog" aria-modal="true" aria-label="पुस्तक में खोजें">' +
+      '<button class="modal-close" id="readerFindClose" aria-label="बंद करें">✕</button>' +
+      '<h3>पुस्तक में खोजें</h3>' +
+      '<form class="reader-find-form" id="readerFindForm">' +
+      '<input type="search" id="readerFindInput" placeholder="शब्द या वाक्यांश लिखें…" autocomplete="off" enterkeyhint="search">' +
+      '<button type="submit" class="btn-primary">खोजें</button></form>' +
+      '<div class="reader-find-status" id="readerFindStatus"></div>' +
+      '<ul class="reader-find-results" id="readerFindResults"></ul>' +
+      '<button type="button" class="btn-outline reader-find-more" id="readerFindMore" hidden>और परिणाम दिखाएँ</button>' +
+      '</div>';
+    document.body.appendChild(ov);
+
+    var input = document.getElementById("readerFindInput"), list = document.getElementById("readerFindResults"), timer = null;
+    ov.addEventListener("click", function (e) { if (e.target === ov) readerFindClose(); });
+    document.getElementById("readerFindClose").addEventListener("click", readerFindClose);
+    document.getElementById("readerFindForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      clearTimeout(timer);
+      readerFindSubmit(input.value);
+    });
+    input.addEventListener("input", function () {
+      clearTimeout(timer);
+      timer = setTimeout(function () { readerFindSubmit(input.value); }, 350);
+    });
+    list.addEventListener("click", function (e) {
+      var li = e.target.closest(".reader-find-item");
+      if (li) readerFindGo(parseInt(li.getAttribute("data-i"), 10));
+    });
+    list.addEventListener("keydown", function (e) {
+      var li = e.target.closest(".reader-find-item");
+      if (li && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); readerFindGo(parseInt(li.getAttribute("data-i"), 10)); }
+    });
+    document.getElementById("readerFindMore").addEventListener("click", function () {
+      var st = reader.find;
+      if (!st || st.running) return;
+      st.limit += FIND_BATCH;
+      readerFindScan(st);
+    });
+    document.addEventListener("keydown", readerFindKey);
+
+    var st = reader.find;
+    if (st) { input.value = st.query; readerFindRender(st, true); } else readerFindStatus(null);
+    input.focus();
+    input.select();
+  }
+
   function readerBaseUrl(book) {
     /* document.baseURI (not location.href) -- this must stay anchored to the site root
        regardless of which real path the reader was opened from (e.g. /read/<slug>/2),
@@ -2167,6 +2414,16 @@
       '},400);' +
       '},{passive:true});' +
       'if(ANCHOR_ID){setTimeout(function(){' +
+      /* "find:<n>": the nth occurrence of the reader's current in-book search. Marked by the parent's matcher, then
+         kept centred while fonts/images settle (unless the reader has already scrolled themselves). */
+      'if(ANCHOR_ID.indexOf("find:")===0){' +
+      'var fm=null;try{fm=parent.__readerFindLocate(document,parseInt(ANCHOR_ID.slice(5),10));}catch(err){}' +
+      'if(fm){var moved=false;' +
+      'var center=function(){if(!moved)fm.scrollIntoView({block:"center",behavior:"instant"});};' +
+      '["wheel","touchmove","keydown","mousedown"].forEach(function(t){window.addEventListener(t,function(){moved=true;},{passive:true,once:true});});' +
+      'center();window.addEventListener("load",center);' +
+      'if(document.fonts&&document.fonts.ready)document.fonts.ready.then(center);}' +
+      'return;}' +
       'var el=null;' +
       'if(ANCHOR_ID.indexOf("txt:")===0){' +      /* "txt:<some words>": the first paragraph containing them */
       'var q=ANCHOR_ID.slice(4),ps=document.querySelectorAll("p");' +
@@ -2214,6 +2471,7 @@
       'HL.forEach(function(h){ reapplyHighlight(h.text,h.color); });' +
 
       'var bar=document.createElement("div");' +
+      'bar.className="rdr-bar";' +
       'bar.style.cssText="position:absolute;display:none;z-index:9999;background:#231f20;border-radius:8px;' +
       'box-shadow:0 4px 14px rgba(0,0,0,.35);overflow:hidden;white-space:nowrap;";' +
       'function mkBtn(label){var b=document.createElement("button");b.textContent=label;' +
@@ -2289,6 +2547,8 @@
       READER_INDENT_SELECTORS + '{text-indent:' + READER_PARA_INDENT + ' !important;}' +
       '@media (min-width:900px){body{max-width:1100px;padding:1.4rem 2rem 4rem;}}' +
       'mark.rdr-hl{background:#ffe58a;border-radius:2px;}' +
+      'mark.rdr-find{background:#ffb74d;color:#1a1a1a;border-radius:3px;box-shadow:0 0 0 2px #ff8f00;animation:rdrFindPulse 1.1s ease-in-out 2;}' +
+      '@keyframes rdrFindPulse{0%,100%{box-shadow:0 0 0 2px #ff8f00;}50%{box-shadow:0 0 0 7px rgba(255,143,0,.35);}}' +
       readerThemeCSS() +
       '</style></head><body class="' + themeClass + '">' + chapterHtml +
       '<script>' + readerInlineScript(highlightList, restoreScrollPct, anchorId) + '</script>' +
@@ -2325,6 +2585,7 @@
       '<button class="reader-icon-btn" id="readerBackBtn" title="वापस" aria-label="वापस">←</button>' +
       '<button class="reader-icon-btn" id="readerTocToggle" title="विषय-सूची" aria-label="विषय-सूची">☰</button>' +
       '<div class="reader-title" id="readerTitleText"></div>' +
+      '<button class="reader-icon-btn" id="readerSearchBtn" title="पुस्तक में खोजें" aria-label="पुस्तक में खोजें">&#128269;</button>' +
       '<button class="reader-icon-btn" id="readerBookmarkToggle" title="बुकमार्क" aria-label="बुकमार्क">☆</button>' +
       '<button class="reader-icon-btn" id="readerSettingsToggle" title="सेटिंग्स" aria-label="सेटिंग्स">Aa</button>' +
       '</header>' +
@@ -2514,6 +2775,7 @@
       document.getElementById("readerScrim").classList.toggle("show", s.classList.contains("open"));
     });
     document.getElementById("readerScrim").addEventListener("click", closeDrawerAndSettings);
+    document.getElementById("readerSearchBtn").addEventListener("click", readerFindOpen);
     document.getElementById("readerTocList").addEventListener("click", function (e) {
       var toggleBtn = e.target.closest("[data-toggle]");
       if (toggleBtn) {
@@ -2583,7 +2845,7 @@
       });
     });
     document.addEventListener("keydown", function (e) {
-      if (!reader.open) return;
+      if (!reader.open || document.getElementById("readerFindOverlay")) return;
       if (e.key === "ArrowRight") readerGo(reader.idx + 1);
       else if (e.key === "ArrowLeft") readerGo(reader.idx - 1);
       else if (e.key === "Escape") closeDrawerAndSettings();
@@ -2652,6 +2914,10 @@
     reader.lineHeight = getReaderLineHeight();
     reader.chapters = null;
     reader.expandedChapters = {};
+    if (reader.find) reader.find.token++;
+    reader.find = null;
+    var staleFind = document.getElementById("readerFindOverlay");
+    if (staleFind) staleFind.remove();
 
     var iframe = document.getElementById("readerIframe");
     readerPaintFrame(iframe, reader.theme);
@@ -2695,6 +2961,7 @@
   function closeReader() {
     if (!reader.open) return;
     reader.open = false;
+    readerFindClose();
     document.body.classList.remove("reader-active");
     var skBar = document.getElementById("skReadBar"); if (skBar) skBar.remove();
     var overlay = document.getElementById("readerOverlay");

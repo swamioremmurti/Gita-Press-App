@@ -25,3 +25,6 @@ server/*.bat
 server/build-index.js
 server/check-status.js
 server/test-retrieval.js
+
+# the speech service is its own deployment (a Hugging Face Space), not part of this site
+asr-service

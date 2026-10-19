@@ -820,6 +820,30 @@ body.reader-active { overflow: hidden; }
   .reader-title { font-size: .82rem; }
 }
 
+/* ---------------- reader: search within the book ---------------- */
+.reader-find-overlay { z-index: 600; align-items: flex-start; padding-top: 7vh; }
+.reader-find-card {
+  max-width: 640px; max-height: min(84vh, 760px); display: flex; flex-direction: column;
+  text-align: left; padding: 1.1rem 1.2rem 1rem;
+}
+.reader-find-card h3 { margin: 0 0 .7rem; color: var(--accent-dark); font-size: 1.1rem; padding-right: 2rem; }
+:root[data-theme="dark"] .reader-find-card h3 { color: #ffb199; }
+.reader-find-form { display: flex; gap: .5rem; }
+.reader-find-form input {
+  flex: 1; min-width: 0; padding: .6rem 1rem; border-radius: 22px; border: 1px solid var(--rule);
+  background: var(--surface-2); color: var(--ink); font-family: inherit; font-size: 1rem;
+}
+.reader-find-status { margin: .6rem .2rem .3rem; font-size: .85rem; color: var(--muted); min-height: 1.2em; }
+.reader-find-results { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1 1 auto; border-top: 1px solid var(--rule); }
+.reader-find-item { padding: .65rem .5rem; border-bottom: 1px solid var(--rule); cursor: pointer; border-radius: 6px; }
+.reader-find-item:hover, .reader-find-item:focus-visible { background: var(--surface-2); outline: none; }
+.reader-find-meta { font-size: .78rem; color: var(--accent-dark); font-weight: bold; margin-bottom: .2rem; }
+.reader-find-meta span { color: var(--muted); font-weight: normal; }
+:root[data-theme="dark"] .reader-find-meta { color: #ffb199; }
+.reader-find-snippet { font-size: .95rem; line-height: 1.6; color: var(--ink); }
+.reader-find-snippet mark { background: #ffe58a; color: #231f20; border-radius: 3px; padding: 0 .1em; }
+.reader-find-more { align-self: center; margin-top: .7rem; }
+
 /* ---------------- chat / सहायक ---------------- */
 .chat-page { display: flex; flex-direction: column; height: calc(100vh - var(--topbar-h) - 1.5rem); }
 .chat-shell {
@@ -2487,3 +2511,4 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .gl-sp-lang { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; margin: .8rem 0 0; font-size: .9rem; color: #5b3a2c; font-weight: 700; }
 .gl-sp-lang select { padding: .35rem .6rem; border-radius: 10px; border: 1.5px solid #e1ccaa; background: #fff; font: inherit; color: #3b1812; }
 .gl-sp-why { margin-top: .35rem; font-style: italic; }
+.gl-sp-asr { margin: .3rem 0 0; font-size: .88rem; color: #5b3a2c; min-height: 1.2em; }
