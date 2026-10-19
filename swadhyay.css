@@ -2294,12 +2294,11 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 }
 
 /* ---- the /gita page ---- */
-.gl-page-hero { position: relative; color: #3b1812; background: #fbeacb url('assets/images/gita/hero-art.webp') left top / auto 100% no-repeat; border-bottom: 1px solid var(--rule); }
-.gl-page-hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(255, 248, 232, .2) 0, rgba(255, 248, 232, .85) 38%, rgba(255, 248, 232, .96) 100%); }
-.gl-page-hero-in { position: relative; max-width: 1000px; margin: 0 auto; padding: 1.5rem 1.2rem 1.4rem; text-align: right; }
-.gl-page-hero small { color: #a8590d; font-weight: 700; letter-spacing: .04em; }
-.gl-page-hero h1 { margin: .15rem 0 .2rem; font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.1; color: #4a120d; }
-.gl-page-hero p { margin: 0; font-size: 1rem; color: #6b4a3a; }
+.gl-page-hero { position: relative; display: flex; align-items: center; min-height: clamp(190px, 21vw, 360px); color: #3b1812; background: #fbe9b8 url('assets/images/gita/banner.webp') left top / cover no-repeat; border-bottom: 1px solid var(--rule); }
+.gl-page-hero-in { position: relative; width: 100%; max-width: 1100px; margin: 0 auto; padding: 1.6rem 1.4rem; text-align: right; }
+.gl-page-hero small { color: #9a4a08; font-weight: 700; letter-spacing: .04em; }
+.gl-page-hero h1 { margin: .15rem 0 .25rem; font-size: clamp(1.7rem, 4.2vw, 3rem); line-height: 1.1; color: #4a120d; text-shadow: 0 1px 12px rgba(255, 244, 214, .85); }
+.gl-page-hero p { margin: 0; font-size: clamp(.95rem, 1.6vw, 1.1rem); color: #5b3420; text-shadow: 0 1px 10px rgba(255, 244, 214, .85); }
 .gl-wrap { max-width: 900px; margin: 0 auto; padding-bottom: 3rem; }
 .gl-root .gl-box { margin: 1rem 0 0; }
 .gl-note { color: var(--muted); font-size: .92rem; line-height: 1.55; }
@@ -2425,8 +2424,8 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 @media (max-width: 700px) {
   .gl-stat4 { grid-template-columns: repeat(2, 1fr); }
   .gl-welcome { flex-direction: column; align-items: flex-start; }
-  .gl-page-hero { background-size: auto 100%; }
-  .gl-page-hero-in { text-align: right; padding-left: 38%; }
+  .gl-page-hero { min-height: 220px; background-image: url('assets/images/gita/banner-m.webp'); background-size: cover; background-position: left center; }
+  .gl-page-hero-in { padding: 1.2rem 1rem 1.2rem 42%; }
   .gl-wiz-card { padding: 1.1rem .9rem; }
 }
 @media (prefers-reduced-motion: reduce) { .gl-card.is-loading::after { animation: none; } }
