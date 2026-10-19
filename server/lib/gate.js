@@ -40,10 +40,15 @@ const html = (body, status) => new Response(body, { status, headers: { ...NO_STO
 // Returns a Response to answer the request with, or null to let it through to the site.
 async function handle(req, env) {
   const password = env && env.SITE_PASSWORD;
-  if (!password) return null;
-
   const url = new URL(req.url);
   const p = url.pathname;
+  // A harmless self-check (says only whether the middleware is running and the gate is on):
+  // curl https://<site>/__gate/status
+  if (p === '/__gate/status') {
+    return new Response(JSON.stringify({ middleware: true, gate: !!password }), { status: 200, headers: { ...NO_STORE, 'Content-Type': 'application/json; charset=utf-8' } });
+  }
+  if (!password) return null;
+
   if (OPEN.test(p)) return null;
   const good = await token(password);
 

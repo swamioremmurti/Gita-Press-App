@@ -4008,6 +4008,15 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  6631.5
     },
     {
+        "file":  "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html",
+        "category":  "Gita",
+        "author":  "",
+        "tikakar":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  6608.0
+    },
+    {
         "file":  "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html",
         "category":  "Gita",
         "author":  "",

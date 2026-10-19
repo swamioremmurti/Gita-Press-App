@@ -43,10 +43,10 @@ body {
   background: #f2c98c url('/assets/gate/bg.webp') center top / cover no-repeat fixed;
   display: flex; flex-direction: column; min-height: 100vh;
 }
-.hero { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 3.2rem 1.2rem 2.2rem; }
+.hero { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem 1.2rem 2rem; }
 .logo {
-  width: min(300px, 62vw); aspect-ratio: 356.16 / 142.38; background: var(--maroon);
-  -webkit-mask: url('/assets/logo-mark.svg') no-repeat center / contain; mask: url('/assets/logo-mark.svg') no-repeat center / contain;
+  width: min(250px, 58vw); aspect-ratio: 358.2 / 242.36; background: var(--maroon);
+  -webkit-mask: url('/assets/gate/logo.svg') no-repeat center / contain; mask: url('/assets/gate/logo.svg') no-repeat center / contain;
 }
 .tagline { margin: .8rem 0 0; font-family: 'Tiro Devanagari Sanskrit', serif; color: var(--maroon); font-size: clamp(1.1rem, 2.4vw, 1.55rem); letter-spacing: .01em; }
 .orn { display: flex; align-items: center; gap: .6rem; margin: .7rem 0 1rem; color: var(--gold); }

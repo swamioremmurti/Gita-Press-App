@@ -404,6 +404,7 @@
     "देवीस्तोत्ररत्नाकर.html": "assets/covers/devi-stotra-ratnakar.jpg",
     "संक्षिप्त योगवासिष्ठ.html": "assets/covers/sankshipt-yogvasishtha.jpg",
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": "assets/covers/tattva-vivechani.webp",
+    "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": "assets/covers/tattva-vivechani.webp",
     "ईशावास्योपनिषद्.html": "assets/covers/ishavasyopanishad.jpg",
     "केनोपनिषद्.html": "assets/covers/kenopanishad.jpg",
     "कठोपनिषद्.html": "assets/covers/kathopanishad.jpg",
@@ -492,6 +493,7 @@
   // Display-only title overrides — shown in the app, never alters the underlying book file.
   var TITLE_OVERRIDES = {
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी",
+    "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी (पदच्छेद-अन्वयसहित)",
     "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "श्रीलिङ्ग महापुराण",
     "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html": "महाभारत",
   
@@ -694,7 +696,7 @@
   };
   var SHELL_TITLES = [
     ["#appDrawerBtn", "मेनू", "Menu"], [".global-search-btn", "खोजें", "Search"], [".theme-switch", "डार्क मोड", "Dark mode"],
-    ["#notifyBtn", "सूचनाएँ", "Notifications"], ["#profileBtn", "प्रोफ़ाइल", "Profile"]
+    [".logo-link", "होम", "Home"], ["#notifyBtn", "सूचनाएँ", "Notifications"], ["#profileBtn", "प्रोफ़ाइल", "Profile"]
   ];
   function applyShellLanguage() {
     document.querySelectorAll("[data-nav], [data-label-key]").forEach(function (el) {

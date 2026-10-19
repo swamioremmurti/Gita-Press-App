@@ -137,6 +137,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 
 .topbar-left { display: flex; align-items: center; gap: .6rem; margin-right: auto; color: #fff; transition: color .25s ease; }
 .topbar.scrolled .topbar-left { color: var(--accent); }
+.logo-link { display: inline-flex; align-items: center; color: inherit; text-decoration: none; cursor: pointer; }
 .logo-mark {
   display: inline-block; width: 90px; height: 36px; flex-shrink: 0;
   background-color: currentColor; transition: width .25s ease, height .25s ease;
