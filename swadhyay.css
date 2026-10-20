@@ -820,6 +820,23 @@ body.reader-active { overflow: hidden; }
   .reader-title { font-size: .82rem; }
 }
 
+/* ---------------- reader: show/hide meaning (swith_arth books) ---------------- */
+.reader-arth-btn {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: .3rem; height: 34px; padding: 0 .75rem;
+  border: 1px solid var(--accent); border-radius: 17px; background: transparent; color: var(--accent);
+  font-family: inherit; font-size: .85rem; cursor: pointer;
+}
+.reader-arth-btn[hidden] { display: none; }
+.reader-arth-btn:hover { background: var(--surface-2); }
+.reader-arth-btn .arth-slash { display: none; }
+.reader-arth-btn.off { background: var(--accent); color: #fff; }
+.reader-arth-btn.off .arth-slash { display: inline; }
+.reader-arth-btn.off .arth-label { text-decoration: line-through; }
+@media (max-width: 480px) {
+  .reader-arth-btn { padding: 0 .55rem; }
+  .reader-arth-btn .arth-label { display: none; }
+}
+
 /* ---------------- reader: search within the book ---------------- */
 .reader-find-overlay { z-index: 600; align-items: flex-start; padding-top: 7vh; }
 .reader-find-card {

@@ -105,7 +105,7 @@ function loadCatalogue() {
     const cat = {
       template: template,
       BOOKS: ex.BOOKS, PEOPLE: ex.PEOPLE, CATEGORY_META: ex.CATEGORY_META,
-      genBlurb: ex.genBlurb, HELP_FAQS: ex.HELP_FAQS, personPath: ex.personPath, bookPath: ex.bookPath,
+      genBlurb: ex.genBlurb, HELP_FAQS: ex.HELP_FAQS, personPath: ex.personPath, bookPath: ex.bookPath, slugAliases: ex.SLUG_ALIASES || {},
       booksBySlug: {}, booksById: {}, peopleBySlug: {}, catByKey: {}, base: new Map()
     };
     cat.BOOKS.forEach((b) => {
@@ -400,7 +400,8 @@ async function render(rawUrl, opts) {
   let page = null;
   if (seg[0] === 'book' && seg.length === 2) {
     const book = cat.booksBySlug[seg[1]] || cat.booksBySlug[seg[1].normalize('NFC')];
-    const byId = !book && /^\d+$/.test(seg[1]) ? cat.booksById[parseInt(seg[1], 10)] : null;
+    const byId = !book && /^\d+$/.test(seg[1]) ? cat.booksById[parseInt(seg[1], 10)]
+      : !book && cat.slugAliases[seg[1]] ? cat.BOOKS.find((b) => b.file === cat.slugAliases[seg[1]]) : null;     // an earlier address of a renamed book
     if (byId) return { status: 301, headers: { Location: cat.bookPath(byId), 'Cache-Control': cacheControl }, body: '' };
     if (!book) return shell(404);
     page = pageBook(cat, book);

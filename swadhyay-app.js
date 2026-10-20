@@ -345,6 +345,10 @@
 
   var COVER_OVERRIDES = {
     "प्रेमयोग.html": "assets/covers/premyog.jpg",
+    "श्रीमद्भगवद्गीता शांकरभाष्य.html": "assets/covers/gita-shankarbhashya.webp",
+    "श्रीमद्भगवद्गीता श्रीरामानुज भाष्य.html": "assets/covers/gita-ramanujbhashya.webp",
+    "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "assets/covers/gita-mahatmya-mote.webp",
+    "श्रीमद्भगवद्गीता माहात्म्य की कहानियाँ.html": "assets/covers/gita-mahatmya-kahaniyan.webp",
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.webp",
     "पद-रत्नाकर.html": "assets/covers/pad-ratnakar.jpg",
     "भक्त-चरिताङ्क.html": "assets/covers/bhakt-charitank.jpg",
@@ -498,6 +502,7 @@
     "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "श्रीलिङ्ग महापुराण",
     "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html": "महाभारत",
     "भगवान_् पर विश्वास.html": "भगवान् पर विश्वास",
+    "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "श्रीमद्भगवद्गीता-माहात्म्यसहित",     // same text as the "- माहात्म्यसहित" edition, in large print
   
   };
 
@@ -508,12 +513,32 @@
 
   /* Books that stay in the library folder and in swadhyay-data.js but are switched off on the site: not listed,
      searched, linked, or put in the sitemap. Remove the line to switch a book back on. */
-  var HIDDEN_BOOKS = {
-    "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true   // replaced by the पदच्छेद-अन्वयसहित edition
+  /* A book's address normally comes from its file name. These are the exceptions: the address a renamed book should have, and the
+     earlier addresses that still lead to it (links shared before the change). */
+  var SLUG_OVERRIDES = {
+    "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "माहात्म्यसहित श्रीमद्भगवद्गीता"
   };
+  var SLUG_ALIASES = {
+    "श्रीमद्भगवद्गीतामोटेअक्षरोंमें": "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html"
+  };
+  var HIDDEN_BOOKS = {
+    "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true,  // replaced by the पदच्छेद-अन्वयसहित
+    "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true                    // same text as the large-print edition, which now carries this title edition
+  };
+
+  /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
+     "Name" = paragraphs with exactly that class, "Name*" = any class containing Name. */
+  function arthSelectors(spec) {
+    return String(spec || "").split(",").map(function (t) { return t.trim(); })
+      .filter(function (t) { return /^[A-Za-z0-9_-]+\*?$/.test(t); })
+      .map(function (t) {
+        return t.slice(-1) === "*" ? 'p[class*="' + t.slice(0, -1) + '"]' : 'p[class~="' + t + '"]';
+      });
+  }
 
   var seenBookSlugs = {};
   var BOOKS = (window.SWADHYAY_BOOKS_RAW || []).map(function (b, i) {
+    var arthSel = String(b.swith_arth || "").toLowerCase() === "yes" ? arthSelectors(b.arth_hide) : [];
     var cat = CATEGORY_BY_KEY[b.category] || { key: b.category, hi: b.category, en: b.category, icon: "📖" };
     var title = TITLE_OVERRIDES[b.file] || titleFromFile(b.file);
     var authors = splitPeople(b.author), tikakars = splitPeople(b.tikakar), translators = splitPeople(b.translator);
@@ -522,7 +547,7 @@
        first, falling back to the publisher when the book names nobody. */
     var author = authors.join(", ") || tikakars.join(", ") || translators.join(", ") || publisher || "गीता प्रेस, गोरखपुर";
     var everyone = authors.concat(tikakars, translators, publisher ? [publisher] : []).join(" ");
-    var baseSlug = slugify(b.file.replace(/\.html$/i, ""));
+    var baseSlug = slugify(SLUG_OVERRIDES[b.file] || b.file.replace(/\.html$/i, ""));
     var slug = baseSlug, dupeN = 2;
     while (seenBookSlugs[slug]) { slug = baseSlug + "-" + dupeN; dupeN++; }
     seenBookSlugs[slug] = true;
@@ -558,7 +583,9 @@
       paletteIdx: hashCode(title) % PALETTE.length,
       initial: title.trim().charAt(0) || "ॐ",
       coverImage: COVER_OVERRIDES[b.file] || null,
-      isGitaPress: !NON_GITA_PRESS_BOOKS[b.file]
+      isGitaPress: !NON_GITA_PRESS_BOOKS[b.file],
+      swithArth: arthSel.length > 0,    // reader gets a button to hide the meaning/commentary (only shloks stay)
+      arthHideSel: arthSel
     };
   }).filter(function (b) { return !HIDDEN_BOOKS[b.file]; });   // ids were fixed by the map above, so hiding a book never renumbers the rest
   var BOOKS_BY_ID = {};
@@ -618,7 +645,7 @@
     if (x === undefined || x === null) return null;
     var decoded;
     try { decoded = decodeURIComponent(x); } catch (e) { decoded = x; }
-    return BOOKS_BY_SLUG[decoded] || BOOKS_BY_ID[parseInt(x, 10)] || null;
+    return BOOKS_BY_SLUG[decoded] || (SLUG_ALIASES[decoded] && BOOKS_BY_FILE[SLUG_ALIASES[decoded]]) || BOOKS_BY_ID[parseInt(x, 10)] || null;
   }
   function bookPath(book) { return "/book/" + encodeURIComponent(book.slug); }
   function readPath(book, chapterIdx) {
@@ -668,6 +695,7 @@
     readerTheme: "swadhyay_reader_theme_v1",
     readerFont: "swadhyay_reader_font_v1",
     readerLineHeight: "swadhyay_reader_line_height_v1",
+    readerArth: "swadhyay_reader_arth_v1",
     bookmarks: "swadhyay_bookmarks_v1",
     highlights: "swadhyay_highlights_v1",
     readerLayout: "swadhyay_reader_layout_v1",
@@ -1620,7 +1648,17 @@
   var READER_THEMES = ["day", "night", "sepia"];
   var readerCache = {};              // bookId -> { headHtml, chapters:[{label, html, subs}] }
   var READER_LINE_HEIGHT_MIN = 0.8, READER_LINE_HEIGHT_MAX = 2.5, READER_LINE_HEIGHT_STEP = 0.1;
-  var reader = { open: false, bookId: null, book: null, headHtml: "", chapters: null, idx: 0, theme: "day", fontSize: 19, lineHeight: 1.6, expandedChapters: {} };
+  var reader = { open: false, bookId: null, book: null, headHtml: "", chapters: null, idx: 0, theme: "day", fontSize: 19, lineHeight: 1.6, expandedChapters: {}, arthHidden: false };
+
+  /* Per book (swith_arth books only): whether the reader last left the meaning/commentary hidden. */
+  function getArthHidden(book) {
+    return !!(book && book.swithArth && readJSON(LS.readerArth, {})[book.file]);
+  }
+  function setArthHidden(book, hidden) {
+    var m = readJSON(LS.readerArth, {});
+    if (hidden) m[book.file] = true; else delete m[book.file];
+    writeJSON(LS.readerArth, m);
+  }
 
   function getReaderTheme() {
     var t = localStorage.getItem(LS.readerTheme);
@@ -1914,7 +1952,8 @@
     while ((m = re.exec(html))) {
       var end = m.index + 4, acc = end - last;
       if (acc < READER_PAGE_TARGET) continue;
-      if (acc >= READER_LONG_PAGE || UNIT_END_RE.test(html.slice(Math.max(last, end - 300), m.index))) { cuts.push(end); last = end; }
+      // (tags stripped first: a doha's number sits in its own <span> now, between the ॥ and the digits)
+      if (acc >= READER_LONG_PAGE || UNIT_END_RE.test(html.slice(Math.max(last, end - 400), m.index).replace(/<[^>]+>/g, ""))) { cuts.push(end); last = end; }
     }
     if (!cuts.length) return null;
     if (html.length - cuts[cuts.length - 1] < READER_PAGE_TARGET * 0.3) cuts.pop();      // no tiny last part
@@ -2385,6 +2424,9 @@
       'var HL=' + JSON.stringify(highlightList) + ';' +
       'var RESTORE_PCT=' + JSON.stringify(restoreScrollPct || 0) + ';' +
       'var ANCHOR_ID=' + JSON.stringify(anchorId || null) + ';' +
+      /* footnotes: the reference mark ("*", "[१]" ...) opens the note in a modal instead of the note sitting under the paragraph
+         (swadhyay-footnotes.js). Done first, before the scroll position is restored, since it hides the notes. */
+      '(function(){try{if(parent.SwadhyayFootnotes)parent.SwadhyayFootnotes.init(document);}catch(err){}})();' +
       /* Gita shlokas that have a recording get a small play button after the shloka number
          (swadhyay-shloka-audio.js lists them by their anchor id; this is a no-op for every other book) */
       'var SHA=' + JSON.stringify(window.SwadhyayShlokaAudio ? window.SwadhyayShlokaAudio.anchors() : {}) + ';' +
@@ -2420,6 +2462,9 @@
          kept centred while fonts/images settle (unless the reader has already scrolled themselves). */
       'if(ANCHOR_ID.indexOf("find:")===0){' +
       'var fm=null;try{fm=parent.__readerFindLocate(document,parseInt(ANCHOR_ID.slice(5),10));}catch(err){}' +
+      /* the hit is inside meaning/commentary that is currently hidden -> show it again so it can be seen */
+      'if(fm&&!fm.getClientRects().length){var fnOpen=false;try{fnOpen=!!(parent.SwadhyayFootnotes&&parent.SwadhyayFootnotes.revealFor(fm));}catch(err){}' +
+      'if(!fnOpen){try{parent.__readerArthReveal();}catch(err){}}}' +
       'if(fm){var moved=false;' +
       'var center=function(){if(!moved)fm.scrollIntoView({block:"center",behavior:"instant"});};' +
       '["wheel","touchmove","keydown","mousedown"].forEach(function(t){window.addEventListener(t,function(){moved=true;},{passive:true,once:true});});' +
@@ -2527,8 +2572,11 @@
     iframe.style.colorScheme = theme === "night" ? "dark" : "light";
   }
 
-  function renderIframeDoc(book, headHtml, chapterHtml, fontSize, lineHeight, theme, highlightList, restoreScrollPct, anchorId) {
+  function renderIframeDoc(book, headHtml, chapterHtml, fontSize, lineHeight, theme, highlightList, restoreScrollPct, anchorId, arthHidden) {
     var themeClass = theme === "night" ? "rdr-night" : theme === "sepia" ? "rdr-sepia" : "";
+    // "meaning hidden" is a body class (toggled live by readerArthSet), so the rule is always present for swith_arth books
+    var arthCss = book.swithArth ? book.arthHideSel.map(function (s) { return "body.rdr-noarth " + s; }).join(",") + "{display:none !important;}" : "";
+    if (book.swithArth && arthHidden) themeClass = (themeClass + " rdr-noarth").trim();
     var bg = readerBg(theme);
     // the canvas colour comes first, ahead of the book's own (render-blocking) stylesheet, so nothing paints white while that loads
     return '<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="color-scheme" content="' + (theme === "night" ? "dark" : "light") + '">' +
@@ -2551,6 +2599,7 @@
       'mark.rdr-hl{background:#ffe58a;border-radius:2px;}' +
       'mark.rdr-find{background:#ffb74d;color:#1a1a1a;border-radius:3px;box-shadow:0 0 0 2px #ff8f00;animation:rdrFindPulse 1.1s ease-in-out 2;}' +
       '@keyframes rdrFindPulse{0%,100%{box-shadow:0 0 0 2px #ff8f00;}50%{box-shadow:0 0 0 7px rgba(255,143,0,.35);}}' +
+      arthCss +
       readerThemeCSS() +
       '</style></head><body class="' + themeClass + '">' + chapterHtml +
       '<script>' + readerInlineScript(highlightList, restoreScrollPct, anchorId) + '</script>' +
@@ -2587,6 +2636,10 @@
       '<button class="reader-icon-btn" id="readerBackBtn" title="वापस" aria-label="वापस">←</button>' +
       '<button class="reader-icon-btn" id="readerTocToggle" title="विषय-सूची" aria-label="विषय-सूची">☰</button>' +
       '<div class="reader-title" id="readerTitleText"></div>' +
+      '<button class="reader-arth-btn" id="readerArthBtn" type="button" hidden aria-pressed="false">' +
+      '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="arth-slash" d="M3 3l18 18"/></svg>' +
+      '<span class="arth-label">अर्थ</span></button>' +
       '<button class="reader-icon-btn" id="readerSearchBtn" title="पुस्तक में खोजें" aria-label="पुस्तक में खोजें">&#128269;</button>' +
       '<button class="reader-icon-btn" id="readerBookmarkToggle" title="बुकमार्क" aria-label="बुकमार्क">☆</button>' +
       '<button class="reader-icon-btn" id="readerSettingsToggle" title="सेटिंग्स" aria-label="सेटिंग्स">Aa</button>' +
@@ -2709,6 +2762,16 @@
       bmBtn.textContent = marked ? "★" : "☆";
       bmBtn.classList.toggle("active", marked);
     }
+    var arthBtn = document.getElementById("readerArthBtn");
+    if (arthBtn) {
+      var arthOn = !!(reader.book && reader.book.swithArth);
+      arthBtn.hidden = !arthOn;
+      arthBtn.classList.toggle("off", arthOn && reader.arthHidden);
+      arthBtn.setAttribute("aria-pressed", arthOn && reader.arthHidden ? "true" : "false");
+      var arthTip = reader.arthHidden ? "अर्थ व टीका दिखाएँ" : "अर्थ व टीका छुपाएँ — केवल श्लोक पढ़ें";
+      arthBtn.title = arthTip;
+      arthBtn.setAttribute("aria-label", arthTip);
+    }
     var fv = document.getElementById("readerFontVal");
     if (fv) fv.textContent = reader.fontSize + "px";
     var lhSlider = document.getElementById("readerLineHeightSlider");
@@ -2735,8 +2798,31 @@
     var chapter = reader.chapters[reader.idx];
     var highlights = getChapterHighlights(reader.bookId, reader.idx);
     readerPaintFrame(iframe, reader.theme);
-    iframe.srcdoc = renderIframeDoc(reader.book, reader.headHtml, chapter.html, reader.fontSize, reader.lineHeight, reader.theme, highlights, restoreScrollPct || 0, anchorId);
+    iframe.srcdoc = renderIframeDoc(reader.book, reader.headHtml, chapter.html, reader.fontSize, reader.lineHeight, reader.theme, highlights, restoreScrollPct || 0, anchorId, reader.arthHidden);
   }
+
+  /* Show/hide the meaning and commentary of a swith_arth book. Flips a class on the page already on screen (no
+     reload), and holds the first paragraph still visible where it was so the reader does not lose their place. */
+  function readerArthSet(hidden, persist) {
+    if (!reader.book || !reader.book.swithArth) return;
+    reader.arthHidden = hidden;
+    if (persist) setArthHidden(reader.book, hidden);
+    var iframe = document.getElementById("readerIframe"), win = null, doc = null;
+    try { win = iframe.contentWindow; doc = win.document; } catch (e) {}
+    if (doc && doc.body) {
+      var sel = reader.book.arthHideSel.join(","), anchor = null, topBefore = 0, ps = doc.body.querySelectorAll("p");
+      for (var i = 0; i < ps.length; i++) {
+        if (hidden && ps[i].matches(sel)) continue;          // about to disappear -- cannot be the anchor
+        var r = ps[i].getBoundingClientRect();
+        if (r.height > 0 && r.bottom > 4) { anchor = ps[i]; topBefore = r.top; break; }
+      }
+      doc.body.classList.toggle("rdr-noarth", hidden);
+      if (anchor) win.scrollBy(0, anchor.getBoundingClientRect().top - topBefore);
+    }
+    readerUpdateChrome();
+  }
+  // A search hit lay inside hidden meaning: show the meaning again (this once; the saved preference is untouched).
+  window.__readerArthReveal = function () { if (reader.open && reader.arthHidden) readerArthSet(false, false); };
 
   function readerSaveProgress(scrollPct) {
     var reads = getReads();
@@ -2778,6 +2864,9 @@
     });
     document.getElementById("readerScrim").addEventListener("click", closeDrawerAndSettings);
     document.getElementById("readerSearchBtn").addEventListener("click", readerFindOpen);
+    document.getElementById("readerArthBtn").addEventListener("click", function () {
+      if (reader.chapters) readerArthSet(!reader.arthHidden, true);
+    });
     document.getElementById("readerTocList").addEventListener("click", function (e) {
       var toggleBtn = e.target.closest("[data-toggle]");
       if (toggleBtn) {
@@ -2911,6 +3000,9 @@
     reader.bookId = bookId;
     reader.book = book;
     // opened from the dark site -> the book opens in night view too; otherwise the reader's own saved choice
+    reader.arthHidden = getArthHidden(book);
+    var arthBtnEl = document.getElementById("readerArthBtn");
+    if (arthBtnEl) arthBtnEl.hidden = true;      // shown again by readerUpdateChrome once the book has loaded
     reader.theme = getTheme() === "dark" ? "night" : getReaderTheme();
     reader.fontSize = getReaderFontSize();
     reader.lineHeight = getReaderLineHeight();
@@ -4914,7 +5006,7 @@
   if (typeof window.__SWADHYAY_EXPORT__ === "function") {
     window.__SWADHYAY_EXPORT__({
       BOOKS: BOOKS, PEOPLE: PEOPLE, CATEGORY_META: CATEGORY_META,
-      genBlurb: genBlurb, HELP_FAQS: HELP_FAQS, personPath: personPath, bookPath: bookPath
+      genBlurb: genBlurb, HELP_FAQS: HELP_FAQS, personPath: personPath, bookPath: bookPath, SLUG_ALIASES: SLUG_ALIASES
     });
   }
 })();

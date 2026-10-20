@@ -1,6 +1,11 @@
 // Book catalogue -- 567 real book files. Per book: author, tikakar (commentator), translator and
 // publisher, as printed in the book itself (title page / front matter). Several people in one
 // field are separated by "; ". An empty string means the book does not state it.
+// Optional "swith_arth": "yes" switches on the reader's अर्थ show/hide button (meaning, commentary and
+// footnotes can be hidden so only the shloks/chaupais and their speaker labels remain -- for पाठ). The same
+// entry then needs "arth_hide": the book's own paragraph classes that carry that meaning, comma separated
+// ("Name" = that exact class, "Name*" = any class containing Name). Classes differ per edition, so check
+// the book's HTML first; a tagged book without "arth_hide" gets no button.
 var SWADHYAY_BOOKS_RAW = [
     {
         "file":  "मानस-मुक्ता.html",
@@ -3834,6 +3839,8 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
         "translator":  "",
         "publisher":  "गीताप्रेस",
+        "swith_arth":  "yes",
+        "arth_hide":  "TXT, Footnotes*",
         "sizeKB":  4869.7
     },
     {

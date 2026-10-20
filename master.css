@@ -7648,3 +7648,109 @@ td.Shalaka-Cell-Mark {
 	background-color:rgba(224, 170, 60, 0.4);
 	font-weight:bold;
 }
+
+/* Chaupai lines of the Ramcharitmanas ("पद । पद ॥" on one line, class "Shlok cp"; the book file splits the line into four spans):
+   the two halves are columns of the same width and the । and ॥ have columns of their own, so on every line the । falls at the same
+   place, the ॥ at the same place, and each half is justified to its column. A column is 10.3em wide (measured on the book's
+   9,349 lines, 99.5 % of the halves are narrower) and the line is centred. When the screen is too narrow for the four columns
+   side by side the second half wraps under the first, and the marks still line up (the two mark columns are the same width).
+   Dohas, sorthas and Sanskrit shlokas keep the plain Shlok / Doha look. */
+p.Shlok.cp {
+	display:flex;
+	flex-wrap:wrap;
+	justify-content:center;
+	align-items:baseline;
+	column-gap:0.2em;
+}
+p.Shlok.cp > .cp-a,
+p.Shlok.cp > .cp-b {
+	flex:0 0 10.3em;
+	max-width:100%;
+	text-align:justify;
+	text-align-last:justify;
+}
+p.Shlok.cp > .cp-d,
+p.Shlok.cp > .cp-e {
+	flex:0 0 0.7em;
+	text-align:left;
+	white-space:nowrap;
+}
+
+/* Verse blocks of the Ramcharitmanas (doha "दो०—", sortha "सो०—", chhand "छं०—", the Sanskrit shlokas; class "Shlok vs" or "Doha vs").
+   The block is one paragraph with a row per line and four cells per row: prefix | text | mark | suffix.
+     prefix  the label ("दो०—"), on the first row only -- it sits before the justified text and is not part of it
+     text    justified to the width of the block's longest line, so every line of the block has the same width
+     mark    the ।  or  ॥  that ends the line, a column of its own so they stand one under the other
+     suffix  the verse number with its closing danda ("३१॥"), on the row that has it.
+   The block is centred; on a narrow screen a long line wraps inside its text cell. */
+p.vs {
+	display:grid;
+	grid-template-columns:auto minmax(0, max-content) auto auto;
+	width:fit-content;
+	max-width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	column-gap:0.2em;
+	align-items:baseline;
+}
+p.vs > .vs-l,
+p.vs > .vs-m,
+p.vs > .vs-s {
+	text-align:left;
+	white-space:nowrap;
+}
+p.vs > .vs-t {
+	text-align:justify;
+	text-align-last:justify;
+}
+
+/* On a narrow screen (a phone) the label goes on a row of its own above the block and the block is set a little smaller, so that
+   the longest lines (the median is 12.4em, 90 % are under 13.9em) fit on one row instead of wrapping inside their cell. */
+@media (max-width:560px) {
+	p.vs {
+		font-size:1.2em;
+	}
+	p.vs > .vs-l {
+		grid-column:1 / -1;
+	}
+	p.vs > .vs-t {
+		text-align-last:auto;
+	}
+}
+
+/* A chhand set as "छं०—पद । पद ॥" lines (class "Shlok cph"): one paragraph with a row per line, five cells per row:
+   label | first half | । | second half | ॥ .  The two half columns are fr tracks of a block that is only as wide as its content, so
+   they come out equal and exactly as wide as the longest half of this chhand (narrower than a chaupai's 10.3em columns); the halves
+   are justified to them, the label stands before them and the two marks line up in their columns. */
+p.cph {
+	display:grid;
+	grid-template-columns:auto minmax(0, 1fr) auto minmax(0, 1fr) auto;
+	width:fit-content;
+	max-width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	column-gap:0.2em;
+	align-items:baseline;
+}
+p.cph > .cph-l,
+p.cph > .cph-d,
+p.cph > .cph-e {
+	text-align:left;
+	white-space:nowrap;
+}
+p.cph > .cph-a,
+p.cph > .cph-b {
+	text-align:justify;
+	text-align-last:justify;
+}
+@media (max-width:560px) {
+	/* too narrow for the two halves side by side: label above, the second half under the first, the marks still in one column */
+	p.cph {
+		grid-template-columns:minmax(0, 1fr) auto;
+	}
+	p.cph > :nth-child(5n+1) { grid-column:1 / -1; }
+	p.cph > :nth-child(5n+2) { grid-column:1; }
+	p.cph > :nth-child(5n+3) { grid-column:2; }
+	p.cph > :nth-child(5n+4) { grid-column:1; }
+	p.cph > :nth-child(5n)   { grid-column:2; }
+}
