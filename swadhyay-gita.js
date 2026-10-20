@@ -381,12 +381,15 @@
     if (!cur) return '<div class="gl-done-all"><span aria-hidden="true">🏵️</span><h3>' + esc(T("गीता-अध्ययन पूर्ण — अभिनन्दन!", "Gita study complete — congratulations!")) + '</h3><p>' + esc(T("आपने सभी 700 श्लोकों की यात्रा पूरी की।", "You have completed the journey through all 700 shlokas.")) + '</p>' +
       '<button type="button" class="gl-btn" data-gl="open">' + esc(T("गीता LMS खोलें", "Open the Gita LMS")) + ' <i>→</i></button></div>';
     var rev = cur.kind === "revise";
-    var lead = rev ? '<div class="gl-shl is-rev"><small>' + esc(T("आज पुनरावृत्ति का दिन", "Revision day")) + '</small><span>' + esc(T("अध्याय ", "Chapter ")) + dev(cur.ch) + " · " + esc(T("श्लोक ", "Shloka ")) + span(cur) + '</span></div>' :
-      (v ? '<div class="gl-shl"><small>' + esc(v.s || "") + '</small>' + v.t.map(function (l) { return "<span>" + esc(l) + "</span>"; }).join("") + '</div>' : '');
+    var lead = rev ? '<div class="gl-shl is-rev"><small>' + esc(T("आज पुनरावृत्ति का दिन", "Revision day")) + '</small><span>' + esc(T("अध्याय ", "Chapter ")) + dev(cur.ch) + " · " + esc(T("श्लोक ", "Shloka ")) + span(cur) + '</span></div>' : '';
+    /* the day's shlokas sit below the day box, one block each, every line kept whole (fitLines) */
+    var shloks = !rev && v && v.length ? '<div class="gl-shloks">' + v.map(function (x, i) {
+      return '<div class="gl-shl"><small>' + esc(T("श्लोक ", "Shloka ") + dev(cur.a + i) + (x.s ? " · " + x.s : "")) + '</small>' + x.t.map(function (l) { return "<span>" + esc(l) + "</span>"; }).join("") + '</div>';
+    }).join("") + '</div>' : '';
     var late = sk.doneToday;
     return '<div class="gl-act"><header><span class="gl-ribbon">' + esc(T("आज का अध्ययन", "Today's study")) + '</span><h3>' + esc(T("गीता LMS", "Gita LMS")) + '</h3>' +
       '<p>' + esc(late ? T("आज का पाठ पूरा हुआ ✓ — चाहें तो आगे बढ़ें।", "Today's lesson is done ✓ — carry on if you like.") : T("आज के लिए 20 मिनट", "20 minutes for today")) + '</p></header>' +
-      '<div class="gl-today-in"><div class="gl-cal"><span aria-hidden="true">' + (rev ? "🔁" : "📅") + '</span><b>' + esc(T("दिन ", "Day ")) + dev(cur.n) + '</b><small>' + esc(T("अध्याय ", "Chapter ")) + dev(cur.ch) + '<br>' + esc(T("श्लोक ", "Shloka ")) + span(cur) + '</small></div>' + lead + '</div>' +
+      '<div class="gl-today-in"><div class="gl-cal"><span aria-hidden="true">' + (rev ? "🔁" : "📅") + '</span><b>' + esc(T("दिन ", "Day ")) + dev(cur.n) + '</b><small>' + esc(T("अध्याय ", "Chapter ")) + dev(cur.ch) + ' <br>' + esc(T("श्लोक ", "Shloka ")) + span(cur) + '</small></div>' + lead + '</div>' + shloks +
       '<div class="gl-meter" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><i style="width:' + pct + '%"></i></div>' +
       '<ul class="gl-mini"><li><b>' + dev(st.learned) + '/' + dev(totalShlokas()) + '</b><small>' + esc(T("श्लोक सीखे", "shlokas learned")) + '</small></li><li><b>🔥 ' + dev(sk.cur) + '</b><small>' + esc(T("दिन लगातार", "day streak")) + '</small></li><li><b>' + dev(st.chapters) + '/18</b><small>' + esc(T("अध्याय पूर्ण", "chapters done")) + '</small></li></ul>' +
       '<div class="gl-row"><button type="button" class="gl-btn" data-gl="lesson">' + esc(rev ? T("आज की पुनरावृत्ति शुरू करें", "Begin today's revision") : T("आज का पाठ शुरू करें", "Begin today's lesson")) + ' <i>→</i></button>' +
@@ -397,7 +400,7 @@
     ready().then(function () {
       var cur = S.joined ? currentDay() : null;
       var need = S.joined ? (cur && cur.kind === "lesson" ? cur : null) : null;
-      var p = S.joined && need ? getChapter(need.ch).then(function (d) { return d.shlokas[need.a - 1]; }) : Promise.resolve(null);
+      var p = S.joined && need ? versesOf(need) : Promise.resolve(null);          // every shloka of the day, not just the first
       return p.then(function (v) {
         cardEl.classList.remove("is-loading");
         cardEl.classList.toggle("is-joined", !!S.joined);
@@ -1174,6 +1177,34 @@
     document.addEventListener("visibilitychange", function () { if (!document.hidden && PLAN) { arm(); refreshAll(); } });
   }
   boot();
+
+  /* A shloka line is never broken in two. The lines are set on one line each (white-space: nowrap) and the font shrinks, as far
+     as the longest line of a block needs, until it fits the width it has; recomputed when the content, the width or the fonts change. */
+  function fitLines() {
+    var boxes = document.querySelectorAll(".gl-shloks, .gl-sans, .gl-shl:not(.is-rev)");
+    Array.prototype.forEach.call(boxes, function (box) {
+      if (box.classList.contains("gl-shl") && box.closest(".gl-shloks")) return;           // fitted with its block
+      var lines = box.querySelectorAll(box.classList.contains("gl-sans") ? "p" : ".gl-shl span, span");
+      if (!lines.length) return;
+      var w = lines[0].clientWidth, sig = w + ":" + box.textContent.length;
+      if (!w || box.dataset.fit === sig) return;
+      Array.prototype.forEach.call(lines, function (l) { l.style.fontSize = ""; });
+      var ratio = 1;
+      Array.prototype.forEach.call(lines, function (l) { if (l.scrollWidth > l.clientWidth + 1) ratio = Math.min(ratio, l.clientWidth / l.scrollWidth); });
+      if (ratio < 1) {
+        var base = parseFloat(getComputedStyle(lines[0]).fontSize) || 16, size = Math.max(9, Math.floor(base * ratio * 0.98 * 10) / 10);
+        Array.prototype.forEach.call(lines, function (l) { l.style.fontSize = size + "px"; });
+      }
+      box.dataset.fit = sig;
+    });
+  }
+  var fitQueued = false;
+  function queueFit() { if (fitQueued) return; fitQueued = true; setTimeout(function () { fitQueued = false; fitLines(); }, 30); }
+  if (window.MutationObserver && document.body) new MutationObserver(function (ms) {
+    for (var i = 0; i < ms.length; i++) if (ms[i].addedNodes.length) { queueFit(); return; }
+  }).observe(document.body, { childList: true, subtree: true });
+  window.addEventListener("resize", queueFit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(queueFit);
   function start() {
     ready().then(function () { arm(); return syncDown(); }).then(function (changed) { if (changed) { arm(); refreshAll(); } }).catch(function () {});
   }

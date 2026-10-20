@@ -1807,8 +1807,10 @@ body.qsh-open { overflow: hidden; }
 }
 /* the picture spans the full width of the card, pinned to its top, and fades into the card's colour towards the bottom */
 .dd-card::before {
-  content: ""; position: absolute; left: 0; right: 0; top: 0; aspect-ratio: 16 / 9; z-index: -1; pointer-events: none;
-  background: linear-gradient(180deg, rgba(255, 246, 228, .9) 0, rgba(255, 246, 228, .55) 18%, rgba(255, 246, 228, 0) 38%), var(--dd-bg) top center / 100% 100% no-repeat;
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: calc(100% - 218px); min-height: 190px; z-index: -1; pointer-events: none;
+  /* the picture runs down to where the content boxes begin (the card is as tall as the tallest of the three, so a fixed 16:9 picture left a blank band);
+     the subject is on the left of both pictures, so a taller crop keeps the left and trims the empty sky on the right */
+  background: linear-gradient(180deg, rgba(255, 246, 228, .9) 0, rgba(255, 246, 228, .55) 18%, rgba(255, 246, 228, 0) 38%), var(--dd-bg) left top / cover no-repeat;
   -webkit-mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 50%, transparent 100%);
 }
 .dd-card.is-loading > * { visibility: hidden; }
@@ -2484,6 +2486,30 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .dd-trio > .gl-card .gl-mini { margin-bottom: .5rem; }
 .dd-trio > .gl-card .gl-row { margin: .3rem 0 .8rem; }
 .dd-trio > .gl-card .gl-row .gl-btn { padding: .65rem .8rem; font-size: .95rem; }
+/* once joined, the card carries a small picture across its top, fading into the card like the Manas and Bhajan cards; the title sits in the sky on the right */
+.dd-trio > .gl-card.is-joined { isolation: isolate; }
+.dd-trio > .gl-card.is-joined::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 190px; z-index: -1; pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 246, 228, .75) 0, rgba(255, 246, 228, 0) 30%), url("/assets/images/gita/banner-m.webp") 15% 22% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, #000 0, #000 55%, transparent 100%); mask-image: linear-gradient(180deg, #000 0, #000 55%, transparent 100%);
+}
+.dd-trio > .gl-card.is-joined .gl-act header { text-align: right; min-height: 100px; padding: 2.2rem .1rem 0 40%; margin-bottom: .9rem; }
+.dd-trio > .gl-card.is-joined .gl-act header .gl-ribbon { left: auto; right: .1rem; transform: none; top: -.55rem; }
+.dd-trio > .gl-card.is-joined .gl-act h3 { margin: .15rem 0 .1rem; }
+.dd-trio > .gl-card.is-joined .gl-act header p { font-size: .88rem; }
+/* the day sits in the sky under the title, as a wide badge: calendar on the left, "दिन २" with chapter and shloka beside it */
+.dd-trio > .gl-card.is-joined .gl-act header { min-height: 84px; margin-bottom: .3rem; }
+.dd-trio > .gl-card.is-joined .gl-today-in { flex-wrap: nowrap; justify-content: flex-end; gap: .6rem; }
+.dd-trio > .gl-card.is-joined .gl-cal {
+  flex: 0 1 auto; min-width: 60%; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "ic day" "ic loc"; align-items: center; justify-items: start;
+  column-gap: .6rem; row-gap: 0; padding: .45rem .8rem .45rem .65rem; text-align: left; border-radius: 16px;
+  background: rgba(255, 251, 243, .9); border: 1px solid rgba(214, 170, 100, .6); box-shadow: 0 8px 16px -10px rgba(100, 50, 10, .6);
+}
+.dd-trio > .gl-card.is-joined .gl-cal span { grid-area: ic; font-size: 2rem; line-height: 1; }
+.dd-trio > .gl-card.is-joined .gl-cal b { grid-area: day; font-size: 1.3rem; line-height: 1.15; color: #8f1a12; }
+.dd-trio > .gl-card.is-joined .gl-cal small { grid-area: loc; font-size: .84rem; line-height: 1.25; }
+.dd-trio > .gl-card.is-joined .gl-cal small br { display: none; }
+.dd-trio > .gl-card.is-joined .gl-today-in .gl-shl.is-rev { flex: 1 1 0; border-left: 0; padding-left: 0; text-align: left; }
 
 /* "बोलकर जाँचें" -- check a recitation by speaking */
 .gl-sp-list { margin-top: .8rem; display: grid; gap: .6rem; }
@@ -2512,3 +2538,11 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .gl-sp-lang select { padding: .35rem .6rem; border-radius: 10px; border: 1.5px solid #e1ccaa; background: #fff; font: inherit; color: #3b1812; }
 .gl-sp-why { margin-top: .35rem; font-style: italic; }
 .gl-sp-asr { margin: .3rem 0 0; font-size: .88rem; color: #5b3a2c; min-height: 1.2em; }
+
+/* the day's shlokas: below the day box, a block each, no line ever broken (fitLines in swadhyay-gita.js shrinks the font to fit) */
+.gl-shloks { margin: .7rem 0 .1rem; padding: .55rem .7rem; border-radius: 14px; background: rgba(255, 252, 245, .92); border: 1px solid rgba(214, 170, 100, .4); }
+.gl-shloks .gl-shl { padding: 0; border: 0; text-align: center; }
+.gl-shloks .gl-shl + .gl-shl { margin-top: .5rem; padding-top: .5rem; border-top: 1px dashed rgba(190, 150, 90, .55); }
+.gl-shloks .gl-shl small { font-size: .78rem; color: #8f1a12; }
+.gl-shl span, .gl-sans p { white-space: nowrap; }
+.dd-trio > .gl-card .gl-shloks .gl-shl span { font-size: 1.05rem; line-height: 1.5; }

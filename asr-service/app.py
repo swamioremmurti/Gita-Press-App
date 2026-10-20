@@ -35,6 +35,8 @@ from featurizer import Featurizer
 
 MODEL_REPO = os.environ.get("MODEL_REPO", "")
 MODEL_DIR = os.environ.get("MODEL_DIR", "")
+if not MODEL_DIR and os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "model", "config.json")):
+    MODEL_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "model")      # model baked into the image
 SECRET = os.environ.get("ASR_SHARED_SECRET", "")
 STUB = os.environ.get("ASR_STUB", "")
 MAX_SECONDS = float(os.environ.get("MAX_SECONDS", "75"))

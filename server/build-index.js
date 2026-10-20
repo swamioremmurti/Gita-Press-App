@@ -78,6 +78,7 @@ function loadBookMeta() {
 function titleFromFile(file) {
   let t = file.replace(/\.html$/i, '');
   if (t.indexOf('u_') === 0) t = t.slice(2);
+  t = t.replace(/[_\s-]+(?=्)/g, '');        // keep a halant joined to its letter ("भगवान_् पर" -> "भगवान् पर")
   return t.replace(/[_-]+/g, ' ').trim();
 }
 
