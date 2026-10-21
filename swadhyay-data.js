@@ -4,7 +4,7 @@
 // Optional "swith_arth": "yes" switches on the reader's अर्थ show/hide button (meaning, commentary and
 // footnotes can be hidden so only the shloks/chaupais and their speaker labels remain -- for पाठ). The same
 // entry then needs "arth_hide": the book's own paragraph classes that carry that meaning, comma separated
-// ("Name" = that exact class, "Name*" = any class containing Name). Classes differ per edition, so check
+// ("Name" = that exact class, "Name*" = any class containing Name, "Name!Other" = Name unless the paragraph also has Other). Classes differ per edition, so check
 // the book's HTML first; a tagged book without "arth_hide" gets no button.
 var SWADHYAY_BOOKS_RAW = [
     {
@@ -1358,12 +1358,14 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  56.1
     },
     {
-        "file":  "श्रीगणेशसहस्रनामस्तोत्रम्.html",
+        "file":  "गणेशस्तोत्ररत्नाकर.html",
         "category":  "Stotra evam Naamavali",
         "author":  "",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
+        "swith_arth":  "yes",
+        "arth_hide":  "TXT!para-style-override-4, Footnotes*, para-style-override-7",
         "sizeKB":  1034.3
     },
     {
@@ -5138,5 +5140,41 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "करनाल मानव सेवा संघ",
         "sizeKB":  1215.0
+    },
+    {
+        "file":  "चाणक्य नीति.html",
+        "category":  "Siksha evam Katha",
+        "author":  "कौटिल्य विष्णुगुप्त (चाणक्य)",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  381.1
+    },
+    {
+        "file":  "नीतिशतकं.html",
+        "category":  "Siksha evam Katha",
+        "author":  "भर्तृहरि",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  175.5
+    },
+    {
+        "file":  "श्रीगणेशसहस्रनामस्तोत्रम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  155.4
+    },
+    {
+        "file":  "अथर्वशिखोपनिषत्.html",
+        "category":  "Upanishad",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  38.5
     }
 ];

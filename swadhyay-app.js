@@ -344,9 +344,15 @@
   }
 
   var COVER_OVERRIDES = {
+    "अथर्वशिखोपनिषत्.html": "assets/covers/atharvashikhopanishat.webp",
+    "गणेशस्तोत्ररत्नाकर.html": "assets/covers/ganeshastotraratnaakar.webp",
+    "चाणक्य नीति.html": "assets/covers/chaanaky-neeti.webp",
+    "नीतिशतकं.html": "assets/covers/neetishatakn.webp",
     "प्रेमयोग.html": "assets/covers/premyog.jpg",
     "श्रीमद्भगवद्गीता शांकरभाष्य.html": "assets/covers/gita-shankarbhashya.webp",
     "श्रीमद्भगवद्गीता श्रीरामानुज भाष्य.html": "assets/covers/gita-ramanujbhashya.webp",
+    "कर्म रहस्य.html": "assets/covers/karma-rahasya.webp",
+    "श्रीरामचरितमानस.html": "assets/covers/ramcharitmanas.webp",
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "assets/covers/gita-mahatmya-mote.webp",
     "श्रीमद्भगवद्गीता माहात्म्य की कहानियाँ.html": "assets/covers/gita-mahatmya-kahaniyan.webp",
     "श्रीमद्भगवद्गीता_साधक_संजीवनी.html": "assets/covers/sadhak-sanjeevani.webp",
@@ -433,6 +439,9 @@
   // Gita Prakashan, Tirumala Tirupati Devasthanam, etc.) — affiliate buy buttons are
   // hidden for these since Gita Press does not sell them.
   var NON_GITA_PRESS_BOOKS = {
+    "अथर्वशिखोपनिषत्.html": true,
+    "नीतिशतकं.html": true,
+    "चाणक्य नीति.html": true,
     "भक्त नंदनार.html": true,
     "प्रेमयोग.html": true,
     "श्रीकृष्ण चैतन्य.html": true,
@@ -527,11 +536,14 @@
   };
 
   /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
-     "Name" = paragraphs with exactly that class, "Name*" = any class containing Name. */
+     "Name" = paragraphs with exactly that class, "Name*" = any class containing Name, "Name!Other" = class Name unless the
+     paragraph also has class Other (for a book whose Sanskrit prose shares the meaning class). */
   function arthSelectors(spec) {
     return String(spec || "").split(",").map(function (t) { return t.trim(); })
-      .filter(function (t) { return /^[A-Za-z0-9_-]+\*?$/.test(t); })
+      .filter(function (t) { return /^[A-Za-z0-9_-]+(?:\*|![A-Za-z0-9_-]+)?$/.test(t); })
       .map(function (t) {
+        var not = t.split("!");
+        if (not.length === 2) return 'p[class~="' + not[0] + '"]:not([class~="' + not[1] + '"])';
         return t.slice(-1) === "*" ? 'p[class*="' + t.slice(0, -1) + '"]' : 'p[class~="' + t + '"]';
       });
   }
@@ -699,6 +711,7 @@
     bookmarks: "swadhyay_bookmarks_v1",
     highlights: "swadhyay_highlights_v1",
     readerLayout: "swadhyay_reader_layout_v1",
+    readerMode: "swadhyay_reader_mode_v1",
     panchangCity: "swadhyay_panchang_city_v1",
     feedback: "swadhyay_feedback_v1",
     taxLang: "swadhyay_taxonomy_lang_v1"
@@ -934,11 +947,9 @@
        only reflects what the user actually opens. */
   }
 
-  var NEW_ADDITIONS_FILES = [
-    "संक्षिप्त शिवपुराण.html", "श्रीमद्देवीभागवतमहापुराण.html", "संक्षिप्त योगवासिष्ठ.html",
-    "श्रीहनुमानचालीसा.html", "नारद भक्ति सूत्र.html",
-    "श्रीविष्णुसहस्रनाम (शांकरभाष्य, हिन्दी अनुवाद सहित).html"
-  ];
+  /* "New Additions" on the home page: the books most recently added to the library -- the tail of swadhyay-data.js, where
+     tools/book_converter.py appends every new book -- newest first (the same order as /library?sort=latest). */
+  var NEW_ADDITIONS_COUNT = 10;
 
   /* ---------------- home page: पंचांग-आधारित सुझाव / AI / संग्रह data ---------------- */
   var VRAT_BY_TITHI = {
@@ -1366,8 +1377,7 @@
     var recentIds = Object.keys(reads).sort(function (a, b) { return reads[b].lastOpenedAt - reads[a].lastOpenedAt; }).slice(0, 8);
     var recentBooks = recentIds.map(function (id) { return BOOKS_BY_ID[id]; }).filter(Boolean);
 
-    var newAdd = NEW_ADDITIONS_FILES.map(findByFile).filter(Boolean);
-    if (newAdd.length < 6) newAdd = newAdd.concat(pickN(BOOKS, 6 - newAdd.length, 5));
+    var newAdd = BOOKS.slice(-NEW_ADDITIONS_COUNT).reverse();
 
     var favIds = getFavorites();
     var favBooks = favIds.map(function (id) { return BOOKS_BY_ID[id]; }).filter(Boolean).slice(0, 8);
@@ -1625,13 +1635,14 @@
   }
 
   function loadTOC(book, panel) {
-    if (readerCache[book.id]) { panel.innerHTML = renderTOCList(book, readerCache[book.id].chapters); return; }
+    var ce = cachedEntry(book);
+    if (ce) { panel.innerHTML = renderTOCList(book, ce.chapters); return; }
     panel.innerHTML = '<div class="empty-state small">विषय-सूची लोड हो रही है…</div>';
     fetch(book.href).then(function (res) {
       if (!res.ok) throw new Error("fetch failed");
       return res.text();
     }).then(function (htmlText) {
-      var entry = readerCache[book.id] || buildReaderBook(book.id, htmlText);
+      var entry = cachedEntry(book) || buildReaderBook(book.id, htmlText);
       panel.innerHTML = renderTOCList(book, entry.chapters);
     }).catch(function () {
       panel.innerHTML = '<div class="empty-state small">विषय-सूची लोड नहीं हो सकी। पुस्तक खोलकर देखें।</div>';
@@ -1648,7 +1659,46 @@
   var READER_THEMES = ["day", "night", "sepia"];
   var readerCache = {};              // bookId -> { headHtml, chapters:[{label, html, subs}] }
   var READER_LINE_HEIGHT_MIN = 0.8, READER_LINE_HEIGHT_MAX = 2.5, READER_LINE_HEIGHT_STEP = 0.1;
-  var reader = { open: false, bookId: null, book: null, headHtml: "", chapters: null, idx: 0, theme: "day", fontSize: 19, lineHeight: 1.6, expandedChapters: {}, arthHidden: false };
+  var reader = { open: false, bookId: null, book: null, headHtml: "", chapters: null, idx: 0, theme: "day", fontSize: 19, lineHeight: 1.6, expandedChapters: {}, arthHidden: false, mode: "" };
+
+  /* Reading modes (पाठ-विधि) of a book that can be read in more than one way. The book file carries the headings of every mode, each
+     tagged data-mode="<key>"; the reader keeps those of the chosen mode and drops the others before it cuts the pages (a mode that
+     no element is tagged with -- "akhand" -- therefore keeps none: one page per Heading, here one per kāṇḍa). The chosen mode is
+     remembered per book; bookmarks, highlights and the resume point are kept per mode, since a page number means a different place in each. */
+  var READ_MODES = {
+    "श्रीरामचरितमानस.html": {
+      def: "book",
+      modes: [
+        { key: "book", label: "पुस्तक", hint: "विषय-खण्ड" },
+        { key: "masa", label: "मास-पारायण", hint: "३० दिन" },
+        { key: "navah", label: "नवाह्न-पारायण", hint: "९ दिन" },
+        { key: "akhand", label: "अखण्ड पाठ", hint: "काण्ड-काण्ड" }
+      ]
+    }
+  };
+  function bookModes(book) { return (book && READ_MODES[book.file]) || null; }
+  function getReadMode(book) {
+    var m = bookModes(book);
+    if (!m) return "";
+    var s = readJSON(LS.readerMode, {})[book.file];
+    return m.modes.some(function (k) { return k.key === s; }) ? s : m.def;
+  }
+  function setReadMode(book, key) {
+    var all = readJSON(LS.readerMode, {});
+    all[book.file] = key;
+    writeJSON(LS.readerMode, all);
+  }
+  /* the key under which this reader's bookmarks and highlights are stored: the plain book id in the default mode (as before),
+     "<id>~<mode>" in the others */
+  function readerStateKey() {
+    var m = bookModes(reader.book);
+    return m && reader.mode && reader.mode !== m.def ? reader.bookId + "~" + reader.mode : reader.bookId;
+  }
+  /* a built book from the cache, if it was built for the mode now chosen */
+  function cachedEntry(book) {
+    var e = readerCache[book.id];
+    return e && (e.mode || "") === getReadMode(book) ? e : null;
+  }
 
   /* Per book (swith_arth books only): whether the reader last left the meaning/commentary hidden. */
   function getArthHidden(book) {
@@ -1832,6 +1882,9 @@
     var cur = null;
     segs.forEach(function (seg) {
       seg.len = stripTagsForLabel(seg.html).length;
+      /* a Sub-Heading marked data-own-page="1" (the Ramcharitmanas' Book mode) always opens a page of its own, however short the page before it;
+         only the part of the chapter before its first Sub-Heading (the title and the Heading) is not closed for it */
+      if (cur && seg.label && cur.label && /^<p[^>]*data-own-page="1"/.test(seg.html)) { pages.push(cur); cur = null; }
       if (cur && cur.len >= READER_MIN_PAGE_CHARS) { pages.push(cur); cur = null; }
       if (!cur) { cur = { html: seg.html, label: seg.label, len: seg.len }; return; }
       cur.html += seg.html;
@@ -1948,6 +2001,9 @@
   var UNIT_NUM_RE = /(?:दो०|सो०)[^॥]{0,400}?॥\s*([०-९0-9]+)/g;     // the number that closes a doha / sortha
   function splitLongPage(html) {
     if (html.length <= READER_LONG_PAGE) return null;
+    /* A page that is deliberately one unit (a Heading or Sub-Heading carrying data-whole-page="1" -- the Ramcharitmanas'
+       मासपारायण विश्राम, one page each) is never cut into parts, however long it is. */
+    if (html.indexOf('data-whole-page="1"') !== -1) return null;
     var re = /<\/p>/g, m, cuts = [], last = 0;
     while ((m = re.exec(html))) {
       var end = m.index + 4, acc = end - last;
@@ -1972,6 +2028,13 @@
 
   function buildReaderBook(bookId, htmlText) {
     var doc = new DOMParser().parseFromString(htmlText, "text/html");
+    /* a book with reading modes: keep the headings of the chosen mode, drop those of the others (see READ_MODES) */
+    var readMode = getReadMode(BOOKS_BY_ID[bookId]);
+    if (readMode) {
+      Array.prototype.slice.call(doc.querySelectorAll("[data-mode]")).forEach(function (n) {
+        if (n.getAttribute("data-mode") !== readMode) n.parentNode.removeChild(n);
+      });
+    }
     var headHtml = doc.head ? doc.head.innerHTML : "";
     /* Every book links its stylesheet as ../../master.css, which only resolves to the site root when the book is
        served from the site. From a CDN folder that path would land on the CDN, so point it back at the site. */
@@ -2086,7 +2149,7 @@
       }
     });
     var entry = { headHtml: headHtml, chapters: pages, legacyFirst: legacyFirst, legacyPieces: legacyPieces,
-      l2First: l2First, l2Pieces: l2Pieces, layout: hasBhajans ? 3 : hasLongSplit ? 4 : READER_LAYOUT };
+      l2First: l2First, l2Pieces: l2Pieces, layout: hasBhajans ? 3 : hasLongSplit ? 4 : READER_LAYOUT, mode: readMode };
     readerCache[bookId] = entry;
     return entry;
   }
@@ -2095,6 +2158,7 @@
      reader cut chapters at Sub-Headings (layout 1) a "page" was a whole chapter, so those
      numbers are re-pointed once per book at the page that now holds the same spot. */
   function migrateReaderLayout(bookId, entry) {
+    if (bookModes(BOOKS_BY_ID[bookId])) return;        // a book with reading modes keeps its positions per mode (see READ_MODES)
     var done = readJSON(LS.readerLayout, {});
     var layoutTarget = entry.layout || READER_LAYOUT;      // 3 = one page per bhajan (भजन-संग्रह); 4 = very long pages cut into parts
     if (done[bookId] === layoutTarget) return;
@@ -2427,6 +2491,8 @@
       /* footnotes: the reference mark ("*", "[१]" ...) opens the note in a modal instead of the note sitting under the paragraph
          (swadhyay-footnotes.js). Done first, before the scroll position is restored, since it hides the notes. */
       '(function(){try{if(parent.SwadhyayFootnotes)parent.SwadhyayFootnotes.init(document);}catch(err){}})();' +
+      /* verse lines that never break: a line wider than its column has its type shrunk to fit (swadhyay-verse-fit.js) */
+      '(function(){try{if(parent.SwadhyayVerseFit)parent.SwadhyayVerseFit.init(document);}catch(err){}})();' +
       /* Gita shlokas that have a recording get a small play button after the shloka number
          (swadhyay-shloka-audio.js lists them by their anchor id; this is a no-op for every other book) */
       'var SHA=' + JSON.stringify(window.SwadhyayShlokaAudio ? window.SwadhyayShlokaAudio.anchors() : {}) + ';' +
@@ -2617,16 +2683,17 @@
     var entry = reads[reader.bookId] || {};
     entry.scrollPct = pct;
     entry.lastChapter = reader.idx;
+    if (reader.mode) entry.mode = reader.mode;
     reads[reader.bookId] = entry;
     setReads(reads);
   };
   window.__readerHighlightSave = function (text) {
     if (!reader.open) return;
-    addHighlightEntry(reader.bookId, reader.idx, text);
+    addHighlightEntry(readerStateKey(), reader.idx, text);
   };
   window.__readerRemoveHighlight = function (text) {
     if (!reader.open) return;
-    removeHighlightEntry(reader.bookId, reader.idx, text);
+    removeHighlightEntry(readerStateKey(), reader.idx, text);
   };
   window.__readerToast = function (msg) { toast(msg); };
 
@@ -2655,6 +2722,7 @@
       '<div class="reader-bookmarks reader-drawer-panel" id="readerBookmarksList" data-panel="bm"></div>' +
       '</aside>' +
       '<div class="reader-settings" id="readerSettings">' +
+      '<div class="reader-settings-row" id="readerModeRow" hidden><span>पाठ-विधि</span><div class="reader-mode-btns" id="readerModeBtns"></div></div>' +
       '<div class="reader-settings-row"><span>थीम</span>' +
       '<div class="reader-theme-btns">' +
       '<button data-theme="day" class="rdr-theme-btn">☀ दिन</button>' +
@@ -2685,7 +2753,7 @@
   }
 
   function readerTocHtml() {
-    var marks = getBookmarks(reader.bookId);
+    var marks = getBookmarks(readerStateKey());
     function star(i) { return marks.some(function (b) { return b.chapterIdx === i; }) ? '<span class="reader-toc-star">★</span> ' : ''; }
     function deeper(pg, i) {
       return (pg.subs || []).map(function (sb) {
@@ -2702,14 +2770,14 @@
       var expanded = hasKids && (holdsActive || reader.expandedChapters[g.idx]);
       return '<li class="reader-toc-group">' +
         '<div class="reader-toc-item' + (reader.idx === g.idx ? " active" : "") + '" data-idx="' + g.idx + '">' +
-        (hasKids ? '<button class="reader-toc-expand" data-toggle="' + g.idx + '">' + (expanded ? "▾" : "▸") + '</button>' : '<span class="reader-toc-expand-spacer"></span>') +
+        (hasKids ? '<button class="reader-toc-expand' + (expanded ? " open" : "") + '" data-toggle="' + g.idx + '" aria-label="विस्तार करें"><svg viewBox="0 0 12 12" width="14" height="14" aria-hidden="true"><path d="M4 2l4.5 4L4 10" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' : '<span class="reader-toc-expand-spacer"></span>') +
         star(g.idx) + esc(head.label) +
         '</div>' + (hasKids ? '<ul class="reader-toc-subs' + (expanded ? " open" : "") + '">' + kids + '</ul>' : '') + '</li>';
     }).join("");
   }
 
   function readerBookmarksHtml() {
-    var marks = getBookmarks(reader.bookId);
+    var marks = getBookmarks(readerStateKey());
     if (!marks.length) {
       return '<div class="empty-state small reader-bm-empty">अभी तक कोई बुकमार्क नहीं है। किसी अध्याय को बुकमार्क करने के लिए ऊपर ☆ दबाएँ।</div>';
     }
@@ -2753,12 +2821,12 @@
     if (bmList) bmList.innerHTML = readerBookmarksHtml();
     var bmTab = document.getElementById("readerDrawerTabBm");
     if (bmTab) {
-      var bmCount = getBookmarks(reader.bookId).length;
+      var bmCount = getBookmarks(readerStateKey()).length;
       bmTab.textContent = "☆ बुकमार्क" + (bmCount ? " (" + bmCount + ")" : "");
     }
     var bmBtn = document.getElementById("readerBookmarkToggle");
     if (bmBtn) {
-      var marked = isChapterBookmarked(reader.bookId, reader.idx);
+      var marked = isChapterBookmarked(readerStateKey(), reader.idx);
       bmBtn.textContent = marked ? "★" : "☆";
       bmBtn.classList.toggle("active", marked);
     }
@@ -2771,6 +2839,16 @@
       var arthTip = reader.arthHidden ? "अर्थ व टीका दिखाएँ" : "अर्थ व टीका छुपाएँ — केवल श्लोक पढ़ें";
       arthBtn.title = arthTip;
       arthBtn.setAttribute("aria-label", arthTip);
+    }
+    var modeRow = document.getElementById("readerModeRow"), modeDef = bookModes(reader.book);
+    if (modeRow) {
+      modeRow.hidden = !modeDef;
+      if (modeDef) {
+        document.getElementById("readerModeBtns").innerHTML = modeDef.modes.map(function (k) {
+          return '<button type="button" class="rdr-mode-btn' + (k.key === reader.mode ? " active" : "") + '" data-mode="' + k.key + '"><b>' + esc(k.label) +
+            '</b><small>' + esc(k.hint) + '</small></button>';
+        }).join("");
+      }
     }
     var fv = document.getElementById("readerFontVal");
     if (fv) fv.textContent = reader.fontSize + "px";
@@ -2796,7 +2874,7 @@
     var iframe = document.getElementById("readerIframe");
     if (!iframe) return;
     var chapter = reader.chapters[reader.idx];
-    var highlights = getChapterHighlights(reader.bookId, reader.idx);
+    var highlights = getChapterHighlights(readerStateKey(), reader.idx);
     readerPaintFrame(iframe, reader.theme);
     iframe.srcdoc = renderIframeDoc(reader.book, reader.headHtml, chapter.html, reader.fontSize, reader.lineHeight, reader.theme, highlights, restoreScrollPct || 0, anchorId, reader.arthHidden);
   }
@@ -2828,6 +2906,7 @@
     var reads = getReads();
     var entry = reads[reader.bookId] || {};
     entry.lastChapter = reader.idx;
+    if (reader.mode) entry.mode = reader.mode;
     entry.totalChapters = reader.chapters.length;
     entry.progress = Math.round(((reader.idx + 1) / reader.chapters.length) * 100);
     entry.scrollPct = scrollPct || 0;
@@ -2846,6 +2925,59 @@
     readerSaveProgress(0);
     try { history.replaceState(null, "", readPath(reader.book, idx)); } catch (e) {}
     closeDrawerAndSettings();
+  }
+
+  /* The first paragraph at the top of the page being read, to find the same place again after the pages have been cut differently. */
+  function readerTopSnippet() {
+    try {
+      var ps = document.getElementById("readerIframe").contentDocument.querySelectorAll("p");
+      for (var i = 0; i < ps.length; i++) {
+        var r = ps[i].getBoundingClientRect();
+        if (r.height > 0 && r.bottom > 48) {
+          var t = ps[i].textContent.replace(/\s+/g, " ").trim();
+          if (t.length >= 18 && !/^(?:मासपारायण|नवाह्नपारायण)/.test(t)) return t.slice(0, 44);
+        }
+      }
+    } catch (e) {}
+    return "";
+  }
+  function readerPageHolding(snippet) {
+    if (!snippet) return -1;
+    for (var i = 0; i < reader.chapters.length; i++) {
+      if (stripTagsForLabel(reader.chapters[i].html).indexOf(snippet) !== -1) return i;
+    }
+    return -1;
+  }
+
+  /* Reading mode switch (पाठ-विधि): the book is cut into pages again for the chosen mode and the reader lands on the page that holds
+     the paragraph it was reading. */
+  function readerSwitchMode(key) {
+    var book = reader.book, m = bookModes(book), prev = reader.mode;
+    if (!m || key === prev || !reader.chapters) return;
+    var snippet = readerTopSnippet(), id = reader.bookId;
+    setReadMode(book, key);
+    delete readerCache[book.id];
+    closeDrawerAndSettings();
+    fetch(book.href).then(function (res) {
+      if (!res.ok) throw new Error("fetch failed");
+      return res.text();
+    }).then(function (text) {
+      if (!reader.open || reader.bookId !== id) return;
+      reader.mode = key;
+      var entry = buildReaderBook(book.id, text);
+      reader.headHtml = entry.headHtml;
+      reader.chapters = entry.chapters;
+      reader.expandedChapters = {};
+      var idx = readerPageHolding(snippet);
+      reader.idx = idx < 0 ? 0 : idx;
+      readerRenderIframe(0, idx >= 0 ? "txt:" + snippet : null);
+      readerUpdateChrome();
+      readerSaveProgress(0);
+      try { history.replaceState(null, "", readPath(book, reader.idx)); } catch (e) {}
+    }).catch(function () {
+      setReadMode(book, prev);
+      toast("पाठ-विधि बदली नहीं जा सकी");
+    });
   }
 
   function wireReaderChrome() {
@@ -2883,6 +3015,10 @@
       var item = e.target.closest(".reader-toc-item");
       if (item) readerGo(parseInt(item.getAttribute("data-idx"), 10));
     });
+    document.getElementById("readerModeBtns").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-mode]");
+      if (b) readerSwitchMode(b.getAttribute("data-mode"));
+    });
     document.getElementById("readerPrevBtn").addEventListener("click", function () { readerGo(reader.idx - 1); });
     document.getElementById("readerNextBtn").addEventListener("click", function () { readerGo(reader.idx + 1); });
     document.querySelectorAll(".rdr-theme-btn").forEach(function (b) {
@@ -2912,14 +3048,14 @@
       readerUpdateChrome();
     });
     document.getElementById("readerBookmarkToggle").addEventListener("click", function () {
-      var nowMarked = toggleBookmark(reader.bookId, reader.idx, reader.chapters[reader.idx].label);
+      var nowMarked = toggleBookmark(readerStateKey(), reader.idx, reader.chapters[reader.idx].label);
       readerUpdateChrome();
       toast(nowMarked ? "बुकमार्क जोड़ा गया" : "बुकमार्क हटाया गया");
     });
     document.getElementById("readerBookmarksList").addEventListener("click", function (e) {
       var rm = e.target.closest("[data-remove-idx]");
       if (rm) {
-        toggleBookmark(reader.bookId, parseInt(rm.getAttribute("data-remove-idx"), 10), "");
+        toggleBookmark(readerStateKey(), parseInt(rm.getAttribute("data-remove-idx"), 10), "");
         readerUpdateChrome();
         return;
       }
@@ -2964,12 +3100,12 @@
       }
       navigate(readPath(book, idx) + (anchor ? "?a=" + encodeURIComponent(anchor) : ""));
     }
-    if (readerCache[book.id]) { go(readerCache[book.id]); return; }
+    if (cachedEntry(book)) { go(cachedEntry(book)); return; }
     toast("पुस्तक खुल रही है…");
     fetch(book.href).then(function (res) {
       if (!res.ok) throw new Error("fetch failed");
       return res.text();
-    }).then(function (text) { go(readerCache[book.id] || buildReaderBook(book.id, text)); })
+    }).then(function (text) { go(cachedEntry(book) || buildReaderBook(book.id, text)); })
       .catch(function () { navigate(bookPath(book)); });
   }
   window.__swadhyayApp = {
@@ -3003,6 +3139,7 @@
     reader.arthHidden = getArthHidden(book);
     var arthBtnEl = document.getElementById("readerArthBtn");
     if (arthBtnEl) arthBtnEl.hidden = true;      // shown again by readerUpdateChrome once the book has loaded
+    reader.mode = getReadMode(book);
     reader.theme = getTheme() === "dark" ? "night" : getReaderTheme();
     reader.fontSize = getReaderFontSize();
     reader.lineHeight = getReaderLineHeight();
@@ -3026,6 +3163,7 @@
       reader.chapters = entry.chapters;
       migrateReaderLayout(bookId, entry);
       var saved = getReads()[bookId];
+      if (saved && reader.mode && saved.mode !== reader.mode) saved = null;      // a position saved in another reading mode points somewhere else here
       var isResume = !(startIdx !== null && startIdx !== undefined && !isNaN(startIdx));
       var idx = !isResume ? startIdx : (saved && typeof saved.lastChapter === "number") ? saved.lastChapter : 0;
       reader.idx = Math.max(0, Math.min(entry.chapters.length - 1, idx));
@@ -3037,8 +3175,8 @@
       try { history.replaceState(null, "", readPath(book, reader.idx)); } catch (e) {}
     }
 
-    if (readerCache[bookId]) {
-      proceed(readerCache[bookId]);
+    if (cachedEntry(book)) {
+      proceed(cachedEntry(book));
     } else {
       fetch(book.href).then(function (res) {
         if (!res.ok) throw new Error("fetch failed");

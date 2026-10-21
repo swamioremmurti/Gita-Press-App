@@ -5,10 +5,10 @@ build_manas_chaupai.py -- lay the chaupai lines of "श्रीरामचर�
 
 A chaupai line of the book is one paragraph   <p class="Shlok">पद । पद ॥</p>.   This turns each of them, in the seven kāṇḍas, into
 
-    <p class="Shlok cp"><span class="cp-a">पद</span><span class="cp-d">।</span> <span class="cp-b">पद</span><span class="cp-e">॥</span></p>
+    <p class="Shlok cp"><span class="cp-a">पद।</span> <span class="cp-b">पद॥</span></p>
 
-and master.css (p.Shlok.cp) gives the two halves the same width and the । and ॥ a column each, so the । are in line down the page,
-the ॥ are in line, and each half is justified to its column.  The class stays "Shlok" (the reader and the search look for it) with
+and master.css (p.Shlok.cp) gives the two halves the same width, each justified to its column with its । / ॥ as the last character of
+its text, so the । are in line down the page and so are the ॥.  The class stays "Shlok" (the reader and the search look for it) with
 "cp" added.  Dohas / sorthas (class Doha), the Sanskrit shlokas, the पारायण-विधि, the आरती and the टिप्पणियाँ are left as they are.
 
 Second pass -- the verse blocks (doha, sortha, chhand, the Sanskrit shlokas): each block of consecutive lines becomes ONE paragraph
@@ -25,15 +25,25 @@ A chhand written as "छं०—A । B ॥" lines (9 of them, two lines each) 
 five spans per row: label | first half | । | second half | ॥ .  The two half columns are of equal width and as wide as the chhand's
 longest half (so they are narrower than the chaupai columns: 55 % to 83 % of them), the label stands before them.
 
+Third pass -- one reader page per मासपारायण विश्राम (the seven kāṇḍas only): a Sub-Heading "मासपारायण, N विश्राम" is put before the first
+paragraph of every विश्राम that does not begin a kāṇḍa, and the kāṇḍa Headings and these Sub-Headings carry data-whole-page="1" so the reader
+does not cut the page again by size.  The page then ends with the book's own "मासपारायण, N विश्राम" line.
+
 The first run keeps a copy of the book in backups/before-manas-chaupai/.  Re-running is safe: lines already split are skipped.
 Usage:  python tools/build_manas_chaupai.py [--dry-run]
 """
 import argparse
+import html
+import json
 import re
 import shutil
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "tools" / "data"))
+from extract_manas_book_subheadings import norm, LABELS   # noqa: E402
+BOOK_SUBS = ROOT / "tools" / "data" / "manas_book_subheadings.json"
 BOOK = ROOT / "Gita Press Books" / "Gita Press Books" / "श्रीरामचरितमानस.html"
 BACKUP = ROOT / "backups" / "before-manas-chaupai" / BOOK.name
 
@@ -84,9 +94,8 @@ def convert(text):
             return m.group(0)
         n_done += 1
         a, b = parts
-        label = ""
-        return ('<p class="Shlok cp">%s<span class="cp-a">%s</span><span class="cp-d">।</span> '
-                '<span class="cp-b">%s</span><span class="cp-e">॥</span></p>' % (label, a, b))
+        # each mark stays at the end of its own half (no cell of its own), so a line can never leave the ॥ alone on a row of its own
+        return '<p class="Shlok cp"><span class="cp-a">%s।</span> <span class="cp-b">%s॥</span></p>' % (a, b)
 
     body2 = PARA.sub(sub, body)
     return text[:lo] + body2 + text[hi:], n_done, n_skip
@@ -194,14 +203,168 @@ def convert_verses(text):
     return text[:lo] + "".join(out) + text[hi:], n_blocks, n_lines
 
 
+KANDAS = ("बालकाण्ड", "अयोध्याकाण्ड", "अरण्यकाण्ड", "किष्किन्धाकाण्ड", "सुन्दरकाण्ड", "लंकाकाण्ड", "उत्तरकाण्ड")
+PARAYAN_END = re.compile(r'<p class="TXT-Right">((मासपारायण|नवाह्नपारायण), ([^<]+?) विश्राम)</p>')
+HEADING_P = re.compile(r'<p\b([^>]*)\bclass="Heading"([^>]*)>(.*?)</p>', re.S)
+P_OPEN = re.compile(r"<p\b([^>]*)>")
+MODE_KEY = {"मासपारायण": "masa", "नवाह्नपारायण": "navah"}
+
+
+def add_parayan_pages(text):
+    """Reading modes of the Ramcharitmanas: मास-पारायण (30 days), नवाह्न-पारायण (9 days) and अखण्ड पाठ (one page per kāṇḍa).
+
+    Each day of a पारायण ends with the book's own line  <p class="TXT-Right">मासपारायण, छठा विश्राम</p>  (or नवाह्नपारायण, ...).  The
+    reader builds its pages from Headings and Sub-Headings, so both modes' day headings are written into the book and tagged with
+    data-mode="masa" / "navah"; the reader keeps the ones of the mode the reader chose and drops the rest (अखण्ड पाठ keeps neither, so a
+    kāṇḍa is one page).  Two kinds of element:
+      * mid-kāṇḍa day start   <p class="Sub-Heading" data-mode data-day data-whole-page="1">मासपारायण, दूसरा दिन</p>  just before the first
+        paragraph of the day -- unless the day begins at a kāṇḍa, whose own Heading then opens the page;
+      * the day under a kāṇḍa Heading   <p class="Shrihari" data-mode data-day>नवाह्नपारायण, चौथा दिन</p>  right after each of the seven
+        kāṇḍa Headings: the day that is running at that point, in either mode.
+    The seven kāṇḍa Headings and every day heading carry data-whole-page="1" so the reader never cuts these pages again by size."""
+    # the seven kāṇḍa headings keep their page whole (done on the whole text: the first heading's opening tag lies just before START)
+    def mark_kanda(m):
+        t = TAG.sub("", m.group(3)).strip()
+        if t in KANDAS and "data-whole-page" not in m.group(0):
+            return '<p%sclass="Heading"%s data-whole-page="1">%s</p>' % (m.group(1), m.group(2), m.group(3))
+        return m.group(0)
+    text = HEADING_P.sub(mark_kanda, text)
+    lo = text.index(START)
+    hi = text.index(STOP, lo)
+    lo = text.rfind("<p", 0, lo)                              # the first kāṇḍa Heading's own opening tag
+    body = text[lo:hi]
+
+    ends = {"masa": [], "navah": []}                           # per mode: [(start, end, ordinal word)]
+    skippable = []                                             # every पारायण end line, either mode
+    for m in PARAYAN_END.finditer(body):
+        mode = MODE_KEY[m.group(2)]
+        ends[mode].append((m.start(), m.end(), m.group(3).strip()))
+        skippable.append((m.start(), m.end()))
+    if len(ends["masa"]) != 30 or len(ends["navah"]) != 9:
+        raise SystemExit("expected 30 + 9 पारायण end lines, found %d + %d" % (len(ends["masa"]), len(ends["navah"])))
+    NAME = {"masa": "मासपारायण", "navah": "नवाह्नपारायण"}
+
+    inserts = []                                               # (position, html)
+
+    def next_content_p(pos):
+        """the first <p> at or after pos that is not a पारायण end line: (open-tag match, paragraph html)"""
+        while True:
+            m = P_OPEN.search(body, pos)
+            if not m:
+                return None
+            close = body.index("</p>", m.end()) + 4
+            para = body[m.start():close]
+            if PARAYAN_END.match(para):
+                pos = close
+                continue
+            return m, para
+
+    n_mid = 0
+    for mode in ("masa", "navah"):
+        for n in range(2, len(ends[mode]) + 1):
+            _, marker_end, _ = ends[mode][n - 2]
+            hit = next_content_p(marker_end)
+            if hit is None:
+                continue
+            m, para = hit
+            # right after the day's end line come a kāṇḍa's closing lines (class Chapter-End-Text): that kāṇḍa has just ended, so this day
+            # begins at the next kāṇḍa, whose own page opens it; otherwise the day begins here, mid-kāṇḍa
+            if 'class="Chapter-End-Text"' in m.group(0) or 'class="Heading"' in m.group(0):
+                continue
+            ordinal = ends[mode][n - 1][2]
+            inserts.append((m.start(), '<p class="Sub-Heading" id="manas_%s_day_%d" data-mode="%s" data-day="%d" data-whole-page="1">%s, %s दिन</p>\n'
+                            % (mode, n, mode, n, NAME[mode], ordinal)))
+            n_mid += 1
+
+    # the day that is running at each kāṇḍa Heading, in both modes, right after the Heading
+    n_head = 0
+    for hm in HEADING_P.finditer(body):
+        if TAG.sub("", hm.group(3)).strip() not in KANDAS:
+            continue
+        labels = []
+        for mode in ("masa", "navah"):
+            day = sum(1 for s, e, _ in ends[mode] if e <= hm.start()) + 1
+            ordinal = ends[mode][day - 1][2]
+            labels.append('<p class="Shrihari" data-mode="%s" data-day="%d">%s, %s दिन</p>\n' % (mode, day, NAME[mode], ordinal))
+        inserts.append((hm.end(), "\n" + "".join(labels)))
+        n_head += 1
+
+    for pos, html_ in sorted(inserts, key=lambda x: x[0], reverse=True):
+        body = body[:pos] + html_ + body[pos:]
+    return text[:lo] + body + text[hi:], n_mid, n_head
+
+
+def fold(t):
+    """ष / श read as स (the two editions spell some words differently: अतिसय / अतिषय)"""
+    return t.replace("ष", "स").replace("श", "स")
+
+
+def add_book_subheadings(text, report=False):
+    """Book reading mode: the sub-headings of the "श्रीरामचरितमानस (सटीक)" edition, at the same places.
+
+    tools/data/manas_book_subheadings.json (made by tools/data/extract_manas_book_subheadings.py from that edition) lists its 211 sub-headings of
+    the seven सोपान: id, title, range, and the first verse line that follows each.  Each is written into this book, before the label paragraph
+    ("श्लोक" ...) of that verse if there is one, as
+
+        <p id="Chapter_5_3" class="Sub-Heading" data-mode="book" data-own-page="1" data-whole-page="1">ब्राह्मण-संत-वन्दना <br> <span class="sh_tl">(दोहा २-३)</span></p>
+
+    (title only when the edition gives no range).  The verse line is found by walking the book in order from the previous match, comparing the
+    letters of the line (norm()), so spelling variants (संत / सन्त) and the "दो०—" labels do not matter, and the order of the sub-headings can never
+    be broken.  data-mode="book" makes the reader keep them in the Book reading mode only; data-own-page="1" makes each start its own page."""
+    subs = json.loads(BOOK_SUBS.read_text(encoding="utf-8"))
+    lo = text.index(START)
+    hi = text.index(STOP, lo)
+    lo = text.rfind("<p", 0, lo)
+    body = text[lo:hi]
+    paras = []                                                  # (start, plain text, class)
+    for m in re.finditer(r'<p class="([^"]+)">(.*?)</p>', body, re.S):
+        paras.append((m.start(), html.unescape(TAG.sub("", m.group(2))).strip(), m.group(1)))
+    VERSE = ("Shlok", "Doha", "Sortha", "Chhand", "Uvaacha", "Shlok-Number")
+    inserts, k, problems = [], 0, []
+    for sh in subs:
+        key = sh["key"]
+        fk = fold(key)
+
+        def find(test, frm):
+            j = frm
+            while j < len(paras) and not (paras[j][2].split()[0] in VERSE and paras[j][1] not in LABELS and test(fold(norm(paras[j][1])))):
+                j += 1
+            return j
+        j = find(lambda t: t.startswith(fk), k)
+        if j >= len(paras):                                     # a misprint in the line's first word (e.g. "पे्रम"): match its middle instead
+            j = find(lambda t: fk[5:21] in t[:48], k)
+        if j >= len(paras):
+            problems.append((sh["id"], "not found", sh["verse"][:40]))
+            continue
+        if j - k > 400:
+            problems.append((sh["id"], "far (%d paragraphs) " % (j - k), sh["verse"][:40]))
+        at = j
+        while at - 1 >= 0 and paras[at - 1][1] in LABELS and j - at < sh["labels"] + 1:   # the label paragraph(s) of this verse
+            at -= 1
+        rng = (' <br> <span class="sh_tl">%s</span>' % sh["range"]) if sh["range"] else ""
+        inserts.append((paras[at][0], '<p id="%s" class="Sub-Heading" data-mode="book" data-own-page="1" data-whole-page="1">%s%s</p>\n'
+                        % (sh["id"], html.escape(sh["title"], quote=False), rng)))
+        k = j + 1
+    if report:
+        for pid, why, v in problems:
+            print("  !!", pid, why, v)
+    for pos, h in sorted(inserts, key=lambda x: x[0], reverse=True):
+        body = body[:pos] + h + body[pos:]
+    return text[:lo] + body + text[hi:], len(inserts), problems
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
-    text = BOOK.read_text(encoding="utf-8")
+    text = (BACKUP if BACKUP.exists() else BOOK).read_text(encoding="utf-8")      # always start from the original book
+    text, n_book, problems = add_book_subheadings(text, report=True)
+    print("Book mode sub-headings written:", n_book, " problems:", len(problems))
     new, chhands = convert_chhand_halves(text)
     new, done, skipped = convert(new)
     new, blocks, lines = convert_verses(new)
+    new, mid, under = add_parayan_pages(new)
+    print("पारायण day headings (mid-kāṇḍa, both modes):", mid, "| day labels under the kāṇḍa Headings:", under)
     print("chhands written as half-columns:", chhands)
     print("chaupai lines converted:", done, " other Shlok lines left alone:", skipped)
     print("verse blocks (doha / sortha / chhand / shloka):", blocks, " from", lines, "lines",

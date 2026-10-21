@@ -7649,30 +7649,26 @@ td.Shalaka-Cell-Mark {
 	font-weight:bold;
 }
 
-/* Chaupai lines of the Ramcharitmanas ("पद । पद ॥" on one line, class "Shlok cp"; the book file splits the line into four spans):
-   the two halves are columns of the same width and the । and ॥ have columns of their own, so on every line the । falls at the same
-   place, the ॥ at the same place, and each half is justified to its column. A column is 10.3em wide (measured on the book's
-   9,349 lines, 99.5 % of the halves are narrower) and the line is centred. When the screen is too narrow for the four columns
-   side by side the second half wraps under the first, and the marks still line up (the two mark columns are the same width).
+/* Chaupai lines of the Ramcharitmanas ("पद । पद ॥" on one line, class "Shlok cp"; the book file splits the line into two spans, each half
+   ending with its own । or ॥): the two halves are columns of the same width, each justified to its column with the mark as the last
+   character of its text, so on every line the । falls at the same place and the ॥ at the same place. A column is 11.2em wide (the text of
+   10.3em that fits 99.5 % of the halves, and the mark) and the line is centred. When the screen is too narrow for the two columns side by
+   side the second half goes under the first, mark and all -- the mark is part of the half, so it can never be left alone on a row.
    Dohas, sorthas and Sanskrit shlokas keep the plain Shlok / Doha look. */
 p.Shlok.cp {
 	display:flex;
 	flex-wrap:wrap;
 	justify-content:center;
-	align-items:baseline;
+	align-items:last baseline;
 	column-gap:0.2em;
 }
 p.Shlok.cp > .cp-a,
 p.Shlok.cp > .cp-b {
-	flex:0 0 10.3em;
+	flex:0 0 11.2em;
+	min-width:0;
 	max-width:100%;
 	text-align:justify;
 	text-align-last:justify;
-}
-p.Shlok.cp > .cp-d,
-p.Shlok.cp > .cp-e {
-	flex:0 0 0.7em;
-	text-align:left;
 	white-space:nowrap;
 }
 
@@ -7691,7 +7687,7 @@ p.vs {
 	margin-left:auto;
 	margin-right:auto;
 	column-gap:0.2em;
-	align-items:baseline;
+	align-items:last baseline;
 }
 p.vs > .vs-l,
 p.vs > .vs-m,
@@ -7700,8 +7696,10 @@ p.vs > .vs-s {
 	white-space:nowrap;
 }
 p.vs > .vs-t {
+	min-width:0;
 	text-align:justify;
 	text-align-last:justify;
+	white-space:nowrap;
 }
 
 /* On a narrow screen (a phone) the label goes on a row of its own above the block and the block is set a little smaller, so that
@@ -7730,7 +7728,7 @@ p.cph {
 	margin-left:auto;
 	margin-right:auto;
 	column-gap:0.2em;
-	align-items:baseline;
+	align-items:last baseline;
 }
 p.cph > .cph-l,
 p.cph > .cph-d,
@@ -7740,8 +7738,10 @@ p.cph > .cph-e {
 }
 p.cph > .cph-a,
 p.cph > .cph-b {
+	min-width:0;
 	text-align:justify;
 	text-align-last:justify;
+	white-space:nowrap;
 }
 @media (max-width:560px) {
 	/* too narrow for the two halves side by side: label above, the second half under the first, the marks still in one column */
@@ -7754,3 +7754,15 @@ p.cph > .cph-b {
 	p.cph > :nth-child(5n+4) { grid-column:1; }
 	p.cph > :nth-child(5n)   { grid-column:2; }
 }
+
+/* A verse line is never broken in two. Its cells are set on one line (white-space:nowrap above) and the reader (swadhyay-verse-fit.js)
+   shrinks the type of a line or block that does not fit its columns, by the same ratio for all its cells (span.vf). Only when that would
+   take it below 60 % does it stop (class vf-wrap on the paragraph) and let the line wrap; the cells then align on their LAST baseline
+   (align-items:last baseline above), so the । / ॥ stays beside the last word instead of above it. */
+p.vf-wrap > .cp-a, p.vf-wrap > .cp-b, p.vf-wrap > .vs-t, p.vf-wrap > .cph-a, p.vf-wrap > .cph-b,
+p.vf-wrap .vf {
+	white-space:normal;
+}
+
+/* श्रीरामचरितमानस — sub-heading range line, e.g. "(दोहा २-३)" under the title (Book reading mode) */
+.sh_tl { font-size: 0.8em; font-style: italic; font-weight: normal; }
