@@ -319,6 +319,78 @@
     return out;
   }
 
+  /* ---------------- Devanagari -> Roman URL slug ----------------
+     Book and author addresses are Roman ("/book/amrit-bindu"): short, readable and safe to paste anywhere (a
+     Devanagari address turns into a hundred characters of %E0%A4... once copied). Long vowels are written short
+     (गीता -> gita, श्री -> shri) and the inherent "a" is dropped at the end of a word (राम -> ram), the way the
+     names are written in everyday Roman Hindi. Long Sanskrit compounds stay one word; SLUG_ROMAN below fixes those. */
+  var SLUG_VOWELS = { "अ": "a", "आ": "a", "इ": "i", "ई": "i", "उ": "u", "ऊ": "u", "ऋ": "ri", "ॠ": "ri", "ए": "e", "ऐ": "ai", "ओ": "o", "औ": "au", "ऑ": "o", "ऍ": "e" };
+  var SLUG_MATRAS = { "ा": "a", "ि": "i", "ी": "i", "ु": "u", "ू": "u", "ृ": "ri", "ॄ": "ri", "े": "e", "ै": "ai", "ो": "o", "ौ": "au", "ॅ": "e", "ॉ": "o" };
+  var SLUG_CONS = {
+    "क": "k", "ख": "kh", "ग": "g", "घ": "gh", "ङ": "n",
+    "च": "ch", "छ": "chh", "ज": "j", "झ": "jh", "ञ": "n",
+    "ट": "t", "ठ": "th", "ड": "d", "ढ": "dh", "ण": "n",
+    "त": "t", "थ": "th", "द": "d", "ध": "dh", "न": "n",
+    "प": "p", "फ": "ph", "ब": "b", "भ": "bh", "म": "m",
+    "य": "y", "र": "r", "ल": "l", "व": "v", "ळ": "l",
+    "श": "sh", "ष": "sh", "स": "s", "ह": "h"
+  };
+  var SLUG_NUKTA = { "ज": "z", "ड": "r", "ढ": "rh", "फ": "f" };   // ज़ ड़ ढ़ फ़ (the other nukta letters read as the plain one)
+
+  function devanagariToSlug(str) {
+    var s = String(str || "").normalize("NFD").replace(/[‌‍]/g, ""), out = "", i = 0, n = s.length;   // zero-width joiners carry no sound
+    function isDeva(ch) { return ch >= "ऀ" && ch <= "ॿ"; }
+    while (i < n) {
+      var c = s[i];
+      if (SLUG_CONS[c]) {
+        var cons = SLUG_CONS[c], j = i + 1;
+        if (s[j] === "़") { cons = SLUG_NUKTA[c] || cons; j++; }
+        if (c === "ज" && s[j] === "्" && s[j + 1] === "ञ") { cons = "gy"; j += 2; }       // ज्ञ
+        var nx = s[j];
+        if (nx === "्") { out += cons; i = j + 1; }
+        else if (nx && SLUG_MATRAS[nx]) { out += cons + SLUG_MATRAS[nx]; i = j + 1; }
+        else { out += cons + (nx && isDeva(nx) && nx !== "।" && nx !== "॥" ? "a" : ""); i = j; }   // the "a" is dropped when the word ends here
+      } else if (SLUG_VOWELS[c]) { out += SLUG_VOWELS[c]; i++; }
+      else if (c === "ं") {
+        /* anusvara: "m" before a lip letter and after a Sanskrit "a" at the end of a word (स्तोत्रं -> stotram),
+           otherwise "n" (संसार -> sansar, करें -> karen, हैं -> hain) */
+        var after = s[i + 1], atEnd = !after || !isDeva(after);
+        out += (!atEnd && "पफबभम".indexOf(after) !== -1) || (atEnd && out.slice(-1) === "a") ? "m" : "n"; i++;
+      }
+      else if (c === "ः") { out += "h"; i++; }
+      else if (c === "ँ") { out += "n"; i++; }
+      else if (c === "ॐ") { out += " om "; i++; }
+      else if (DEVA_DIGITS[c]) { out += DEVA_DIGITS[c]; i++; }
+      else if (isDeva(c)) { out += " "; i++; }      // danda, avagraha, stray marks
+      else { out += c; i++; }
+    }
+    return out;
+  }
+
+  /* A Roman URL slug from any text: Devanagari transliterated as above, everything else lower-cased,
+     separators -> "-", capped at ~80 characters on a word boundary. */
+  var SLUG_WORDS = {   // spellings everyone already knows (applied to whole words)
+    svami: "swami", sarasvati: "saraswati", sinh: "singh",
+    stotr: "stotra", charitr: "charitra", sutr: "sutra", mahatmy: "mahatmya", bhashy: "bhashya"
+  };
+  function romanSlug(str) {
+    var s = devanagariToSlug(str).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    /* Sanskrit compounds come out as one long word; cut them at the words that end them (...-puran, ...-stotram,
+       ...-gita) and after a leading श्री, so "shrimadbhagavadgita" reads "shrimad-bhagavad-gita". */
+    for (var k = 0; k < 3; k++) {
+      s = s.replace(/([a-z])(puran|stotram|stotra?|sahasranama?|chalisa|upanishad|upanishat|kavach|gita|sangrah|bhashy|charitr|ratnakar|mahatmy)(?=-|$)/g, "$1-$2");
+    }
+    s = s.replace(/(^|-)shrimad(?=[a-z])/g, "$1shrimad-").replace(/(^|-)shri(?=[a-z])(?!mad)/g, "$1shri-");
+    s = s.split("-").map(function (w) { return SLUG_WORDS[w] || w; }).join("-");
+    if (s.length > 80) s = s.slice(0, 80).replace(/-[^-]*$/, "");
+    return s || "x";
+  }
+
+  /* A person's name without the title in front of it (श्रद्धेय, पं०, डॉ., ...), for their address. */
+  function personSlug(name) {
+    return romanSlug(String(name).replace(/([^०-९\s])०/g, "$1").replace(/(^|\s)(श्रद्धेय|पं\.?|डॉ\.?|प्रा\.|स्व\.|परमाचार्य|चतुर्वेदी)(?=\s|$)/g, " "));
+  }
+
   // Collapses consecutive identical letters (e.g. "raamaayana" -> "ramayana", "gitaa" -> "gita")
   // so both the generated transliteration and a casually-typed English query converge on the
   // same normalized form regardless of long/short-vowel spelling choices.
@@ -344,6 +416,20 @@
   }
 
   var COVER_OVERRIDES = {
+    "गीता बाल प्रश्नोत्तरी.html": "assets/covers/gita-bal-prashnottari.webp",
+    "गीता ज्ञान प्रवेशिका.html": "assets/covers/gita-gyan-praveshika.webp",
+    "गीता दर्पण.html": "assets/covers/gita-darpan.webp",
+    "गीता-प्रबोधनी.html": "assets/covers/gita-prabodhani.webp",
+    "अमृत बिन्दु.html": "assets/covers/amrit-bindu.webp",
+    "अमृत कण.html": "assets/covers/amrit-kan.webp",
+    "अमृत के घूँट.html": "assets/covers/amrit-ke-ghoont.webp",
+    "अमूल्य समय का सदुपयोग.html": "assets/covers/amulya-samay-ka-sadupayog.webp",
+    "देश की वर्तमान दशा तथा उसका परिणाम.html": "assets/covers/desh-ki-vartaman-dasha.webp",
+    "उद्धव संदेश.html": "assets/covers/uddhav-sandesh.webp",
+    "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": "assets/covers/anant-chaturdashi.webp",
+    "अनुस्मृति.html": "assets/covers/anusmriti.webp",
+    "आदित्यहृदयस्तोत्रम्.html": "assets/covers/aadityahridayastotram.webp",
+    "अमोघ शिवकवच.html": "assets/covers/amogh-shivakavach.webp",
     "अथर्वशिखोपनिषत्.html": "assets/covers/atharvashikhopanishat.webp",
     "गणेशस्तोत्ररत्नाकर.html": "assets/covers/ganeshastotraratnaakar.webp",
     "चाणक्य नीति.html": "assets/covers/chaanaky-neeti.webp",
@@ -530,6 +616,47 @@
   var SLUG_ALIASES = {
     "श्रीमद्भगवद्गीतामोटेअक्षरोंमें": "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html"
   };
+  /* Hand-written Roman addresses (file name -> slug) for titles whose automatic form reads badly -- mostly long Sanskrit
+     compounds that come out as one word. A book not listed here gets romanSlug(title). */
+  var SLUG_ROMAN = {
+    "श्रीहनुमानचालीसा.html": "shri-hanuman-chalisa",   // श्रीहनुमानचालीसा
+    "श्रीहनुमानचालीसा (लाल रंग में).html": "shri-hanuman-chalisa-lal-rang-men",   // श्रीहनुमानचालीसा (लाल रंग में)
+    "श्रीरामचरितमानस.html": "shri-ramcharitmanas",   // श्रीरामचरितमानस
+    "श्रीमद‍्भागवतमहापुराण.html": "shrimad-bhagavat-mahapuran",   // श्रीमद‍्भागवतमहापुराण
+    "श्रीमद्देवीभागवतमहापुराण.html": "shrimad-devi-bhagavat-mahapuran",   // श्रीमद्देवीभागवतमहापुराण
+    "संक्षिप्त श्रीमद्देवीभागवत.html": "sankshipt-shrimad-devi-bhagavat",   // संक्षिप्त श्रीमद्देवीभागवत
+    "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "shri-ling-mahapuran",   // श्रीलिङ्ग महापुराण
+    "मत्स्यमहापुराण.html": "matsya-mahapuran",   // मत्स्यमहापुराण
+    "श्रीनरसिंहपुराण.html": "shri-narasimha-puran",   // श्रीनरसिंहपुराण
+    "आदित्यहृदयस्तोत्रम्.html": "aditya-hridaya-stotram",   // आदित्यहृदयस्तोत्रम्
+    "रामरक्षास्तोत्रम्.html": "ram-raksha-stotram",   // रामरक्षास्तोत्रम्
+    "श्रीमद्वाल्मीकीय रामायण.html": "shrimad-valmikiya-ramayan",   // श्रीमद्वाल्मीकीय रामायण
+    "श्रीकृष्ण.html": "shri-krishna",   // श्रीकृष्ण
+  };
+  /* Same for people (name -> slug), e.g. a loan word the transliteration can't know. */
+  var PERSON_SLUG_ROMAN = {
+    "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज": "swami-ramsukhdas-ji-maharaj",
+    "श्रद्धेय श्रीजयदयालजी गोयन्दका": "jaydayal-goyandka",
+    "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार": "hanuman-prasad-poddar",
+    "श्रीहरिकृष्णदास गोयन्दका": "harikrishndas-goyandka",
+    "श्रीगोस्वामी तुलसीदासजी": "goswami-tulsidas-ji",
+    "गीताप्रेस": "gita-press",
+    "महर्षि वेदव्यास": "maharshi-ved-vyas",
+    "गीता प्रकाशन, गोरखपुर": "gita-prakashan-gorakhpur",
+    "श्रीसूरदासजी": "surdas-ji",
+    "डॉ० रामचरण महेन्द्र": "ramcharan-mahendra",
+    "पं० श्रीशान्तनुविहारीजी द्विवेदी": "shantanu-bihari-ji-dwivedi",
+    "श्रीमुनिलाल गुप्त": "munilal-gupta",
+    "जगद्गुरु आदि शंकराचार्य": "jagadguru-adi-shankaracharya",
+    "पं० श्रीरामकृष्णजी शास्त्री": "ramkrishna-ji-shastri",
+    "कल्याण सेवा ट्रस्ट": "kalyan-seva-trust",
+    "रामकृष्ण मठ": "ramakrishna-math",
+    "कौटिल्य विष्णुगुप्त (चाणक्य)": "kautilya-vishnugupta-chanakya",
+    "तिरुमल तिरुपति देवस्थानम्, तिरुपति": "tirumala-tirupati-devasthanam-tirupati",
+    "तिरुमल तिरुपति देवस्थानम्": "tirumala-tirupati-devasthanam",
+    "स्वामी विवेकानन्द": "swami-vivekananda",
+    "सुदर्शनसिंह ‘चक्र’": "sudarshan-singh-chakra",
+  };
   var HIDDEN_BOOKS = {
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true,  // replaced by the पदच्छेद-अन्वयसहित
     "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true                    // same text as the large-print edition, which now carries this title edition
@@ -548,7 +675,7 @@
       });
   }
 
-  var seenBookSlugs = {};
+  var seenBookSlugs = {}, seenLegacySlugs = {};
   var BOOKS = (window.SWADHYAY_BOOKS_RAW || []).map(function (b, i) {
     var arthSel = String(b.swith_arth || "").toLowerCase() === "yes" ? arthSelectors(b.arth_hide) : [];
     var cat = CATEGORY_BY_KEY[b.category] || { key: b.category, hi: b.category, en: b.category, icon: "📖" };
@@ -559,13 +686,20 @@
        first, falling back to the publisher when the book names nobody. */
     var author = authors.join(", ") || tikakars.join(", ") || translators.join(", ") || publisher || "गीता प्रेस, गोरखपुर";
     var everyone = authors.concat(tikakars, translators, publisher ? [publisher] : []).join(" ");
-    var baseSlug = slugify(SLUG_OVERRIDES[b.file] || b.file.replace(/\.html$/i, ""));
+    /* The address is the Roman form of the title (SLUG_ROMAN / SLUG_OVERRIDES win). The earlier Devanagari address,
+       built from the file name, is kept as legacySlug so links shared before the change still lead here. */
+    var baseSlug = SLUG_ROMAN[b.file] || romanSlug(SLUG_OVERRIDES[b.file] || title);
     var slug = baseSlug, dupeN = 2;
     while (seenBookSlugs[slug]) { slug = baseSlug + "-" + dupeN; dupeN++; }
     seenBookSlugs[slug] = true;
+    var legacyBase = slugify(SLUG_OVERRIDES[b.file] || b.file.replace(/\.html$/i, ""));
+    var legacySlug = legacyBase; dupeN = 2;
+    while (seenLegacySlugs[legacySlug]) { legacySlug = legacyBase + "-" + dupeN; dupeN++; }
+    seenLegacySlugs[legacySlug] = true;
     return {
       id: i,
       slug: slug,
+      legacySlug: legacySlug,
       file: b.file,
       href: bookHref(b.file),
       title: title,
@@ -603,7 +737,8 @@
   var BOOKS_BY_ID = {};
   var BOOKS_BY_FILE = {};
   var BOOKS_BY_SLUG = {};
-  BOOKS.forEach(function (b) { BOOKS_BY_ID[b.id] = b; BOOKS_BY_FILE[b.file] = b; BOOKS_BY_SLUG[b.slug] = b; });
+  var BOOKS_BY_LEGACY_SLUG = {};   // earlier Devanagari addresses (/book/<devanagari file name>)
+  BOOKS.forEach(function (b) { BOOKS_BY_ID[b.id] = b; BOOKS_BY_FILE[b.file] = b; BOOKS_BY_SLUG[b.slug] = b; BOOKS_BY_LEGACY_SLUG[b.legacySlug] = b; });
 
   function findByFile(file) {
     return BOOKS_BY_FILE[file] || null;
@@ -626,13 +761,16 @@
   var PEOPLE = [];
   var PEOPLE_BY_NAME = {};
   var PEOPLE_BY_SLUG = {};
+  var PEOPLE_BY_LEGACY_SLUG = {};   // the earlier Devanagari addresses (/author/<devanagari name>)
   (function buildPeople() {
     function person(name) {
       if (PEOPLE_BY_NAME[name]) return PEOPLE_BY_NAME[name];
-      var base = slugify(name), slug = base, n = 2;
+      var base = PERSON_SLUG_ROMAN[name] || personSlug(name), slug = base, n = 2;
       while (PEOPLE_BY_SLUG[slug]) { slug = base + "-" + n; n++; }
-      var p = { name: name, slug: slug, roles: { authors: [], tikakars: [], translators: [], publishers: [] } };
-      PEOPLE_BY_NAME[name] = p; PEOPLE_BY_SLUG[slug] = p; PEOPLE.push(p);
+      var legacyBase = slugify(name), legacySlug = legacyBase; n = 2;
+      while (PEOPLE_BY_LEGACY_SLUG[legacySlug]) { legacySlug = legacyBase + "-" + n; n++; }
+      var p = { name: name, slug: slug, legacySlug: legacySlug, roles: { authors: [], tikakars: [], translators: [], publishers: [] } };
+      PEOPLE_BY_NAME[name] = p; PEOPLE_BY_SLUG[slug] = p; PEOPLE_BY_LEGACY_SLUG[legacySlug] = p; PEOPLE.push(p);
       return p;
     }
     BOOKS.forEach(function (book) {
@@ -644,7 +782,7 @@
   })();
   function personPath(name) {
     var p = PEOPLE_BY_NAME[name];
-    return "/author/" + encodeURIComponent(p ? p.slug : slugify(name));
+    return "/author/" + encodeURIComponent(p ? p.slug : personSlug(name));
   }
   function personLink(name) {
     return '<a href="' + personPath(name) + '">' + esc(name) + '</a>';
@@ -657,7 +795,7 @@
     if (x === undefined || x === null) return null;
     var decoded;
     try { decoded = decodeURIComponent(x); } catch (e) { decoded = x; }
-    return BOOKS_BY_SLUG[decoded] || (SLUG_ALIASES[decoded] && BOOKS_BY_FILE[SLUG_ALIASES[decoded]]) || BOOKS_BY_ID[parseInt(x, 10)] || null;
+    return BOOKS_BY_SLUG[decoded] || BOOKS_BY_LEGACY_SLUG[decoded] || (SLUG_ALIASES[decoded] && BOOKS_BY_FILE[SLUG_ALIASES[decoded]]) || BOOKS_BY_ID[parseInt(x, 10)] || null;
   }
   function bookPath(book) { return "/book/" + encodeURIComponent(book.slug); }
   function readPath(book, chapterIdx) {
@@ -1540,7 +1678,7 @@
     var cat = params.get("cat") || "all";
     var q = params.get("q") || "";
     var tag = params.get("tag") || "";
-    var sort = params.get("sort") || "default";
+    var sort = params.get("sort") || "az";               // the library opens in A–Z (वर्णानुक्रम) order
     var filter = params.get("filter") || "all";
 
     var list = BOOKS.filter(function (b) {
@@ -1553,7 +1691,7 @@
     if (filter === "popular") list = list.filter(function (b) { return hashCode(b.file) % 3 === 0; });
 
     if (sort === "latest") list = list.slice().reverse();
-    else if (sort === "az") list = list.slice().sort(function (a, b) { return a.title.localeCompare(b.title, "hi"); });
+    else list = list.slice().sort(function (a, b) { return a.title.localeCompare(b.title, "hi"); });
 
     var meta = CATEGORY_BY_KEY[cat] || { hi: cat, en: cat };
     var totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
@@ -1563,7 +1701,8 @@
     var heading = tag ? "#" + esc(tag) : esc(tx(meta.hi, meta.en));
     var html = '<div class="page-header">' +
       '<h1>' + heading + ' <span class="cnt">(' + list.length + ')</span></h1>' +
-      '<div class="lib-search"><input id="librarySearch" type="text" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
+      '<div class="lib-search"><span class="lib-search-box"><input id="librarySearch" type="text" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
+      '<button type="button" id="librarySearchClear" class="lib-search-clear" aria-label="' + esc(tx("खोज मिटाएँ", "Clear search")) + '" title="' + esc(tx("खोज मिटाएँ", "Clear search")) + '"' + (q ? "" : " hidden") + '>&times;</button></span>' +
       taxLangToggleHtml() + '</div>' +
       '</div>';
     html += categoryTabs(cat);
@@ -1572,6 +1711,7 @@
         var key = f[0];
         return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' + esc(tx(f[1], f[2])) + '</a>';
       }).join("") +
+      '<a class="filter-tab' + (sort !== "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=az">' + esc(tx("वर्णानुक्रम", "A–Z")) + '</a>' +
       '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest">' + esc(tx("नवीनतम", "Latest")) + '</a>' +
       '</div>';
 
@@ -1880,13 +2020,17 @@
     });
     var pages = [];
     var cur = null;
+    /* a title page (Title-Page---Book-Name) that has no Heading of its own and is followed by Sub-Headings is a page by itself, however
+       short: it must not ride along with the first Sub-Heading section (books without any Heading paragraph) */
+    segs[0].cover = /\bclass="Title-Page---Book-Name\b/.test(segs[0].html) && !/\bclass="Heading\b/.test(segs[0].html);
     segs.forEach(function (seg) {
       seg.len = stripTagsForLabel(seg.html).length;
+      if (cur && cur.cover) { pages.push(cur); cur = null; }
       /* a Sub-Heading marked data-own-page="1" (the Ramcharitmanas' Book mode) always opens a page of its own, however short the page before it;
          only the part of the chapter before its first Sub-Heading (the title and the Heading) is not closed for it */
       if (cur && seg.label && cur.label && /^<p[^>]*data-own-page="1"/.test(seg.html)) { pages.push(cur); cur = null; }
       if (cur && cur.len >= READER_MIN_PAGE_CHARS) { pages.push(cur); cur = null; }
-      if (!cur) { cur = { html: seg.html, label: seg.label, len: seg.len }; return; }
+      if (!cur) { cur = { html: seg.html, label: seg.label, len: seg.len, cover: seg.cover }; return; }
       cur.html += seg.html;
       cur.len += seg.len;
       if (!cur.label) cur.label = seg.label;
@@ -2627,6 +2771,8 @@
   }
 
   var READER_PARA_INDENT = "2.2em";
+  /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
+  var READER_NO_INDENT_BOOKS = { "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": true };
   var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.TXT,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.Question,p.Answer";
 
   // night: the page is a white body that a filter inverts; the canvas around it must match what that gives (#121212)
@@ -2660,7 +2806,7 @@
       /* Paragraph indent: master.css indents body text only 12-18px (about 0.5em), which reads as barely
          indented on screen. Prose paragraphs (justified, indented in master.css; not footnotes, verses
          or titles) get a deeper first-line indent that grows with the font size. */
-      READER_INDENT_SELECTORS + '{text-indent:' + READER_PARA_INDENT + ' !important;}' +
+      READER_INDENT_SELECTORS + '{text-indent:' + (READER_NO_INDENT_BOOKS[book.file] ? '0' : READER_PARA_INDENT) + ' !important;}' +
       '@media (min-width:900px){body{max-width:1100px;padding:1.4rem 2rem 4rem;}}' +
       'mark.rdr-hl{background:#ffe58a;border-radius:2px;}' +
       'mark.rdr-find{background:#ffb74d;color:#1a1a1a;border-radius:3px;box-shadow:0 0 0 2px #ff8f00;animation:rdrFindPulse 1.1s ease-in-out 2;}' +
@@ -3972,7 +4118,7 @@
     if (x === undefined || x === null) return null;
     var decoded;
     try { decoded = decodeURIComponent(x); } catch (e) { decoded = x; }
-    return PEOPLE_BY_SLUG[decoded] || null;
+    return PEOPLE_BY_SLUG[decoded] || PEOPLE_BY_LEGACY_SLUG[decoded] || null;
   }
 
   function viewAuthor(p) {
@@ -4677,6 +4823,8 @@
       var rBook = resolveBookParam(seg[1]);
       var rCh = seg[2] !== undefined ? parseInt(seg[2], 10) : null;
       if (!rBook) { navigate("/library"); return; }
+      var rSegDecoded; try { rSegDecoded = decodeURIComponent(seg[1]); } catch (e) { rSegDecoded = seg[1]; }
+      if (rSegDecoded !== rBook.slug) { try { history.replaceState(null, "", readPath(rBook, isNaN(rCh) ? null : rCh) + location.search); } catch (e) {} }   // earlier address -> current one
       setPageMeta(rBook);
       openReader(rBook.id, rCh, r.params.get("a"));
       setActiveNav(r.path);
@@ -4722,7 +4870,12 @@
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
       var aPerson = resolvePerson(seg[1]);
-      if (aPerson) { html = viewAuthor(aPerson); pagePerson = aPerson; }
+      if (aPerson) {
+        /* An earlier Devanagari address -> swap it for the current Roman one. */
+        var aSegDecoded; try { aSegDecoded = decodeURIComponent(seg[1]); } catch (e) { aSegDecoded = seg[1]; }
+        if (aSegDecoded !== aPerson.slug) { try { history.replaceState(null, "", personPath(aPerson.name) + location.search); } catch (e) {} }
+        html = viewAuthor(aPerson); pagePerson = aPerson;
+      }
       else {
         /* An old /author/<number> link (from before authors were slugged by name) -- or a
            name that no longer exists -- lands on the full authors list instead. */
@@ -4813,7 +4966,18 @@
     var librarySearch = document.getElementById("librarySearch");
     if (librarySearch) {
       var t = null;
+      var libSearchClear = document.getElementById("librarySearchClear");
+      if (libSearchClear) {
+        libSearchClear.addEventListener("click", function () {
+          clearTimeout(t);
+          librarySearch.value = "";
+          libSearchClear.hidden = true;
+          navigate("/library?cat=" + encodeURIComponent(parsePath().params.get("cat") || "all"));
+          setTimeout(function () { var el = document.getElementById("librarySearch"); if (el) el.focus(); }, 0);
+        });
+      }
       librarySearch.addEventListener("input", function () {
+        if (libSearchClear) libSearchClear.hidden = !librarySearch.value;
         clearTimeout(t);
         t = setTimeout(function () {
           var p = parsePath().params;

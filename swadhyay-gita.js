@@ -926,7 +926,7 @@
     return waitReady(90000).then(function () { sp[key] = { state: "checking", note: "check" }; paintSpeak(key); return token(); }).then(function (d) {
       return upload(d, true).catch(function (e) { if (e.code === "wake") return waitReady(60000).then(function () { return upload(d, true); }); throw e; });
     }).then(function (res) {
-      var heard = (res.text || "").trim();
+      var heard = (res.text || "").replace(/[॑-॔᳐-ᳺ]/g, "").trim();     // the model sometimes writes Vedic accent marks; the shloka text has none
       if (!heard) { sp[key] = { state: "error", msg: speakErr("no-speech") }; paintSpeak(key); return; }
       var best = scoreSpeech(j.lines, heard);
       sp[key] = { state: "done", score: best.score, words: best.words, heard: heard, engine: "cloud" };

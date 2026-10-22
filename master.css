@@ -164,7 +164,7 @@ p.Chapter-Heading {
 }
 p.Shlok {
 	-epub-ruby-position:over;
-	color:red;
+	color:#c10202;
 	font-family:ChanakyaUni, serif;
 	font-size:1.333em;
 	font-style:normal;
@@ -3465,15 +3465,17 @@ p.Footer-Chopai {
 	border:1px solid BlueViolet;
 }
 p.Sub-Heading-2 {
+	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:red;
+	color:darkslateblue;
 	font-family:ChanakyaUni, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
 	font-weight:bold;
 	line-height:1.2;
-	margin-bottom:0px;
+	margin-top:20px;
+	margin-bottom:7px;
 	margin-left:0px;
 	margin-right:0px;
 	text-align:center;
@@ -7324,12 +7326,22 @@ p.Rishi-Devata-Line {
 	margin-bottom:6px;
 }
 p.Mantra-Vishay {
-	color:#1066b1;
+	-epub-hyphens:none;
+	-epub-ruby-position:over;
+	color:darkslateblue;
 	font-family:ChanakyaUni, serif;
-	font-size:1.05em;
-	font-style:italic;
-	text-align:justify;
-	margin-bottom:6px;
+	font-size:1.5em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-top:20px;
+	margin-bottom:7px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
 }
 p.Mantra-Num {
 	color:#a51512;

@@ -448,7 +448,12 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .page-header h1, .page-header h2 { margin: 0; font-size: 1.4rem; color: var(--accent-dark); }
 :root[data-theme="dark"] .page-header h1, :root[data-theme="dark"] .page-header h2 { color: #ffb199; }
 .page-header .cnt { color: var(--muted); font-size: .9rem; font-weight: normal; }
-.lib-search input { padding: .55rem 1rem; border-radius: 20px; border: 1px solid var(--rule); font-family: inherit; min-width: 220px; }
+.lib-search input { padding: .55rem 2.1rem .55rem 1rem; border-radius: 20px; border: 1px solid var(--rule); font-family: inherit; min-width: 220px; }
+.lib-search-box { position: relative; display: inline-flex; align-items: center; }
+.lib-search-clear { position: absolute; right: .45rem; top: 50%; transform: translateY(-50%); width: 1.5rem; height: 1.5rem; padding: 0; border: 0; border-radius: 50%;
+  background: transparent; color: var(--muted); font-size: 1.25rem; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.lib-search-clear[hidden] { display: none; }
+.lib-search-clear:hover { background: var(--surface-2); color: var(--ink); }
 
 .filter-tabs { display: flex; gap: .5rem; flex-wrap: wrap; margin: .8rem 0 1.2rem; }
 .filter-tab { border: 1px solid var(--rule); padding: .4rem .9rem; border-radius: 16px; font-size: .82rem; background: var(--surface); }

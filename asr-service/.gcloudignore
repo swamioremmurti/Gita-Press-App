@@ -1,0 +1,8 @@
+# Used by `gcloud run deploy --source .`. Without this file gcloud falls back to .gitignore, which would leave the model out of the build.
+# Everything in this folder is uploaded, INCLUDING model/ (the weights are baked into the image), except:
+.git
+.gitignore
+.gcloudignore
+README.md
+__pycache__/
+*.pyc

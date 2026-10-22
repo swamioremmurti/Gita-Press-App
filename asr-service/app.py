@@ -29,6 +29,7 @@ import wave
 
 import numpy as np
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 
 from featurizer import Featurizer
@@ -64,7 +65,7 @@ def load():
         if not folder:
             from huggingface_hub import snapshot_download
             folder = snapshot_download(repo_id=MODEL_REPO, token=os.environ.get("HF_TOKEN") or None,
-                                       allow_patterns=["model.onnx", "model.onnx.data", "config.json", "vocab.json"])
+                                       allow_patterns=["model.onnx", "model.onnx.data", "model.onnx_data", "config.json", "vocab.json"])
         cfg = json.load(open(os.path.join(folder, "config.json"), encoding="utf-8"))
         import onnxruntime as ort
         opts = ort.SessionOptions()
@@ -107,7 +108,13 @@ def run(wav):
 
 @app.on_event("startup")
 def _startup():
-    threading.Thread(target=load, daemon=True).start()
+    # Cloud Run gives a container CPU only while a request is in flight (unless billed per instance), so a model loaded in a
+    # background thread would crawl: there it is loaded BEFORE the container starts taking requests (startup CPU is not throttled).
+    # Elsewhere (a Hugging Face Space, a laptop) a background thread lets /health answer "loading" meanwhile.
+    if os.environ.get("K_SERVICE") or os.environ.get("SYNC_LOAD"):
+        load()
+    else:
+        threading.Thread(target=load, daemon=True).start()
 
 
 # ----------------------------------------------------------------------------- token
@@ -176,6 +183,8 @@ async def transcribe(request: Request):
     if STUB:
         text = STUB
     else:
-        with gate:
-            text = run(wav)
+        def guarded():
+            with gate:
+                return run(wav)
+        text = await run_in_threadpool(guarded)          # off the event loop, so /health and other requests stay responsive
     return {"text": text, "seconds": round(seconds, 2), "ms": int((time.time() - t0) * 1000)}

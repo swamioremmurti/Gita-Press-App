@@ -108,11 +108,12 @@ function loadCatalogue() {
       genBlurb: ex.genBlurb, HELP_FAQS: ex.HELP_FAQS, personPath: ex.personPath, bookPath: ex.bookPath, slugAliases: ex.SLUG_ALIASES || {},
       booksBySlug: {}, booksById: {}, peopleBySlug: {}, catByKey: {}, base: new Map()
     };
+    cat.booksByLegacySlug = {}; cat.peopleByLegacySlug = {};   // earlier Devanagari addresses -> 301 to the Roman ones
     cat.BOOKS.forEach((b) => {
-      cat.booksBySlug[b.slug] = b; cat.booksById[b.id] = b;
+      cat.booksBySlug[b.slug] = b; cat.booksById[b.id] = b; cat.booksByLegacySlug[b.legacySlug] = b;
       cat.base.set(b, { categoryKeys: b.categoryKeys, categoryMetas: b.categoryMetas, category: b.category, categoryMeta: b.categoryMeta });
     });
-    cat.PEOPLE.forEach((p) => { cat.peopleBySlug[p.slug] = p; });
+    cat.PEOPLE.forEach((p) => { cat.peopleBySlug[p.slug] = p; cat.peopleByLegacySlug[p.legacySlug] = p; });
     cat.CATEGORY_META.forEach((c) => { cat.catByKey[c.key] = c; });
     catalogueCache = { stamp: stamp, value: cat };
     return cat;
@@ -400,13 +401,17 @@ async function render(rawUrl, opts) {
   let page = null;
   if (seg[0] === 'book' && seg.length === 2) {
     const book = cat.booksBySlug[seg[1]] || cat.booksBySlug[seg[1].normalize('NFC')];
-    const byId = !book && /^\d+$/.test(seg[1]) ? cat.booksById[parseInt(seg[1], 10)]
-      : !book && cat.slugAliases[seg[1]] ? cat.BOOKS.find((b) => b.file === cat.slugAliases[seg[1]]) : null;     // an earlier address of a renamed book
+    const legacy = cat.booksByLegacySlug[seg[1]] || cat.booksByLegacySlug[seg[1].normalize('NFC')];   // the earlier Devanagari address
+    const byId = !book && (legacy ||
+      (/^\d+$/.test(seg[1]) ? cat.booksById[parseInt(seg[1], 10)]
+        : cat.slugAliases[seg[1]] ? cat.BOOKS.find((b) => b.file === cat.slugAliases[seg[1]]) : null));     // old numeric id / an earlier address of a renamed book
     if (byId) return { status: 301, headers: { Location: cat.bookPath(byId), 'Cache-Control': cacheControl }, body: '' };
     if (!book) return shell(404);
     page = pageBook(cat, book);
   } else if (seg[0] === 'author' && seg.length === 2) {
     const person = cat.peopleBySlug[seg[1]] || cat.peopleBySlug[seg[1].normalize('NFC')];
+    const legacyPerson = !person && (cat.peopleByLegacySlug[seg[1]] || cat.peopleByLegacySlug[seg[1].normalize('NFC')]);
+    if (legacyPerson) return { status: 301, headers: { Location: cat.personPath(legacyPerson.name), 'Cache-Control': cacheControl }, body: '' };
     // An old /author/<number> link: the client sends those to the authors list.
     if (!person && /^\d+$/.test(seg[1])) return { status: 301, headers: { Location: '/authors', 'Cache-Control': cacheControl }, body: '' };
     if (!person) return shell(404);

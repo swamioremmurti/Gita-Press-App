@@ -1,4 +1,6 @@
 model/*.onnx
 model/*.onnx.data
+model/*.onnx_data
 model/config.json
 model/vocab.json
+model/vocab.txt
