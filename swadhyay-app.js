@@ -2770,6 +2770,9 @@
       '})();';
   }
 
+  /* false: the reader shows every paragraph flush left (master.css's own 12-18px indents are cancelled too). true: prose paragraphs get the
+     READER_PARA_INDENT first-line indent below (except the books in READER_NO_INDENT_BOOKS). */
+  var READER_FIRST_LINE_INDENT = false;
   var READER_PARA_INDENT = "2.2em";
   /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
   var READER_NO_INDENT_BOOKS = { "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": true };
@@ -2806,7 +2809,9 @@
       /* Paragraph indent: master.css indents body text only 12-18px (about 0.5em), which reads as barely
          indented on screen. Prose paragraphs (justified, indented in master.css; not footnotes, verses
          or titles) get a deeper first-line indent that grows with the font size. */
-      READER_INDENT_SELECTORS + '{text-indent:' + (READER_NO_INDENT_BOOKS[book.file] ? '0' : READER_PARA_INDENT) + ' !important;}' +
+      (READER_FIRST_LINE_INDENT && !READER_NO_INDENT_BOOKS[book.file]
+        ? READER_INDENT_SELECTORS + '{text-indent:' + READER_PARA_INDENT + ' !important;}'
+        : 'body p:not(.para-style-override-61){text-indent:0 !important;}') +      // no first-line indent anywhere (one hanging-indent class is left alone)
       '@media (min-width:900px){body{max-width:1100px;padding:1.4rem 2rem 4rem;}}' +
       'mark.rdr-hl{background:#ffe58a;border-radius:2px;}' +
       'mark.rdr-find{background:#ffb74d;color:#1a1a1a;border-radius:3px;box-shadow:0 0 0 2px #ff8f00;animation:rdrFindPulse 1.1s ease-in-out 2;}' +
