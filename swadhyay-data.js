@@ -800,7 +800,7 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  810.6
     },
     {
-        "file":  "आत्मोद्धारके साधन.html",
+        "file":  "आत्मोद्धारके साधन भाग - १.html",
         "category":  "Pravachan",
         "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "tikakar":  "",
@@ -5176,5 +5176,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
         "sizeKB":  38.5
+    },
+    {
+        "file":  "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  111.0
     }
 ];

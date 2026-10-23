@@ -416,6 +416,21 @@
   }
 
   var COVER_OVERRIDES = {
+    "आदर्श मानव हृदय.html": "assets/covers/adarsh-manav-hriday.webp",
+    "आदर्श भ्रातृ प्रेम.html": "assets/covers/adarsh-bhratri-prem.webp",
+    "आदर्श भक्त.html": "assets/covers/adarsh-bhakt.webp",
+    "आदर्श नारी सुशीला.html": "assets/covers/adarsh-nari-sushila.webp",
+    "आदर्श देवियाँ.html": "assets/covers/adarsh-deviyan.webp",
+    "आदर्श कहानियाँ.html": "assets/covers/adarsh-kahaniyan.webp",
+    "आदर्श उपकार.html": "assets/covers/adarsh-upkar.webp",
+    "साधन-कल्पतरु.html": "assets/covers/sadhan-kalpataru.webp",
+    "आत्मोद्धारके सरल उपाय.html": "assets/covers/atmoddhar-ke-saral-upay.webp",
+    "आत्मकल्याण के विविध उपाय.html": "assets/covers/atmakalyan-ke-vividh-upay.webp",
+    "असीम नीचता और असीम साधुता.html": "assets/covers/aseem-neechata-sadhuta.webp",
+    "अष्टावक्रगीता.html": "assets/covers/ashtavakra-gita.webp",
+    "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html": "assets/covers/ishwar-dayalu-avatar-siddhant.webp",
+    "अमृत वचन.html": "assets/covers/amrit-vachan.webp",
+    "अयोध्या-दर्शन.html": "assets/covers/ayodhya-darshan.webp",
     "गीता बाल प्रश्नोत्तरी.html": "assets/covers/gita-bal-prashnottari.webp",
     "गीता ज्ञान प्रवेशिका.html": "assets/covers/gita-gyan-praveshika.webp",
     "गीता दर्पण.html": "assets/covers/gita-darpan.webp",
@@ -596,6 +611,7 @@
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी (पदच्छेद-अन्वयसहित)",
     "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "श्रीलिङ्ग महापुराण",
     "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html": "महाभारत",
+    "आत्मोद्धारके साधन भाग - १.html": "assets/covers/atmoddhar-ke-sadhan-bhag-1.webp",
     "भगवान_् पर विश्वास.html": "भगवान् पर विश्वास",
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "श्रीमद्भगवद्गीता-माहात्म्यसहित",     // same text as the "- माहात्म्यसहित" edition, in large print
   
@@ -614,7 +630,15 @@
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "माहात्म्यसहित श्रीमद्भगवद्गीता"
   };
   var SLUG_ALIASES = {
-    "श्रीमद्भगवद्गीतामोटेअक्षरोंमें": "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html"
+    "श्रीमद्भगवद्गीतामोटेअक्षरोंमें": "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html",
+    /* the two books that were merged into one: their old addresses open the merged book */
+    "ishvar-dayalu-aur-nyayakari-hai": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
+    "avatar-ka-siddhant": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
+    "ईश्वर-दयालु-और-न्यायकारी-है": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
+    "अवतार-का-सिद्धान्त": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
+    /* आत्मोद्धारके साधन was renamed "आत्मोद्धारके साधन भाग - १": its old addresses still work */
+    "atmoddharake-sadhan": "आत्मोद्धारके साधन भाग - १.html",
+    "आत्मोद्धारके-साधन": "आत्मोद्धारके साधन भाग - १.html"
   };
   /* Hand-written Roman addresses (file name -> slug) for titles whose automatic form reads badly -- mostly long Sanskrit
      compounds that come out as one word. A book not listed here gets romanSlug(title). */
@@ -659,7 +683,10 @@
   };
   var HIDDEN_BOOKS = {
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true,  // replaced by the पदच्छेद-अन्वयसहित
-    "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true                    // same text as the large-print edition, which now carries this title edition
+    "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true,                   // same text as the large-print edition, which now carries this title edition
+    "ईश्वर दयालु और न्यायकारी है.html": true,                         // merged into "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त"
+    "अवतार का सिद्धान्त.html": true,                                  // (same)
+    "आचार्य के सदुपेदश.html": true                                    // switched off (hidden from the library)
   };
 
   /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
@@ -2149,11 +2176,17 @@
        मासपारायण विश्राम, one page each) is never cut into parts, however long it is. */
     if (html.indexOf('data-whole-page="1"') !== -1) return null;
     var re = /<\/p>/g, m, cuts = [], last = 0;
+    var HEAD_P = /^<p\b[^>]*\bclass="(?:[^"]*\s)?(?:Heading|Sub-[Hh]ead|Chapter-Heading|Main-Heading)/;
     while ((m = re.exec(html))) {
       var end = m.index + 4, acc = end - last;
       if (acc < READER_PAGE_TARGET) continue;
+      /* never cut straight after a heading (a Sub-head-2 would be left alone at the foot of one part and its text on the next) ... */
+      var pStart = html.lastIndexOf("<p", m.index);
+      if (pStart >= 0 && HEAD_P.test(html.slice(pStart, pStart + 300))) continue;
+      /* ... and cut gladly straight before one: the next part then opens with its heading */
+      var nextP = html.indexOf("<p", end), beforeHeading = nextP >= 0 && HEAD_P.test(html.slice(nextP, nextP + 300));
       // (tags stripped first: a doha's number sits in its own <span> now, between the ॥ and the digits)
-      if (acc >= READER_LONG_PAGE || UNIT_END_RE.test(html.slice(Math.max(last, end - 400), m.index).replace(/<[^>]+>/g, ""))) { cuts.push(end); last = end; }
+      if (acc >= READER_LONG_PAGE || beforeHeading || UNIT_END_RE.test(html.slice(Math.max(last, end - 400), m.index).replace(/<[^>]+>/g, ""))) { cuts.push(end); last = end; }
     }
     if (!cuts.length) return null;
     if (html.length - cuts[cuts.length - 1] < READER_PAGE_TARGET * 0.3) cuts.pop();      // no tiny last part
@@ -2168,6 +2201,22 @@
       parts.push({ html: seg, label: label, len: text.length });
     }
     return parts;
+  }
+
+  /* The name of a later part of a long page: the Sub-Heading whose section the cut falls in, plus "(भाग N)" -- "महाभारतमें ... प्रसङ्ग (भाग 2)".
+     A part that opens with a Sub-Heading of its own is simply named after it. fullHtml is the whole page, starts[] where each part begins in it,
+     pi the part, partHtml its html, fallback the page's own name (used when no Sub-Heading precedes the cut). */
+  function continuationLabel(fullHtml, starts, pi, partHtml, fallback) {
+    var SUB = /<p\b[^>]*\bclass="(?:[^"]*\s)?Sub-Heading(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/p>/g;
+    function clip(t) { return t.length > 60 ? t.slice(0, 57) + "…" : t; }
+    var own = /^\s*<p\b[^>]*\bclass="(?:[^"]*\s)?Sub-Heading(?:\s[^"]*)?"[^>]*>([\s\S]*?)<\/p>/.exec(partHtml);
+    if (own) { var ot = stripTagsForLabel(own[1]); if (ot) return clip(ot); }
+    var before = fullHtml.slice(0, starts[pi]), m, base = null, basePos = -1;
+    while ((m = SUB.exec(before))) { var t = stripTagsForLabel(m[1]); if (t) { base = t; basePos = m.index; } }
+    if (base === null) return (fallback || "") + " (भाग " + (pi + 1) + ")";
+    var k = 1;
+    for (var j = 1; j <= pi; j++) if (starts[j] > basePos) k++;
+    return clip(base) + " (भाग " + k + ")";
   }
 
   function buildReaderBook(bookId, htmlText) {
@@ -2248,7 +2297,13 @@
         var parts = bhajanPages ? null : splitLongPage(bp.html);
         if (!parts) { list.push({ html: bp.html, label: bp.label, len: bp.len, bi: bi, part: 0 }); return; }
         hasLongSplit = true;
-        parts.forEach(function (pt, pi) { list.push({ html: pt.html, label: pi === 0 ? bp.label : pt.label, len: pt.len, bi: bi, part: pi }); });
+        /* a later part of a section is named after the section: "<section name> (भाग 2)" (parts named by their doha numbers keep those) */
+        var starts = [], off = 0;
+        parts.forEach(function (pt) { starts.push(off); off += pt.html.length; });
+        parts.forEach(function (pt, pi) {
+          var lab = pi === 0 ? bp.label : (/^भाग \d+$/.test(pt.label) ? continuationLabel(bp.html, starts, pi, pt.html, bp.label || ch.label) : pt.label);
+          list.push({ html: pt.html, label: lab, len: pt.len, bi: bi, part: pi });
+        });
       });
       var l2Map = {};
       list.forEach(function (piece, j) {
@@ -2639,7 +2694,7 @@
       '(function(){try{if(parent.SwadhyayVerseFit)parent.SwadhyayVerseFit.init(document);}catch(err){}})();' +
       /* Gita shlokas that have a recording get a small play button after the shloka number
          (swadhyay-shloka-audio.js lists them by their anchor id; this is a no-op for every other book) */
-      'var SHA=' + JSON.stringify(window.SwadhyayShlokaAudio ? window.SwadhyayShlokaAudio.anchors() : {}) + ';' +
+      'var SHA=' + JSON.stringify(window.SwadhyayShlokaAudio && reader.book && SHLOKA_AUDIO_BOOKS[reader.book.file] ? window.SwadhyayShlokaAudio.anchors() : {}) + ';' +
       '(function(){try{var P=parent.SwadhyayShlokaAudio;if(!P)return;var ids=Object.keys(SHA),btns={},any=false;' +
       'var st=document.createElement("style");' +
       'st.textContent=".rdr-sh-play{display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;margin-left:.7em;border:0;border-radius:50%;background:#8f1a12;color:#fff;font-size:.6em;line-height:1;vertical-align:middle;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}.rdr-sh-play.on{background:#176b3d}";' +
@@ -2773,6 +2828,9 @@
   /* false: the reader shows every paragraph flush left (master.css's own 12-18px indents are cancelled too). true: prose paragraphs get the
      READER_PARA_INDENT first-line indent below (except the books in READER_NO_INDENT_BOOKS). */
   var READER_FIRST_LINE_INDENT = false;
+  /* The recorded Gita shlokas are listed by anchor id ("Chapter_9_3", ...). Those ids are only meaningful in the Gita book below; many other books
+     have headings with the same ids, and must not get a play button there. */
+  var SHLOKA_AUDIO_BOOKS = { "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": true };
   var READER_PARA_INDENT = "2.2em";
   /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
   var READER_NO_INDENT_BOOKS = { "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": true };
@@ -3334,7 +3392,8 @@
         return res.text();
       }).then(function (text) {
         proceed(buildReaderBook(bookId, text));
-      }).catch(function () {
+      }).catch(function (err) {
+        try { console.error("reader: the book could not be opened", err); } catch (e) {}
         iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;color:#a51512;text-align:center;">' +
           'पुस्तक लोड नहीं हो सकी। <a href="' + esc(book.href) + '" target="_blank">यहाँ खोलें</a></body></html>';
       });

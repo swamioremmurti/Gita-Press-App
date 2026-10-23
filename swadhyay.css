@@ -264,8 +264,10 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .cover-md { width: 100%; aspect-ratio: 3/4; }
 .cover-letter { font-size: 1.8rem; font-weight: bold; text-shadow: 0 2px 6px rgba(0,0,0,.35); }
 .cover-mark { position: absolute; bottom: 4px; right: 6px; opacity: .5; font-size: .8rem; }
-.cover.has-img { background: var(--surface-2); }
-.cover.has-img img { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
+/* the cover picture sits inside a margin (the padding of its frame), and is itself rounded (the same radius on every corner: a % radius would be taller than wide on a tall picture) */
+.cover.has-img { background: var(--surface-2); padding: 6%; box-sizing: border-box; }
+.cover.has-img img { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 20px; }
+.cover-sm.has-img img { border-radius: 8px; }
 
 /* ---------- book grid / cards ---------- */
 .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.1rem; }
@@ -480,8 +482,8 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .book-detail-cover-col { display: flex; flex-direction: column; gap: .8rem; }
 .book-detail-cover { border-radius: var(--radius); aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; color: #fff; position: relative; box-shadow: var(--shadow); overflow: hidden; }
 .book-detail-cover .cover-letter { font-size: 3.5rem; }
-.book-detail-cover.has-img { background: var(--surface-2); }
-.book-detail-cover.has-img img { width: 100%; height: 100%; object-fit: contain; padding: 8%; }
+.book-detail-cover.has-img { background: var(--surface-2); padding: 8%; box-sizing: border-box; }
+.book-detail-cover.has-img img { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 24px; }
 .book-detail-info h1 { margin: 0 0 .5rem; color: var(--accent-dark); }
 :root[data-theme="dark"] .book-detail-info h1 { color: #ffb199; }
 
@@ -1035,7 +1037,8 @@ a.chat-source-chip:hover { border-color: var(--accent); color: var(--accent); }
 
 /* ---------------- लेखक (authors) ---------------- */
 .author-photo.cover { position: relative; overflow: hidden; border-radius: 50%; }
-.author-photo.cover.has-img img { object-fit: cover; object-position: center 25%; padding: 0; }
+.author-photo.cover.has-img { padding: 0; }
+.author-photo.cover.has-img img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; object-position: center 25%; border-radius: 0; }
 .author-photo.cover-sm { width: 52px; height: 52px; aspect-ratio: 1/1; }
 .author-photo.cover-md { width: 120px; height: 120px; aspect-ratio: 1/1; margin: 0 auto; }
 .author-photo.cover-lg { width: 150px; height: 150px; aspect-ratio: 1/1; }
