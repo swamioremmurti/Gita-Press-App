@@ -34,7 +34,7 @@ module.exports = function gatePage({ error, next } = {}) {
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <style>
-@font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; } @font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; size-adjust: 130%; } @font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; size-adjust: 130%; }
 :root { --maroon: #8a1a14; --deep: #5a1810; --gold: #d9a441; --cream: #fbf3e4; --ink: #4a3326; }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }

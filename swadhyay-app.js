@@ -2873,6 +2873,9 @@
   /* The recorded Gita shlokas are listed by anchor id ("Chapter_9_3", ...). Those ids are only meaningful in the Gita book below; many other books
      have headings with the same ids, and must not get a play button there. */
   var SHLOKA_AUDIO_BOOKS = { "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": true };
+  /* Chanakya Uni is drawn small for its size, so a book is set 30% larger than the size the reader's A-/A+ buttons show (the buttons keep their
+     own scale: 19 means 19 x 1.3 px on the page). Everything in a book is sized in em, so it all grows together. */
+  var READER_FONT_SCALE = 1.3;
   var READER_PARA_INDENT = "2.2em";
   /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
   var READER_NO_INDENT_BOOKS = { "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": true };
@@ -2901,7 +2904,7 @@
       '<style>' +
       'html{background:' + bg + ';}' +
       'body{margin:0;padding:1.1rem 1.2rem 4rem;max-width:900px;margin-left:auto;margin-right:auto;' +
-      'font-size:' + fontSize + 'px;box-sizing:border-box;}' +
+      'font-size:' + (Math.round(fontSize * READER_FONT_SCALE * 10) / 10) + 'px;box-sizing:border-box;}' +
       /* !important: the book's own master.css sets an explicit (unitless) line-height on
          almost every paragraph class, so a plain body{line-height} rule would be overridden
          by those more specific selectors -- this reading-comfort control needs to win everywhere. */
