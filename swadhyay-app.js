@@ -416,6 +416,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "आत्मोद्धारके साधन भाग - १.html": "assets/covers/atmoddhar-ke-sadhan-bhag-1.webp",
     "आदर्श मानव हृदय.html": "assets/covers/adarsh-manav-hriday.webp",
     "आदर्श भ्रातृ प्रेम.html": "assets/covers/adarsh-bhratri-prem.webp",
     "आदर्श भक्त.html": "assets/covers/adarsh-bhakt.webp",
@@ -611,7 +612,7 @@
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी (पदच्छेद-अन्वयसहित)",
     "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "श्रीलिङ्ग महापुराण",
     "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html": "महाभारत",
-    "आत्मोद्धारके साधन भाग - १.html": "assets/covers/atmoddhar-ke-sadhan-bhag-1.webp",
+    "आत्मोद्धारके साधन भाग - १.html": "आत्मोद्धारके साधन भाग - १",
     "भगवान_् पर विश्वास.html": "भगवान् पर विश्वास",
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "श्रीमद्भगवद्गीता-माहात्म्यसहित",     // same text as the "- माहात्म्यसहित" edition, in large print
   
@@ -2904,6 +2905,8 @@
       /* !important: the book's own master.css sets an explicit (unitless) line-height on
          almost every paragraph class, so a plain body{line-height} rule would be overridden
          by those more specific selectors -- this reading-comfort control needs to win everywhere. */
+      /* one font for every book: the head of a book file may still say Georgia, and some paragraph classes name no font at all */
+      "body, body *{font-family:'ChanakyaUni',serif !important;}" +
       'body, body *{line-height:' + lineHeight + 'em !important;}' +
       /* Paragraph indent: master.css indents body text only 12-18px (about 0.5em), which reads as barely
          indented on screen. Prose paragraphs (justified, indented in master.css; not footnotes, verses
@@ -3402,7 +3405,7 @@
 
     var iframe = document.getElementById("readerIframe");
     readerPaintFrame(iframe, reader.theme);
-    iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;color:#888;text-align:center;' + (reader.theme === "night" ? "background:#121212;" : "") + '">लोड हो रहा है…</body></html>';
+    iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:ChanakyaUni,serif;padding:2rem;color:#888;text-align:center;' + (reader.theme === "night" ? "background:#121212;" : "") + '">लोड हो रहा है…</body></html>';
     document.getElementById("readerTitleText").textContent = book.title;
     if (window.SwadhyaySankalp) window.SwadhyaySankalp.readerBar(book.file);   // today's portion of an active पाठ-संकल्प
 
@@ -3435,7 +3438,7 @@
         proceed(buildReaderBook(bookId, text));
       }).catch(function (err) {
         try { console.error("reader: the book could not be opened", err); } catch (e) {}
-        iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:sans-serif;padding:2rem;color:#a51512;text-align:center;">' +
+        iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:ChanakyaUni,serif;padding:2rem;color:#a51512;text-align:center;">' +
           'पुस्तक लोड नहीं हो सकी। <a href="' + esc(book.href) + '" target="_blank">यहाँ खोलें</a></body></html>';
       });
     }

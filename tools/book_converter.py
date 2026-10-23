@@ -862,8 +862,13 @@ def update_cover_override(app_js: Path, filename: str, cover_rel_path: str, dry_
     text = app_js.read_text(encoding="utf-8")
     entry_re = re.compile(r'(\n\s*"' + re.escape(filename) + r'"\s*:\s*)"[^"]*"(,?)')
     new_line = f'    "{filename}": "{cover_rel_path}",'
-    if entry_re.search(text):
-        new_text = entry_re.sub(lambda m: m.group(1) + f'"{cover_rel_path}"' + m.group(2), text)
+    # only the COVER_OVERRIDES block is looked at: the same file name is also a key of TITLE_OVERRIDES, SLUG_ALIASES ... whose values must not be touched
+    b0 = text.find("var COVER_OVERRIDES = {")
+    b1 = text.find("};", b0) if b0 != -1 else -1
+    block = text[b0:b1] if b0 != -1 and b1 != -1 else ""
+    if block and entry_re.search(block):
+        new_block = entry_re.sub(lambda m: m.group(1) + f'"{cover_rel_path}"' + m.group(2), block)
+        new_text = text[:b0] + new_block + text[b1:]
         action = "updated"
     else:
         marker = "var COVER_OVERRIDES = {\n"

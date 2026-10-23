@@ -34,12 +34,12 @@ module.exports = function gatePage({ error, next } = {}) {
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <style>
-@font-face { font-family: 'Tiro Devanagari Sanskrit'; src: url('/fonts/TiroDevanagariSanskrit-Regular.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; } @font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
 :root { --maroon: #8a1a14; --deep: #5a1810; --gold: #d9a441; --cream: #fbf3e4; --ink: #4a3326; }
 * { box-sizing: border-box; }
 html, body { margin: 0; min-height: 100%; }
 body {
-  font-family: 'Noto Sans Devanagari', 'Nirmala UI', 'Mangal', system-ui, sans-serif; color: var(--ink);
+  font-family: 'ChanakyaUni', serif; color: var(--ink);
   background: #f2c98c url('/assets/gate/bg.webp') center top / cover no-repeat fixed;
   display: flex; flex-direction: column; min-height: 100vh;
 }
@@ -48,12 +48,12 @@ body {
   width: min(250px, 58vw); aspect-ratio: 358.2 / 242.36; background: var(--maroon);
   -webkit-mask: url('/assets/gate/logo.svg') no-repeat center / contain; mask: url('/assets/gate/logo.svg') no-repeat center / contain;
 }
-.tagline { margin: .8rem 0 0; font-family: 'Tiro Devanagari Sanskrit', serif; color: var(--maroon); font-size: clamp(1.1rem, 2.4vw, 1.55rem); letter-spacing: .01em; }
+.tagline { margin: .8rem 0 0; font-family: 'ChanakyaUni', serif; color: var(--maroon); font-size: clamp(1.1rem, 2.4vw, 1.55rem); letter-spacing: .01em; }
 .orn { display: flex; align-items: center; gap: .6rem; margin: .7rem 0 1rem; color: var(--gold); }
 .orn::before, .orn::after { content: ""; width: 74px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); }
 .orn::after { transform: scaleX(-1); }
 .orn i { width: 7px; height: 7px; transform: rotate(45deg); background: var(--gold); }
-h1 { margin: 0; font-family: 'Tiro Devanagari Sanskrit', serif; font-weight: 700; color: var(--deep); font-size: clamp(2.1rem, 5.2vw, 3.5rem); line-height: 1.2; text-shadow: 0 2px 14px rgba(255, 236, 200, .85); }
+h1 { margin: 0; font-family: 'ChanakyaUni', serif; font-weight: 700; color: var(--deep); font-size: clamp(2.1rem, 5.2vw, 3.5rem); line-height: 1.2; text-shadow: 0 2px 14px rgba(255, 236, 200, .85); }
 .lead { max-width: 40rem; margin: .9rem 0 1.8rem; font-size: clamp(.95rem, 1.7vw, 1.12rem); line-height: 1.75; color: #3d2a1e; text-shadow: 0 1px 10px rgba(255, 240, 210, .9); }
 .card {
   width: min(520px, 100%); text-align: left; background: rgba(255, 250, 240, .93); border: 1.5px solid #ecc98a; border-radius: 26px;
@@ -64,7 +64,7 @@ h1 { margin: 0; font-family: 'Tiro Devanagari Sanskrit', serif; font-weight: 700
 .lockc svg { width: 34px; height: 34px; }
 svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 svg .f { fill: currentColor; stroke: none; }
-.card h2 { margin: 0 0 .25rem; font-family: 'Tiro Devanagari Sanskrit', serif; font-size: 1.55rem; color: var(--maroon); }
+.card h2 { margin: 0 0 .25rem; font-family: 'ChanakyaUni', serif; font-size: 1.55rem; color: var(--maroon); }
 .card p { margin: 0; font-size: .95rem; line-height: 1.6; color: #5b463a; }
 .field { position: relative; display: flex; align-items: center; background: #fff; border: 1.5px solid #e6d5bd; border-radius: 12px; }
 .field:focus-within { border-color: var(--maroon); box-shadow: 0 0 0 3px rgba(165, 21, 18, .14); }

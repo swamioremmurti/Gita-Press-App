@@ -21,7 +21,7 @@
     poddar:     ["#8d55c7", "#35175c"],
     sharnanand: ["#2f9b63", "#0f4426"]
   };
-  var FONT = '"Tiro Devanagari Sanskrit", "Noto Sans Devanagari", Georgia, serif';
+  var FONT = '"ChanakyaUni", serif';
   var LS_FMT = "swadhyay_qshare_fmt_v1";
   var helpers = { tx: null, toast: null };
   var state = null;       // { quote, fmt, canvas, el }
@@ -118,7 +118,7 @@
     var textH = lines.length * lh, blockH = markH + textH + nameH;
     var top = L.areaTop + Math.max(0, (L.areaBottom - L.areaTop - blockH) / 2);
 
-    ctx.fillStyle = "#c9822b"; ctx.font = "bold " + Math.round(W * 0.2) + "px Georgia, serif";
+    ctx.fillStyle = "#c9822b"; ctx.font = "bold " + Math.round(W * 0.2) + "px ChanakyaUni, serif";
     ctx.fillText("“", W / 2, top + markH * 0.95);
     ctx.fillStyle = INK; ctx.font = size + "px " + FONT;
     lines.forEach(function (ln, i) { ctx.fillText(ln, W / 2, top + markH + lh * (i + 0.8)); });
@@ -132,12 +132,12 @@
       ctx.fillText(q.book.title, W / 2, y + Math.round(W * 0.14));
     }
 
-    ctx.font = Math.round(W * 0.03) + "px Arial, sans-serif";
+    ctx.font = Math.round(W * 0.03) + "px ChanakyaUni, serif";
     var pw = Math.round(Math.max(W * 0.3, ctx.measureText(location.host).width + W * 0.1)), ph = Math.round(W * 0.085);   // web address on a soft cream pill
     var px = (W - pw) / 2, py = L.pillY - ph / 2;
     ctx.fillStyle = "rgba(255,248,232,.88)"; roundRect(ctx, px, py, pw, ph, ph / 2); ctx.fill();
     ctx.strokeStyle = "rgba(168,89,13,.45)"; ctx.lineWidth = 2; ctx.stroke();
-    ctx.fillStyle = INK; ctx.font = Math.round(W * 0.03) + "px Arial, sans-serif";
+    ctx.fillStyle = INK; ctx.font = Math.round(W * 0.03) + "px ChanakyaUni, serif";
     ctx.fillText(location.host, W / 2, L.pillY + Math.round(W * 0.011));
   }
   /* ---------------- sharing ---------------- */
@@ -190,7 +190,7 @@
     state.canvas = document.createElement("canvas");
     state.el.querySelector(".qsh-preview").appendChild(state.canvas);
     var fontsReady = document.fonts && document.fonts.load
-      ? Promise.all([document.fonts.load("40px 'Tiro Devanagari Sanskrit'", "कल्याण"), document.fonts.load("italic 40px 'Tiro Devanagari Sanskrit'", "कल्याण")]).catch(function () {})
+      ? Promise.all([document.fonts.load("40px ChanakyaUni", "कल्याण"), document.fonts.load("bold 40px ChanakyaUni", "कल्याण")]).catch(function () {})
       : Promise.resolve();
     Promise.all([fontsReady, loadBg()]).then(function (r) { if (state && state.canvas) draw(state.canvas, state.fmt, state.quote, r[1][0], r[1][1]); });
   }

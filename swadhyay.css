@@ -1,15 +1,5 @@
-@font-face {
-  font-family: 'Tiro Devanagari Sanskrit';
-  src: url('fonts/TiroDevanagariSanskrit-Regular.woff2') format('woff2'), url('fonts/TiroDevanagariSanskrit-Regular.ttf') format('truetype');
-  font-display: swap;
-  font-weight: normal; font-style: normal;
-}
-@font-face {
-  font-family: 'Tiro Devanagari Sanskrit';
-  src: url('fonts/TiroDevanagariSanskrit-Italic.woff2') format('woff2'), url('fonts/TiroDevanagariSanskrit-Italic.ttf') format('truetype');
-  font-display: swap;
-  font-weight: normal; font-style: italic;
-}
+@font-face { font-family: 'ChanakyaUni'; src: url('fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'ChanakyaUni'; src: url('fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
 
 :root {
   --bg: #faf7f0;
@@ -46,7 +36,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; padding: 0; }
 body, button, input {
-  font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', Georgia, serif;
+  font-family: 'ChanakyaUni', serif;
 }
 body {
   background: var(--bg);
@@ -66,7 +56,7 @@ button { cursor: pointer; font: inherit; }
   background: var(--sidebar-bg); color: var(--sidebar-ink);
   display: flex; flex-direction: column;
   padding: 1rem 0 .6rem; position: fixed; top: 0; left: 0; height: 100vh; z-index: 120;
-  font-family: Calibri, Arial, 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', sans-serif;
+  font-family: 'ChanakyaUni', serif;
   overflow-x: hidden; overflow-y: auto; scrollbar-width: none; -ms-overflow-style: none;
   transition: width .18s ease, box-shadow .18s ease;
 }
@@ -83,7 +73,7 @@ button { cursor: pointer; font: inherit; }
 .side-link span:not(.ic) {
   white-space: nowrap; opacity: 0; transition: opacity .1s ease;
 }
-.side-link .sidebar-om { font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif; font-size: 1.25rem; }
+.side-link .sidebar-om { font-family: 'ChanakyaUni', serif; font-size: 1.25rem; }
 button.side-link { background: none; border: 0; font-family: inherit; text-align: left; cursor: pointer; }
 .side-lang-label b { font-weight: normal; opacity: .55; }
 .side-lang-label b.on { font-weight: bold; opacity: 1; color: #ffd9a0; }
@@ -173,7 +163,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
   gap: 1rem; min-height: 70vh; text-align: center;
 }
 .page-preloader-mark {
-  font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif;
+  font-family: 'ChanakyaUni', serif;
   font-size: 2.6rem; color: var(--accent); line-height: 1;
   animation: page-preloader-pulse 1.6s ease-in-out infinite;
 }
@@ -332,7 +322,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 }
 .pc-head, .ai-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .7rem; }
 .pc-head-icon, .ai-head-icon { font-size: 1.2rem; color: var(--accent); }
-.ai-head-icon { font-family: 'Tiro Devanagari Sanskrit', 'Noto Sans Devanagari', serif; }
+.ai-head-icon { font-family: 'ChanakyaUni', serif; }
 .pc-head h3, .ai-head h3 { margin: 0; font-size: 1.05rem; color: var(--accent-dark); flex: 1; }
 :root[data-theme="dark"] .pc-head h3, :root[data-theme="dark"] .ai-head h3 { color: #ffb199; }
 .ai-head-icon-badge { flex: 0 0 auto; width: 44px; height: 44px; object-fit: contain; }
