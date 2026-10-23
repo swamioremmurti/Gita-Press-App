@@ -682,15 +682,15 @@ def convert_zoho_html(path: Path, args):
 def build_html(result, args) -> str:
     title = result["book_title"]
     sections = ['<section class="epub-page" data-page="1">\n<div class="Basic-Graphics-Frame">\n'
-                f'\t\t\t<p class="Title-Page---Book-Name">{esc(title)}</p>']
+                f'\t\t\t<p class="cover-Book-Name">{esc(title)}</p>']
     if result["author_name"]:
-        sections.append(f'\t\t\t<p class="Title-Page---Author-Name">{esc(result["author_name"])}</p>')
+        sections.append(f'\t\t\t<p class="cover-Author-Name">{esc(result["author_name"])}</p>')
     if result["translator_line"]:
-        sections.append(f'\t\t\t<p class="Title-Page---Translater-Author-Name">{esc(result["translator_line"])}</p>')
+        sections.append(f'\t\t\t<p class="cover-Translater-Author-Name">{esc(result["translator_line"])}</p>')
     for name in result.get("cover_images", []):
         sections.append("\t\t\t" + image_block_html("image/" + name, f"{title} — मुखपृष्ठ चित्र"))
     if result["subtitle"]:
-        sections.append(f'\t\t\t<p class="Title-Page---Publisher-Note">{esc(result["subtitle"])}</p>')
+        sections.append(f'\t\t\t<p class="cover-Publisher-Note">{esc(result["subtitle"])}</p>')
     sections.append("\t\t</div>\n</section>")
     title_section = "\n".join(sections)
 

@@ -45,11 +45,11 @@ def main():
     if OPENING[0] not in head:
         m = LOGO_P.search(s)
         s = s[:m.start()] + s[m.end():]
-        i = s.index("</p>", s.index('class="Title-Page---Book-Name"')) + 4
+        i = s.index("</p>", s.index('class="cover-Book-Name"')) + 4
         verses = "\n\t\t\t" + GAP + "".join('<p class="Shlok">%s</p>\n\t\t\t' % v for v in OPENING) + GAP.rstrip("\t\n")
         logo = ('\n\t\t\t<p class="TXT" style="text-align:center;text-indent:0;margin:1em 0"><img src="%s" alt="%s" '
                 'style="display:block;width:100px;max-width:100%%;height:auto;margin:1em auto"></p>'
-                '\n\t\t\t<p class="Title-Page---Publisher-Note">%s</p>' % (IMG, PUBLISHER, PUBLISHER))
+                '\n\t\t\t<p class="cover-Publisher-Note">%s</p>' % (IMG, PUBLISHER, PUBLISHER))
         s = s[:i] + verses + logo + s[i:]
 
     # commentary labels

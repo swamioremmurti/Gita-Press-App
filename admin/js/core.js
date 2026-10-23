@@ -217,6 +217,7 @@
     ['Library'],
     ['/books', '📚', 'Books'],
     ['/categories', '🗂', 'Categories & tags'],
+    ['/audio', '🎵', 'Audio library'],
     ['/media', '🖼', 'Media'],
     ['Learning'],
     ['/lms', '🎓', 'Gita course'],

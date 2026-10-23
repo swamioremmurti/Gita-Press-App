@@ -324,16 +324,16 @@ def main():
         out_sections.append(f'<section class="epub-page" data-page="{si + 2}">\n' + "\n".join(lines) + "\n</section>")
 
     cover = ('<section class="epub-page" data-page="1">\n<div>\n'
-             '\t\t\t<p class="Titel-Page---Shri-Hari">॥ श्रीहरि:॥</p>\n'
-             '\t\t\t<p class="Title-Page---Book-Name">श्रीहनुमान-अङ्क</p>\n'
-             '\t\t\t<p class="Title-Page---Sub-Title">कल्याण — उनचासवें वर्षका विशेषाङ्क (परिशिष्टाङ्कसहित)</p>\n'
-             '\t\t\t<p class="Title-Page---Tvamev-mata">&nbsp;</p>\n'
-             '\t\t\t<p class="Title-Page---Tvamev-mata">त्वमेव माता च पिता त्वमेव   </p>\n'
-             '\t\t\t<p class="Title-Page---Tvamev-mata">त्वमेव बन्धुश्च सखा त्वमेव। </p>\n'
-             '\t\t\t<p class="Title-Page---Tvamev-mata">त्वमेव विद्या द्रविणं त्वमेव   </p>\n'
-             '\t\t\t<p class="Title-Page---Tvamev-mata">त्वमेव सर्वं मम देवदेव॥</p>\n'
-             '\t\t\t<p class="Title-Page---Tvamev-mata">&nbsp;</p>\n'
-             '\t\t\t<p class="Title-Page---Publisher-Note para-style-override-2">गीता प्रेस के मूल ग्रंथ — '
+             '\t\t\t<p class="cover-Shri-Hari">॥ श्रीहरि:॥</p>\n'
+             '\t\t\t<p class="cover-Book-Name">श्रीहनुमान-अङ्क</p>\n'
+             '\t\t\t<p class="cover-Sub-Title">कल्याण — उनचासवें वर्षका विशेषाङ्क (परिशिष्टाङ्कसहित)</p>\n'
+             '\t\t\t<p class="cover-Tvamev-mata">&nbsp;</p>\n'
+             '\t\t\t<p class="cover-Tvamev-mata">त्वमेव माता च पिता त्वमेव   </p>\n'
+             '\t\t\t<p class="cover-Tvamev-mata">त्वमेव बन्धुश्च सखा त्वमेव। </p>\n'
+             '\t\t\t<p class="cover-Tvamev-mata">त्वमेव विद्या द्रविणं त्वमेव   </p>\n'
+             '\t\t\t<p class="cover-Tvamev-mata">त्वमेव सर्वं मम देवदेव॥</p>\n'
+             '\t\t\t<p class="cover-Tvamev-mata">&nbsp;</p>\n'
+             '\t\t\t<p class="cover-Publisher-Note para-style-override-2">गीता प्रेस के मूल ग्रंथ — '
              'सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।<span></span></p>\n\t\t</div>\n</section>')
     head = bc.BOOK_TEMPLATE_HEAD.format(title="श्रीहनुमान-अङ्क")
     html = head + "\n\n<hr class=\"page-break\">\n\n".join([cover] + out_sections) + "\n\n</body>\n</html>\n"

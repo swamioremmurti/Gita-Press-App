@@ -94,7 +94,7 @@ var SWADHYAY_BOOKS_RAW = [
         "author":  "",
         "tikakar":  "",
         "translator":  "पुरोहित रामप्रताप",
-        "publisher":  "गीताप्रेस",
+        "publisher":  "",
         "sizeKB":  505.8
     },
     {

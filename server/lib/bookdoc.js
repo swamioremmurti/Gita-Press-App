@@ -54,7 +54,7 @@ function chapterTitle(html) {
     c[1].split(/\s+/).forEach((tok) => { if (!found[tok]) { const t = stripTags(m[2]); if (t) found[tok] = t; } });
     if (found.Heading) break;
   }
-  for (const cls of ['Heading', 'Title-Page---Book-Name', 'Chapter-Number', 'Sub-Heading']) {
+  for (const cls of ['Heading', 'cover-Book-Name', 'Chapter-Number', 'Sub-Heading']) {
     if (found[cls]) return found[cls].slice(0, 120);
   }
   const plain = stripTags(html);
@@ -65,7 +65,7 @@ function blankBook(title) {
   const t = String(title || 'New book').replace(/[<>&]/g, '');
   const prefix = '<!DOCTYPE html>\n<html lang="hi">\n<head>\n<meta charset="UTF-8">\n<title>' + t + '</title>\n' +
     '<link rel="stylesheet" href="../../master.css">\n<style>\n  body { max-width: 900px; margin: 0 auto; padding: 1rem; }\n</style>\n</head>\n<body>';
-  const first = '<p class="Titel-Page---Shri-Hari">॥ ॐ श्रीपरमात्मने नमः ॥</p>\n<p class="Title-Page---Book-Name">' + t + '</p>';
+  const first = '<p class="cover-Shri-Hari">॥ ॐ श्रीपरमात्मने नमः ॥</p>\n<p class="cover-Book-Name">' + t + '</p>';
   const second = '<p class="Heading">Chapter 1</p>\n<p class="TXT">Start writing here.</p>';
   return { prefix, chapters: [first, second], suffix: '</body>\n</html>' };
 }

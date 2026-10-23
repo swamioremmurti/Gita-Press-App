@@ -416,6 +416,354 @@
   }
 
   var COVER_OVERRIDES = {
+    "श्रीरामसहस्रनामस्तोत्रम् नामावली तथा संक्षिप्त प्रयोग-विधि सहित.html": "assets/covers/shreeraamasahasranaamastotram-naamaavalee-tathaa-snkshipt-prayog-vidhi-sahit.webp",
+    "कल्याण प्राप्ति के उपाय.html": "assets/covers/kalyaan-praapti-ke-upaay.webp",
+    "आनन्द कैसे मिले.html": "assets/covers/aanand-kaise-mile.webp",
+    "ईश्वर की सत्ता और महत्ता.html": "assets/covers/eeshvar-kee-sattaa-aur-mahattaa.webp",
+    "ईश्वर.html": "assets/covers/eeshvar.webp",
+    "ईश्वरसाक्षात्कार के लिये नाम-जप सर्वोपरि साधन है.html": "assets/covers/eeshvarasaakshaatkaar-ke-liye-naam-jap-sarvopari-saadhan-hai.webp",
+    "एकै साधै सब सधै.html": "assets/covers/ekai-saadhai-sab-sadhai.webp",
+    "कर्णवास का सत्संग.html": "assets/covers/karnavaas-kaa-satsng.webp",
+    "कर्मयोग का तत्त्व.html": "assets/covers/karmayog-kaa-tattv.webp",
+    "कल्याण कुंज.html": "assets/covers/kalyaan-kunj.webp",
+    "कल्याणकारी प्रवचन.html": "assets/covers/kalyaanakaaree-pravachan.webp",
+    "क्या गुरु बिना मुक्ति नहीं.html": "assets/covers/kyaa-guru-binaa-mukti-naheen.webp",
+    "गंगालहरी.html": "assets/covers/gngaalaharee.webp",
+    "गजलगीता.html": "assets/covers/gajalageetaa.webp",
+    "गीता माधुर्य.html": "assets/covers/geetaa-maadhury.webp",
+    "गो सेवा के चमत्कार.html": "assets/covers/go-sevaa-ke-chamatkaar.webp",
+    "चिन्ता शोक कैसे मिटें.html": "assets/covers/chintaa-shok-kaise-miten.webp",
+    "जित देखूँ तित तू.html": "assets/covers/jit-dekhoon-tit-too.webp",
+    "जीवन का कर्तव्य.html": "assets/covers/jeevan-kaa-kartavy.webp",
+    "जीवन का सत्य.html": "assets/covers/jeevan-kaa-saty.webp",
+    "जीवन सुधार की बातें.html": "assets/covers/jeevan-sudhaar-kee-baaten.webp",
+    "जीवनोपयोगी प्रवचन.html": "assets/covers/jeevanopayogee-pravachan.webp",
+    "ज्ञानयोग का तत्त्व.html": "assets/covers/jnyaanayog-kaa-tattv.webp",
+    "तत्त्वविचार.html": "assets/covers/tattvavichaar.webp",
+    "तात्त्विक प्रवचन.html": "assets/covers/taattvik-pravachan.webp",
+    "तुलसी दल.html": "assets/covers/tulasee-dal.webp",
+    "त्याग की महिमा.html": "assets/covers/tyaag-kee-mahimaa.webp",
+    "दीन-दुखियों के प्रति कर्तव्य.html": "assets/covers/deen-dukhiyon-ke-prati-kartavy.webp",
+    "धर्मसे लाभ और अधर्म से हानि.html": "assets/covers/dharmase-laabh-aur-adharm-se-haani.webp",
+    "नल दमयन्ती.html": "assets/covers/nal-damayantee.webp",
+    "नैवेद्य.html": "assets/covers/naivedy.webp",
+    "परम शान्ति का मार्ग.html": "assets/covers/param-shaanti-kaa-maarg.webp",
+    "परम साधन.html": "assets/covers/param-saadhan.webp",
+    "परमानन्द की खेती.html": "assets/covers/paramaanand-kee-khetee.webp",
+    "पौराणिक कथाएँ.html": "assets/covers/pauraanik-kathaaen.webp",
+    "पौराणिक कहानियाँ.html": "assets/covers/pauraanik-kahaaniyaan.webp",
+    "प्रश्नोत्तर मणिमाला.html": "assets/covers/prashnottar-manimaalaa.webp",
+    "प्रेम योग.html": "assets/covers/prem-yog.webp",
+    "भक्त कुसुम.html": "assets/covers/bhakt-kusum.webp",
+    "भक्त महिलारत्न.html": "assets/covers/bhakt-mahilaaratn.webp",
+    "भक्त सौरभ.html": "assets/covers/bhakt-saurabh.webp",
+    "भक्त-पंचरत्न.html": "assets/covers/bhakt-pncharatn.webp",
+    "भक्त-सप्तरत्न.html": "assets/covers/bhakt-saptaratn.webp",
+    "भक्ति भक्त भगवान्.html": "assets/covers/bhakti-bhakt-bhagavaan.webp",
+    "भगवत्तत्त्व.html": "assets/covers/bhagavattattv.webp",
+    "भगवत्प्राप्ति की सुगमता.html": "assets/covers/bhagavatpraapti-kee-sugamataa.webp",
+    "भगवत्प्राप्तिकी अमूल्य बातें.html": "assets/covers/bhagavatpraaptikee-amooly-baaten.webp",
+    "भगवन्नाम.html": "assets/covers/bhagavannaam.webp",
+    "भगवान_् और उनकी भक्ति.html": "assets/covers/bhagavaan-aur-unakee-bhakti.webp",
+    "भगवान_् पर विश्वास.html": "assets/covers/bhagavaan-par-vishvaas.webp",
+    "भगवान_् से अपनापन.html": "assets/covers/bhagavaan-se-apanaapan.webp",
+    "भगवान् की दया.html": "assets/covers/bhagavaan-kee-dayaa.webp",
+    "भारतीय संस्कृति तथा शास्त्रों में नारी धर्म.html": "assets/covers/bhaarateey-snskriti-tathaa-shaastron-men-naaree-dharm.webp",
+    "मधुर.html": "assets/covers/madhur.webp",
+    "मनुष्य जीवन की सफलता.html": "assets/covers/manushy-jeevan-kee-saphalataa.webp",
+    "महत्त्वपूर्ण चेतावनी.html": "assets/covers/mahattvapoorn-chetaavanee.webp",
+    "महत्त्वपूर्ण प्रश्नोत्तर.html": "assets/covers/mahattvapoorn-prashnottar.webp",
+    "महत्वपूर्ण शिक्षा.html": "assets/covers/mahatvapoorn-shikshaa.webp",
+    "महाकुम्भ पर्व.html": "assets/covers/mahaakumbh-parv.webp",
+    "महाभारत के कुछ आदर्श पात्र.html": "assets/covers/mahaabhaarat-ke-kuchh-aadarsh-paatr.webp",
+    "मानव धर्म.html": "assets/covers/maanav-dharm.webp",
+    "मानसिक दक्षता.html": "assets/covers/maanasik-dakshataa.webp",
+    "यह विकास है या विनाश जरा सोचिये.html": "assets/covers/yah-vikaas-hai-yaa-vinaash-jaraa-sochiye.webp",
+    "रहस्यमय प्रवचन.html": "assets/covers/rahasyamay-pravachan.webp",
+    "रामस्तवराज.html": "assets/covers/raamastavaraaj.webp",
+    "रामाज्ञा प्रश्न.html": "assets/covers/raamaajnyaa-prashn.webp",
+    "रुद्राष्टाध्यायी.html": "assets/covers/rudraashtaadhyaayee.webp",
+    "वर्तमान शिक्षा.html": "assets/covers/vartamaan-shikshaa.webp",
+    "वास्तविक त्याग.html": "assets/covers/vaastavik-tyaag.webp",
+    "वास्तविक सुख.html": "assets/covers/vaastavik-sukh.webp",
+    "विवाह में दहेज.html": "assets/covers/vivaah-men-dahej.webp",
+    "व्यवहारमें परमार्थकी कला.html": "assets/covers/vyavahaaramen-paramaarthakee-kalaa.webp",
+    "शरणागति.html": "assets/covers/sharanaagati.webp",
+    "शान्ति का उपाय.html": "assets/covers/shaanti-kaa-upaay.webp",
+    "शिक्षाप्रद पत्र.html": "assets/covers/shikshaaprad-patr.webp",
+    "श्रीजैमिनीयाश्वमेधपर्व.html": "assets/covers/shreejaimineeyaashvamedhaparv.webp",
+    "श्रीभीष्मपितामह.html": "assets/covers/shreebheeshmapitaamah.webp",
+    "श्रीशुक सुधा सागर.html": "assets/covers/shreeshuk-sudhaa-saagar.webp",
+    "संस्कार प्रकाश.html": "assets/covers/snskaar-prakaash.webp",
+    "सच्ची सलाह.html": "assets/covers/sachchee-salaah.webp",
+    "सत्संग का प्रसाद.html": "assets/covers/satsng-kaa-prasaad.webp",
+    "सत्संग की विलक्षणता.html": "assets/covers/satsng-kee-vilakshanataa.webp",
+    "सत्संग-सुधा.html": "assets/covers/satsng-sudhaa.webp",
+    "सफलता के शिखर की सीढ़ियाँ.html": "assets/covers/saphalataa-ke-shikhar-kee-seerh-yaan.webp",
+    "सब साधनोंका सार.html": "assets/covers/sab-saadhanonkaa-saar.webp",
+    "समता अमृत और विषमता विष.html": "assets/covers/samataa-amrit-aur-vishamataa-vish.webp",
+    "सर्वोच्च पद की प्राप्ति का साधन.html": "assets/covers/sarvochch-pad-kee-praapti-kaa-saadhan.webp",
+    "सागरके मोती.html": "assets/covers/saagarake-motee.webp",
+    "साधक में साधुता.html": "assets/covers/saadhak-men-saadhutaa.webp",
+    "साधन नवनीत.html": "assets/covers/saadhan-navaneet.webp",
+    "साधन पथ.html": "assets/covers/saadhan-path.webp",
+    "साधनोपयोगी पत्र.html": "assets/covers/saadhanopayogee-patr.webp",
+    "सावित्री और सत्यवान्.html": "assets/covers/saavitree-aur-satyavaan.webp",
+    "सिनेमा – मनोरञ्जन या विनाश का साधन.html": "assets/covers/sinemaa-manoranyjan-yaa-vinaash-kaa-saadhan.webp",
+    "सुखी जीवन.html": "assets/covers/sukhee-jeevan.webp",
+    "सुखी बनो.html": "assets/covers/sukhee-bano.webp",
+    "सूक्ति सुधाकर.html": "assets/covers/sookti-sudhaakar.webp",
+    "सूर विनय पत्रिका.html": "assets/covers/soor-vinay-patrikaa.webp",
+    "स्वर्ण पथ.html": "assets/covers/svarn-path.webp",
+    "हम ईश्वर को क्यों मानें.html": "assets/covers/ham-eeshvar-ko-kyon-maanen.webp",
+    "श्रीकृष्ण.html": "assets/covers/shreekrishn.webp",
+    "पूर्ण-समर्पण_भगवच्चर्चा भाग-६.html": "assets/covers/poorn-samarpan-bhagavachcharchaa-bhaag-6.webp",
+    "साधकोंका सहारा भगवच्चर्चा भाग-४.html": "assets/covers/saadhakonkaa-sahaaraa-bhagavachcharchaa-bhaag-4.webp",
+    "गीतोक्त संन्यास या सांख्ययोग का स्वरूप.html": "assets/covers/geetokt-snnyaas-yaa-saankhyayog-kaa-svaroop.webp",
+    "ध्यानावस्था में प्रभु से वार्तालाप.html": "assets/covers/dhyaanaavasthaa-men-prabhu-se-vaartaalaap.webp",
+    "श्रीप्रेमभक्तिप्रकाश.html": "assets/covers/shreepremabhaktiprakaash.webp",
+    "वैराग्य संदीपनी.html": "assets/covers/vairaagy-sndeepanee.webp",
+    "प्रेम का सच्चा स्वरूप.html": "assets/covers/prem-kaa-sachchaa-svaroop.webp",
+    "शोक नाश के उपाय.html": "assets/covers/shok-naash-ke-upaay.webp",
+    "शीघ्र कल्याण के सोपान.html": "assets/covers/sheeghr-kalyaan-ke-sopaan.webp",
+    "भगवान् का हेतु रहित सौहार्द.html": "assets/covers/bhagavaan-kaa-hetu-rahit-sauhaard.webp",
+    "महात्मा किसे कहते हैं.html": "assets/covers/mahaatmaa-kise-kahate-hain.webp",
+    "सार संग्रह.html": "assets/covers/saar-sngrah.webp",
+    "सत्संग के अमृत कण.html": "assets/covers/satsng-ke-amrit-kan.webp",
+    "गोवध भारत का कलंक.html": "assets/covers/govadh-bhaarat-kaa-kalnk.webp",
+    "पातञ्जलयोगप्रदीप.html": "assets/covers/paatanyjalayogapradeep.webp",
+    "पातञ्जलयोगदर्शन.html": "assets/covers/paatanyjalayogadarshan.webp",
+    "व्यापार सुधार की आवश्यकता.html": "assets/covers/vyaapaar-sudhaar-kee-aavashyakataa.webp",
+    "पाण्डवगीता.html": "assets/covers/paandavageetaa.webp",
+    "रामरक्षास्तोत्रम्.html": "assets/covers/raamarakshaastotram.webp",
+    "आध्यात्मिक प्रवचन.html": "assets/covers/aadhyaatmik-pravachan.webp",
+    "आनन्द का स्वरूप.html": "assets/covers/aanand-kaa-svaroop.webp",
+    "आनन्द की लहरें.html": "assets/covers/aanand-kee-laharen.webp",
+    "आनन्दमय जीवन.html": "assets/covers/aanandamay-jeevan.webp",
+    "आरती-संग्रह.html": "assets/covers/aaratee-sngrah.webp",
+    "आवागमन से मुक्ति.html": "assets/covers/aavaagaman-se-mukti.webp",
+    "इसी जन्ममें परमात्मप्राप्ति.html": "assets/covers/isee-janmamen-paramaatmapraapti.webp",
+    "ईश्वर और संसार.html": "assets/covers/eeshvar-aur-snsaar.webp",
+    "उद्धार कैसे हो.html": "assets/covers/uddhaar-kaise-ho.webp",
+    "उपदेशप्रद कहानियाँ.html": "assets/covers/upadeshaprad-kahaaniyaan.webp",
+    "उपनिषदों के चौदह रत्न.html": "assets/covers/upanishadon-ke-chaudah-ratn.webp",
+    "एक नयी बात.html": "assets/covers/ek-nayee-baat.webp",
+    "एक महात्मा का प्रसाद.html": "assets/covers/ek-mahaatmaa-kaa-prasaad.webp",
+    "एक महापुरुषके अनुभवकी बातें.html": "assets/covers/ek-mahaapurushake-anubhavakee-baaten.webp",
+    "एक संत की वसीयत.html": "assets/covers/ek-snt-kee-vaseeyat.webp",
+    "कलेजे के अक्षर.html": "assets/covers/kaleje-ke-akshar.webp",
+    "कल्याण पथ.html": "assets/covers/kalyaan-path.webp",
+    "कल्याणकारी आचरण.html": "assets/covers/kalyaanakaaree-aacharan.webp",
+    "कल्याणकारी दोहा संग्रह.html": "assets/covers/kalyaanakaaree-dohaa-sngrah.webp",
+    "कवितावली.html": "assets/covers/kavitaavalee.webp",
+    "गजेंद्रमोक्ष.html": "assets/covers/gajendramoksh.webp",
+    "गीता संग्रह.html": "assets/covers/geetaa-sngrah.webp",
+    "गृहस्थमें कैसे रहें.html": "assets/covers/grihasthamen-kaise-rahen.webp",
+    "गोपी प्रेम.html": "assets/covers/gopee-prem.webp",
+    "चेतावनी और सामयिक चेतावनी.html": "assets/covers/chetaavanee-aur-saamayik-chetaavanee.webp",
+    "चेतावनी पद संग्रह.html": "assets/covers/chetaavanee-pad-sngrah.webp",
+    "चोखी कहानियाँ.html": "assets/covers/chokhee-kahaaniyaan.webp",
+    "जन्म-मरण से छुटकारा.html": "assets/covers/janm-maran-se-chhutakaaraa.webp",
+    "जानकी मंगल.html": "assets/covers/jaanakee-mngal.webp",
+    "जिन खोजा तिन पाइया.html": "assets/covers/jin-khojaa-tin-paaiyaa.webp",
+    "जीवन में नया प्रकाश.html": "assets/covers/jeevan-men-nayaa-prakaash.webp",
+    "जीवन संजीवनी.html": "assets/covers/jeevan-snjeevanee.webp",
+    "जीवनचर्या विज्ञान.html": "assets/covers/jeevanacharyaa-vijnyaan.webp",
+    "जीवनोपयोगी कल्याण मार्ग.html": "assets/covers/jeevanopayogee-kalyaan-maarg.webp",
+    "ज्ञान के दीप जले.html": "assets/covers/jnyaan-ke-deep-jale.webp",
+    "तत्त्वचिन्तामणि.html": "assets/covers/tattvachintaamani.webp",
+    "तू ही तू.html": "assets/covers/too-hee-too.webp",
+    "त्रिपिण्डीश्राद्धपद्धति.html": "assets/covers/tripindeeshraaddhapaddhati.webp",
+    "दाम्पत्य जीवन का आदर्श.html": "assets/covers/daampaty-jeevan-kaa-aadarsh.webp",
+    "दिव्य सुख की सरिता.html": "assets/covers/divy-sukh-kee-saritaa.webp",
+    "दुःखोंका नाश कैसे हो.html": "assets/covers/duhkhonkaa-naash-kaise-ho.webp",
+    "दुख क्यों होते हैं.html": "assets/covers/dukh-kyon-hote-hain.webp",
+    "दुख में भगवत्कृपा.html": "assets/covers/dukh-men-bhagavatkripaa.webp",
+    "दुर्गति से बचो.html": "assets/covers/durgati-se-bacho.webp",
+    "देवर्षि नारद.html": "assets/covers/devarshi-naarad.webp",
+    "दैनिक कल्याण सूत्र.html": "assets/covers/dainik-kalyaan-sootr.webp",
+    "दोहावली.html": "assets/covers/dohaavalee.webp",
+    "धर्म के नाम पर पाप.html": "assets/covers/dharm-ke-naam-par-paap.webp",
+    "ध्यान और मानसिक पूजा.html": "assets/covers/dhyaan-aur-maanasik-poojaa.webp",
+    "नवधा भक्ति.html": "assets/covers/navadhaa-bhakti.webp",
+    "नारद भक्ति सूत्र.html": "assets/covers/naarad-bhakti-sootr.webp",
+    "नारी धर्म.html": "assets/covers/naaree-dharm.webp",
+    "नारी-शिक्षा.html": "assets/covers/naaree-shikshaa.webp",
+    "नित्यकर्म-पूजाप्रकाश.html": "assets/covers/nityakarm-poojaaprakaash.webp",
+    "नित्ययोग की प्राप्ति.html": "assets/covers/nityayog-kee-praapti.webp",
+    "निष्काम श्रद्धा और प्रेम.html": "assets/covers/nishkaam-shraddhaa-aur-prem.webp",
+    "नेत्रों में भगवान् को बसा लें.html": "assets/covers/netron-men-bhagavaan-ko-basaa-len.webp",
+    "पंचदेव अथर्वशीर्ष संग्रह.html": "assets/covers/pnchadev-atharvasheersh-sngrah.webp",
+    "परम पिता से प्रार्थना.html": "assets/covers/param-pitaa-se-praarthanaa.webp",
+    "परम सेवा.html": "assets/covers/param-sevaa.webp",
+    "परमार्थ की मन्दाकिनी.html": "assets/covers/paramaarth-kee-mandaakinee.webp",
+    "परमार्थ सूत्र संग्रह.html": "assets/covers/paramaarth-sootr-sngrah.webp",
+    "परलोक और पुनर्जन्म.html": "assets/covers/paralok-aur-punarjanm.webp",
+    "परलोक और पुनर्जन्मकी सत्य घटनाएँ.html": "assets/covers/paralok-aur-punarjanmakee-saty-ghatanaaen.webp",
+    "परोपकार और सच्चाई का फल.html": "assets/covers/paropakaar-aur-sachchaaee-kaa-phal.webp",
+    "पारमार्थिक पत्र.html": "assets/covers/paaramaarthik-patr.webp",
+    "पार्वती मंगल.html": "assets/covers/paarvatee-mngal.webp",
+    "पिता की सीख.html": "assets/covers/pitaa-kee-seekh.webp",
+    "पुरुषोत्तमसहस्रनामस्तोत्रम्.html": "assets/covers/purushottamasahasranaamastotram.webp",
+    "प्रतिकूलता में प्रसन्नता.html": "assets/covers/pratikoolataa-men-prasannataa.webp",
+    "प्रत्यक्ष भगवद्दर्शन के उपाय.html": "assets/covers/pratyaksh-bhagavaddarshan-ke-upaay.webp",
+    "प्रश्नोत्तरी.html": "assets/covers/prashnottaree.webp",
+    "प्राचीन भक्त.html": "assets/covers/praacheen-bhakt.webp",
+    "प्रार्थना.html": "assets/covers/praarthanaa.webp",
+    "प्रेम के वश में भगवान्.html": "assets/covers/prem-ke-vash-men-bhagavaan.webp",
+    "प्रेम दर्शन (नारद भक्ति सूत्र की व्याख्या).html": "assets/covers/prem-darshan-naarad-bhakti-sootr-kee-vyaakhyaa.webp",
+    "प्रेम में विलक्षण एकता.html": "assets/covers/prem-men-vilakshan-ekataa.webp",
+    "प्रेम सत्संग सुधा माला.html": "assets/covers/prem-satsng-sudhaa-maalaa.webp",
+    "प्रेमयोग का तत्त्व.html": "assets/covers/premayog-kaa-tattv.webp",
+    "प्रेमी भक्त उद्धव.html": "assets/covers/premee-bhakt-uddhav.webp",
+    "प्रेमी भक्त.html": "assets/covers/premee-bhakt.webp",
+    "प्रेरक कहानियाँ.html": "assets/covers/prerak-kahaaniyaan.webp",
+    "बड़ोंके जीवन से शिक्षा.html": "assets/covers/bar-nke-jeevan-se-shikshaa.webp",
+    "बाल शिक्षा.html": "assets/covers/baal-shikshaa.webp",
+    "बालकों के कर्तव्य.html": "assets/covers/baalakon-ke-kartavy.webp",
+    "भक्त चन्द्रिका.html": "assets/covers/bhakt-chandrikaa.webp",
+    "भक्त दिवाकर.html": "assets/covers/bhakt-divaakar.webp",
+    "भक्त नरसिंह मेहता.html": "assets/covers/bhakt-narasinh-mehataa.webp",
+    "भक्त नारी.html": "assets/covers/bhakt-naaree.webp",
+    "भक्त बालक.html": "assets/covers/bhakt-baalak.webp",
+    "भक्त रत्नाकर .html": "assets/covers/bhakt-ratnaakar.webp",
+    "भक्त सरोज.html": "assets/covers/bhakt-saroj.webp",
+    "भक्त सुधाकर.html": "assets/covers/bhakt-sudhaakar.webp",
+    "भक्त सुमन.html": "assets/covers/bhakt-suman.webp",
+    "भक्तराज ध्रुव.html": "assets/covers/bhaktaraaj-dhruv.webp",
+    "भक्तराज हनुमान्.html": "assets/covers/bhaktaraaj-hanumaan.webp",
+    "भक्ति सुधा.html": "assets/covers/bhakti-sudhaa.webp",
+    "भगवच्चर्चा (भाग-५).html": "assets/covers/bhagavachcharchaa-bhaag-5.webp",
+    "भगवत्प्राप्ति एवं हिंदू संस्कृति.html": "assets/covers/bhagavatpraapti-evn-hindoo-snskriti.webp",
+    "भगवत्प्राप्ति कठिन नहीं.html": "assets/covers/bhagavatpraapti-kathin-naheen.webp",
+    "भगवत्प्राप्ति के विविध उपाय.html": "assets/covers/bhagavatpraapti-ke-vividh-upaay.webp",
+    "भगवत्प्राप्ति के सुगम साधन.html": "assets/covers/bhagavatpraapti-ke-sugam-saadhan.webp",
+    "भगवत्प्राप्ति सहज है.html": "assets/covers/bhagavatpraapti-sahaj-hai.webp",
+    "भगवत्प्रेम प्राप्ति के उपाय.html": "assets/covers/bhagavatprem-praapti-ke-upaay.webp",
+    "भगवत्प्रेमकी प्राप्ति कैसे हो.html": "assets/covers/bhagavatpremakee-praapti-kaise-ho.webp",
+    "भगवद्दर्शन की उत्कण्ठा.html": "assets/covers/bhagavaddarshan-kee-utkanthaa.webp",
+    "भगवान_् के रहने के पाँच स्थान.html": "assets/covers/bhagavaan-ke-rahane-ke-paanch-sthaan.webp",
+    "भगवान_् के सामने सच्चा सो सच्चा.html": "assets/covers/bhagavaan-ke-saamane-sachchaa-so-sachchaa.webp",
+    "भगवान् की पूजा के पुष्प.html": "assets/covers/bhagavaan-kee-poojaa-ke-pushp.webp",
+    "भगवान् के स्वभाव का रहस्य.html": "assets/covers/bhagavaan-ke-svabhaav-kaa-rahasy.webp",
+    "भगवान् सदा तुम्हारे साथ हैं.html": "assets/covers/bhagavaan-sadaa-tumhaare-saath-hain.webp",
+    "भगवान् कैसे मिलें.html": "assets/covers/bhagavaan-kaise-milen.webp",
+    "भजनामृत.html": "assets/covers/bhajanaamrit.webp",
+    "भले का फल भला.html": "assets/covers/bhale-kaa-phal-bhalaa.webp",
+    "भवरोगकी रामबाण दवा.html": "assets/covers/bhavarogakee-raamabaan-davaa.webp",
+    "भागवतरत्न प्रह्लाद.html": "assets/covers/bhaagavataratn-prahlaad.webp",
+    "भागवतस्तुतिसंग्रह.html": "assets/covers/bhaagavatastutisngrah.webp",
+    "भीष्मस्तवराज.html": "assets/covers/bheeshmastavaraaj.webp",
+    "भूले न भुलाये.html": "assets/covers/bhoole-n-bhulaaye.webp",
+    "मन को वश करने के कुछ उपाय.html": "assets/covers/man-ko-vash-karane-ke-kuchh-upaay.webp",
+    "मनुष्य जीवन का उद्देश्य.html": "assets/covers/manushy-jeevan-kaa-uddeshy.webp",
+    "महत्त्वपूर्ण कल्याणकारी बातें.html": "assets/covers/mahattvapoorn-kalyaanakaaree-baaten.webp",
+    "महात्मा विदुर.html": "assets/covers/mahaatmaa-vidur.webp",
+    "महापाप से बचो.html": "assets/covers/mahaapaap-se-bacho.webp",
+    "महाभाव कल्लोलिनी.html": "assets/covers/mahaabhaav-kallolinee.webp",
+    "माघ मास माहात्म्य.html": "assets/covers/maagh-maas-maahaatmy.webp",
+    "मातृशक्ति का घोर अपमान.html": "assets/covers/maatrishakti-kaa-ghor-apamaan.webp",
+    "मानव कल्याण के साधन.html": "assets/covers/maanav-kalyaan-ke-saadhan.webp",
+    "मानव जीवन का लक्ष्य.html": "assets/covers/maanav-jeevan-kaa-lakshy.webp",
+    "मानवता का पुजारी.html": "assets/covers/maanavataa-kaa-pujaaree.webp",
+    "मानस में नाम-वन्दना.html": "assets/covers/maanas-men-naam-vandanaa.webp",
+    "मानस शंका समाधान.html": "assets/covers/maanas-shnkaa-samaadhaan.webp",
+    "मेरा अनुभव.html": "assets/covers/meraa-anubhav.webp",
+    "मेरे तो गिरधर गोपाल.html": "assets/covers/mere-to-giradhar-gopaal.webp",
+    "रामायण के कुछ आदर्श पात्र.html": "assets/covers/raamaayan-ke-kuchh-aadarsh-paatr.webp",
+    "लघुसिद्धान्तकौमुदी.html": "assets/covers/laghusiddhaantakaumudee.webp",
+    "वासुदेव सर्वम्.html": "assets/covers/vaasudev-sarvam.webp",
+    "विदुरनीति.html": "assets/covers/viduraneeti.webp",
+    "विनय-पत्रिका.html": "assets/covers/vinay-patrikaa.webp",
+    "विरह पदावली.html": "assets/covers/virah-padaavalee.webp",
+    "विवेक चूडामणि.html": "assets/covers/vivek-choodaamani.webp",
+    "वीर बालक.html": "assets/covers/veer-baalak.webp",
+    "वेदान्त-दर्शन (ब्रह्मसूत्र).html": "assets/covers/vedaant-darshan-brahmasootr.webp",
+    "योग-दर्शन.html": "assets/covers/yog-darshan.webp",
+    "वैदिक सूक्त संग्रह.html": "assets/covers/vaidik-sookt-sngrah.webp",
+    "वैशाख कार्तिक माघ मास माहात्म्य.html": "assets/covers/vaishaakh-kaartik-maagh-maas-maahaatmy.webp",
+    "व्यवहार और परमार्थ.html": "assets/covers/vyavahaar-aur-paramaarth.webp",
+    "व्यवहार दर्शन पीयूष.html": "assets/covers/vyavahaar-darshan-peeyoosh.webp",
+    "व्यवहार सुधार और परमार्थ.html": "assets/covers/vyavahaar-sudhaar-aur-paramaarth.webp",
+    "शक्तिपीठ दर्शन.html": "assets/covers/shaktipeeth-darshan.webp",
+    "शान्ति कैसे मिले.html": "assets/covers/shaanti-kaise-mile.webp",
+    "शिक्षाप्रद ग्यारह कहानियाँ.html": "assets/covers/shikshaaprad-gyaarah-kahaaniyaan.webp",
+    "श्रद्धा विश्वास और प्रेम.html": "assets/covers/shraddhaa-vishvaas-aur-prem.webp",
+    "श्रावणमासमाहात्म्य.html": "assets/covers/shraavanamaasamaahaatmy.webp",
+    "श्री प्रेम सुधा सागर.html": "assets/covers/shree-prem-sudhaa-saagar.webp",
+    "श्री भगवन्नाम-चिन्तन.html": "assets/covers/shree-bhagavannaam-chintan.webp",
+    "श्री राम चिन्तन.html": "assets/covers/shree-raam-chintan.webp",
+    "श्री सत्यनारायण व्रत कथा.html": "assets/covers/shree-satyanaaraayan-vrat-kathaa.webp",
+    "श्रीकृष्ण गीतावली.html": "assets/covers/shreekrishn-geetaavalee.webp",
+    "श्रीकृष्ण बाल माधुरी.html": "assets/covers/shreekrishn-baal-maadhuree.webp",
+    "श्रीतुकाराम-चरित्र.html": "assets/covers/shreetukaaraam-charitr.webp",
+    "श्रीदुर्गासप्तशती.html": "assets/covers/shreedurgaasaptashatee.webp",
+    "श्रीनारायणकवच.html": "assets/covers/shreenaaraayanakavach.webp",
+    "श्रीभक्तमाल.html": "assets/covers/shreebhaktamaal.webp",
+    "श्रीभगवन्नाम.html": "assets/covers/shreebhagavannaam.webp",
+    "श्रीमद्वाल्मीकीय रामायण.html": "assets/covers/shreemadvaalmeekeey-raamaayan.webp",
+    "श्रीराधा माधव चिन्तन.html": "assets/covers/shreeraadhaa-maadhav-chintan.webp",
+    "श्रीराधिकासहस्रनामस्तोत्रम्.html": "assets/covers/shreeraadhikaasahasranaamastotram.webp",
+    "श्रीरामकृष्णलीला भजनावली.html": "assets/covers/shreeraamakrishnaleelaa-bhajanaavalee.webp",
+    "श्रीलक्ष्मीसहस्रनामस्तोत्रम्.html": "assets/covers/shreelakshmeesahasranaamastotram.webp",
+    "श्रीविष्णुसहस्रनाम (शांकरभाष्य, हिन्दी अनुवाद सहित).html": "assets/covers/shreevishnusahasranaam-shaankarabhaashy-hindee-anuvaad-sahit.webp",
+    "श्रीविष्णुसहस्रनामस्तोत्रम्.html": "assets/covers/shreevishnusahasranaamastotram.webp",
+    "श्रीश्रीचैतन्य-चरितावली.html": "assets/covers/shreeshreechaitany-charitaavalee.webp",
+    "श्रीहनुमानचालीसा (लाल रंग में).html": "assets/covers/shreehanumaanachaaleesaa-laal-rng-men.webp",
+    "संत महिमा.html": "assets/covers/snt-mahimaa.webp",
+    "संत वाणी.html": "assets/covers/snt-vaanee.webp",
+    "संत समागम.html": "assets/covers/snt-samaagam.webp",
+    "संतानगोपालस्तोत्र (संतानप्राप्तिके शास्त्रीय उपाय).html": "assets/covers/sntaanagopaalastotr-sntaanapraaptike-shaastreey-upaay.webp",
+    "संध्या.html": "assets/covers/sndhyaa.webp",
+    "संसार का असर कैसे छूटे.html": "assets/covers/snsaar-kaa-asar-kaise-chhoote.webp",
+    "सच्चा गुरु कौन.html": "assets/covers/sachchaa-guru-kaun.webp",
+    "सच्चा सुख और उसकी प्राप्ति के उपाय.html": "assets/covers/sachchaa-sukh-aur-usakee-praapti-ke-upaay.webp",
+    "सच्चे और ईमानदार बालक.html": "assets/covers/sachche-aur-eemaanadaar-baalak.webp",
+    "सती द्रौपदी.html": "assets/covers/satee-draupadee.webp",
+    "सती सुकला.html": "assets/covers/satee-sukalaa.webp",
+    "सत्य की खोज.html": "assets/covers/saty-kee-khoj.webp",
+    "सत्यप्रेमी हरिश्चन्द्र.html": "assets/covers/satyapremee-harishchandr.webp",
+    "सत्संग की कुछ सार बातें.html": "assets/covers/satsng-kee-kuchh-saar-baaten.webp",
+    "सत्संग की मार्मिक बातें.html": "assets/covers/satsng-kee-maarmik-baaten.webp",
+    "सत्संग के फूल.html": "assets/covers/satsng-ke-phool.webp",
+    "सत्संग के बिखरे मोती.html": "assets/covers/satsng-ke-bikhare-motee.webp",
+    "सत्संग मुक्ताहार.html": "assets/covers/satsng-muktaahaar.webp",
+    "सब जग ईश्वररूप है.html": "assets/covers/sab-jag-eeshvararoop-hai.webp",
+    "सम्पूर्ण दुखोंका अभाव कैसे हो.html": "assets/covers/sampoorn-dukhonkaa-abhaav-kaise-ho.webp",
+    "सहज साधना.html": "assets/covers/sahaj-saadhanaa.webp",
+    "साधकों के प्रति.html": "assets/covers/saadhakon-ke-prati.webp",
+    "साधन की आवश्यकता.html": "assets/covers/saadhan-kee-aavashyakataa.webp",
+    "साधना पथ.html": "assets/covers/saadhanaa-path.webp",
+    "सुख-शान्ति का मार्ग.html": "assets/covers/sukh-shaanti-kaa-maarg.webp",
+    "सुखी बनने के उपाय.html": "assets/covers/sukhee-banane-ke-upaay.webp",
+    "सुन्दर समाज का निर्माण.html": "assets/covers/sundar-samaaj-kaa-nirmaan.webp",
+    "सूर रामचरितावली.html": "assets/covers/soor-raamacharitaavalee.webp",
+    "स्त्री धर्म प्रश्नोत्तरी.html": "assets/covers/stree-dharm-prashnottaree.webp",
+    "स्वाधीन कैसे बनें.html": "assets/covers/svaadheen-kaise-banen.webp",
+    "हम कैसे रहें.html": "assets/covers/ham-kaise-rahen.webp",
+    "हमारा आश्चर्य.html": "assets/covers/hamaaraa-aashchary.webp",
+    "हृदय की आदर्श विशालता.html": "assets/covers/hriday-kee-aadarsh-vishaalataa.webp",
+    "महकते जीवन-फूल.html": "assets/covers/mahakate-jeevan-phool.webp",
+    "आध्यात्मिक कहानियाँ.html": "assets/covers/aadhyaatmik-kahaaniyaan.webp",
+    "किसान और गाय.html": "assets/covers/kisaan-aur-gaay.webp",
+    "भगवत्पथ दर्शन.html": "assets/covers/bhagavatpath-darshan.webp",
+    "भगवत्प्राप्ति कैसे ह.html": "assets/covers/bhagavatpraapti-kaise-h.webp",
+    "भगवान् श्रीकृष्ण की कृपा तथा दिव्य प्रेमकी प्राप्तिके लिये.html": "assets/covers/bhagavaan-shreekrishn-kee-kripaa-tathaa-divy-premakee-praaptike-liye.webp",
+    "महात्माओं की अहैतु की दया.html": "assets/covers/mahaatmaaon-kee-ahaitu-kee-dayaa.webp",
+    "मानवमात्र के कल्याण के लिये.html": "assets/covers/maanavamaatr-ke-kalyaan-ke-liye.webp",
+    "मानस रहस्य.html": "assets/covers/maanas-rahasy.webp",
+    "लोक परलोक का सुधार.html": "assets/covers/lok-paralok-kaa-sudhaar.webp",
+    "श्री एकनाथ चरित्र.html": "assets/covers/shree-ekanaath-charitr.webp",
+    "श्री सीताराम भजन.html": "assets/covers/shree-seetaaraam-bhajan.webp",
+    "श्रीगोविन्ददामोदरस्तोत्रम्.html": "assets/covers/shreegovindadaamodarastotram.webp",
+    "श्रीदुर्गाचालीसा एवं श्रीविन्ध्येश्वरीचालीसा.html": "assets/covers/shreedurgaachaaleesaa-evn-shreevindhyeshvareechaaleesaa.webp",
+    "श्रीराधा माधव रस सुधा (षोडश गीत).html": "assets/covers/shreeraadhaa-maadhav-ras-sudhaa-shodash-geet.webp",
+    "सन्ध्या, सन्ध्या गायत्री का महत्त्व और ब्रह्मचर्य.html": "assets/covers/sandhyaa-sandhyaa-gaayatree-kaa-mahattv-aur-brahmachary.webp",
+    "साधन और साध्य.html": "assets/covers/saadhan-aur-saadhy.webp",
+    "सिद्धान्त एवं रहस्य की बातें.html": "assets/covers/siddhaant-evn-rahasy-kee-baaten.webp",
+    "स्त्रियों के लिये कर्तव्य शिक्षा.html": "assets/covers/striyon-ke-liye-kartavy-shikshaa.webp",
+    "सत्य एवं प्रेरक घटनाएँ.html": "assets/covers/saty-evn-prerak-ghatanaaen.webp",
+    "शतनामस्तोत्रसंग्रह.html": "assets/covers/shatanaamastotrasngrah.webp",
     "आत्मोद्धारके साधन भाग - १.html": "assets/covers/atmoddhar-ke-sadhan-bhag-1.webp",
     "आदर्श मानव हृदय.html": "assets/covers/adarsh-manav-hriday.webp",
     "आदर्श भ्रातृ प्रेम.html": "assets/covers/adarsh-bhratri-prem.webp",
@@ -541,6 +889,7 @@
   // Gita Prakashan, Tirumala Tirupati Devasthanam, etc.) — affiliate buy buttons are
   // hidden for these since Gita Press does not sell them.
   var NON_GITA_PRESS_BOOKS = {
+    "श्रीकृष्ण विज्ञान.html": true,
     "अथर्वशिखोपनिषत्.html": true,
     "नीतिशतकं.html": true,
     "चाणक्य नीति.html": true,
@@ -687,7 +1036,8 @@
     "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true,                   // same text as the large-print edition, which now carries this title edition
     "ईश्वर दयालु और न्यायकारी है.html": true,                         // merged into "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त"
     "अवतार का सिद्धान्त.html": true,                                  // (same)
-    "आचार्य के सदुपेदश.html": true                                    // switched off (hidden from the library)
+    "आचार्य के सदुपेदश.html": true,                                   // switched off (hidden from the library)
+    "श्रीकृष्ण विज्ञान.html": true                                      // switched off (not a Gita Press book; hidden from the site)
   };
 
   /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
@@ -941,6 +1291,7 @@
 
     (data.disabled || []).forEach(function (file) { if (BOOKS_BY_FILE[file]) dropBook(BOOKS_BY_FILE[file]); });
     buildPeople();
+    if (data.audio && window.SwadhyayAudio && window.SwadhyayAudio.applyState) window.SwadhyayAudio.applyState(data.audio);
     if (data.site) SITE_STATE = { announcement: data.site.announcement || null, lms: data.site.lms || { enabled: true, notice: "" } };
   }
 
@@ -1433,10 +1784,21 @@
     return esc(hi);
   }
 
+  /* a cover picture whose shape is close to its frame's is stretched to fill the frame (no empty strips beside or above it); one of a very
+     different shape (a wide booklet) keeps its own proportions */
+  window.fitCoverImg = function (img) {
+    var box = img.parentNode;
+    if (!box || !img.naturalWidth || !box.clientWidth) return;
+    var cs = window.getComputedStyle(box);
+    var w = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight), h = box.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    if (w <= 0 || h <= 0) return;
+    var r = (img.naturalWidth / img.naturalHeight) / (w / h);
+    if (r > 0.78 && r < 1.28) img.classList.add("fit-fill");
+  };
   function coverEl(book, size) {
     if (book.coverImage) {
       return '<div class="cover cover-' + (size || "md") + ' has-img">' +
-        '<img src="' + esc(book.coverImage) + '" alt="' + esc(book.title) + '" loading="lazy">' +
+        '<img src="' + esc(book.coverImage) + '" alt="' + esc(book.title) + '" loading="lazy" onload="window.fitCoverImg&&fitCoverImg(this)">' +
         '</div>';
     }
     var g = PALETTE[book.paletteIdx];
@@ -1491,6 +1853,40 @@
     var toEn = getTaxLang() !== "en";
     return '<button type="button" class="taxlang-toggle" data-taxlang-toggle title="' + esc(toEn ? "Show categories in English" : "श्रेणियाँ हिन्दी में दिखाएँ") + '">' +
       (toEn ? "EN" : "हिं") + '</button>';
+  }
+
+  /* icons of the book page (24x24 line drawings in the text colour; "fill" paints the shape solid) */
+  function svgIcon(inner, size, viewBox, fill) {
+    return '<svg viewBox="' + (viewBox || "0 0 24 24") + '" width="' + size + '" height="' + size + '" fill="' + (fill ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>';
+  }
+  var BD_ICONS = {
+    person: '<circle cx="12" cy="8" r="3.6"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/>',
+    museum: '<path d="M3 10l9-6 9 6M5 10v8M9 10v8M15 10v8M19 10v8M3 20h18M3 10h18"/>',
+    book: '<path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5zM12 6v13"/>',
+    clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>',
+    headphones: '<path d="M4 15v-3a8 8 0 0 1 16 0v3"/><path d="M4 15a2 2 0 0 0 2 2h1v-5H6a2 2 0 0 0-2 2zM20 15a2 2 0 0 1-2 2h-1v-5h1a2 2 0 0 1 2 2z"/>',
+    play: '<path d="M7 4.5l12.5 7.5L7 19.5z"/>',
+    heart: '<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+    share: '<circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="M8.2 10.8l7.6-4.2M8.2 13.2l7.6 4.2"/>',
+    chevron: '<path d="M9 5l7 7-7 7"/>',
+    list: '<path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/>',
+    comment: '<path d="M5 4h14v12H9.5L5 20z"/><path d="M8.5 9h7M8.5 12h4"/>',
+    lotus: '<path d="M12 4c-2 3-2 7 0 10 2-3 2-7 0-10zM12 14c-4-.5-6.500-3-7-7 3.500.500 6 3 7 7zM12 14c4-.5 6.500-3 7-7-3.500.500-6 3-7 7zM12 14c-5 1-8.500-.5-10.500-3.500 3.500-1 8 .5 10.500 3.500zM12 14c5 1 8.500-.5 10.500-3.500-3.500-1-8 .5-10.500 3.500z"/>'
+  };
+  /* the book page's favourite button: heart and label, in either state and either language */
+  function favBtnInner(on) {
+    return svgIcon(BD_ICONS.heart, 18, "0 0 24 24", on);
+  }
+  /* books that share a category with this one -- those by the same author first, then by how many categories they share */
+  function relatedBooks(book) {
+    var keys = book.categoryKeys || [];
+    return BOOKS.filter(function (b) { return b.id !== book.id && b.categoryKeys.some(function (k) { return keys.indexOf(k) !== -1; }); })
+      .map(function (b) {
+        var shared = b.categoryKeys.filter(function (k) { return keys.indexOf(k) !== -1; }).length;
+        return { b: b, score: shared + (book.author && b.author === book.author ? 3 : 0) + (b.coverImage ? 0.5 : 0) };
+      })
+      .sort(function (x, y) { return y.score - x.score || x.b.title.localeCompare(y.b.title, "hi"); })
+      .slice(0, 14).map(function (x) { return x.b; });
   }
 
   /* small line icons (24x24, drawn with the text colour) for the library's category tabs and the page's lotus / magnifier */
@@ -2126,7 +2522,7 @@
   // variants), verse/meter labels like "Numbers", etc. are section markers *within* a
   // chapter -- they must never split it, however print pagination happened to fall, so
   // they're deliberately left out of this list (see buildReaderBook).
-  var CHAPTER_LABEL_CLASSES = ["Title-Page---Book-Name", "Heading", "Chapter-Number"];
+  var CHAPTER_LABEL_CLASSES = ["cover-Book-Name", "Heading", "Chapter-Number"];
 
   function stripTagsForLabel(s) {
     return s.replace(/<[^>]+>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&")
@@ -2210,9 +2606,9 @@
     });
     var pages = [];
     var cur = null;
-    /* a title page (Title-Page---Book-Name) that has no Heading of its own and is followed by Sub-Headings is a page by itself, however
+    /* a title page (cover-Book-Name) that has no Heading of its own and is followed by Sub-Headings is a page by itself, however
        short: it must not ride along with the first Sub-Heading section (books without any Heading paragraph) */
-    segs[0].cover = /\bclass="Title-Page---Book-Name\b/.test(segs[0].html) && !/\bclass="Heading\b/.test(segs[0].html);
+    segs[0].cover = /\bclass="cover-Book-Name\b/.test(segs[0].html) && !/\bclass="Heading\b/.test(segs[0].html);
     segs.forEach(function (seg) {
       seg.len = stripTagsForLabel(seg.html).length;
       if (cur && cur.cover) { pages.push(cur); cur = null; }
@@ -2274,7 +2670,7 @@
     return pages.filter(function (pg) { return pg.len > 0 || pg.html.indexOf("<img") !== -1; });
   }
 
-  var HEADING_START_RE = /<p\b[^>]*\bclass="(?:[^"]*\s)?(?:Title-Page---Book-Name|Heading|Chapter-Number)(?:\s[^"]*)?"[^>]*>/g;
+  var HEADING_START_RE = /<p\b[^>]*\bclass="(?:[^"]*\s)?(?:cover-Book-Name|Heading|Chapter-Number)(?:\s[^"]*)?"[^>]*>/g;
   var TITLE_ONLY_CHARS = 100;
   function splitAtHeadings(html) {
     var starts = [], m;
@@ -3622,16 +4018,21 @@
     var pct = read ? (read.progress || 0) : 0;
     var g = PALETTE[book.paletteIdx];
 
+    var parts = book.title.match(/^(.*?)\s*\(([^()]*)\)\s*$/);
+    var mainTitle = parts && parts[1] ? parts[1] : book.title, subTitle = parts && parts[1] ? parts[2] : "";
+
     var html = '<main class="content-pad book-detail">';
     html += '<a href="javascript:history.back()" class="back-link">← ' + esc(tx("वापस", "Back")) + '</a>';
-    html += '<div class="book-detail-grid">';
-    html += '<div class="book-detail-cover-col">';
+    html += '<section class="bd-hero">';
+
+    /* left: the cover, and under it the two buy buttons side by side, together exactly as wide as the cover */
+    html += '<div class="bd-cover-col">';
     html += book.coverImage
       ? '<div class="book-detail-cover has-img"><img src="' + esc(book.coverImage) + '" alt="' + esc(book.title) + '"></div>'
       : '<div class="book-detail-cover" style="background:linear-gradient(150deg,' + g[0] + ',' + g[1] + ')">' +
         '<span class="cover-letter">' + esc(book.initial) + '</span><span class="cover-mark">ॐ</span></div>';
     if (book.isGitaPress) {
-      html += '<div class="affiliate-buttons">' +
+      html += '<div class="bd-buy">' +
         '<a class="affiliate-btn" href="' + esc(amazonBuyUrl(book)) + '" target="_blank" rel="noopener noreferrer sponsored">' +
         '<img src="assets/affiliate/buy-on-amazon.png" alt="Buy on Amazon"></a>' +
         '<a class="affiliate-btn" href="' + esc(gitaPressBuyUrl(book)) + '" target="_blank" rel="noopener noreferrer sponsored">' +
@@ -3639,45 +4040,64 @@
         '</div>';
     }
     html += '</div>';
-    html += '<div class="book-detail-info">';
-    html += '<h1>' + esc(book.title) + '</h1>';
-    html += '<button class="btn-listen" id="listenBtn"><span class="btn-listen-icon">🎧</span> ' +
-      bilingual("इस पुस्तक को सुनें", "Listen to this book") + '</button>';
-    [["👤", PERSON_ROLES[0], book.authors], ["📝", PERSON_ROLES[1], book.tikakars], ["🔤", PERSON_ROLES[2], book.translators],
-     ["🏛️", PERSON_ROLES[3], book.publisher ? [book.publisher] : []]].forEach(function (row) {
-      if (!row[2].length) return;
-      html += '<div class="meta-line">' + row[0] + ' <span class="meta-label">' + esc(roleLabel(row[1])) + ':</span> ' +
-        row[2].map(personLink).join(", ") + '</div>';
-    });
-    html += '<div class="meta-line">📖 हिन्दी</div>';
-    html += '<div class="meta-line">⏱️ अनुमानित पठन समय ' + formatDuration(book.minutes) + '</div>';
-    html += '<div class="tag-row">' + book.categoryMetas.map(function (cm) {
+
+    /* right: title, people / publisher / language / time, topics, the four actions, the teaser */
+    html += '<div class="bd-info">';
+    /* the favourite and share buttons: two small round icons in the top-right corner, level with the title */
+    html += '<div class="bd-mini">' +
+      '<button class="bd-mini-btn ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '" title="' + esc(tx("पसंदीदा में जोड़ें", "Add to favourites")) + '" aria-label="' + esc(tx("पसंदीदा में जोड़ें", "Add to favourites")) + '">' + favBtnInner(fav) + '</button>' +
+      '<button class="bd-mini-btn" id="shareBtn" title="' + esc(tx("साझा करें", "Share")) + '" aria-label="' + esc(tx("साझा करें", "Share")) + '">' + svgIcon(BD_ICONS.share, 18) + '</button>' +
+      '</div>';
+    html += '<h1 class="bd-title">' + esc(mainTitle) + '</h1>';
+    if (subTitle) html += '<p class="bd-subtitle">( ' + esc(subTitle) + ' )</p>';
+
+    html += '<div class="bd-tags">' + book.categoryMetas.map(function (cm) {
       return '<span class="tag">' + esc(tx(cm.hi, cm.en)) + '</span>';
+    }).join("") + book.tags.map(function (t) {
+      return '<a class="tag tag-topic" href="/library?tag=' + encodeURIComponent(t) + '">#' + esc(t) + '</a>';
     }).join("") + '</div>';
-    if (book.tags.length) {
-      html += '<div class="tag-row tag-row-topics">' + book.tags.map(function (t) {
-        return '<a class="tag tag-topic" href="/library?tag=' + encodeURIComponent(t) + '">#' + esc(t) + '</a>';
-      }).join("") + '</div>';
-    }
-    html += '<div class="detail-actions">' +
-      '<a class="btn-primary" href="' + readPath(book) + '" id="startReadingBtn">▶ ' + esc(tx("पढ़ना शुरू करें", "Start reading")) + '</a>' +
-      '<button class="btn-outline ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '">' + favBtnText(fav) + '</button>' +
-      '<button class="btn-outline" id="shareBtn">↪ ' + esc(tx("साझा करें", "Share")) + '</button>' +
+
+    html += '<div class="bd-meta">';
+    [["person", PERSON_ROLES[0], book.authors], ["person", PERSON_ROLES[1], book.tikakars], ["person", PERSON_ROLES[2], book.translators],
+     ["museum", PERSON_ROLES[3], book.publisher ? [book.publisher] : []]].forEach(function (row) {
+      if (!row[2].length) return;
+      html += '<div class="bd-meta-card"><span class="bd-meta-ic">' + svgIcon(BD_ICONS[row[0]], 24) + '</span><span class="bd-meta-tx"><span class="bd-meta-lb">' +
+        esc(roleLabel(row[1])) + '</span><span class="bd-meta-val">' + row[2].map(personLink).join(", ") + '</span></span></div>';
+    });
+    html += '<div class="bd-meta-card"><span class="bd-meta-ic">' + svgIcon(BD_ICONS.book, 24) + '</span><span class="bd-meta-tx"><span class="bd-meta-lb">' +
+      esc(tx("भाषा", "Language")) + '</span><span class="bd-meta-val">' + esc(tx("हिन्दी", "Hindi")) + '</span></span></div>';
+    html += '<div class="bd-meta-card"><span class="bd-meta-ic">' + svgIcon(BD_ICONS.clock, 24) + '</span><span class="bd-meta-tx"><span class="bd-meta-lb">' +
+      esc(tx("अनुमानित पठन समय", "Estimated reading time")) + '</span><span class="bd-meta-val">' + formatDuration(book.minutes) + '</span></span></div>';
+    html += '</div>';
+
+
+    html += '<div class="bd-actions">' +
+      '<button class="bd-btn bd-btn-primary" id="listenBtn"><span class="bd-btn-ic">' + svgIcon(BD_ICONS.headphones, 24) + '</span><span class="bd-btn-lb">' +
+        esc(tx("इस पुस्तक को सुनें", "Listen to this book")) + '</span><span class="bd-btn-go">' + svgIcon(BD_ICONS.chevron, 20) + '</span></button>' +
+      '<a class="bd-btn bd-btn-outline" href="' + readPath(book) + '" id="startReadingBtn"><span class="bd-btn-ic">' + svgIcon(BD_ICONS.book, 22) + '</span><span class="bd-btn-lb">' +
+        esc(tx("पढ़ना शुरू करें", "Start reading")) + '</span><span class="bd-btn-go">' + svgIcon(BD_ICONS.chevron, 20) + '</span></a>' +
       '</div>';
     html += '<div class="progress-block"><label>' + bilingual("आपकी प्रगति") + ': <b id="progressLabel">' + pct + '%</b></label>' +
       '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%" id="progressFillBar"></div></div></div>';
+    html += '</div>';
 
-    html += '<div class="detail-tabs" id="detailTabs" data-book="' + book.id + '">' +
-      '<button class="detail-tab active" data-tab="intro">' + esc(tx("किताब का परिचय", "About the book")) + '</button>' +
-      '<button class="detail-tab" data-tab="toc">' + esc(tx("विषय सूची", "Contents")) + '</button>' +
-      '<button class="detail-tab" data-tab="comments">' + esc(tx("टिप्पणियाँ", "Comments")) + '</button>' +
+    /* the tabs close the hero card; the related books are not a tab -- they follow the tab content as a slider */
+    html += '<div class="detail-tabs bd-tabs" id="detailTabs" data-book="' + book.id + '">' +
+      '<button class="detail-tab active" data-tab="intro"><span class="bd-tab-ic">' + svgIcon(BD_ICONS.book, 22) + '</span>' + esc(tx("किताब का परिचय", "About the book")) + '</button>' +
+      '<button class="detail-tab" data-tab="toc"><span class="bd-tab-ic">' + svgIcon(BD_ICONS.list, 22) + '</span>' + esc(tx("विषय सूची", "Contents")) + '</button>' +
+      '<button class="detail-tab" data-tab="comments"><span class="bd-tab-ic">' + svgIcon(BD_ICONS.comment, 22) + '</span>' + esc(tx("टिप्पणियाँ", "Comments")) + '</button>' +
       '</div>';
+    html += '</section>';
+
     html += '<div class="detail-tab-panel active" data-panel="intro">' +
       '<div class="about-block"><h3>' + esc(tx("इस पुस्तक के बारे में", "About this book")) + '</h3><p>' + genBlurb(book) + '</p></div></div>';
     html += '<div class="detail-tab-panel" data-panel="toc" id="tocPanel"></div>';
     html += '<div class="detail-tab-panel" data-panel="comments" id="commentsPanel">' + renderCommentsTab(book) + '</div>';
 
-    html += '</div></div></main>';
+    var related = relatedBooks(book);
+    html += carousel("संबंधित पुस्तकें", "Related books", "", related, "/library?cat=" + encodeURIComponent((book.categoryKeys || ["all"])[0]), "bd-related");
+
+    html += '</main>';
     return html;
   }
 
@@ -4744,7 +5164,7 @@
         var id = parseInt(btn.getAttribute("data-fav"), 10);
         var nowFav = toggleFavorite(id);
         btn.classList.toggle("active", nowFav);
-        if (btn.id === "favBtn") btn.textContent = favBtnText(nowFav);
+        if (btn.id === "favBtn") btn.innerHTML = favBtnInner(nowFav);
       });
     });
 

@@ -436,13 +436,13 @@ def build(src, dry=False):
     # title page ---------------------------------------------------------------------------------
     open_section("title")
     add([
-        P("Titel-Page---Shri-Hari", "॥ श्रीहरि:॥"),
-        P("Title-Page---Book-Name", "श्रीमद्भगवद्गीता"),
-        P("Title-Page---Sub-Heading", "तत्त्वविवेचनी"),
-        P("Title-Page---Sub-Heading", "हिन्दी-टीका पदच्छेद, अन्वयसहित"),
-        '<p class="Title-Page---Tvamev-mata"><img src="%s" alt="श्रीकृष्ण और गौ" style="max-width:180px;height:auto"></p>' % TITLE_IMG,
-        P("Title-Page---Translater-Author-Name", "टीकाकार—"),
-        P("Title-Page---Author-Name", "जयदयाल गोयन्दका"),
+        P("cover-Shri-Hari", "॥ श्रीहरि:॥"),
+        P("cover-Book-Name", "श्रीमद्भगवद्गीता"),
+        P("cover-Sub-Heading", "तत्त्वविवेचनी"),
+        P("cover-Sub-Heading", "हिन्दी-टीका पदच्छेद, अन्वयसहित"),
+        '<p class="cover-Tvamev-mata"><img src="%s" alt="श्रीकृष्ण और गौ" style="max-width:180px;height:auto"></p>' % TITLE_IMG,
+        P("cover-Translater-Author-Name", "टीकाकार—"),
+        P("cover-Author-Name", "जयदयाल गोयन्दका"),
     ])
 
     # निवेदन (publisher's note) ---------------------------------------------------------------------

@@ -124,8 +124,8 @@ def distance(a, b, size_scale):
 
 # master.css classes the paragraphs can become, grouped by the place they sit in
 ZONES = {
-    "title": ["Title-Page---Book-Name", "Title-Page---Sub-Title", "Title-Page---Sub-Heading", "Title-Page---Tvamev-mata",
-              "Title-Page---Publisher-Note", "Title-Page---Author-Name", "Titel-Page---Shri-Hari"],
+    "title": ["cover-Book-Name", "cover-Sub-Title", "cover-Sub-Heading", "cover-Tvamev-mata",
+              "cover-Publisher-Note", "cover-Author-Name", "cover-Shri-Hari"],
     "body": ["Shlok", "Shlok-L", "Shlok-Color", "Shlok-Subject", "Uvaacha", "TXT", "TXT-Bold", "Sambandh", "Chapter-End-Text",
              "OM-Namah", "Center-Dais-A", "Doha", "Subject", "Right"],
     "note": ["Footnotes", "Footnotes-Right", "Footnotes-Bold", "Footnotes-Center"],
@@ -326,13 +326,13 @@ def build(src, want_table=False):
             continue
         if b.page == first_page:
             if re.match(r"^त्वमेव ", t):
-                b.role = ("p", "Title-Page---Tvamev-mata")
+                b.role = ("p", "cover-Tvamev-mata")
             elif t == "श्रीमद्भगवद्गीता":
-                b.role = ("p", "Title-Page---Book-Name")
+                b.role = ("p", "cover-Book-Name")
             elif t == "गीताप्रेस, गोरखपुर":
-                b.role = ("p", "Title-Page---Author-Name")
+                b.role = ("p", "cover-Author-Name")
             elif t.startswith("पद्मपुराणान्तर्गत") or t in ("मोटे अक्षरोंमें", "हिंदी-टीकासहित"):
-                b.role = ("p", "Title-Page---Sub-Heading")
+                b.role = ("p", "cover-Sub-Heading")
             else:
                 b.role = ("p", nearest(b.cls, "title"))
             continue
@@ -369,8 +369,8 @@ def build(src, want_table=False):
 
     # ---- build the output -----------------------------------------------------------------------------------------------
     MCLS_BOLD = {"Shlok", "Shlok-Color", "Shlok-Subject", "TXT-Bold", "Heading", "Sub-Heading", "Footnotes-Bold",
-                 "Title-Page---Book-Name", "Title-Page---Sub-Title", "Title-Page---Sub-Heading", "Title-Page---Publisher-Note",
-                 "Title-Page---Author-Name", "Titel-Page---Shri-Hari"}
+                 "cover-Book-Name", "cover-Sub-Title", "cover-Sub-Heading", "cover-Publisher-Note",
+                 "cover-Author-Name", "cover-Shri-Hari"}
     MCLS_ITALIC = {"Uvaacha", "Chapter-End-Text", "Doha", "Sambandh"}
     used_notes = set()
     warnings = []

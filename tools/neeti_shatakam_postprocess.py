@@ -44,14 +44,14 @@ def main():
 
     # title page: title, [2 blank lines] the opening verse [2 blank lines], author, logo (100px, centred), publisher
     if OPENING[0] not in s.split('<hr class="page-break">')[0]:
-        am = re.search(r'\s*<p class="Title-Page---Author-Name">[^<]*</p>', s)
+        am = re.search(r'\s*<p class="cover-Author-Name">[^<]*</p>', s)
         author = am.group(0).strip()
         s = s[:am.start()] + s[am.end():]
-        i = s.index("</p>", s.index('class="Title-Page---Book-Name"')) + 4
+        i = s.index("</p>", s.index('class="cover-Book-Name"')) + 4
         verses = "\n\t\t\t" + GAP + "".join('<p class="Shlok">%s</p>\n\t\t\t' % v for v in OPENING) + GAP + author
         logo = ('\n\t\t\t<p class="TXT" style="text-align:center;text-indent:0;margin:1em 0"><img src="image/neetishatakn-1.png" alt="%s" '
                 'style="display:block;width:100px;max-width:100%%;height:auto;margin:1em auto"></p>'
-                '\n\t\t\t<p class="Title-Page---Publisher-Note">%s</p>' % (PUBLISHER, PUBLISHER))
+                '\n\t\t\t<p class="cover-Publisher-Note">%s</p>' % (PUBLISHER, PUBLISHER))
         s = s[:i] + verses + logo + s[i:]
 
     # verse numbers

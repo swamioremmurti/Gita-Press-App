@@ -33,7 +33,7 @@ def main():
 
     # title page: title, [2 blank lines] the opening verses [2 blank lines], author, logo, publisher
     if OPENING[0] not in s:
-        am = re.search(r'\s*<p class="Title-Page---Author-Name">[^<]*</p>', s)
+        am = re.search(r'\s*<p class="cover-Author-Name">[^<]*</p>', s)
         author = am.group(0).strip()
         s = s[:am.start()] + s[am.end():]
         i = s.index('<p class="TXT" style="text-align:center;text-indent:0;margin:1em 0"><img src="image/chaanaky-neeti-1.png"')
@@ -41,7 +41,7 @@ def main():
         verses = gap + "".join('<p class="Shlok">%s</p>\n\t\t\t' % v for v in OPENING) + gap + author + "\n\t\t\t"
         s = s[:i] + verses + s[i:]
         j = s.index("</p>", i + len(verses)) + 4
-        s = s[:j] + '\n\t\t\t<p class="Title-Page---Publisher-Note">%s</p>' % PUBLISHER + s[j:]
+        s = s[:j] + '\n\t\t\t<p class="cover-Publisher-Note">%s</p>' % PUBLISHER + s[j:]
 
     # the logo on the title page is at most 100px wide
     s = re.sub(r'(<img src="image/chaanaky-neeti-1\.png")[^>]*>', r'\1 alt="कल्याण सेवा ट्रस्ट" style="display:block;width:100px;max-width:100%;height:auto;margin:1em auto">', s)

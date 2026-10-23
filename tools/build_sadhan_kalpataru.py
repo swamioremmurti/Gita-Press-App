@@ -6,7 +6,7 @@ build_sadhan_kalpataru.py -- (re)import "साधन-कल्पतरु" fro
   * the head is the library's (master.css linked, nothing else), the title is the book's own;
   * the "प्रथम पृष्ठ" / "अंतिम पृष्ठ" labels (the export's own contents markers) are dropped;
   * the title page's "गीता सेवा ट्रस्ट" line (class Title-Page---Gita-Seva-Trust, which master.css does not have) becomes the library's publisher
-    note, class Title-Page---Publisher-Note: "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"; no other mention of it remains
+    note, class cover-Publisher-Note: "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"; no other mention of it remains
     (the script stops if one does);
   * the contents anchors toc_marker-N-M become Chapter_N_M (ids and in-book links);
   * footnotes: the reader turns a footnote into a tap-to-open modal (swadhyay-footnotes.js) when the note starts with a mark it knows --
@@ -92,7 +92,7 @@ def main():
 
     # the title page's publisher line
     s, n_note = re.subn(r'<p class="Title-Page---Gita-Seva-Trust[^"]*"[^>]*>[^<]*(?:<span[^>]*></span>)?</p>',
-                        '<p class="Title-Page---Publisher-Note">%s</p>' % NOTE, s)
+                        '<p class="cover-Publisher-Note">%s</p>' % NOTE, s)
     if n_note != 1:
         raise SystemExit("the 'गीता सेवा ट्रस्ट' title-page line was not found exactly once (%d)" % n_note)
     if re.search(r"गीता\s*सेवा\s*ट्रस्ट|Gita-Seva|Gita Seva", s):

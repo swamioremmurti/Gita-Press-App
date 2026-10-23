@@ -415,7 +415,34 @@
   }
 
   /* ---------------- public ---------------- */
+  /* The admin panel's layer over the catalogue above (see server/lib/admin/audio.js): switched-off tracks, changed titles/sources,
+     tracks added in the panel, playing order and renamed/added/hidden categories. Edits the lists in place. */
+  function applyState(a) {
+    if (!a) return;
+    if (a.categories && a.categories.length) {
+      CATS.length = 0;
+      a.categories.forEach(function (c) { if (!c.hidden) CATS.push(c); });
+      CAT_BY_KEY = {};
+      CATS.forEach(function (c) { CAT_BY_KEY[c.key] = c; });
+    }
+    function media(t) { if (window.swadhyayMedia && t.src) t.src = window.swadhyayMedia(t.src); return t; }
+    var ov = a.overrides || {};
+    TRACKS.forEach(function (t) { if (ov[t.id]) Object.keys(ov[t.id]).forEach(function (k) { t[k] = ov[t.id][k]; }); media(t); });
+    (a.created || []).forEach(function (t) { if (!BY_ID[t.id]) TRACKS.push(media(Object.assign({}, t))); });
+    var off = {};
+    (a.disabled || []).forEach(function (id) { off[id] = 1; });
+    for (var i = TRACKS.length - 1; i >= 0; i--) if (off[TRACKS[i].id]) TRACKS.splice(i, 1);
+    var rank = {};
+    (a.order || []).forEach(function (id, n) { rank[id] = n; });
+    var keyed = TRACKS.map(function (t, n) { return { t: t, r: rank[t.id] !== undefined ? rank[t.id] : 1e6 + n }; }).sort(function (x, y) { return x.r - y.r; });
+    keyed.forEach(function (x, n) { TRACKS[n] = x.t; });
+    BY_ID = {};
+    TRACKS.forEach(function (t) { BY_ID[t.id] = t; });
+    if (!tracksIn(S.cat).length) S.cat = firstCategoryWithTracks();
+  }
+
   window.SwadhyayAudio = {
+    applyState: applyState,
     /* Call after every page render: fills any audio panel on the page and keeps the dock in sync. */
     mount: function (h) {
       if (h) { helpers.tx = h.tx || helpers.tx; helpers.toast = h.toast || helpers.toast; }

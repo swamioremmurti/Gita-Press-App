@@ -6,7 +6,7 @@
   'use strict';
   var A = window.Admin, html = A.html, esc = A.esc;
   var API = '/api/admin';
-  var COMMON_STYLES = ['Heading', 'Sub-Heading', 'TXT', 'TXT-Bold', 'TXT-Right', 'Shlok', 'Shlok-Right', 'Numbers', 'Separator', 'Footnotes', 'Title-Page---Book-Name', 'Titel-Page---Shri-Hari', 'Title-Page---Publisher-Note', 'Image'];
+  var COMMON_STYLES = ['Heading', 'Sub-Heading', 'TXT', 'TXT-Bold', 'TXT-Right', 'Shlok', 'Shlok-Right', 'Numbers', 'Separator', 'Footnotes', 'cover-Book-Name', 'cover-Shri-Hari', 'cover-Publisher-Note', 'Image'];
   var BASE = '/Gita%20Press%20Books/Gita%20Press%20Books/';
 
   /* ------------------------------------------------------------ picker (no book chosen yet) */

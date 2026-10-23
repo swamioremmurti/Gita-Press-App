@@ -2683,3 +2683,130 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 :root[data-theme="dark"] .site-notice { background: #3b3011; color: #f1dd9a; border-bottom-color: #5b4a1a; }
 :root[data-theme="dark"] .site-notice.tone-success { background: #16341c; color: #bfe6c4; border-bottom-color: #25552d; }
 :root[data-theme="dark"] .site-notice.tone-warning { background: #3d1a15; color: #f3beb6; border-bottom-color: #62291f; }
+
+/* ================= Book page: a hero card (cover + buy buttons | title, people, actions, teaser | tabs), the tab content, related books ================= */
+.book-detail .detail-tab-panel { margin-top: 1.3rem; max-width: 860px; }
+.bd-hero { position: relative; display: grid; grid-template-columns: minmax(190px, 290px) minmax(0, 1fr); gap: 1.2rem 2.2rem; align-items: start;
+  padding: 1.7rem 1.7rem 1rem; border: 1px solid var(--rule); border-radius: 28px; overflow: hidden;
+  background: radial-gradient(circle at 96% 8%, rgba(217,164,65,.16), transparent 34%), linear-gradient(135deg, #fffaf0, #fbefd9); box-shadow: 0 10px 28px rgba(60,40,10,.10); }
+:root[data-theme="dark"] .bd-hero { background: radial-gradient(circle at 96% 8%, rgba(224,138,62,.14), transparent 34%), linear-gradient(135deg, #1c222b, #161b23); }
+.bd-cover-col { display: flex; flex-direction: column; gap: .8rem; align-self: start; }
+.bd-cover-col .book-detail-cover { width: 100%; }
+.bd-buy { display: flex; gap: .5rem; width: 100%; }
+.bd-buy .affiliate-btn { flex: 1 1 0; width: auto; min-width: 0; border-radius: 8px; }
+.bd-info { min-width: 0; padding-right: 4.5rem; }
+.bd-title { margin: 0; font-size: clamp(1.33rem, 2.94vw, 2.17rem); line-height: 1.3em; color: var(--accent-dark); }
+:root[data-theme="dark"] .bd-title { color: #ffb199; }
+.bd-subtitle { margin: .25rem 0 .5rem; font-size: clamp(1.1rem, 2.4vw, 1.7rem); color: #9a3b2d; }
+:root[data-theme="dark"] .bd-subtitle { color: #e9a08e; }
+/* people, publisher, language and reading time stand in ONE row, each value on one line */
+.bd-meta { display: flex; flex-wrap: nowrap; gap: .6rem; margin-bottom: .9rem; }
+.bd-meta-card { flex: 0 1 auto; min-width: 0; display: flex; align-items: center; gap: .55rem; padding: .5rem .75rem; border: 1px solid var(--rule); border-radius: 18px; background: rgba(255,255,255,.72); }
+:root[data-theme="dark"] .bd-meta-card { background: var(--surface); }
+.bd-meta-ic { flex: 0 0 auto; display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 50%; background: #f6e6c8; color: var(--gold); }
+:root[data-theme="dark"] .bd-meta-ic { background: var(--surface-2); }
+.bd-meta-tx { display: flex; flex-direction: column; min-width: 0; line-height: 1.2; }
+.bd-meta-lb { font-size: .74rem; color: var(--muted); white-space: nowrap; }
+.bd-meta-val { font-weight: 700; color: var(--accent-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bd-meta-val a { color: inherit; }
+:root[data-theme="dark"] .bd-meta-val { color: #ffb199; }
+.bd-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.bd-tags .tag { margin: 0; }
+.bd-actions { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; margin-bottom: 1rem; max-width: 640px; }
+.bd-btn { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; border-radius: 14px; font-size: 1.05rem; font-weight: 700; cursor: pointer; text-decoration: none; border: 1.5px solid var(--accent); font-family: inherit; }
+.bd-btn-lb { flex: 1; text-align: center; }
+.bd-btn-ic, .bd-btn-go { display: flex; flex: 0 0 auto; }
+.bd-btn-primary { background: linear-gradient(135deg, #b01a15, #7a0f0d); color: #fff; border-color: transparent; box-shadow: 0 6px 16px rgba(122,15,13,.3); }
+.bd-btn-outline { background: rgba(255,255,255,.55); color: var(--accent-dark); }
+:root[data-theme="dark"] .bd-btn-outline { background: transparent; color: #ffb199; border-color: #e2564f; }
+.bd-btn-outline:hover { background: var(--accent); color: #fff; }
+.bd-btn.active { background: var(--accent); color: #fff; }
+.bd-hero .progress-block { max-width: 640px; margin-bottom: 1rem; }
+.bd-tabs { grid-column: 1 / -1; display: flex; margin: .4rem -.4rem 0; padding: .2rem .4rem 0; border: 0; border-top: 1px solid var(--rule); border-radius: 0; background: transparent; }
+.bd-tabs .detail-tab { flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: .55rem; margin: 0; padding: .95rem .4rem .8rem; border-bottom: 3px solid transparent; font-size: 1.02rem; font-weight: 600; color: var(--ink); }
+.bd-tabs .detail-tab + .detail-tab { border-left: 1px solid var(--rule); }
+.bd-tabs .detail-tab.active { color: var(--accent-dark); border-bottom-color: var(--accent); font-weight: 800; }
+.bd-tab-ic { display: flex; color: var(--accent); }
+.bd-related { margin-top: 2rem; }
+/* phone: the cover (with the two buy buttons one under the other) beside the title and the people; everything else full width below */
+@media (max-width: 700px) {
+  .bd-hero { grid-template-columns: minmax(0, 44%) minmax(0, 1fr); grid-template-rows: auto auto auto 1fr; gap: .2rem 1rem; padding: 1rem .9rem .5rem; border-radius: 24px; }
+  .bd-info { display: contents; }
+  .bd-cover-col { grid-column: 1; grid-row: 1 / span 4; width: 100%; margin: 0; }
+  .bd-buy { gap: .35rem; }
+  .bd-buy .affiliate-btn { flex: 1 1 0; width: auto; min-width: 0; }
+  .bd-title { grid-column: 2; grid-row: 1; font-size: clamp(.81rem, 3.71vw, 1.12rem); overflow-wrap: anywhere; }
+  .bd-subtitle { grid-column: 2; grid-row: 2; font-size: clamp(.8rem, 3.5vw, 1rem); margin: .1rem 0 .3rem; }
+  .bd-meta { grid-column: 2; grid-row: 4; flex-direction: column; gap: .1rem; align-content: start; margin: 0; }
+  .bd-meta-card { padding: .2rem 0; border: 0; background: transparent; gap: .6rem; }
+  .bd-meta-ic { width: 38px; height: 38px; background: transparent; }
+  .bd-meta-val { font-size: 1rem; white-space: normal; overflow: visible; text-overflow: clip; }
+  .bd-meta-lb { white-space: normal; }
+  .bd-actions, .bd-hero .progress-block { grid-column: 1 / -1; }
+  .bd-tags { grid-column: 2; grid-row: 3; margin: .1rem 0 .4rem; }
+  .bd-actions { grid-template-columns: 1fr 1fr; max-width: none; }
+  .bd-actions #listenBtn, .bd-actions #startReadingBtn { grid-column: 1 / -1; }
+  .bd-tabs .detail-tab { font-size: .85rem; gap: .3rem; padding: .8rem .2rem .7rem; flex-direction: column; }
+}
+@media (max-width: 400px) {
+  .bd-btn { padding: .7rem .7rem; font-size: .98rem; gap: .4rem; }
+}
+
+/* the book page's hero has no card around it: cover, title, people and actions sit straight on the page */
+.bd-hero, :root[data-theme="dark"] .bd-hero { background: none; border: 0; border-radius: 0; box-shadow: none; overflow: visible; padding: .3rem 0 0; }
+@media (max-width: 700px) { .bd-hero { padding: .2rem 0 0; border-radius: 0; } }
+
+/* the four facts stay in one row at their natural width; the ॐ only keeps the title and the sub-title clear; a row wider than the column scrolls sideways */
+.bd-info { padding-right: 0; }
+.bd-title, .bd-subtitle { padding-right: 4.5rem; }
+.bd-meta { overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.bd-meta::-webkit-scrollbar { display: none; }
+.bd-meta-card { flex: 0 0 auto; padding: .45rem .65rem; gap: .5rem; }
+.bd-meta-ic { width: 34px; height: 34px; }
+.bd-meta-val { overflow: visible; }
+@media (max-width: 700px) { .bd-title, .bd-subtitle { padding-right: 0; } .bd-meta { overflow: visible; } .bd-meta-card { flex: 0 1 auto; padding: .2rem 0; } .bd-meta-ic { width: 38px; height: 38px; } }
+
+/* Chanakya Uni's marks stand tall: give the facts' text a roomy line box and the scrolling row some air above and below, so nothing is cut off */
+.bd-meta { padding: .35rem 0 .45rem; }
+.bd-meta-tx { line-height: 1.5; }
+.bd-meta-lb { line-height: 1.45; overflow: visible; }
+.bd-meta-val { line-height: 1.55; overflow: visible; text-overflow: clip; padding-top: .05rem; }
+
+/* book page facts as a table grid: one row of columns, vertical separators only (phones keep the stacked list beside the cover) */
+@media (min-width: 701px) {
+  .bd-meta { gap: 0; overflow: visible; padding: .2rem 0 .5rem; }
+  .bd-meta-card { flex: 1 1 auto; padding: .35rem 1.1rem; border: 0; border-left: 1px solid var(--rule); border-radius: 0; background: transparent; }
+  .bd-meta-card:first-child { padding-left: 0; border-left: 0; }
+  .bd-meta-card:last-child { padding-right: 0; }
+}
+
+/* favourite + share: small round icon buttons in the top-right corner, level with the book title (the title keeps clear of them) */
+.bd-info { position: relative; }
+.bd-mini { position: absolute; top: .35rem; right: 0; display: flex; gap: .45rem; z-index: 2; }
+.bd-mini-btn { display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 0; border-radius: 50%; border: 1.5px solid var(--accent); background: rgba(255,255,255,.55); color: var(--accent-dark); cursor: pointer; font-family: inherit; }
+.bd-mini-btn:hover, .bd-mini-btn.active { background: var(--accent); color: #fff; }
+:root[data-theme="dark"] .bd-mini-btn { background: transparent; color: #ffb199; border-color: #e2564f; }
+:root[data-theme="dark"] .bd-mini-btn:hover, :root[data-theme="dark"] .bd-mini-btn.active { background: #e2564f; color: #fff; }
+.bd-title, .bd-subtitle { padding-right: 5.6rem; }
+@media (max-width: 700px) {
+  .book-detail { position: relative; }
+  .bd-info, .bd-hero { position: static; }
+  .bd-mini { top: calc(1rem - 4px); right: 1rem; gap: .3rem; }
+  .bd-mini-btn { width: 32px; height: 32px; }
+  .bd-mini-btn svg { width: 16px; height: 16px; }
+  .bd-title, .bd-subtitle { padding-right: 0; }
+}
+@media (min-width: 701px) { .bd-tags { margin-top: .7rem; } }
+
+/* small or slightly different-shaped covers are stretched to fill their frame instead of leaving empty strips (see fitCoverImg in swadhyay-app.js) */
+.cover.has-img img.fit-fill { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: fill; }
+
+/* desktop: the facts wrap onto the next line instead of overlapping when they do not fit one row; the separator between two facts is the left
+   border of the second, and the border that would start a line is pushed out of the clipped box (a 1.1rem shift left cancels the padding) */
+@media (min-width: 701px) {
+  .bd-meta { flex-wrap: wrap; overflow: hidden; margin-left: -1.1rem; padding: .2rem 0 .5rem; row-gap: .3rem; }
+  .bd-meta-card { flex: 0 1 auto; max-width: 100%; margin-left: -1px; padding: .35rem 1.1rem; border-left: 1px solid var(--rule); }
+  .bd-meta-card:first-child { padding-left: 1.1rem; border-left: 1px solid var(--rule); }
+  .bd-meta-card:last-child { padding-right: 1.1rem; }
+  .bd-meta-val { white-space: normal; overflow-wrap: anywhere; }
+}

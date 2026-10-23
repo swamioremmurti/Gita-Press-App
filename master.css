@@ -381,7 +381,7 @@ p.Subject {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Titel-Page---Shri-Hari {
+p.cover-Shri-Hari {
 	-epub-ruby-position:over;
 	color:#b33c00;
 	font-family:ChanakyaUni, serif;
@@ -397,7 +397,7 @@ p.Titel-Page---Shri-Hari {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---Book-Name {
+p.cover-Book-Name {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -413,7 +413,7 @@ p.Title-Page---Book-Name {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---Publisher-Note {
+p.cover-Publisher-Note {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:maroon;
@@ -430,7 +430,7 @@ p.Title-Page---Publisher-Note {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---Author-Name {
+p.cover-Author-Name {
 	-epub-ruby-position:over;
 	color:black;
 	font-family:ChanakyaUni, serif;
@@ -446,12 +446,12 @@ p.Title-Page---Author-Name {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---Translater-Author-Name {
+p.cover-Translater-Author-Name {
 	font-family:ChanakyaUni, serif;
 	font-weight:bold;
 	text-align:center;
 }
-p.Title-Page---Tvamev-mata {
+p.cover-Tvamev-mata {
 	-epub-ruby-position:over;
 	color:black;
 	font-family:ChanakyaUni, serif;
@@ -4436,7 +4436,7 @@ p.x-- {
 	text-decoration:none;
 	text-indent:12px;
 }
-p.Title-Page---Sub-Title {
+p.cover-Sub-Title {
 	-epub-ruby-position:over;
 	color:black;
 	font-family:ChanakyaUni, serif;
@@ -5127,7 +5127,23 @@ p.Normal {
 	text-decoration:none;
 	text-indent:18px;
 }
-p.Title-Page---Sub-Heading {
+p.cover-subtitle {
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.5em;
+	font-style:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-indent:0px;
+}
+p[class^="cover-"], p[class*=" cover-"] {
+	text-align:center;
+}
+p.cover-Sub-Heading {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -5180,7 +5196,7 @@ p.mantra {
 	text-decoration:none;
 	text-indent:18px;
 }
-p.Title-Page--Sub-Title {
+p.cover-Sub-Title-2 {
 	-epub-ruby-position:over;
 	color:deeppink;
 	font-family:ChanakyaUni, serif;
@@ -5267,7 +5283,7 @@ p.Sub-Head-2 {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---subheading {
+p.cover-subheading {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -5283,7 +5299,7 @@ p.Title-Page---subheading {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---Sub-heading {
+p.cover-Sub-heading {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -5766,7 +5782,7 @@ p.uwach {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page-Subheading {
+p.cover-Subheading {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -6115,7 +6131,7 @@ p.Sub-Head-1 {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---sub-heading {
+p.cover-sub-heading {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -6345,7 +6361,7 @@ p.Sub-had- {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---Subheading {
+p.cover-Subheading {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -6394,7 +6410,7 @@ p.SHLOK-number {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page---sub-title {
+p.cover-sub-title {
 	-epub-ruby-position:over;
 	color:deeppink;
 	font-family:ChanakyaUni, serif;
@@ -6792,7 +6808,7 @@ p.Main-Heading---Book-Name-etc- {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Title-Page--caption {
+p.cover-caption {
 	-epub-ruby-position:over;
 	color:#b33c00;
 	font-family:ChanakyaUni, serif;
