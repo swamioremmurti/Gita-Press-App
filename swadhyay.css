@@ -482,14 +482,15 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .book-detail-cover-col { display: flex; flex-direction: column; gap: .8rem; }
 .book-detail-cover { border-radius: var(--radius); aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; color: #fff; position: relative; box-shadow: var(--shadow); overflow: hidden; }
 .book-detail-cover .cover-letter { font-size: 3.5rem; }
-.book-detail-cover.has-img { background: var(--surface-2); padding: 8%; box-sizing: border-box; }
-.book-detail-cover.has-img img { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 24px; }
+/* the cover on the book page has no frame around it: just the rounded picture */
+.book-detail-cover.has-img { background: transparent; padding: 0; box-shadow: none; aspect-ratio: auto; overflow: visible; }
+.book-detail-cover.has-img img { display: block; width: 100%; height: auto; max-width: 100%; max-height: none; object-fit: contain; border-radius: 18px; }
 .book-detail-info h1 { margin: 0 0 .5rem; color: var(--accent-dark); }
 :root[data-theme="dark"] .book-detail-info h1 { color: #ffb199; }
 
 /* ---------- affiliate buy buttons ---------- */
 .affiliate-buttons { display: flex; flex-direction: column; align-items: flex-start; gap: .55rem; }
-.affiliate-btn { display: block; width: 75%; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: transform .15s; }
+.affiliate-btn { display: block; width: 60%; border-radius: 10px; overflow: hidden; box-shadow: var(--shadow); transition: transform .15s; }
 .affiliate-btn:hover { transform: translateY(-2px); }
 .affiliate-btn img { display: block; width: 100%; height: auto; }
 
@@ -675,7 +676,11 @@ body.is-home .cover-mark { font-size: max(1rem, calc(.8rem * 1.12)); }
   /* Smaller pills so the 6 topic chips pack into 2 rows (3+3) instead of 3. */
   body.is-home .hero-chips .chip { font-size: .78rem; padding: .3rem .6rem; }
   .book-detail-grid { grid-template-columns: 1fr; }
-  .book-detail-cover-col { max-width: 220px; }
+  /* the buy buttons stand beside the cover, their bottom edge on the cover's */
+  .book-detail-cover-col { max-width: none; flex-direction: row; align-items: flex-end; gap: .9rem; }
+  .book-detail-cover-col .book-detail-cover { flex: 0 0 52%; max-width: 230px; }
+  .book-detail-cover-col .affiliate-buttons { flex: 1 1 0; min-width: 0; align-items: flex-start; justify-content: flex-end; }
+  .book-detail-cover-col .affiliate-btn { width: 100%; max-width: 132px; }
   .btn-listen { width: 100%; justify-content: center; }
   .stats-row { grid-template-columns: repeat(3, 1fr); gap: .5rem; }
   .stat-card { padding: .7rem; }
@@ -2587,3 +2592,59 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .gl-shloks .gl-shl small { font-size: .78rem; color: #8f1a12; }
 .gl-shl span, .gl-sans p { white-space: nowrap; }
 .dd-trio > .gl-card .gl-shloks .gl-shl span { font-size: 1.05rem; line-height: 1.5; }
+
+/* ================= Library page look (search bar with title suggestions, category tiles, filter chips) ================= */
+.lib-page .lib-search-wrap { position: relative; margin: .9rem 0 1rem; z-index: 5; }
+.lib-page .lib-search-pill { margin: 0; padding: .3rem .5rem .3rem 1rem; gap: .5rem; background: var(--surface); border: 1px solid var(--rule); border-radius: 999px; box-shadow: var(--shadow); }
+.lib-page .lib-search-ic { color: var(--accent-dark); display: flex; flex: 0 0 auto; }
+.lib-page .lib-search-box { flex: 1 1 auto; min-width: 0; display: flex; }
+.lib-page .lib-search-box input { width: 100%; min-width: 0; border: 0; background: transparent; box-shadow: none; outline: none; padding: .55rem 2.2rem .55rem .3rem; font-size: 1.05rem; color: var(--ink); }
+.lib-page .lib-search-box input::placeholder { color: var(--muted); }
+.lib-page .lib-search-clear { right: .35rem; width: 1.8rem; height: 1.8rem; font-size: 1.4rem; background: var(--surface-2); color: var(--accent-dark); }
+.lib-page .lib-search-clear:hover { background: var(--accent); color: #fff; }
+.lib-page .lib-suggest { position: absolute; left: 0; right: 0; top: calc(100% + .35rem); max-height: 60vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--rule); border-radius: 18px; box-shadow: 0 12px 30px rgba(60,40,10,.18); padding: .35rem; }
+.lib-page .lib-suggest[hidden] { display: none; }
+.lib-page .lib-sg-item { display: flex; align-items: center; gap: .7rem; padding: .45rem .6rem; border-radius: 12px; color: var(--ink); }
+.lib-page .lib-sg-item:hover, .lib-page .lib-sg-item:focus-visible { background: var(--surface-2); }
+.lib-page .lib-sg-item .cover { width: 34px; height: 46px; border-radius: 6px; padding: 0; }
+.lib-page .lib-sg-item .cover.has-img { padding: 0; }
+.lib-page .lib-sg-item .cover.has-img img { width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; border-radius: 5px; }
+.lib-page .lib-sg-item .cover .cover-letter { font-size: 1.1rem; }
+.lib-page .lib-sg-tx { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; }
+.lib-page .lib-sg-ti { font-weight: 700; color: var(--accent-dark); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lib-page .lib-sg-au { font-size: .8rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lib-page .lib-tag { display: inline-flex; align-items: center; gap: .5rem; margin: 0 0 .8rem; padding: .35rem .5rem .35rem 1rem; border-radius: 999px; background: var(--surface-2); color: var(--accent-dark); font-weight: 700; }
+.lib-page .lib-tag a { display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center; border-radius: 50%; background: var(--surface); color: var(--accent-dark); }
+
+.lib-page .cat-tabs-wrap { border-bottom: 0; margin: .2rem 0 .9rem; max-width: none; }
+.lib-page .cat-tabs-wrap .row-nav.prev { display: none !important; }
+.lib-page .cat-tabs-wrap .row-nav.next { display: flex !important; right: -.1rem; z-index: 2; }
+.lib-page .cat-tabs { gap: .6rem; padding: .3rem .2rem .7rem; background: transparent; box-shadow: none; border-radius: 0; align-items: stretch; }
+.lib-page .cat-tab { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: .55rem; flex: 0 0 auto; width: auto; padding: .5rem .95rem .5rem .75rem; border: 0; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); font-size: .92rem; font-weight: 600; color: var(--accent-dark); text-align: left; white-space: nowrap; }
+.lib-page .cat-ic { display: flex; color: var(--gold); }
+.lib-page .cat-ic { flex: 0 0 auto; }
+.lib-page .cat-ic svg { width: 26px; height: 26px; }
+.lib-page .cat-tx { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.15; }
+.lib-page .cat-tx .cnt { opacity: .7; font-size: .85em; font-weight: 500; color: inherit; }
+.lib-page .cat-tab.active { background: var(--accent-dark); color: #fff; box-shadow: 0 6px 16px rgba(122,15,13,.32); }
+.lib-page .cat-tab.active .cat-ic { color: #fff; }
+.lib-page .cat-tab.active .cnt { color: rgba(255,255,255,.85); opacity: 1; }
+
+.lib-page .filter-tabs { flex-wrap: nowrap; overflow-x: auto; gap: .6rem; margin: .3rem 0 1.2rem; padding: .25rem .2rem .7rem; scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, #000 90%, transparent); mask-image: linear-gradient(to right, #000 90%, transparent); }
+.lib-page .filter-tabs::-webkit-scrollbar { display: none; }
+.lib-page .filter-tab { flex: 0 0 auto; display: inline-flex; align-items: center; gap: .45rem; padding: .6rem 1.15rem; border: 1px solid var(--rule); border-radius: 999px; background: var(--surface); box-shadow: var(--shadow); font-size: .95rem; font-weight: 600; color: var(--accent-dark); white-space: nowrap; }
+.lib-page .chip-ic { display: flex; color: var(--gold); }
+.lib-page .filter-tab.active { background: linear-gradient(135deg, #de6a12, #b14a06); border-color: transparent; color: #fff; box-shadow: 0 5px 14px rgba(196,89,17,.35); }
+.lib-page .filter-tab.active .chip-ic { color: #fff; }
+
+.lib-page .book-card { box-shadow: 0 6px 20px rgba(60,40,10,.08); }
+.lib-page .fav-toggle { width: 34px; height: 34px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 1.05rem; }
+.lib-page .fav-toggle.active { background: var(--accent); }
+
+/* A book card's three rounded shapes -- the card, the cover's frame, the cover picture -- are concentric: each corner is the next one's
+   radius plus the gap between them, so the three curves run parallel (as if each had grown out of the one inside it). */
+.book-card { --r-img: 14px; --pad-cover: 10px; --pad-card: .75rem;
+  padding: var(--pad-card); border-radius: calc(var(--r-img) + var(--pad-cover) + var(--pad-card)); }
+.book-card .cover { border-radius: calc(var(--r-img) + var(--pad-cover)); }
+.book-card .cover.has-img { padding: var(--pad-cover); }
+.book-card .cover.has-img img { border-radius: var(--r-img); }

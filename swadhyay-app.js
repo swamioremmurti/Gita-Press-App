@@ -1370,13 +1370,52 @@
       (toEn ? "EN" : "हिं") + '</button>';
   }
 
+  /* small line icons (24x24, drawn with the text colour) for the library's category tabs and the page's lotus / magnifier */
+  function lineIcon(inner) {
+    return '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>';
+  }
+  var CAT_ICONS = {
+    "all": '<rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/>',
+    "Vedas": '<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a3 3 0 0 1-3-3V7a3 3 0 0 1 2-3z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+    "Upanishad": '<path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5z"/><path d="M12 6v13"/>',
+    "Vedant": '<circle cx="12" cy="6" r="2.3"/><path d="M12 9v4M7 12l5 1 5-1M4 19c2-3 5-4 8-4s6 1 8 4"/>',
+    "Gita": '<path d="M5 4h12a2 2 0 0 1 2 2v14H7a2 2 0 0 1-2-2z"/><circle cx="12" cy="11" r="3"/><path d="M12 8v6M9 11h6"/>',
+    "Purans": '<path d="M3 20h18M5 20V10M9 20V10M15 20V10M19 20V10M3 10l9-6 9 6z"/>',
+    "Upa Puran": '<path d="M12 3l3 4v3H9V7z"/><path d="M6 20V11h12v9M4 20h16M11 20v-4h2v4"/>',
+    "Itihasas": '<rect x="4" y="15" width="16" height="4" rx="1"/><rect x="5" y="10" width="14" height="4" rx="1"/><rect x="6" y="5" width="12" height="4" rx="1"/>',
+    "Stotra evam Naamavali": '<path d="M12 3v5M8 9l4-2 4 2v4l-4 7-4-7z"/>',
+    "Bajans": '<path d="M9 18V6l10-2v12"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="16.5" cy="16" r="2.5"/>',
+    "Pravachan": '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6"/>',
+    "Siksha evam Katha": '<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.7.6 1 1.3 1 2.1h5c0-.8.3-1.5 1-2.1A6 6 0 0 0 12 3z"/>',
+    "Balaupayogi": '<circle cx="12" cy="12" r="9"/><path d="M8.5 14.5a4.5 4.5 0 0 0 7 0M9 9.5h.01M15 9.5h.01"/>',
+    "Nitya Puja evam Karmakand": '<path d="M6 17V11a6 6 0 0 1 12 0v6l2 2H4z"/><path d="M10 21a2 2 0 0 0 4 0"/>',
+    "Swami Sharnanand Sahitya": '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1-4 4-6 7-6s6 2 7 6"/>',
+    "Teerth Sthal": '<path d="M12 2v3M8 8l4-3 4 3M5 10h14v10H5zM10 20v-5h4v5"/>'
+  };
+  /* the little icons on the library's filter chips */
+  function chipIcon(inner) {
+    return '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>';
+  }
+  var CHIP_ICONS = {
+    "popular": '<path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z"/>',
+    "short": '<path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M10 12h6M10 16h6"/>',
+    "az": '<path d="M5 18l3.5-10L12 18M6.3 14h4.4M16 7v10m0 0l-2.5-2.5M16 17l2.5-2.5"/>',
+    "latest": '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>'
+  };
+  var SEARCH_SVG ='<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg>';
+  var LOTUS_SVG = '<svg viewBox="0 0 132 52" width="132" height="52" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M66 5C58 17 58 30 66 42C74 30 74 17 66 5z"/><path d="M66 42C50 38 41 28 39 15C52 17 62 26 66 42z"/><path d="M66 42C82 38 91 28 93 15C80 17 70 26 66 42z"/>' +
+    '<path d="M66 42C44 44 28 38 20 27C34 25 54 30 66 42z"/><path d="M66 42C88 44 104 38 112 27C98 25 78 30 66 42z"/>' +
+    '<path d="M2 36c9 0 13-8 21-4M130 36c-9 0-13-8-21-4"/><circle cx="10" cy="31" r="2.2"/><circle cx="122" cy="31" r="2.2"/></svg>';
+
   function categoryTabs(activeKey) {
     return '<div class="cat-tabs-wrap">' +
       '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
       '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
-          esc(tx(c.hi, c.en)) + ' <span class="cnt">(' + count + ')</span></a>';
+          '<span class="cat-ic" aria-hidden="true">' + lineIcon(CAT_ICONS[c.key] || CAT_ICONS.all) + '</span>' +
+          '<span class="cat-tx"><span class="cat-nm">' + esc(tx(c.hi, c.en)) + '</span> <span class="cnt">(' + count + ')</span></span></a>';
       }).join("") + '</nav>' +
       '<button class="row-nav next" aria-label="अगला">›</button>' +
       '</div>';
@@ -1725,21 +1764,21 @@
     var page = Math.min(libraryState.page, totalPages);
     var pageItems = list.slice(0, page * PAGE_SIZE);
 
-    var heading = tag ? "#" + esc(tag) : esc(tx(meta.hi, meta.en));
-    var html = '<div class="page-header">' +
-      '<h1>' + heading + ' <span class="cnt">(' + list.length + ')</span></h1>' +
-      '<div class="lib-search"><span class="lib-search-box"><input id="librarySearch" type="text" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
-      '<button type="button" id="librarySearchClear" class="lib-search-clear" aria-label="' + esc(tx("खोज मिटाएँ", "Clear search")) + '" title="' + esc(tx("खोज मिटाएँ", "Clear search")) + '"' + (q ? "" : " hidden") + '>&times;</button></span>' +
-      taxLangToggleHtml() + '</div>' +
-      '</div>';
+    /* no heading and no language selector: the search bar, the category strip and the covers come first (the count is on the tab) */
+    var html = '<div class="lib-search-wrap"><div class="lib-search lib-search-pill"><span class="lib-search-ic" aria-hidden="true">' + SEARCH_SVG + '</span>' +
+      '<span class="lib-search-box"><input id="librarySearch" type="text" autocomplete="off" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
+      '<button type="button" id="librarySearchClear" class="lib-search-clear" aria-label="' + esc(tx("खोज मिटाएँ", "Clear search")) + '" title="' + esc(tx("खोज मिटाएँ", "Clear search")) + '"' + (q ? "" : " hidden") + '>&times;</button></span></div>' +
+      '<div class="lib-suggest" id="librarySuggest" role="listbox" hidden></div></div>';
+    if (tag) html += '<div class="lib-tag"><span>#' + esc(tag) + '</span> <a href="/library?cat=' + encodeURIComponent(cat) + '" aria-label="' + esc(tx("टैग हटाएँ", "Remove tag")) + '">&times;</a></div>';
     html += categoryTabs(cat);
     html += '<div class="filter-tabs">' +
       [["all", "सभी", "All"], ["popular", "लोकप्रिय", "Popular"], ["short", "लघु पाठ", "Short reads"]].map(function (f) {
         var key = f[0];
-        return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' + esc(tx(f[1], f[2])) + '</a>';
+        return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' +
+          (CHIP_ICONS[key] ? '<span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS[key]) + '</span>' : "") + esc(tx(f[1], f[2])) + '</a>';
       }).join("") +
-      '<a class="filter-tab' + (sort !== "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=az">' + esc(tx("वर्णानुक्रम", "A–Z")) + '</a>' +
-      '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest">' + esc(tx("नवीनतम", "Latest")) + '</a>' +
+      '<a class="filter-tab' + (sort !== "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=az"><span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS.az) + '</span>' + esc(tx("वर्णानुक्रम", "A–Z")) + '</a>' +
+      '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest"><span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS.latest) + '</span>' + esc(tx("नवीनतम", "Latest")) + '</a>' +
       '</div>';
 
     if (!pageItems.length) {
@@ -1748,7 +1787,7 @@
       html += '<div class="book-grid">' + pageItems.map(bookCard).join("") + '</div>';
       if (page < totalPages) html += '<div class="load-more-wrap" id="libraryLoadSentinel"><span class="load-more-spinner"></span></div>';
     }
-    return '<main class="content-pad">' + html + '</main>';
+    return '<main class="content-pad lib-page">' + html + '</main>';
   }
 
   function genBlurb(book) {
@@ -5040,8 +5079,32 @@
           setTimeout(function () { var el = document.getElementById("librarySearch"); if (el) el.focus(); }, 0);
         });
       }
+      /* book titles that match what is typed, listed under the search bar (the page's own list below is filtered as before) */
+      var suggestBox = document.getElementById("librarySuggest");
+      var showSuggest = function () {
+        if (!suggestBox) return;
+        var v = librarySearch.value.trim(), ql = v.toLowerCase(), hits = [];
+        if (v && document.activeElement === librarySearch) {
+          var rank = function (b) { var i = b.title.toLowerCase().indexOf(ql); return i === 0 ? 0 : i > 0 ? 1 : 2; };
+          hits = BOOKS.filter(function (b) { return matchesQuery(b, v); })
+            .sort(function (a, b) { return rank(a) - rank(b) || a.title.localeCompare(b.title, "hi"); }).slice(0, 8);
+        }
+        if (!hits.length) { suggestBox.hidden = true; suggestBox.innerHTML = ""; return; }
+        suggestBox.innerHTML = hits.map(function (b) {
+          return '<a class="lib-sg-item" role="option" href="' + bookPath(b) + '">' + coverEl(b, "sm") +
+            '<span class="lib-sg-tx"><span class="lib-sg-ti">' + esc(b.title) + '</span><span class="lib-sg-au">' + esc(b.author || "") + '</span></span></a>';
+        }).join("");
+        suggestBox.hidden = false;
+      };
+      if (suggestBox) {
+        suggestBox.addEventListener("mousedown", function (e) { e.preventDefault(); });          // a click on a title must not first blur the search box
+        librarySearch.addEventListener("focus", showSuggest);
+        librarySearch.addEventListener("blur", function () { setTimeout(function () { suggestBox.hidden = true; }, 120); });
+        librarySearch.addEventListener("keydown", function (e) { if (e.key === "Escape") suggestBox.hidden = true; });
+      }
       librarySearch.addEventListener("input", function () {
         if (libSearchClear) libSearchClear.hidden = !librarySearch.value;
+        showSuggest();
         clearTimeout(t);
         t = setTimeout(function () {
           var p = parsePath().params;
@@ -5049,6 +5112,7 @@
           navigate("/library?cat=" + encodeURIComponent(cat) + (librarySearch.value ? "&q=" + encodeURIComponent(librarySearch.value) : ""));
         }, 250);
       });
+      setTimeout(showSuggest, 0);                                   // the page was just redrawn while typing: bring the list back
     }
 
     var loadSentinel = document.getElementById("libraryLoadSentinel");
