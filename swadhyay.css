@@ -2641,10 +2641,42 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .lib-page .fav-toggle { width: 34px; height: 34px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 1.05rem; }
 .lib-page .fav-toggle.active { background: var(--accent); }
 
-/* A book card's three rounded shapes -- the card, the cover's frame, the cover picture -- are concentric: each corner is the next one's
-   radius plus the gap between them, so the three curves run parallel (as if each had grown out of the one inside it). */
-.book-card { --r-img: 14px; --pad-cover: 10px; --pad-card: .75rem;
-  padding: var(--pad-card); border-radius: calc(var(--r-img) + var(--pad-cover) + var(--pad-card)); }
-.book-card .cover { border-radius: calc(var(--r-img) + var(--pad-cover)); }
+/* A book card's three rounded shapes -- the card, the cover's frame, the cover picture -- have only a minimal radius, each a step larger than the
+   one inside it (3px, 6px, 9px) so they still read as nested.  The picture itself is square on its spine side (see the 3D-book rules below). */
+.book-card { --r-img: 3px; --pad-cover: 10px; --pad-card: .75rem;
+  padding: var(--pad-card); border-radius: calc(var(--r-img) * 3); }
+.book-card .cover { border-radius: calc(var(--r-img) * 2); }
 .book-card .cover.has-img { padding: var(--pad-cover); }
 .book-card .cover.has-img img { border-radius: var(--r-img); }
+
+/* ================= Covers that look like real books =================
+   Pure CSS on the cover picture itself: a strip of padding on the left is painted as the book's spine (a leather-dark gradient with a
+   hinge line), the right edge shows a few stacked page edges, the corners are squarer on the spine side and rounder on the other, and a
+   soft shadow lifts the book off the page.  (The picture is not stretched: its box simply has the spine as left padding.) */
+.cover.has-img img,
+.book-detail-cover.has-img img {
+  box-sizing: border-box;
+  padding-left: 7px;
+  background: linear-gradient(90deg, #2a1c12 0, #5f4a39 16%, #d4c7b5 34%, #7a634f 52%, #35251a 74%, #1f150d 100%);
+  border-radius: 0 3px 3px 0;                    /* the spine side is square, the page side barely rounded */
+  box-shadow: 1px 0 0 #fff, 2px 0 0 #d9d0be, 3px 0 0 #fff, 4px 0 0 #cfc4ae, 5px 6px 9px rgba(40, 25, 10, .38);
+}
+.cover-sm.has-img img { padding-left: 4px; border-radius: 0 2px 2px 0; box-shadow: 1px 0 0 #fff, 2px 0 0 #d9d0be, 3px 3px 5px rgba(40, 25, 10, .35); }
+.book-detail-cover.has-img img { padding-left: 10px; border-radius: 0 4px 4px 0;
+  box-shadow: 1px 0 0 #fff, 2px 0 0 #d9d0be, 3px 0 0 #fff, 4px 0 0 #cfc4ae, 5px 0 0 #fff, 6px 0 0 #bfb39b, 9px 10px 16px rgba(40, 25, 10, .4); }
+.book-detail-cover.has-img { overflow: visible; }
+.book-card .cover.has-img img { border-radius: 0 var(--r-img) var(--r-img) 0; }
+/* people's photos are not books */
+.author-photo.cover.has-img img { padding: 0; background: none; box-shadow: none; }
+
+/* ================= Day / night switch: a sun in the knob by day, a moon at night, the other one faint at the far end of the track ================= */
+.theme-switch { width: 58px; height: 30px; }
+.theme-switch .track { background: #e7dcc4; }
+.theme-switch .track:before { height: 24px; width: 24px; left: 3px; top: 3px; background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23e08a00' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4.2' fill='%23ffc247'/%3E%3Cpath d='M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8'/%3E%3C/svg%3E") center / 17px 17px no-repeat; z-index: 1; }
+.theme-switch .track:after { content: ""; position: absolute; top: 7px; right: 7px; width: 16px; height: 16px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a7f6a' stroke-width='2' stroke-linejoin='round'%3E%3Cpath d='M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z'/%3E%3C/svg%3E") center / contain no-repeat; opacity: .8; transition: .2s; }
+.theme-switch input:checked + .track:before { transform: translateX(28px); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z' fill='%236b5bd6' stroke='%234a3da8' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E"); }
+.theme-switch input:checked + .track:after { right: auto; left: 7px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4.2'/%3E%3Cpath d='M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8'/%3E%3C/svg%3E"); opacity: .95; }
+.theme-switch input:focus-visible + .track { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* on a phone the top bar's search button only opens the library, which the bottom bar already has (and the library has its own search bar) */
+@media (max-width: 640px) { .topbar .global-search-btn { display: none; } }

@@ -927,6 +927,8 @@
     });
   }
   function tx(hi, en) { return getTaxLang() === "en" && en ? en : hi; }
+  /* the book page's favourite button: its two states in either language */
+  function favBtnText(on) { return on ? "♥ " + tx("पसंदीदा में शामिल", "In favourites") : "♡ " + tx("पसंदीदा में जोड़ें", "Add to favourites"); }
 
   function readJSON(key, fallback) {
     try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }
@@ -2948,7 +2950,7 @@
   function readerOverlayShell() {
     return '<div class="reader-overlay" id="readerOverlay">' +
       '<header class="reader-topbar">' +
-      '<button class="reader-icon-btn" id="readerBackBtn" title="वापस" aria-label="वापस">←</button>' +
+      '<button class="reader-icon-btn" id="readerBackBtn" title="' + esc(tx("वापस", "Back")) + '" aria-label="' + esc(tx("वापस", "Back")) + '">←</button>' +
       '<button class="reader-icon-btn" id="readerTocToggle" title="विषय-सूची" aria-label="विषय-सूची">☰</button>' +
       '<div class="reader-title" id="readerTitleText"></div>' +
       '<button class="reader-arth-btn" id="readerArthBtn" type="button" hidden aria-pressed="false">' +
@@ -3465,7 +3467,7 @@
       wrap = document.getElementById("commentListWrap"); // re-query: the view may have re-rendered while awaiting
       if (wrap) wrap.innerHTML = renderCommentList(list);
       var tabBtn = document.querySelector('.detail-tab[data-tab="comments"]');
-      if (tabBtn) tabBtn.textContent = "टिप्पणियाँ" + (list.length ? " (" + list.length + ")" : "");
+      if (tabBtn) tabBtn.textContent = tx("टिप्पणियाँ", "Comments") + (list.length ? " (" + list.length + ")" : "");
       return list;
     });
   }
@@ -3493,7 +3495,7 @@
     var g = PALETTE[book.paletteIdx];
 
     var html = '<main class="content-pad book-detail">';
-    html += '<a href="javascript:history.back()" class="back-link">← वापस</a>';
+    html += '<a href="javascript:history.back()" class="back-link">← ' + esc(tx("वापस", "Back")) + '</a>';
     html += '<div class="book-detail-grid">';
     html += '<div class="book-detail-cover-col">';
     html += book.coverImage
@@ -3530,20 +3532,20 @@
       }).join("") + '</div>';
     }
     html += '<div class="detail-actions">' +
-      '<a class="btn-primary" href="' + readPath(book) + '" id="startReadingBtn">▶ पढ़ना शुरू करें</a>' +
-      '<button class="btn-outline ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '">' + (fav ? "♥ पसंदीदा में शामिल" : "♡ पसंदीदा में जोड़ें") + '</button>' +
-      '<button class="btn-outline" id="shareBtn">↪ साझा करें</button>' +
+      '<a class="btn-primary" href="' + readPath(book) + '" id="startReadingBtn">▶ ' + esc(tx("पढ़ना शुरू करें", "Start reading")) + '</a>' +
+      '<button class="btn-outline ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '">' + favBtnText(fav) + '</button>' +
+      '<button class="btn-outline" id="shareBtn">↪ ' + esc(tx("साझा करें", "Share")) + '</button>' +
       '</div>';
     html += '<div class="progress-block"><label>' + bilingual("आपकी प्रगति") + ': <b id="progressLabel">' + pct + '%</b></label>' +
       '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%" id="progressFillBar"></div></div></div>';
 
     html += '<div class="detail-tabs" id="detailTabs" data-book="' + book.id + '">' +
-      '<button class="detail-tab active" data-tab="intro">किताब का परिचय</button>' +
-      '<button class="detail-tab" data-tab="toc">विषय सूची</button>' +
-      '<button class="detail-tab" data-tab="comments">टिप्पणियाँ</button>' +
+      '<button class="detail-tab active" data-tab="intro">' + esc(tx("किताब का परिचय", "About the book")) + '</button>' +
+      '<button class="detail-tab" data-tab="toc">' + esc(tx("विषय सूची", "Contents")) + '</button>' +
+      '<button class="detail-tab" data-tab="comments">' + esc(tx("टिप्पणियाँ", "Comments")) + '</button>' +
       '</div>';
     html += '<div class="detail-tab-panel active" data-panel="intro">' +
-      '<div class="about-block"><h3>इस पुस्तक के बारे में</h3><p>' + genBlurb(book) + '</p></div></div>';
+      '<div class="about-block"><h3>' + esc(tx("इस पुस्तक के बारे में", "About this book")) + '</h3><p>' + genBlurb(book) + '</p></div></div>';
     html += '<div class="detail-tab-panel" data-panel="toc" id="tocPanel"></div>';
     html += '<div class="detail-tab-panel" data-panel="comments" id="commentsPanel">' + renderCommentsTab(book) + '</div>';
 
@@ -5033,7 +5035,7 @@
         var id = parseInt(btn.getAttribute("data-fav"), 10);
         var nowFav = toggleFavorite(id);
         btn.classList.toggle("active", nowFav);
-        if (btn.id === "favBtn") btn.textContent = nowFav ? "♥ पसंदीदा में शामिल" : "♡ पसंदीदा में जोड़ें";
+        if (btn.id === "favBtn") btn.textContent = favBtnText(nowFav);
       });
     });
 
@@ -5138,7 +5140,7 @@
         var book = resolveBookParam(r.path.split("/")[1]);
         var url = location.href;
         if (navigator.share) navigator.share({ title: book.title, url: url }).catch(function () {});
-        else { navigator.clipboard && navigator.clipboard.writeText(url); toast("लिंक कॉपी हो गया"); }
+        else { navigator.clipboard && navigator.clipboard.writeText(url); toast(tx("लिंक कॉपी हो गया", "Link copied")); }
       });
     }
     var listenBtn = document.getElementById("listenBtn");
