@@ -75,7 +75,8 @@ async function currentUser(req) {
     'SELECT u.* FROM sessions s JOIN users u ON u.id = s.user_id WHERE s.token = ? AND s.expires_at >= ?',
     [token, Date.now()]
   );
-  return user ? publicUser(user) : null;
+  // a suspended account keeps its data but can no longer act (admin panel -> Users)
+  return user && user.status !== 'suspended' ? publicUser(user) : null;
 }
 
 function currentSessionToken(req) {

@@ -27,7 +27,8 @@ const MIME = {
 http.createServer((req, res) => {
   // WHATWG URL (url.parse is deprecated); leading slashes collapsed so "//x" stays a path.
   let p = decodeURIComponent(new URL(req.url.replace(/^\/+/, '/'), 'http://localhost').pathname);
-  if (p === '/') p = '/index.html';
+  if (p === '/admin') { res.writeHead(302, { Location: '/admin/' }); res.end(); return; }
+  if (p.endsWith('/')) p += 'index.html';   // /, /admin/
   const filePath = path.join(ROOT, p);
   if (!filePath.startsWith(ROOT)) { res.writeHead(403); res.end('Forbidden'); return; }
   fs.readFile(filePath, (err, data) => {

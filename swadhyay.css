@@ -2670,3 +2670,16 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 
 /* on a phone the top bar's search button only opens the library, which the bottom bar already has (and the library has its own search bar) */
 @media (max-width: 640px) { .topbar .global-search-btn { display: none; } }
+
+/* ---- announcement banner (set in the admin panel -> Settings) ---- */
+.site-notice { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; padding: .55rem 2.4rem .55rem 1rem; position: relative;
+  font-size: .92rem; line-height: 1.45; background: #fff4d6; color: #5a3d00; border-bottom: 1px solid #ecd9a0; }
+.site-notice.tone-success { background: #e3f4e6; color: #1d4a27; border-bottom-color: #b9deb9; }
+.site-notice.tone-warning { background: #fde4e1; color: #7a1d12; border-bottom-color: #f0b9b2; }
+.site-notice-link { color: inherit; font-weight: 600; text-decoration: underline; }
+.site-notice-x { position: absolute; right: .5rem; top: 50%; transform: translateY(-50%); width: 1.8rem; height: 1.8rem; border: 0; background: transparent;
+  color: inherit; font-size: 1.3rem; line-height: 1; cursor: pointer; border-radius: 50%; }
+.site-notice-x:hover { background: rgba(0, 0, 0, .08); }
+:root[data-theme="dark"] .site-notice { background: #3b3011; color: #f1dd9a; border-bottom-color: #5b4a1a; }
+:root[data-theme="dark"] .site-notice.tone-success { background: #16341c; color: #bfe6c4; border-bottom-color: #25552d; }
+:root[data-theme="dark"] .site-notice.tone-warning { background: #3d1a15; color: #f3beb6; border-bottom-color: #62291f; }

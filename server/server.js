@@ -41,7 +41,8 @@ function requestPathname(req) {
 
 function serveStatic(req, res) {
   let p = decodeURIComponent(requestPathname(req));
-  if (p === '/') p = '/index.html';
+  if (p === '/admin') { res.writeHead(302, { Location: '/admin/' }); res.end(); return; }
+  if (p.endsWith('/')) p += 'index.html';   // /, /admin/
   const filePath = path.join(ROOT, p);
   if (!filePath.startsWith(ROOT)) { res.writeHead(403); res.end('Forbidden'); return; }
   fs.readFile(filePath, (err, data) => {

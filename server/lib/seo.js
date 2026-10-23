@@ -92,87 +92,77 @@ function runApp(dataSrc, appSrc) {
   return exported;
 }
 
-let catalogueCache = null; // { stamp, value }
+let catalogueCache = null; // { stamp, value }  -- the catalogue exactly as the static files define it (the admin panel reads this)
 let cataloguePending = null;
+
+// Builds the catalogue object (books, people, lookup tables) from one run of the app's scripts. `state` is the admin panel's
+// layer (book-meta response: disabled books, overrides, created books, categories); null = the static files only.
+async function buildCatalogue(state) {
+  const [template, dataSrc, appSrc] = await Promise.all(SOURCE_FILES.map(readSource));
+  const ex = runApp(dataSrc, appSrc);
+  if (state && typeof ex.applyCatalogueState === 'function') ex.applyCatalogueState(state);
+  const cat = {
+    template: template,
+    BOOKS: ex.BOOKS, PEOPLE: ex.PEOPLE, CATEGORY_META: ex.CATEGORY_META,
+    genBlurb: ex.genBlurb, HELP_FAQS: ex.HELP_FAQS, personPath: ex.personPath, bookPath: ex.bookPath, slugAliases: ex.SLUG_ALIASES || {},
+    booksBySlug: {}, booksById: {}, peopleBySlug: {}, catByKey: {}
+  };
+  cat.booksByLegacySlug = {}; cat.peopleByLegacySlug = {};   // earlier Devanagari addresses -> 301 to the Roman ones
+  cat.BOOKS.forEach((b) => {
+    cat.booksBySlug[b.slug] = b; cat.booksById[b.id] = b; cat.booksByLegacySlug[b.legacySlug] = b;
+  });
+  cat.PEOPLE.forEach((p) => { cat.peopleBySlug[p.slug] = p; cat.peopleByLegacySlug[p.legacySlug] = p; });
+  cat.CATEGORY_META.forEach((c) => { cat.catByKey[c.key] = c; });
+  return cat;
+}
 
 function loadCatalogue() {
   const stamp = sourceStamp();
   if (catalogueCache && catalogueCache.stamp === stamp) return Promise.resolve(catalogueCache.value);
   if (cataloguePending && cataloguePending.stamp === stamp) return cataloguePending.promise;
-  const promise = (async () => {
-    const [template, dataSrc, appSrc] = await Promise.all(SOURCE_FILES.map(readSource));
-    const ex = runApp(dataSrc, appSrc);
-    const cat = {
-      template: template,
-      BOOKS: ex.BOOKS, PEOPLE: ex.PEOPLE, CATEGORY_META: ex.CATEGORY_META,
-      genBlurb: ex.genBlurb, HELP_FAQS: ex.HELP_FAQS, personPath: ex.personPath, bookPath: ex.bookPath, slugAliases: ex.SLUG_ALIASES || {},
-      booksBySlug: {}, booksById: {}, peopleBySlug: {}, catByKey: {}, base: new Map()
-    };
-    cat.booksByLegacySlug = {}; cat.peopleByLegacySlug = {};   // earlier Devanagari addresses -> 301 to the Roman ones
-    cat.BOOKS.forEach((b) => {
-      cat.booksBySlug[b.slug] = b; cat.booksById[b.id] = b; cat.booksByLegacySlug[b.legacySlug] = b;
-      cat.base.set(b, { categoryKeys: b.categoryKeys, categoryMetas: b.categoryMetas, category: b.category, categoryMeta: b.categoryMeta });
-    });
-    cat.PEOPLE.forEach((p) => { cat.peopleBySlug[p.slug] = p; cat.peopleByLegacySlug[p.legacySlug] = p; });
-    cat.CATEGORY_META.forEach((c) => { cat.catByKey[c.key] = c; });
-    catalogueCache = { stamp: stamp, value: cat };
-    return cat;
-  })();
+  const promise = buildCatalogue(null).then((cat) => { catalogueCache = { stamp: stamp, value: cat }; return cat; });
   cataloguePending = { stamp: stamp, promise: promise };
   promise.catch(() => { if (cataloguePending && cataloguePending.promise === promise) cataloguePending = null; });
   return promise;
 }
 
-// ---------------------------------------------------------------- category overrides (DB)
+// ---------------------------------------------------------------- the admin panel's layer (DB)
 
-// The admin panel can give a book several categories; the browser overlays those on the
-// static data via /api/book-meta. Do the same here (best effort: a slow or missing database
-// just means the page uses the categories from swadhyay-data.js).
-const DB_TTL_OK = 10 * 60 * 1000;
+// The admin panel keeps its changes in the database (disabled books, titles/people/covers, books it created, category
+// names and extra categories per book); the browser lays them over the static data with the app's applyCatalogueState().
+// Do the same here, with the very same function (best effort: a slow or missing database just means the static data is used).
+const DB_TTL_OK = 2 * 60 * 1000;
 const DB_TTL_FAIL = 60 * 1000;
-let dbOverlay = { at: 0, ttl: 0, map: null };
+let dbState = { at: 0, ttl: 0, state: null };
+let stateCatalogue = null; // { stamp, key, value }
 
-async function fetchDbCategories() {
+async function fetchDbState() {
   if (process.env.VERCEL && !process.env.TURSO_DATABASE_URL) return null;
   const db = require('./db');
   await db.init();
-  const rows = await db.all('SELECT bc.book_file, c.key, c.hi, c.en, c.icon FROM book_categories bc JOIN categories c ON c.key = bc.category_key');
-  const map = {};
-  rows.forEach((r) => { (map[r.book_file] = map[r.book_file] || []).push({ key: r.key, hi: r.hi, en: r.en, icon: r.icon }); });
-  return map;
+  return require('./admin/public').publicMeta();
 }
 
-async function refreshDbOverlay() {
+async function refreshDbState() {
   const now = Date.now();
-  if (dbOverlay.at && now - dbOverlay.at < dbOverlay.ttl) return;
-  let map = dbOverlay.map, ttl = DB_TTL_FAIL;
+  if (dbState.at && now - dbState.at < dbState.ttl) return;
+  let state = dbState.state, ttl = DB_TTL_FAIL;
   try {
-    const got = await Promise.race([fetchDbCategories(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 2000))]);
-    if (got) { map = got; ttl = DB_TTL_OK; }
-  } catch (e) { /* keep the previous overlay, retry in a minute */ }
-  dbOverlay = { at: now, ttl: ttl, map: map };
-}
-
-function applyOverlay(cat, map) {
-  cat.BOOKS.forEach((b) => {
-    const base = cat.base.get(b);
-    b.categoryKeys = base.categoryKeys; b.categoryMetas = base.categoryMetas; b.category = base.category; b.categoryMeta = base.categoryMeta;
-    const cats = map && map[b.file];
-    if (cats && cats.length) {
-      b.categoryKeys = cats.map((c) => c.key);
-      b.categoryMetas = cats.map((c) => cat.catByKey[c.key] || c);
-      b.category = b.categoryKeys[0];
-      b.categoryMeta = b.categoryMetas[0];
-    }
-  });
+    const got = await Promise.race([fetchDbState(), new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 2000))]);
+    if (got) { state = got; ttl = DB_TTL_OK; }
+  } catch (e) { /* keep the previous state, retry in a minute */ }
+  dbState = { at: now, ttl: ttl, state: state };
 }
 
 async function getCatalogue() {
-  const cat = await loadCatalogue();
-  await refreshDbOverlay();
-  // Re-applied whenever the overrides were refreshed (and for a freshly built catalogue).
-  if (cat.overlayAt !== dbOverlay.at) { applyOverlay(cat, dbOverlay.map); cat.overlayAt = dbOverlay.at; }
-  return cat;
+  await refreshDbState();
+  if (!dbState.state) return loadCatalogue();
+  const stamp = sourceStamp();
+  const key = JSON.stringify(dbState.state);
+  if (stateCatalogue && stateCatalogue.stamp === stamp && stateCatalogue.key === key) return stateCatalogue.value;
+  const value = await buildCatalogue(JSON.parse(key));
+  stateCatalogue = { stamp: stamp, key: key, value: value };
+  return value;
 }
 
 // ---------------------------------------------------------------- page building

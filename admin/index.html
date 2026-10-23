@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kalyan Admin</title>
+<link rel="icon" href="/assets/favicon-32.png">
+<link rel="stylesheet" href="/admin/admin.css">
+</head>
+<body>
+<div id="app" class="app">
+  <aside class="sidebar" id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#/">
+      <span class="brand-mark">ॐ</span>
+      <span class="brand-text"><b>Kalyan</b><small>Admin panel</small></span>
+    </a>
+    <nav id="nav"></nav>
+    <div class="sidebar-foot">
+      <a class="nav-link" href="/" target="_blank" rel="noopener"><span class="ic">↗</span><span>Open the site</span></a>
+      <button class="nav-link" id="themeBtn" type="button"><span class="ic">◐</span><span>Switch theme</span></button>
+      <div class="whoami" id="whoami"></div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" id="menuBtn" type="button" aria-label="Open menu">☰</button>
+      <div class="topbar-title">
+        <h1 id="pageTitle">Dashboard</h1>
+        <p id="pageSub"></p>
+      </div>
+      <div class="topbar-actions" id="pageActions"></div>
+    </header>
+    <main id="view" class="view" tabindex="-1"></main>
+  </div>
+</div>
+<div id="layer"></div>
+<div id="toasts" class="toasts" aria-live="polite"></div>
+
+<script src="/admin/js/core.js"></script>
+<script src="/admin/js/media.js"></script>
+<script src="/admin/js/dashboard.js"></script>
+<script src="/admin/js/books.js"></script>
+<script src="/admin/js/editor.js"></script>
+<script src="/admin/js/categories.js"></script>
+<script src="/admin/js/lms.js"></script>
+<script src="/admin/js/people.js"></script>
+<script src="/admin/js/system.js"></script>
+<script>Admin.start();</script>
+</body>
+</html>

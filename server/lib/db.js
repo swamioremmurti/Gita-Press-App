@@ -127,6 +127,74 @@ const SCHEMA_STATEMENTS = [
     PRIMARY KEY (vrat_slug, source_id)
   )`,
   'CREATE TABLE IF NOT EXISTS kv (key TEXT PRIMARY KEY, value TEXT)',
+  // ---- admin panel (see server/lib/admin.js) ----
+  // per-book switches and display overrides (title, people, cover ...) -- applied on top of swadhyay-data.js at runtime
+  `CREATE TABLE IF NOT EXISTS book_state (
+    book_file  TEXT PRIMARY KEY,
+    enabled    INTEGER NOT NULL DEFAULT 1,
+    featured   INTEGER NOT NULL DEFAULT 0,
+    overrides  TEXT NOT NULL DEFAULT '{}',
+    updated_at INTEGER NOT NULL DEFAULT 0
+  )`,
+  // a book whose text lives in the database (edited from the chapter editor, or created in the admin panel)
+  `CREATE TABLE IF NOT EXISTS book_docs (
+    book_file  TEXT PRIMARY KEY,
+    origin     TEXT NOT NULL DEFAULT 'imported',
+    prefix     TEXT NOT NULL DEFAULT '',
+    suffix     TEXT NOT NULL DEFAULT '',
+    updated_at INTEGER NOT NULL DEFAULT 0
+  )`,
+  `CREATE TABLE IF NOT EXISTS book_chapters (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_file  TEXT NOT NULL,
+    pos        INTEGER NOT NULL,
+    title      TEXT NOT NULL DEFAULT '',
+    size       INTEGER NOT NULL DEFAULT 0,
+    html       TEXT NOT NULL DEFAULT '',
+    updated_at INTEGER NOT NULL DEFAULT 0
+  )`,
+  `CREATE TABLE IF NOT EXISTS chapter_versions (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    book_file  TEXT NOT NULL,
+    chapter_id INTEGER NOT NULL,
+    html       TEXT NOT NULL,
+    note       TEXT NOT NULL DEFAULT '',
+    user_id    INTEGER,
+    created_at INTEGER NOT NULL
+  )`,
+  `CREATE TABLE IF NOT EXISTS media (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    name       TEXT NOT NULL,
+    kind       TEXT NOT NULL DEFAULT 'image',
+    mime       TEXT NOT NULL DEFAULT '',
+    size       INTEGER NOT NULL DEFAULT 0,
+    url        TEXT,
+    data       BLOB,
+    alt        TEXT NOT NULL DEFAULT '',
+    folder     TEXT NOT NULL DEFAULT '',
+    user_id    INTEGER,
+    created_at INTEGER NOT NULL
+  )`,
+  // corrections to the Gita lesson data (assets/data/v1/gita/chNN.json), one row per shloka
+  `CREATE TABLE IF NOT EXISTS gita_patches (
+    ch         INTEGER NOT NULL,
+    v          TEXT NOT NULL,
+    patch      TEXT NOT NULL,
+    updated_at INTEGER NOT NULL,
+    PRIMARY KEY (ch, v)
+  )`,
+  `CREATE TABLE IF NOT EXISTS admin_log (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER,
+    user_name  TEXT NOT NULL DEFAULT '',
+    action     TEXT NOT NULL,
+    target     TEXT NOT NULL DEFAULT '',
+    detail     TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL
+  )`,
+  'CREATE INDEX IF NOT EXISTS idx_book_chapters_book ON book_chapters(book_file, pos)',
+  'CREATE INDEX IF NOT EXISTS idx_chapter_versions_ch ON chapter_versions(chapter_id)',
+  'CREATE INDEX IF NOT EXISTS idx_admin_log_time ON admin_log(created_at)',
   'CREATE INDEX IF NOT EXISTS idx_vrats_parent ON vrats(parent)',
   'CREATE INDEX IF NOT EXISTS idx_book_categories_cat ON book_categories(category_key)',
   'CREATE INDEX IF NOT EXISTS idx_book_tags_tag ON book_tags(tag_id)',
@@ -151,7 +219,8 @@ async function init() {
   // One round trip for the whole schema (was ~14 sequential ones -- on a cold serverless
   // start against a remote Turso DB each of those is a cross-region network hop).
   await client.batch(SCHEMA_STATEMENTS, 'write');
-  await ensureColumns('users', { google_id: 'TEXT', avatar_url: 'TEXT' });
+  await ensureColumns('users', { google_id: 'TEXT', avatar_url: 'TEXT', status: "TEXT NOT NULL DEFAULT 'active'", last_login_at: 'INTEGER' });
+  await ensureColumns('categories', { sort_order: 'INTEGER NOT NULL DEFAULT 0', hidden: 'INTEGER NOT NULL DEFAULT 0', edited: 'INTEGER NOT NULL DEFAULT 0' });
   return client;
 }
 

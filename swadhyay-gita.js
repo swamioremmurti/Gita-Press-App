@@ -99,6 +99,7 @@
       });
     }
     s.updatedAt = +v.updatedAt || 0;
+    s.resetAt = +v.resetAt || 0;
     return s;
   }
   var S = (function () { try { return normalize(JSON.parse(localStorage.getItem(LS))); } catch (e) { return blank(); } })();
@@ -114,7 +115,29 @@
     cache[name].catch(function () { delete cache[name]; });
     return cache[name];
   }
-  function getChapter(ch) { return getJSON("ch" + pad(ch) + ".json"); }
+  /* corrections made in the admin panel (/api/gita-patches): { "<ch>": { "<verse>": { s, t, m } } }, laid over the chapter files */
+  var patchesP = null;
+  function getPatches() {
+    if (!patchesP) patchesP = fetch("/api/gita-patches", { credentials: "same-origin" }).then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) { return j.patches || {}; }).catch(function () { return {}; });
+    return patchesP;
+  }
+  function getChapter(ch) {
+    return getJSON("ch" + pad(ch) + ".json").then(function (data) {
+      return getPatches().then(function (all) {
+        var p = all[ch];
+        if (!p || data.__patched) return data;
+        data.shlokas.forEach(function (sh) {
+          var x = p[sh.v];
+          if (!x) return;
+          if (x.s !== undefined) sh.s = x.s;
+          if (x.t !== undefined) sh.t = x.t;
+          if (x.m !== undefined) sh.m = x.m;
+        });
+        data.__patched = true;
+        return data;
+      });
+    });
+  }
 
   function buildPlan(idx) {
     var plan = [], n = 0;
@@ -190,6 +213,10 @@
   function mergeRemote(r) {
     if (!r) return;
     r = normalize(r);
+    if (r.resetAt && r.resetAt > (S.resetAt || 0)) {   // the admin changed this account's course: take it as it is
+      S = r;
+      return;
+    }
     Object.keys(r.done).forEach(function (k) {                     // each day by its own timestamp
       var l = S.done[k];
       if (!l || r.done[k].t > l.t) S.done[k] = r.done[k];
@@ -1208,11 +1235,18 @@
   function start() {
     ready().then(function () { arm(); return syncDown(); }).then(function (changed) { if (changed) { arm(); refreshAll(); } }).catch(function () {});
   }
+  function courseOff() {
+    var a = app(), st = a && a.siteState && a.siteState();
+    return st && st.lms && st.lms.enabled === false ? (st.lms.notice || "The Gita course is paused for now. Please check back soon.") : "";
+  }
   window.SwadhyayGita = {
     pageHtml: function () {
+      var off = courseOff();
+      if (off) return '<section class="gl-root"><main class="content-pad gl-wrap"><p class="gl-note">' + esc(off) + '</p></main></section>';
       return '<section class="gl-root" data-gita>' + pageHero() + '<main class="content-pad gl-wrap" data-gl-main><p class="gl-note">…</p></main></section>';
     },
     mount: function (h) {
+      if (courseOff()) return;
       if (h) { helpers.tx = h.tx || helpers.tx; helpers.toast = h.toast || helpers.toast; }
       root = document.querySelector("[data-gita]");
       if (!root) return;
@@ -1231,6 +1265,7 @@
       start();
     },
     mountCard: function (el, h) {
+      if (el && courseOff()) { el.hidden = true; return; }
       if (h) { helpers.tx = h.tx || helpers.tx; helpers.toast = h.toast || helpers.toast; }
       cardEl = el;
       if (!el) return;

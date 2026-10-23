@@ -12,7 +12,9 @@ const crypto = require('crypto');
 const { OAuth2Client } = require('google-auth-library');
 const db = require('./db');
 const auth = require('./auth');
-const registry = require('./bookRegistry');
+const adminApi = require('./admin');
+const adminPublic = require('./admin/public');
+const mediaApi = require('./admin/media');
 const vrats = require('./vrats');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
@@ -108,6 +110,8 @@ async function handleLogin(req, res) {
   if (!user || !auth.verifyPassword(String(payload.password), user.salt, user.password_hash)) {
     return sendJSON(res, 401, { error: 'गलत ईमेल या पासवर्ड' });
   }
+  if (user.status === 'suspended') return sendJSON(res, 403, { error: 'This account has been suspended' });
+  await db.run('UPDATE users SET last_login_at = ? WHERE id = ?', [Date.now(), user.id]);
   const token = await auth.createSession(user.id);
   auth.setSessionCookie(res, token);
   sendJSON(res, 200, { user: auth.publicUser(user) });
@@ -158,6 +162,8 @@ async function handleGoogleAuth(req, res) {
       [name, email, googleId, avatarUrl, 'user', Date.now()]);
     user = await db.get('SELECT * FROM users WHERE id = ?', [db.lastInsertId()]);
   }
+  if (user.status === 'suspended') return sendJSON(res, 403, { error: 'This account has been suspended' });
+  await db.run('UPDATE users SET last_login_at = ? WHERE id = ?', [Date.now(), user.id]);
   const token = await auth.createSession(user.id);
   auth.setSessionCookie(res, token);
   sendJSON(res, 200, { user: auth.publicUser(user) });
@@ -166,29 +172,7 @@ async function handleGoogleAuth(req, res) {
 // ==================================================================== books
 
 async function handleBookMeta(req, res) {
-  const [cats, tags, authorsLink] = await Promise.all([
-    db.all(
-      `SELECT bc.book_file, c.key, c.hi, c.en, c.icon
-       FROM book_categories bc JOIN categories c ON c.key = bc.category_key`
-    ),
-    db.all(
-      `SELECT bt.book_file, t.id, t.label
-       FROM book_tags bt JOIN tags t ON t.id = bt.tag_id`
-    ),
-    db.all(
-      `SELECT ba.book_file, a.id, a.name, a.photo_path
-       FROM book_authors ba JOIN authors a ON a.id = ba.author_id`
-    )
-  ]);
-
-  const meta = {};
-  const ensure = (file) => meta[file] || (meta[file] = { categories: [], tags: [], author: null });
-
-  cats.forEach((r) => ensure(r.book_file).categories.push({ key: r.key, hi: r.hi, en: r.en, icon: r.icon }));
-  tags.forEach((r) => ensure(r.book_file).tags.push({ id: r.id, label: r.label }));
-  authorsLink.forEach((r) => { ensure(r.book_file).author = { id: r.id, name: r.name, photoPath: r.photo_path }; });
-
-  sendJSON(res, 200, { meta }, PUBLIC_CACHE);
+  sendJSON(res, 200, await adminPublic.publicMeta(), PUBLIC_CACHE);
 }
 
 async function handleAllCategories(req, res) {
@@ -313,6 +297,13 @@ async function handleGitaLmsPut(req, res, user) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) return sendJSON(res, 400, { error: 'Missing data' });
   const text = JSON.stringify(data);
   if (Buffer.byteLength(text, 'utf8') > GITA_LMS_MAX_BYTES) return sendJSON(res, 413, { error: 'Too large' });
+  // the admin reset this learner's course (admin panel -> LMS): a device still holding the old copy must not overwrite it
+  const cur = await db.get('SELECT data FROM gita_lms WHERE user_id = ?', [user.id]);
+  if (cur) {
+    let old = null;
+    try { old = JSON.parse(cur.data); } catch (e) { old = null; }
+    if (old && old.resetAt && (Number(data.resetAt) || 0) < old.resetAt) return sendJSON(res, 200, { ok: false, stale: true, data: old });
+  }
   const now = Date.now();
   await db.run(
     `INSERT INTO gita_lms (user_id, data, updated_at) VALUES (?, ?, ?)
@@ -355,254 +346,6 @@ async function handleAsrToken(req, res, user) {
   sendJSON(res, 200, { enabled: true, url: ASR_URL, token: body + '.' + sig, expiresIn: ASR_TOKEN_TTL_S }, { 'Cache-Control': 'no-store' });
 }
 
-// ============================================================== admin: books
-
-function slugFilename(name) {
-  return name.endsWith('.html') ? name : name + '.html';
-}
-
-/** Create a brand-new book: write the already-converted HTML file the admin attached,
- *  register it in swadhyay-data.js (same text-edit tools/book_converter.py uses), and
- *  link its categories/tags/author in the DB. This does NOT convert a .docx/manuscript
- *  -- that stays on tools/book_converter.py; this is for a book that's already in our
- *  HTML template format and just needs to be added to the library. */
-async function handleAdminBookCreate(req, res) {
-  let payload;
-  try { payload = await readJSONBody(req, 25e6); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-
-  const title = String(payload.title || '').trim();
-  if (!title) return sendJSON(res, 400, { error: 'शीर्षक आवश्यक है' });
-
-  const requestedCategories = Array.isArray(payload.categories) ? payload.categories : [];
-  const categories = [];
-  for (const k of requestedCategories) {
-    if (await db.get('SELECT key FROM categories WHERE key = ?', [k])) categories.push(k);
-  }
-  if (!categories.length) return sendJSON(res, 400, { error: 'कम से कम एक श्रेणी चुनें' });
-
-  let htmlData = String(payload.htmlData || '');
-  if (!htmlData) return sendJSON(res, 400, { error: 'पुस्तक की HTML फ़ाइल संलग्न करें' });
-  const m = htmlData.match(/^data:([^;]+);base64,(.*)$/s);
-  if (m) htmlData = m[2];
-  let htmlBytes;
-  try { htmlBytes = Buffer.from(htmlData, 'base64'); } catch { return sendJSON(res, 400, { error: 'फ़ाइल डिकोड नहीं हो सकी' }); }
-  if (!htmlBytes.length) return sendJSON(res, 400, { error: 'फ़ाइल खाली है' });
-
-  const filename = slugFilename(((payload.outName && String(payload.outName).trim()) || title));
-  const destPath = path.join(BOOKS_DIR, filename);
-  if (fs.existsSync(destPath)) return sendJSON(res, 409, { error: `फ़ाइल पहले से मौजूद है: ${filename}` });
-
-  const people = bookPeopleFromPayload(payload);
-  if (!people.publisher && payload.publisherKind !== 'other') people.publisher = 'गीताप्रेस';
-
-  fs.mkdirSync(BOOKS_DIR, { recursive: true });
-  fs.writeFileSync(destPath, htmlBytes);
-  const sizeKB = Math.round((htmlBytes.length / 1024) * 10) / 10;
-
-  registry.registerInDataJs(DATA_JS, filename, categories[0], people, sizeKB);
-  registry.setTitleOverride(APP_JS, filename, title);
-  if (payload.publisherKind === 'other') registry.setNonGitaPress(APP_JS, filename, true);
-
-  for (const key of categories) {
-    await db.run('INSERT OR IGNORE INTO book_categories (book_file, category_key) VALUES (?, ?)', [filename, key]);
-  }
-  const tags = (Array.isArray(payload.tags) ? payload.tags : []).map((t) => String(t).trim()).filter(Boolean).slice(0, 30);
-  for (const label of tags) {
-    let tag = await db.get('SELECT id FROM tags WHERE label = ?', [label]);
-    if (!tag) { await db.run('INSERT INTO tags (label) VALUES (?)', [label]); tag = { id: db.lastInsertId() }; }
-    await db.run('INSERT OR IGNORE INTO book_tags (book_file, tag_id) VALUES (?, ?)', [filename, tag.id]);
-  }
-
-  sendJSON(res, 200, { ok: true, file: filename });
-}
-
-/** The four people/publisher fields of a book (author, tikakar, translator, publisher):
- *  plain text, several names separated by ";" -- stored as-is in swadhyay-data.js. */
-function bookPeopleFromPayload(payload) {
-  const clean = (v) => String(v == null ? '' : v).split(';').map((s) => s.trim()).filter(Boolean).join('; ');
-  return {
-    author: clean(payload.author),
-    tikakar: clean(payload.tikakar),
-    translator: clean(payload.translator),
-    publisher: clean(payload.publisherName)
-  };
-}
-
-/** Edit a book's title / fallback author text / Gita-Press-publisher flag -- these three
- *  live in the static swadhyay-data.js / swadhyay-app.js files (see bookRegistry.js),
- *  unlike categories/tags/author-link below which are pure DB state. The client reloads
- *  the page after a successful save since these files are only read once at boot. */
-async function handleAdminBookMeta(req, res, bookFile) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  if (payload.title !== undefined) {
-    const title = String(payload.title).trim();
-    if (!title) return sendJSON(res, 400, { error: 'शीर्षक खाली नहीं हो सकता' });
-    registry.setTitleOverride(APP_JS, bookFile, title);
-  }
-  const people = bookPeopleFromPayload(payload);
-  if (payload.author !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'author', people.author);
-  if (payload.tikakar !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'tikakar', people.tikakar);
-  if (payload.translator !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'translator', people.translator);
-  if (payload.publisherName !== undefined) registry.updateDataJsField(DATA_JS, bookFile, 'publisher', people.publisher);
-  if (payload.isGitaPress !== undefined) {
-    registry.setNonGitaPress(APP_JS, bookFile, !payload.isGitaPress);
-  }
-  sendJSON(res, 200, { ok: true });
-}
-
-async function handleAdminBookCategories(req, res, bookFile) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const keys = Array.isArray(payload.categories) ? payload.categories : [];
-  await db.run('DELETE FROM book_categories WHERE book_file = ?', [bookFile]);
-  for (const key of keys) {
-    if (await db.get('SELECT key FROM categories WHERE key = ?', [key])) {
-      await db.run('INSERT OR IGNORE INTO book_categories (book_file, category_key) VALUES (?, ?)', [bookFile, key]);
-    }
-  }
-  sendJSON(res, 200, { ok: true });
-}
-
-async function handleAdminBookTags(req, res, bookFile) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const labels = Array.isArray(payload.tags)
-    ? payload.tags.map((t) => String(t).trim()).filter(Boolean).slice(0, 30)
-    : [];
-
-  await db.run('DELETE FROM book_tags WHERE book_file = ?', [bookFile]);
-  for (const label of labels) {
-    let tag = await db.get('SELECT id FROM tags WHERE label = ?', [label]);
-    if (!tag) {
-      await db.run('INSERT INTO tags (label) VALUES (?)', [label]);
-      tag = { id: db.lastInsertId() };
-    }
-    await db.run('INSERT OR IGNORE INTO book_tags (book_file, tag_id) VALUES (?, ?)', [bookFile, tag.id]);
-  }
-  sendJSON(res, 200, { ok: true });
-}
-
-async function handleAdminBookAuthor(req, res, bookFile) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const authorId = payload.authorId ? parseInt(payload.authorId, 10) : null;
-  await db.run('DELETE FROM book_authors WHERE book_file = ?', [bookFile]);
-  if (authorId) await db.run('INSERT INTO book_authors (book_file, author_id) VALUES (?, ?)', [bookFile, authorId]);
-  sendJSON(res, 200, { ok: true });
-}
-
-// ============================================================ admin: authors
-
-async function handleAdminAuthorCreate(req, res) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const name = String(payload.name || '').trim();
-  if (!name) return sendJSON(res, 400, { error: 'नाम आवश्यक है' });
-  await db.run('INSERT INTO authors (name, bio, photo_path, created_at) VALUES (?, ?, NULL, ?)',
-    [name, String(payload.bio || '').trim(), Date.now()]);
-  sendJSON(res, 200, { author: await authorWithBooks(db.lastInsertId()) });
-}
-
-async function handleAdminAuthorUpdate(req, res, id) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const existing = await db.get('SELECT id FROM authors WHERE id = ?', [id]);
-  if (!existing) return sendJSON(res, 404, { error: 'Author not found' });
-  const fields = [];
-  const params = [];
-  if (payload.name !== undefined) { fields.push('name = ?'); params.push(String(payload.name).trim()); }
-  if (payload.bio !== undefined) { fields.push('bio = ?'); params.push(String(payload.bio).trim()); }
-  if (!fields.length) return sendJSON(res, 400, { error: 'Nothing to update' });
-  params.push(id);
-  await db.run(`UPDATE authors SET ${fields.join(', ')} WHERE id = ?`, params);
-  sendJSON(res, 200, { author: await authorWithBooks(id) });
-}
-
-const IMAGE_EXT_BY_MIME = {
-  'image/png': '.png', 'image/jpeg': '.jpg', 'image/jpg': '.jpg', 'image/webp': '.webp'
-};
-
-async function handleAdminAuthorPhoto(req, res, id) {
-  const existing = await db.get('SELECT id, photo_path FROM authors WHERE id = ?', [id]);
-  if (!existing) return sendJSON(res, 404, { error: 'Author not found' });
-
-  let payload;
-  try { payload = await readJSONBody(req, 8e6); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  let imageData = String(payload.imageData || '');
-  if (!imageData) return sendJSON(res, 400, { error: 'imageData is required' });
-
-  let mime = 'image/png';
-  const m = imageData.match(/^data:([^;]+);base64,(.*)$/s);
-  if (m) { mime = m[1]; imageData = m[2]; }
-  const ext = IMAGE_EXT_BY_MIME[mime];
-  if (!ext) return sendJSON(res, 400, { error: 'Unsupported image type: ' + mime });
-
-  let bytes;
-  try { bytes = Buffer.from(imageData, 'base64'); } catch { return sendJSON(res, 400, { error: 'Could not decode image' }); }
-  if (!bytes.length) return sendJSON(res, 400, { error: 'Empty image' });
-
-  fs.mkdirSync(AUTHORS_DIR, { recursive: true });
-  const filename = `author-${id}-${crypto.randomBytes(4).toString('hex')}${ext}`;
-  fs.writeFileSync(path.join(AUTHORS_DIR, filename), bytes);
-
-  // Clean up the previous photo file, if any, now that it's been replaced.
-  if (existing.photo_path) {
-    const prevAbs = path.join(PROJECT_ROOT, existing.photo_path);
-    if (prevAbs.startsWith(AUTHORS_DIR)) fs.unlink(prevAbs, () => {});
-  }
-
-  const relPath = `assets/authors/${filename}`;
-  await db.run('UPDATE authors SET photo_path = ? WHERE id = ?', [relPath, id]);
-  sendJSON(res, 200, { photoPath: relPath });
-}
-
-// ============================================================== admin: users
-
-async function handleAdminUsersList(req, res) {
-  const rows = await db.all('SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC');
-  sendJSON(res, 200, { users: rows });
-}
-
-async function handleAdminUserRole(req, res, id, requestingUser) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const role = payload.role === 'admin' ? 'admin' : 'user';
-  if (id === requestingUser.id && role !== 'admin') {
-    return sendJSON(res, 400, { error: 'आप स्वयं को admin से नहीं हटा सकते' });
-  }
-  const existing = await db.get('SELECT id FROM users WHERE id = ?', [id]);
-  if (!existing) return sendJSON(res, 404, { error: 'User not found' });
-  await db.run('UPDATE users SET role = ? WHERE id = ?', [role, id]);
-  sendJSON(res, 200, { ok: true });
-}
-
-// =========================================================== admin: comments
-
-async function handleAdminCommentsList(req, res) {
-  const rows = await db.all(
-    `SELECT c.id, c.book_file, c.text, c.status, c.created_at, u.name AS author
-     FROM comments c JOIN users u ON u.id = c.user_id
-     ORDER BY c.created_at DESC LIMIT 500`
-  );
-  sendJSON(res, 200, { comments: rows });
-}
-
-async function handleAdminCommentStatus(req, res, id) {
-  let payload;
-  try { payload = await readJSONBody(req); } catch (e) { return sendJSON(res, 400, { error: e.message }); }
-  const status = payload.status === 'hidden' ? 'hidden' : 'visible';
-  const existing = await db.get('SELECT id FROM comments WHERE id = ?', [id]);
-  if (!existing) return sendJSON(res, 404, { error: 'Comment not found' });
-  await db.run('UPDATE comments SET status = ? WHERE id = ?', [status, id]);
-  sendJSON(res, 200, { ok: true });
-}
-
-async function handleAdminCommentDelete(req, res, id) {
-  await db.run('DELETE FROM comments WHERE id = ?', [id]);
-  sendJSON(res, 200, { ok: true });
-}
-
 // =========================================================================
 
 /**
@@ -636,6 +379,15 @@ async function handle(req, res, pathname) {
     if (method === 'POST' && pathname === '/api/auth/google') { await handleGoogleAuth(req, res); return true; }
 
     if (method === 'GET' && pathname === '/api/book-meta') { await handleBookMeta(req, res); return true; }
+    if (method === 'GET' && pathname === '/api/book-content') {
+      const file = new URL(req.url, 'http://x').searchParams.get('file') || '';
+      await adminPublic.serveBookContent(req, res, file);
+      return true;
+    }
+    const mm = pathname.match(/^\/api\/media\/(\d+)(?:\/.*)?$/);
+    if ((method === 'GET' || method === 'HEAD') && mm) { await mediaApi.serve(req, res, parseInt(mm[1], 10)); return true; }
+    if (method === 'GET' && pathname === '/api/gita-patches') { sendJSON(res, 200, { patches: await adminPublic.publicPatches() }, PUBLIC_CACHE); return true; }
+
     if (method === 'GET' && pathname === '/api/categories') { await handleAllCategories(req, res); return true; }
     if (method === 'GET' && pathname === '/api/tags') { await handleAllTags(req, res); return true; }
 
@@ -675,43 +427,10 @@ async function handle(req, res, pathname) {
       if (method === 'PUT' || method === 'POST') { await handleGitaLmsPut(req, res, user); return true; }
     }
 
-    // ---- admin routes: everything below requires role === 'admin' ----
+    // ---- admin routes: everything below requires role === 'admin' (see server/lib/admin/) ----
     if (pathname.startsWith('/api/admin/')) {
-      if (!user || user.role !== 'admin') { sendJSON(res, 403, { error: 'Admin अनुमति आवश्यक है' }); return true; }
-
-      if (method === 'POST' && pathname === '/api/admin/books') { await handleAdminBookCreate(req, res); return true; }
-
-      m = pathname.match(/^\/api\/admin\/books\/([^/]+)$/);
-      if (method === 'PATCH' && m) { await handleAdminBookMeta(req, res, decodeURIComponent(m[1])); return true; }
-
-      m = pathname.match(/^\/api\/admin\/books\/([^/]+)\/categories$/);
-      if (method === 'POST' && m) { await handleAdminBookCategories(req, res, decodeURIComponent(m[1])); return true; }
-
-      m = pathname.match(/^\/api\/admin\/books\/([^/]+)\/tags$/);
-      if (method === 'POST' && m) { await handleAdminBookTags(req, res, decodeURIComponent(m[1])); return true; }
-
-      m = pathname.match(/^\/api\/admin\/books\/([^/]+)\/author$/);
-      if (method === 'POST' && m) { await handleAdminBookAuthor(req, res, decodeURIComponent(m[1])); return true; }
-
-      if (method === 'POST' && pathname === '/api/admin/authors') { await handleAdminAuthorCreate(req, res); return true; }
-
-      m = pathname.match(/^\/api\/admin\/authors\/(\d+)$/);
-      if (method === 'PATCH' && m) { await handleAdminAuthorUpdate(req, res, parseInt(m[1], 10)); return true; }
-
-      m = pathname.match(/^\/api\/admin\/authors\/(\d+)\/photo$/);
-      if (method === 'POST' && m) { await handleAdminAuthorPhoto(req, res, parseInt(m[1], 10)); return true; }
-
-      if (method === 'GET' && pathname === '/api/admin/users') { await handleAdminUsersList(req, res); return true; }
-
-      m = pathname.match(/^\/api\/admin\/users\/(\d+)\/role$/);
-      if (method === 'PATCH' && m) { await handleAdminUserRole(req, res, parseInt(m[1], 10), user); return true; }
-
-      if (method === 'GET' && pathname === '/api/admin/comments') { await handleAdminCommentsList(req, res); return true; }
-
-      m = pathname.match(/^\/api\/admin\/comments\/(\d+)$/);
-      if (method === 'PATCH' && m) { await handleAdminCommentStatus(req, res, parseInt(m[1], 10)); return true; }
-      if (method === 'DELETE' && m) { await handleAdminCommentDelete(req, res, parseInt(m[1], 10)); return true; }
-
+      if (!user || user.role !== 'admin') { sendJSON(res, 403, { error: 'Admin access is required' }); return true; }
+      if (await adminApi.handle(req, res, pathname, user)) return true;
       sendJSON(res, 404, { error: 'Unknown admin route' });
       return true;
     }
