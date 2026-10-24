@@ -416,6 +416,14 @@
   }
 
   var COVER_OVERRIDES = {
+    "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html": "assets/covers/geetaa-parhne-ke-laabh.webp",
+    "गीता पढ़ने के लाभ.html": "assets/covers/geetaa-parhne-ke-laabh.webp",
+    "क्रान्तिकारी सन्तवाणी.html": "assets/covers/kraantikaaree-santavaanee.webp",
+    "ज्ञान-मणिमाला तथा सत्संग माला.html": "assets/covers/jnyaan-manimaalaa-tathaa-satsng-maalaa.webp",
+    "गीता के परम प्रचारक.html": "assets/covers/geetaa-ke-param-prachaarak.webp",
+    "आनन्द मार्ग.html": "assets/covers/aanand-maarg.webp",
+    "क्या करें क्या न करें.html": "assets/covers/kyaa-karen-kyaa-n-karen.webp",
+    "आवश्यक शिक्षा.html": "assets/covers/aavashyak-shikshaa.webp",
     "श्रीरामसहस्रनामस्तोत्रम् नामावली तथा संक्षिप्त प्रयोग-विधि सहित.html": "assets/covers/shreeraamasahasranaamastotram-naamaavalee-tathaa-snkshipt-prayog-vidhi-sahit.webp",
     "कल्याण प्राप्ति के उपाय.html": "assets/covers/kalyaan-praapti-ke-upaay.webp",
     "आनन्द कैसे मिले.html": "assets/covers/aanand-kaise-mile.webp",
@@ -957,6 +965,8 @@
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
   var TITLE_OVERRIDES = {
+    "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)",
+    "ज्ञान-मणिमाला तथा सत्संग माला.html": "ज्ञान-मणिमाला तथा सत्संग माला",
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी",
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी (पदच्छेद-अन्वयसहित)",
     "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html": "श्रीलिङ्ग महापुराण",
@@ -986,6 +996,16 @@
     "avatar-ka-siddhant": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
     "ईश्वर-दयालु-और-न्यायकारी-है": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
     "अवतार-का-सिद्धान्त": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
+    /* the two books that were merged into "ज्ञान-मणिमाला तथा सत्संग माला": their old addresses open it */
+    "gyan-mani-mala": "ज्ञान-मणिमाला तथा सत्संग माला.html",
+    "satsang-mala": "ज्ञान-मणिमाला तथा सत्संग माला.html",
+    "ज्ञान-मणि-माला": "ज्ञान-मणिमाला तथा सत्संग माला.html",
+    "सत्संग-माला": "ज्ञान-मणिमाला तथा सत्संग माला.html",
+    /* the two books merged into "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)" */
+    "gita-parhane-ke-labh": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
+    "tyag-se-bhagavatprapti": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
+    "गीता-पढ़ने-के-लाभ": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
+    "त्याग-से-भगवत्प्राप्ति": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
     /* आत्मोद्धारके साधन was renamed "आत्मोद्धारके साधन भाग - १": its old addresses still work */
     "atmoddharake-sadhan": "आत्मोद्धारके साधन भाग - १.html",
     "आत्मोद्धारके-साधन": "आत्मोद्धारके साधन भाग - १.html"
@@ -1037,7 +1057,11 @@
     "ईश्वर दयालु और न्यायकारी है.html": true,                         // merged into "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त"
     "अवतार का सिद्धान्त.html": true,                                  // (same)
     "आचार्य के सदुपेदश.html": true,                                   // switched off (hidden from the library)
-    "श्रीकृष्ण विज्ञान.html": true                                      // switched off (not a Gita Press book; hidden from the site)
+    "श्रीकृष्ण विज्ञान.html": true,     
+    "ज्ञान मणि माला.html": true,                                       // merged into "ज्ञान-मणिमाला तथा सत्संग माला"
+    "सत्संग माला.html": true,                                          // (same)
+    "गीता पढ़ने के लाभ.html": true,                                     // merged into "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)"
+    "त्याग से भगवत्प्राप्ति.html": true                                  // (same)                                // switched off (not a Gita Press book; hidden from the site)
   };
 
   /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:

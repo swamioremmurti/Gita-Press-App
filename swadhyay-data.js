@@ -5185,5 +5185,23 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  111.0
+    },
+    {
+        "file":  "ज्ञान-मणिमाला तथा सत्संग माला.html",
+        "category":  "Siksha evam Katha",
+        "author":  "श्रीमगनलाल हरिभाई व्यास",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  510.6
+    },
+    {
+        "file":  "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
+        "category":  "Gita",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  115.8
     }
 ];
