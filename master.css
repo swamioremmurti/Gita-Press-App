@@ -2100,7 +2100,7 @@ p.Sub-Heading {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.TXT {
+p.Normal {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
@@ -2151,7 +2151,7 @@ p.Uttar {
 	text-decoration:none;
 	text-indent:18px;
 }
-p.TXT + p.Prashna,
+p.Normal + p.Prashna,
 p.Uttar + p.Prashna {
 	margin-top:20px;
 }
@@ -5115,23 +5115,6 @@ p.Shlok-Subject {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Normal {
-	-epub-hyphens:none;
-	-epub-ruby-position:over;
-	color:black;
-	font-family:ChanakyaUni, serif;
-	font-size:1.333em;
-	font-style:normal;
-	font-variant:normal;
-	font-weight:normal;
-	line-height:1.2;
-	margin-bottom:8px;
-	margin-left:0px;
-	margin-right:0px;
-	text-align:justify;
-	text-decoration:none;
-	text-indent:18px;
-}
 p.cover-subtitle {
 	color:navy;
 	font-family:ChanakyaUni, serif;
@@ -7399,7 +7382,7 @@ p[class*="Footnotes"] + p[class*="Footnotes"] {
 	padding-top: 6px;
 }
 
-p.TXT em {
+p.Normal em {
 	color:#8a7f6a;
 	font-size:0.85em;
 	font-style:italic;

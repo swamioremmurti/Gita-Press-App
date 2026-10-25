@@ -372,7 +372,7 @@ async function handleChapterSave(ctx, id) {
 async function handleChapterAdd(ctx, file) {
   await ensureDoc(file, ctx.req);
   const b = await readJSON(ctx.req, 12e6);
-  const html = typeof b.html === 'string' ? b.html.trim() : '<p class="Heading">New chapter</p>\n<p class="TXT"></p>';
+  const html = typeof b.html === 'string' ? b.html.trim() : '<p class="Heading">New chapter</p>\n<p class="Normal"></p>';
   let pos;
   if (b.afterId) {
     const ref = await chapterRow(b.afterId);

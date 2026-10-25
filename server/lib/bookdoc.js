@@ -66,7 +66,7 @@ function blankBook(title) {
   const prefix = '<!DOCTYPE html>\n<html lang="hi">\n<head>\n<meta charset="UTF-8">\n<title>' + t + '</title>\n' +
     '<link rel="stylesheet" href="../../master.css">\n<style>\n  body { max-width: 900px; margin: 0 auto; padding: 1rem; }\n</style>\n</head>\n<body>';
   const first = '<p class="cover-Shri-Hari">॥ ॐ श्रीपरमात्मने नमः ॥</p>\n<p class="cover-Book-Name">' + t + '</p>';
-  const second = '<p class="Heading">Chapter 1</p>\n<p class="TXT">Start writing here.</p>';
+  const second = '<p class="Heading">Chapter 1</p>\n<p class="Normal">Start writing here.</p>';
   return { prefix, chapters: [first, second], suffix: '</body>\n</html>' };
 }
 

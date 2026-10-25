@@ -416,6 +416,14 @@
   }
 
   var COVER_OVERRIDES = {
+    "संतवाणी—ढाई हजार अनमोल बोल.html": "assets/covers/sant-vani-dhai-hazaar-anmol-bol.webp",
+    "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html": "assets/covers/prem-kaa-sachchaa-svaroop.webp",
+    "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html": "assets/covers/bhagavaan-kaa-hetu-rahit-sauhaard.webp",
+    "परलोक और पुनर्जन्म एवं वैराग्य.html": "assets/covers/paralok-punarjanm-vairagya.webp",
+    "कल्याण कैसे हो.html": "assets/covers/kalyan-kaise-ho.webp",
+    "अग्निपुराण.html": "assets/covers/agni-puran.webp",
+    "हनुमान-बाहुक भावार्थ सहित.html": "assets/covers/hanuman-bahuk-bhavarth-sahit.webp",
+    "लव कुश चरित्र.html": "assets/covers/lav-kush-charitra.webp",
     "प्रेरणाप्रद कथाएँ.html": "assets/covers/prernaprad-kathaen.webp",
     "श्रीनारायणीयम्.html": "assets/covers/shri-narayaneeyam.webp",
     "संक्षिप्त महाभारत.html": "assets/covers/sankshipt-mahabharat.webp",
@@ -544,7 +552,7 @@
     "महात्मा किसे कहते हैं.html": "assets/covers/mahaatmaa-kise-kahate-hain.webp",
     "सार संग्रह.html": "assets/covers/saar-sngrah.webp",
     "सत्संग के अमृत कण.html": "assets/covers/satsng-ke-amrit-kan.webp",
-    "गोवध भारत का कलंक.html": "assets/covers/govadh-bhaarat-kaa-kalnk.webp",
+    "गोवध भारतका कलंक एवं गायका माहात्म्य.html": "assets/covers/govadh-bhaarat-kaa-kalnk.webp",
     "पातञ्जलयोगप्रदीप.html": "assets/covers/paatanyjalayogapradeep.webp",
     "पातञ्जलयोगदर्शन.html": "assets/covers/paatanyjalayogadarshan.webp",
     "व्यापार सुधार की आवश्यकता.html": "assets/covers/vyaapaar-sudhaar-kee-aavashyakataa.webp",
@@ -686,7 +694,7 @@
     "मेरे तो गिरधर गोपाल.html": "assets/covers/mere-to-giradhar-gopaal.webp",
     "रामायण के कुछ आदर्श पात्र.html": "assets/covers/raamaayan-ke-kuchh-aadarsh-paatr.webp",
     "लघुसिद्धान्तकौमुदी.html": "assets/covers/laghusiddhaantakaumudee.webp",
-    "वासुदेव सर्वम्.html": "assets/covers/vaasudev-sarvam.webp",
+    "वासुदेवः सर्वम्.html": "assets/covers/vaasudev-sarvam.webp",
     "विदुरनीति.html": "assets/covers/viduraneeti.webp",
     "विनय-पत्रिका.html": "assets/covers/vinay-patrikaa.webp",
     "विरह पदावली.html": "assets/covers/virah-padaavalee.webp",
@@ -971,6 +979,9 @@
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
   var TITLE_OVERRIDES = {
+    "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय",
+    "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html": "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?",
+    "परलोक और पुनर्जन्म एवं वैराग्य.html": "परलोक और पुनर्जन्म एवं वैराग्य",
     "पदच्छेद.html": "श्रीमद्भगवद्‍गीता - (पदच्छेद अन्वय और साधारण भाषाटीकासहित)",
     "धर्म क्या है भगवान् क्या है.html": "धर्म क्या है? भगवान् क्या है ?",
     "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)",
@@ -998,6 +1009,27 @@
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "माहात्म्यसहित श्रीमद्भगवद्गीता"
   };
   var SLUG_ALIASES = {
+    /* "वासुदेवः सर्वम्" was "वासुदेव सर्वम्": the old addresses open it */
+    "vasudev-sarvam": "वासुदेवः सर्वम्.html",
+    "वासुदेव-सर्वम्": "वासुदेवः सर्वम्.html",
+    /* "गोवध भारतका कलंक एवं गायका माहात्म्य" was "गोवध भारत का कलंक": the old addresses open it */
+    "govadh-bharat-ka-kalank": "गोवध भारतका कलंक एवं गायका माहात्म्य.html",
+    "गोवध-भारत-का-कलंक": "गोवध भारतका कलंक एवं गायका माहात्म्य.html",
+    /* the two books merged into "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय": their old addresses open it */
+    "prem-ka-sachcha-svarup": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html",
+    "shok-nash-ke-upay": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html",
+    "प्रेम-का-सच्चा-स्वरूप": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html",
+    "शोक-नाश-के-उपाय": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html",
+    /* the two books merged into "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?": their old addresses open it */
+    "bhagavan-ka-hetu-rahit-sauhard": "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html",
+    "mahatma-kise-kahate-hain": "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html",
+    "भगवान्-का-हेतु-रहित-सौहार्द": "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html",
+    "महात्मा-किसे-कहते-हैं": "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html",
+    /* the two books merged into "परलोक और पुनर्जन्म एवं वैराग्य": their old addresses open it */
+    "paralok-aur-punarjanm": "परलोक और पुनर्जन्म एवं वैराग्य.html",
+    "vairagy": "परलोक और पुनर्जन्म एवं वैराग्य.html",
+    "परलोक-और-पुनर्जन्म": "परलोक और पुनर्जन्म एवं वैराग्य.html",
+    "वैराग्य": "परलोक और पुनर्जन्म एवं वैराग्य.html",
     "श्रीमद्भगवद्गीतामोटेअक्षरोंमें": "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html",
     /* the two books that were merged into one: their old addresses open the merged book */
     "ishvar-dayalu-aur-nyayakari-hai": "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
@@ -1065,6 +1097,12 @@
     "सुदर्शनसिंह ‘चक्र’": "sudarshan-singh-chakra",
   };
   var HIDDEN_BOOKS = {
+    "प्रेम का सच्चा स्वरूप.html": true,                                // merged into "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय"
+    "शोक नाश के उपाय.html": true,                                      // (same)
+    "भगवान् का हेतु रहित सौहार्द.html": true,                         // merged into "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?"
+    "महात्मा किसे कहते हैं.html": true,                                 // (same)
+    "परलोक और पुनर्जन्म.html": true,                                   // merged into "परलोक और पुनर्जन्म एवं वैराग्य"
+    "वैराग्य.html": true,                                              // (same)
     "संक्षिप्त श्रीमद्देवीभागवत.html": true,                              // switched off (hidden from the library)
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true,  // replaced by the पदच्छेद-अन्वयसहित
     "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true,                   // same text as the large-print edition, which now carries this title edition
@@ -1080,7 +1118,7 @@
     "भगवान् क्या है.html": true                                         // (same)
   };
 
-  /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
+  /* "Normal, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
      "Name" = paragraphs with exactly that class, "Name*" = any class containing Name, "Name!Other" = class Name unless the
      paragraph also has class Other (for a book whose Sanskrit prose shares the meaning class). */
   function arthSelectors(spec) {
@@ -1980,14 +2018,14 @@
 
   function categoryTabs(activeKey) {
     return '<div class="cat-tabs-wrap">' +
-      '<button class="row-nav prev" aria-label="पिछला">‹</button>' +
+      '<button class="row-nav prev" type="button" aria-label="पिछला"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
       '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.filter(function (c) { return !c.hidden; }).map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
           '<span class="cat-ic" aria-hidden="true">' + lineIcon(CAT_ICONS[c.key] || CAT_ICONS.all) + '</span>' +
           '<span class="cat-tx"><span class="cat-nm">' + esc(tx(c.hi, c.en)) + '</span> <span class="cnt">(' + count + ')</span></span></a>';
       }).join("") + '</nav>' +
-      '<button class="row-nav next" aria-label="अगला">›</button>' +
+      '<button class="row-nav next" type="button" aria-label="अगला"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
       '</div>';
   }
 
@@ -3605,7 +3643,7 @@
   var READER_PARA_INDENT = "2.2em";
   /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
   var READER_NO_INDENT_BOOKS = { "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": true };
-  var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.TXT,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.Question,p.Answer";
+  var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.Question,p.Answer";
 
   // night: the page is a white body that a filter inverts; the canvas around it must match what that gives (#121212)
   function readerBg(theme) { return theme === "sepia" ? "#f4ecd8" : theme === "night" ? "#121212" : "#ffffff"; }
@@ -5389,8 +5427,16 @@
     document.querySelectorAll(".cat-tabs-wrap").forEach(function (wrap) {
       var scroller = wrap.querySelector(".cat-tabs");
       var prev = wrap.querySelector(".prev"), next = wrap.querySelector(".next");
-      if (prev) prev.addEventListener("click", function () { scroller.scrollBy({ left: -400, behavior: "smooth" }); });
-      if (next) next.addEventListener("click", function () { scroller.scrollBy({ left: 400, behavior: "smooth" }); });
+      if (prev) prev.addEventListener("click", function () { scroller.scrollBy({ left: -Math.max(240, scroller.clientWidth * 0.7), behavior: "smooth" }); });
+      if (next) next.addEventListener("click", function () { scroller.scrollBy({ left: Math.max(240, scroller.clientWidth * 0.7), behavior: "smooth" }); });
+      /* each arrow shows only while there is more to see in that direction (and the strip fades out under it) */
+      var edges = function () {
+        wrap.classList.toggle("at-start", scroller.scrollLeft <= 2);
+        wrap.classList.toggle("at-end", scroller.scrollLeft + scroller.clientWidth >= scroller.scrollWidth - 2);
+      };
+      scroller.addEventListener("scroll", edges, { passive: true });
+      window.addEventListener("resize", edges);
+      edges(); setTimeout(edges, 300);
     });
 
     document.querySelectorAll(".hero-chips .chip").forEach(function (chip) {

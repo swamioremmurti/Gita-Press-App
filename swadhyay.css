@@ -2607,8 +2607,7 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .lib-page .lib-tag a { display: inline-flex; width: 1.6rem; height: 1.6rem; align-items: center; justify-content: center; border-radius: 50%; background: var(--surface); color: var(--accent-dark); }
 
 .lib-page .cat-tabs-wrap { border-bottom: 0; margin: .2rem 0 .9rem; max-width: none; }
-.lib-page .cat-tabs-wrap .row-nav.prev { display: none !important; }
-.lib-page .cat-tabs-wrap .row-nav.next { display: flex !important; right: -.1rem; z-index: 2; }
+.lib-page .cat-tabs-wrap .row-nav { display: flex !important; }
 .lib-page .cat-tabs { gap: .6rem; padding: .3rem .2rem .7rem; background: transparent; box-shadow: none; border-radius: 0; align-items: stretch; }
 .lib-page .cat-tab { position: relative; display: flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: .55rem; flex: 0 0 auto; width: auto; padding: .5rem .95rem .5rem .75rem; border: 0; border-radius: 16px; background: var(--surface); box-shadow: var(--shadow); font-size: .92rem; font-weight: 600; color: var(--accent-dark); text-align: left; white-space: nowrap; }
 .lib-page .cat-ic { display: flex; color: var(--gold); }
@@ -2948,3 +2947,26 @@ body.lib-tray-on .lib-tray-scrim { display: block; }
 .lib-tray-btn::after { right: -11px; background: radial-gradient(circle at 100% 100%, transparent 10.5px, var(--surface) 11.5px); }
 .lib-tray-btn[aria-expanded="true"]::before { background: radial-gradient(circle at 0 100%, transparent 10.5px, var(--accent) 11.5px); }
 .lib-tray-btn[aria-expanded="true"]::after { background: radial-gradient(circle at 100% 100%, transparent 10.5px, var(--accent) 11.5px); }
+
+/* ---------- category strip arrows: round accent buttons, shown only where the strip can still scroll, with a fade under them ---------- */
+.cat-tabs-wrap .row-nav {
+  display: flex; align-items: center; justify-content: center; width: 38px; height: 38px; padding: 0; cursor: pointer;
+  border: 0; border-radius: 50%; color: #fff; background: linear-gradient(145deg, var(--accent), var(--accent-dark));
+  box-shadow: 0 3px 10px rgba(80,20,10,.32), 0 0 0 3px var(--bg); z-index: 4;
+  transition: transform .15s ease, opacity .2s ease, box-shadow .15s ease;
+}
+.cat-tabs-wrap .row-nav:hover { transform: translateY(-50%) scale(1.08); box-shadow: 0 5px 14px rgba(80,20,10,.4), 0 0 0 3px var(--bg); }
+.cat-tabs-wrap .row-nav:active { transform: translateY(-50%) scale(.95); }
+.cat-tabs-wrap .row-nav:focus-visible { outline: 2px solid var(--gold, #c9a227); outline-offset: 3px; }
+.cat-tabs-wrap .row-nav.prev { left: .1rem; }
+.cat-tabs-wrap .row-nav.next { right: .1rem; }
+.cat-tabs-wrap.at-start .row-nav.prev, .cat-tabs-wrap.at-end .row-nav.next { opacity: 0; pointer-events: none; }
+.cat-tabs-wrap::before, .cat-tabs-wrap::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 64px; z-index: 3; pointer-events: none; transition: opacity .2s ease;
+}
+.cat-tabs-wrap::before { left: 0; background: linear-gradient(90deg, var(--bg) 35%, transparent); }
+.cat-tabs-wrap::after { right: 0; background: linear-gradient(270deg, var(--bg) 35%, transparent); }
+.cat-tabs-wrap.at-start::before, .cat-tabs-wrap.at-end::after { opacity: 0; }
+@media (max-width: 860px) { .cat-tabs-wrap .row-nav { width: 34px; height: 34px; } }
+@media (prefers-reduced-motion: reduce) { .cat-tabs-wrap .row-nav { transition: none; } }
+.lib-controls.is-tray .cat-tabs-wrap { --bg: var(--surface); }

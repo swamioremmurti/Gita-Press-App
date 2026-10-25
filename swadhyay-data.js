@@ -1365,7 +1365,7 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "swith_arth":  "yes",
-        "arth_hide":  "TXT!center-tight, Footnotes*, para-style-override-7",
+        "arth_hide":  "Normal!center-tight, Footnotes*, para-style-override-7",
         "sizeKB":  1034.3
     },
     {
@@ -1522,7 +1522,7 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  164.5
     },
     {
-        "file":  "गोवध भारत का कलंक.html",
+        "file":  "गोवध भारतका कलंक एवं गायका माहात्म्य.html",
         "category":  "Pravachan",
         "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
         "tikakar":  "",
@@ -3412,7 +3412,7 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  156.9
     },
     {
-        "file":  "वासुदेव सर्वम्.html",
+        "file":  "वासुदेवः सर्वम्.html",
         "category":  "Pravachan",
         "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
         "tikakar":  "",
@@ -3842,7 +3842,7 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "swith_arth":  "yes",
-        "arth_hide":  "TXT, Footnotes*",
+        "arth_hide":  "Normal, Footnotes*",
         "sizeKB":  4869.7
     },
     {
@@ -5230,5 +5230,77 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  491.9
+    },
+    {
+        "file":  "लव कुश चरित्र.html",
+        "category":  "Siksha evam Katha",
+        "author":  "श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  1053.6
+    },
+    {
+        "file":  "हनुमान-बाहुक भावार्थ सहित.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "गोस्वामी तुलसीदास",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  97.6
+    },
+    {
+        "file":  "अग्निपुराण.html",
+        "category":  "Purans",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  6228.9
+    },
+    {
+        "file":  "कल्याण कैसे हो.html",
+        "category":  "Pravachan",
+        "author":  "श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  518.8
+    },
+    {
+        "file":  "परलोक और पुनर्जन्म एवं वैराग्य.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  170.6
+    },
+    {
+        "file":  "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  132.1
+    },
+    {
+        "file":  "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  104.6
+    },
+    {
+        "file":  "संतवाणी—ढाई हजार अनमोल बोल.html",
+        "category":  "Pravachan",
+        "author":  "हनुमानप्रसाद पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  939.1
     }
 ];

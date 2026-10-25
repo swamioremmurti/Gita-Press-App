@@ -14,7 +14,7 @@
   };
   var SAMPLE_BOOK = '<p class="cover-Shri-Hari">॥ ॐ श्रीपरमात्मने नमः ॥</p><p class="cover-Book-Name">नमूना ग्रंथ</p><p class="Heading">अध्याय १</p><p class="Sub-Heading">उप-शीर्षक</p>' +
     '<p class="Shlok">धर्मक्षेत्रे कुरुक्षेत्रे समवेता युयुत्सवः।</p><p class="Shlok">मामकाः पाण्डवाश्चैव किमकुर्वत सञ्जय॥</p><p class="Numbers">॥१॥</p>' +
-    '<p class="TXT">यह साधारण गद्य का अनुच्छेद है। इसमें पाठक को कई पंक्तियों का सामान्य पाठ दिखाई देता है, ताकि अक्षरों के आकार, रंग और पंक्ति-अंतर का प्रभाव देखा जा सके।</p>' +
+    '<p class="Normal">यह साधारण गद्य का अनुच्छेद है। इसमें पाठक को कई पंक्तियों का सामान्य पाठ दिखाई देता है, ताकि अक्षरों के आकार, रंग और पंक्ति-अंतर का प्रभाव देखा जा सके।</p>' +
     '<p class="TXT-Bold">यह मोटे अक्षरों वाला अनुच्छेद है।</p><p class="TXT-Right">— दाहिने संरेखित पंक्ति</p><p class="Separator">॥ * ॥</p><p class="Footnotes">१. यह पादटिप्पणी का नमूना है।</p>';
   var SITE_PAGES = [['/', 'Home'], ['/library', 'Library'], ['/audio', 'Audio'], ['/gita', 'Gita course'], ['/authors', 'Authors'], ['/panchang', 'Panchang'], ['/help', 'Help'], ['/login', 'Sign in']];
 
