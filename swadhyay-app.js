@@ -416,6 +416,12 @@
   }
 
   var COVER_OVERRIDES = {
+    "प्रेरणाप्रद कथाएँ.html": "assets/covers/prernaprad-kathaen.webp",
+    "श्रीनारायणीयम्.html": "assets/covers/shri-narayaneeyam.webp",
+    "संक्षिप्त महाभारत.html": "assets/covers/sankshipt-mahabharat.webp",
+    "पदच्छेद.html": "assets/covers/padachchhed.webp",
+    "धर्म क्या है भगवान् क्या है.html": "assets/covers/dharm-kyaa-hai-bhagavaan-kyaa-hai.webp",
+    "गीतावली.html": "assets/covers/geetaavalee.webp",
     "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html": "assets/covers/geetaa-parhne-ke-laabh.webp",
     "गीता पढ़ने के लाभ.html": "assets/covers/geetaa-parhne-ke-laabh.webp",
     "क्रान्तिकारी सन्तवाणी.html": "assets/covers/kraantikaaree-santavaanee.webp",
@@ -965,6 +971,8 @@
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
   var TITLE_OVERRIDES = {
+    "पदच्छेद.html": "श्रीमद्भगवद्‍गीता - (पदच्छेद अन्वय और साधारण भाषाटीकासहित)",
+    "धर्म क्या है भगवान् क्या है.html": "धर्म क्या है? भगवान् क्या है ?",
     "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)",
     "ज्ञान-मणिमाला तथा सत्संग माला.html": "ज्ञान-मणिमाला तथा सत्संग माला",
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": "श्रीमद्भगवद्गीता तत्त्वविवेचनी",
@@ -1006,6 +1014,11 @@
     "tyag-se-bhagavatprapti": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
     "गीता-पढ़ने-के-लाभ": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
     "त्याग-से-भगवत्प्राप्ति": "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
+    /* the two books merged into "धर्म क्या है? भगवान् क्या है ?" */
+    "dharm-kya-hai": "धर्म क्या है भगवान् क्या है.html",
+    "bhagavan-kya-hai": "धर्म क्या है भगवान् क्या है.html",
+    "धर्म-क्या-है": "धर्म क्या है भगवान् क्या है.html",
+    "भगवान्-क्या-है": "धर्म क्या है भगवान् क्या है.html",
     /* आत्मोद्धारके साधन was renamed "आत्मोद्धारके साधन भाग - १": its old addresses still work */
     "atmoddharake-sadhan": "आत्मोद्धारके साधन भाग - १.html",
     "आत्मोद्धारके-साधन": "आत्मोद्धारके साधन भाग - १.html"
@@ -1052,6 +1065,7 @@
     "सुदर्शनसिंह ‘चक्र’": "sudarshan-singh-chakra",
   };
   var HIDDEN_BOOKS = {
+    "संक्षिप्त श्रीमद्देवीभागवत.html": true,                              // switched off (hidden from the library)
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": true,  // replaced by the पदच्छेद-अन्वयसहित
     "श्रीमद्भगवद्गीता - माहात्म्यसहित.html": true,                   // same text as the large-print edition, which now carries this title edition
     "ईश्वर दयालु और न्यायकारी है.html": true,                         // merged into "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त"
@@ -1061,7 +1075,9 @@
     "ज्ञान मणि माला.html": true,                                       // merged into "ज्ञान-मणिमाला तथा सत्संग माला"
     "सत्संग माला.html": true,                                          // (same)
     "गीता पढ़ने के लाभ.html": true,                                     // merged into "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)"
-    "त्याग से भगवत्प्राप्ति.html": true                                  // (same)                                // switched off (not a Gita Press book; hidden from the site)
+    "त्याग से भगवत्प्राप्ति.html": true,                                 // (same)                                // switched off (not a Gita Press book; hidden from the site)
+    "धर्म क्या है.html": true,                                         // merged into "धर्म क्या है? भगवान् क्या है ?"
+    "भगवान् क्या है.html": true                                         // (same)
   };
 
   /* "TXT, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
@@ -1229,7 +1245,7 @@
        site        announcement banner and the course (LMS) switch */
   var RAW_BY_FILE = {};
   (window.SWADHYAY_BOOKS_RAW || []).forEach(function (r) { RAW_BY_FILE[r.file] = r; });
-  var SITE_STATE = { announcement: null, lms: { enabled: true, notice: "" } };
+  var SITE_STATE = { announcement: null, lms: { enabled: true, notice: "" }, css: null };
 
   function indexBook(b) { BOOKS_BY_ID[b.id] = b; BOOKS_BY_FILE[b.file] = b; BOOKS_BY_SLUG[b.slug] = b; BOOKS_BY_LEGACY_SLUG[b.legacySlug] = b; }
   function dropBook(b) {
@@ -1317,6 +1333,17 @@
     buildPeople();
     if (data.audio && window.SwadhyayAudio && window.SwadhyayAudio.applyState) window.SwadhyayAudio.applyState(data.audio);
     if (data.site) SITE_STATE = { announcement: data.site.announcement || null, lms: data.site.lms || { enabled: true, notice: "" } };
+    SITE_STATE.css = data.css || null;
+  }
+
+  /* The admin's custom stylesheet for the app (admin panel -> CSS editor), laid after swadhyay.css. The admin's live preview
+     replaces the text of this same element. */
+  function renderCustomCss() {
+    var el = document.getElementById("kalyan-custom-css");
+    var css = SITE_STATE.css && SITE_STATE.css.site || "";
+    if (!css) { if (el) el.parentNode.removeChild(el); return; }
+    if (!el) { el = document.createElement("style"); el.id = "kalyan-custom-css"; document.head.appendChild(el); }
+    el.textContent = css;
   }
 
   /* The announcement banner sits above the page and can be closed for the rest of the visit. */
@@ -2284,6 +2311,7 @@
   var chatState = { history: [], busy: false, turns: [], pendingInput: "" };
 
   function viewLibrary(params) {
+    if (params.get("layout") === "new") return viewLibraryNew(params);          // preview of the new layout
     var cat = params.get("cat") || "all";
     var q = params.get("q") || "";
     var tag = params.get("tag") || "";
@@ -2308,7 +2336,8 @@
     var pageItems = list.slice(0, page * PAGE_SIZE);
 
     /* no heading and no language selector: the search bar, the category strip and the covers come first (the count is on the tab) */
-    var html = '<div class="lib-search-wrap"><div class="lib-search lib-search-pill"><span class="lib-search-ic" aria-hidden="true">' + SEARCH_SVG + '</span>' +
+    var html = '<div class="lib-controls" id="libControls"><div class="lib-controls-tray"><div class="lib-controls-body">' +
+      '<div class="lib-search-wrap"><div class="lib-search lib-search-pill"><span class="lib-search-ic" aria-hidden="true">' + SEARCH_SVG + '</span>' +
       '<span class="lib-search-box"><input id="librarySearch" type="text" autocomplete="off" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
       '<button type="button" id="librarySearchClear" class="lib-search-clear" aria-label="' + esc(tx("खोज मिटाएँ", "Clear search")) + '" title="' + esc(tx("खोज मिटाएँ", "Clear search")) + '"' + (q ? "" : " hidden") + '>&times;</button></span></div>' +
       '<div class="lib-suggest" id="librarySuggest" role="listbox" hidden></div></div>';
@@ -2322,7 +2351,8 @@
       }).join("") +
       '<a class="filter-tab' + (sort !== "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=az"><span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS.az) + '</span>' + esc(tx("वर्णानुक्रम", "A–Z")) + '</a>' +
       '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest"><span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS.latest) + '</span>' + esc(tx("नवीनतम", "Latest")) + '</a>' +
-      '</div>';
+      '</div>' +
+      '</div></div></div>';
 
     if (!pageItems.length) {
       html += '<div class="empty-state">' + bilingual("कोई पुस्तक नहीं मिली", "No books found") + '</div>';
@@ -2331,6 +2361,156 @@
       if (page < totalPages) html += '<div class="load-more-wrap" id="libraryLoadSentinel"><span class="load-more-spinner"></span></div>';
     }
     return '<main class="content-pad lib-page">' + html + '</main>';
+  }
+
+  /* ---------------- library page, new layout (preview: /library?layout=new) ----------------
+     A filter panel on the left (title, search, the category and author lists as multi-select dropdowns, the quick filters), a banner on
+     top, and the covers on the right with a count, the sort and a grid / list switch.  Filters live in the address:
+       cat=a,b   several categories (a book in any of them)     by=n1|n2  several authors     filter=popular|short     sort=az|latest     view=grid|list */
+  var lib2Open = "";                                    // the dropdown that was open when the page was last drawn (it is drawn open again after a change)
+
+  function libUrl(over) {
+    var p = new URLSearchParams(parsePath().params.toString());
+    Object.keys(over).forEach(function (k) {
+      if (over[k] === null || over[k] === "" || over[k] === undefined) p.delete(k); else p.set(k, over[k]);
+    });
+    var s = p.toString();
+    return "/library" + (s ? "?" + s : "");
+  }
+  function listParam(params, key, sep) {
+    return (params.get(key) || "").split(sep).filter(Boolean);
+  }
+  var LIB2_ICONS = {
+    listen: '<path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4.5" height="6.5" rx="1.6"/><rect x="16.5" y="14" width="4.5" height="6.5" rx="1.6"/>',
+    doc: '<path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
+    heart: '<path d="M12 20.5s-7.5-4.6-9-9.3C2 8 4 5.4 6.9 5.4c1.8 0 3.2.9 4 2.3.8-1.4 2.2-2.3 4-2.3 2.9 0 4.9 2.6 3.9 5.8-1.5 4.7-6.8 9.3-6.8 9.3z"/>',
+    more: '<circle cx="12" cy="5.5" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="18.5" r="1.4"/>',
+    grid: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.4"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.4"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.4"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.4"/>',
+    list: '<path d="M8 6h12M8 12h12M8 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/>',
+    sort: '<path d="M8 4v16m0 0l-3-3m3 3l3-3M16 20V4m0 0l-3 3m3-3l3 3"/>',
+    caret: '<path d="M6 9l6 6 6-6"/>',
+    cat: '<rect x="4" y="4" width="6.5" height="6.5" rx="1.4"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.4"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.4"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.4"/>',
+    author: '<circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c.8-3.8 3.7-6 7.5-6s6.7 2.2 7.5 6"/>',
+    filter: '<path d="M4 6h16M7 12h10M10 18h4"/>',
+    clear: '<path d="M20 11a8 8 0 1 0-2.4 5.7"/><path d="M20 4v7h-7"/>'
+  };
+  function l2i(name, size) { return svgIcon(LIB2_ICONS[name], size || 20); }
+
+  /* a multi-select dropdown: a button that says what is chosen, and a list of check-boxes (with a filter box when the list is long) */
+  function lib2Dropdown(id, iconName, label, options, selected, summaryAll) {
+    var sel = {};
+    selected.forEach(function (k) { sel[k] = true; });
+    var names = options.filter(function (o) { return sel[o.key]; }).map(function (o) { return o.label; });
+    var summary = !names.length ? summaryAll : names.length === 1 ? names[0] : names.length + " " + tx("चयनित", "selected");
+    var open = lib2Open === id;
+    return '<div class="lib2-dd' + (open ? " open" : "") + '" data-dd="' + id + '">' +
+      '<button type="button" class="lib2-dd-btn" data-dd-toggle="' + id + '" aria-expanded="' + (open ? "true" : "false") + '">' +
+      '<span class="lib2-dd-ic">' + l2i(iconName, 20) + '</span>' +
+      '<span class="lib2-dd-tx"><span class="lib2-dd-lb">' + esc(label) + '</span><span class="lib2-dd-val">' + esc(summary) + '</span></span>' +
+      (names.length ? '<span class="lib2-dd-n">' + names.length + '</span>' : "") +
+      '<span class="lib2-dd-caret">' + l2i("caret", 18) + '</span></button>' +
+      '<div class="lib2-dd-menu"' + (open ? "" : " hidden") + '>' +
+      (options.length > 8 ? '<input type="search" class="lib2-dd-find" data-dd-find placeholder="' + esc(tx("खोजें…", "Find…")) + '">' : "") +
+      '<div class="lib2-dd-list">' + options.map(function (o) {
+        return '<label class="lib2-opt"><input type="checkbox" data-dd-opt="' + id + '" value="' + esc(o.key) + '"' + (sel[o.key] ? " checked" : "") + '>' +
+          '<span class="lib2-opt-tx">' + esc(o.label) + '</span><span class="lib2-opt-n">' + o.count + '</span></label>';
+      }).join("") + '</div>' +
+      '<div class="lib2-dd-foot"><button type="button" class="lib2-link" data-dd-clear="' + id + '"' + (names.length ? "" : " disabled") + '>' + esc(tx("साफ़ करें", "Clear")) + '</button>' +
+      '<button type="button" class="lib2-link lib2-link-main" data-dd-close>' + esc(tx("बंद करें", "Close")) + '</button></div>' +
+      '</div></div>';
+  }
+
+  function bookCard2(book) {
+    var fav = isFavorite(book.id);
+    var tags = book.categoryMetas.slice(0, 2).map(function (c) { return '<span class="lib2-tag">' + esc(tx(c.hi, c.en)) + '</span>'; }).join("");
+    return '<div class="book-card lib2-card" data-id="' + book.id + '">' +
+      '<a class="book-card-link" href="' + bookPath(book) + '">' + coverEl(book, "md") + '</a>' +
+      '<div class="lib2-card-body">' +
+      '<a href="' + bookPath(book) + '" class="book-title">' + esc(book.title) + '</a>' +
+      '<div class="lib2-author">' + esc(book.author || "") + '</div>' +
+      '<div class="lib2-tags">' + tags + '</div>' +
+      '<div class="lib2-acts">' +
+      '<button type="button" class="lib2-act" data-lib2-listen title="' + esc(tx("सुनें", "Listen")) + '" aria-label="' + esc(tx("सुनें", "Listen")) + '">' + l2i("listen", 20) + '</button>' +
+      '<a class="lib2-act" href="' + readPath(book) + '" title="' + esc(tx("पढ़ें", "Read")) + '" aria-label="' + esc(tx("पढ़ें", "Read")) + '">' + l2i("doc", 20) + '</a>' +
+      '<button type="button" class="lib2-act' + (fav ? " active" : "") + '" data-fav="' + book.id + '" title="' + esc(tx("पसंदीदा", "Favourite")) + '" aria-label="' + esc(tx("पसंदीदा", "Favourite")) + '">' + l2i("heart", 20) + '</button>' +
+      '<a class="lib2-act" href="' + bookPath(book) + '" title="' + esc(tx("विवरण", "Details")) + '" aria-label="' + esc(tx("विवरण", "Details")) + '">' + l2i("more", 20) + '</a>' +
+      '</div></div></div>';
+  }
+
+  function viewLibraryNew(params) {
+    var cats = listParam(params, "cat", ",").filter(function (k) { return k !== "all" && CATEGORY_BY_KEY[k]; });
+    var by = listParam(params, "by", "|");
+    var q = params.get("q") || "";
+    var tag = params.get("tag") || "";
+    var sort = params.get("sort") === "latest" ? "latest" : "az";
+    var filter = params.get("filter") || "all";
+    var view = params.get("view") === "list" ? "list" : "grid";
+
+    var list = BOOKS.filter(function (b) {
+      return (!cats.length || cats.some(function (k) { return b.categoryKeys.indexOf(k) !== -1; })) &&
+        (!by.length || by.some(function (n) { return (b.authors || []).indexOf(n) !== -1; })) &&
+        (!tag || b.tags.indexOf(tag) !== -1) && matchesQuery(b, q);
+    });
+    if (filter === "short") list = list.filter(function (b) { return b.sizeKB < 150; });
+    if (filter === "popular") list = list.filter(function (b) { return hashCode(b.file) % 3 === 0; });
+    list = sort === "latest" ? list.slice().reverse() : list.slice().sort(function (a, b) { return a.title.localeCompare(b.title, "hi"); });
+
+    var totalPages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+    var page = Math.min(libraryState.page, totalPages);
+    var pageItems = list.slice(0, page * PAGE_SIZE);
+
+    var catOpts = CATEGORY_META.filter(function (c) { return c.key !== "all" && !c.hidden; }).map(function (c) {
+      return { key: c.key, label: tx(c.hi, c.en), count: BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length };
+    });
+    var authorCount = {};
+    BOOKS.forEach(function (b) { (b.authors || []).forEach(function (n) { authorCount[n] = (authorCount[n] || 0) + 1; }); });
+    var authorOpts = Object.keys(authorCount).sort(function (a, b) { return authorCount[b] - authorCount[a] || a.localeCompare(b, "hi"); })
+      .map(function (n) { return { key: n, label: n, count: authorCount[n] }; });
+
+    var chips = [];
+    cats.forEach(function (k) { chips.push([tx(CATEGORY_BY_KEY[k].hi, CATEGORY_BY_KEY[k].en), libUrl({ cat: cats.filter(function (x) { return x !== k; }).join(",") })]); });
+    by.forEach(function (n) { chips.push([n, libUrl({ by: by.filter(function (x) { return x !== n; }).join("|") })]); });
+    if (filter !== "all") chips.push([filter === "short" ? tx("लघु पाठ", "Short reads") : tx("लोकप्रिय", "Popular"), libUrl({ filter: null })]);
+    if (tag) chips.push(["#" + tag, libUrl({ tag: null })]);
+    if (q) chips.push(["“" + q + "”", libUrl({ q: null })]);
+
+    var panel = '<aside class="lib2-panel" id="lib2Panel">' +
+      '<div class="lib2-brand"><span class="lib2-lotus" aria-hidden="true">' + LOTUS_SVG + '</span><div><h1>' + esc(tx("पुस्तकालय", "Library")) + '</h1>' +
+      '<p>' + esc(tx("सनातन ज्ञान, सदैव आपके साथ", "Sanatan wisdom, always with you")) + '</p></div></div>' +
+      '<div class="lib-search-wrap"><div class="lib-search lib-search-pill"><span class="lib-search-ic" aria-hidden="true">' + SEARCH_SVG + '</span>' +
+      '<span class="lib-search-box"><input id="librarySearch" type="text" autocomplete="off" placeholder="' + esc(tx("पुस्तक, विषय या लेखक खोजें…", "Search books, topics or authors…")) + '" value="' + esc(q) + '">' +
+      '<button type="button" id="librarySearchClear" class="lib-search-clear" aria-label="' + esc(tx("खोज मिटाएँ", "Clear search")) + '"' + (q ? "" : " hidden") + '>&times;</button></span></div>' +
+      '<div class="lib-suggest" id="librarySuggest" role="listbox" hidden></div></div>' +
+      '<div class="lib2-sec-title">' + l2i("filter", 18) + '<span>' + esc(tx("फ़िल्टर", "Filters")) + '</span></div>' +
+      lib2Dropdown("cat", "cat", tx("श्रेणी", "Category"), catOpts, cats, tx("सभी श्रेणियाँ", "All categories")) +
+      lib2Dropdown("by", "author", tx("लेखक", "Author"), authorOpts, by, tx("सभी लेखक", "All authors")) +
+      '<div class="lib2-group"><div class="lib2-group-lb">' + esc(tx("प्रकार", "Type")) + '</div>' +
+      [["all", "सभी", "All"], ["popular", "लोकप्रिय", "Popular"], ["short", "लघु पाठ", "Short reads"]].map(function (f) {
+        return '<label class="lib2-radio"><input type="radio" name="lib2filter" data-lib2-filter value="' + f[0] + '"' + (filter === f[0] ? " checked" : "") + '><span>' + esc(tx(f[1], f[2])) + '</span></label>';
+      }).join("") + '</div>' +
+      '<a class="lib2-clear' + (chips.length ? "" : " off") + '" href="/library?layout=new">' + l2i("clear", 18) + '<span>' + esc(tx("फ़िल्टर साफ़ करें", "Clear filters")) + '</span></a>' +
+      '</aside>';
+
+    var main = '<section class="lib2-main">' +
+      '<div class="lib2-toolbar"><div class="lib2-count"><b>' + list.length + '</b> ' + esc(tx("पुस्तकें", "books")) + '</div>' +
+      '<button type="button" class="lib2-filter-btn" id="lib2PanelToggle">' + l2i("filter", 18) + '<span>' + esc(tx("फ़िल्टर", "Filters")) + (chips.length ? " (" + chips.length + ")" : "") + '</span></button>' +
+      '<label class="lib2-sort"><span class="lib2-sort-ic">' + l2i("sort", 18) + '</span><select id="lib2Sort" aria-label="' + esc(tx("क्रम", "Sort")) + '">' +
+      '<option value="az"' + (sort === "az" ? " selected" : "") + '>' + esc(tx("वर्णानुक्रम", "A–Z")) + '</option>' +
+      '<option value="latest"' + (sort === "latest" ? " selected" : "") + '>' + esc(tx("नवीनतम पहले", "Newest first")) + '</option></select></label>' +
+      '<div class="lib2-view"><button type="button" class="' + (view === "grid" ? "on" : "") + '" data-lib2-view="grid" aria-label="Grid">' + l2i("grid", 20) + '</button>' +
+      '<button type="button" class="' + (view === "list" ? "on" : "") + '" data-lib2-view="list" aria-label="List">' + l2i("list", 20) + '</button></div></div>' +
+      (chips.length ? '<div class="lib2-chips">' + chips.map(function (c) {
+        return '<a class="lib2-chip" href="' + c[1] + '" title="' + esc(tx("हटाएँ", "Remove")) + '">' + esc(c[0]) + ' <span aria-hidden="true">&times;</span></a>';
+      }).join("") + '</div>' : "");
+    if (!pageItems.length) main += '<div class="empty-state">' + bilingual("कोई पुस्तक नहीं मिली", "No books found") + '</div>';
+    else {
+      main += '<div class="lib2-grid ' + view + '">' + pageItems.map(bookCard2).join("") + '</div>';
+      if (page < totalPages) main += '<div class="load-more-wrap" id="libraryLoadSentinel"><span class="load-more-spinner"></span></div>';
+    }
+    main += '</section>';
+
+    lib2Open = "";                                              // the dropdown is drawn open once, not on every later redraw
+    return '<main class="content-pad lib-page lib2-page">' + '<div class="lib2">' + panel + main + '</div></main>';
   }
 
   function genBlurb(book) {
@@ -2811,10 +2991,15 @@
         if (n.getAttribute("data-mode") !== readMode) n.parentNode.removeChild(n);
       });
     }
+    /* master.css is the only stylesheet of the books: the <style> blocks some of them carry in their own head (page width, fonts, a colour for one
+       class ...) are not used by the reader */
+    if (doc.head) Array.prototype.slice.call(doc.head.querySelectorAll("style")).forEach(function (n) { n.parentNode.removeChild(n); });
     var headHtml = doc.head ? doc.head.innerHTML : "";
     /* Every book links its stylesheet as ../../master.css, which only resolves to the site root when the book is
        served from the site. From a CDN folder that path would land on the CDN, so point it back at the site. */
     if (CDN_BOOKS) headHtml = headHtml.replace(/(["'])(?:\.\.\/)+master\.css/g, function (m, q) { return q + new URL("master.css", document.baseURI).href; });
+    /* the admin's custom stylesheet for book text (admin panel -> CSS editor), after the book's own styles */
+    if (SITE_STATE.css && SITE_STATE.css.books) headHtml += "<style>" + SITE_STATE.css.books.replace(/<\/style/gi, "") + "</style>";
     var bodyHtml = doc.body ? doc.body.innerHTML : htmlText;
     var rawChunks = splitBookChapters(bodyHtml);
 
@@ -3451,6 +3636,8 @@
          by those more specific selectors -- this reading-comfort control needs to win everywhere. */
       /* one font for every book: the head of a book file may still say Georgia, and some paragraph classes name no font at all */
       "body, body *{font-family:'ChanakyaUni',serif !important;}" +
+      /* a very long heading word (लघुसिद्धान्तकौमुद्यांगणेष्वपठितानाम्...) breaks instead of making the page scroll sideways */
+      "p.Heading, p.Sub-Heading{overflow-wrap:anywhere;}" +
       'body, body *{line-height:' + lineHeight + 'em !important;}' +
       /* Paragraph indent: master.css indents body text only 12-18px (about 0.5em), which reads as barely
          indented on screen. Prose paragraphs (justified, indented in master.css; not footnotes, verses
@@ -5230,7 +5417,7 @@
           clearTimeout(t);
           librarySearch.value = "";
           libSearchClear.hidden = true;
-          navigate("/library?cat=" + encodeURIComponent(parsePath().params.get("cat") || "all"));
+          navigate(parsePath().params.get("layout") === "new" ? libUrl({ q: null }) : "/library?cat=" + encodeURIComponent(parsePath().params.get("cat") || "all"));
           setTimeout(function () { var el = document.getElementById("librarySearch"); if (el) el.focus(); }, 0);
         });
       }
@@ -5264,6 +5451,7 @@
         t = setTimeout(function () {
           var p = parsePath().params;
           var cat = p.get("cat") || "all";
+          if (p.get("layout") === "new") { navigate(libUrl({ q: librarySearch.value || null })); return; }
           navigate("/library?cat=" + encodeURIComponent(cat) + (librarySearch.value ? "&q=" + encodeURIComponent(librarySearch.value) : ""));
         }, 250);
       });
@@ -5282,6 +5470,61 @@
       io.observe(loadSentinel);
     }
 
+    /* new library layout: dropdowns, sort, grid/list, listen buttons, the filter panel on small screens */
+    var lib2Page = document.querySelector(".lib2-page");
+    if (lib2Page) {
+      document.querySelectorAll("[data-dd-toggle]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var id = btn.getAttribute("data-dd-toggle"), dd = btn.closest(".lib2-dd"), menu = dd.querySelector(".lib2-dd-menu");
+          var willOpen = menu.hidden;
+          document.querySelectorAll(".lib2-dd").forEach(function (o) { o.classList.remove("open"); o.querySelector(".lib2-dd-menu").hidden = true; o.querySelector(".lib2-dd-btn").setAttribute("aria-expanded", "false"); });
+          menu.hidden = !willOpen; dd.classList.toggle("open", willOpen); btn.setAttribute("aria-expanded", willOpen ? "true" : "false");
+          lib2Open = willOpen ? id : "";
+          if (willOpen) { var f = menu.querySelector("[data-dd-find]"); if (f) f.focus(); }
+        });
+      });
+      document.querySelectorAll("[data-dd-opt]").forEach(function (cb) {
+        cb.addEventListener("change", function () {
+          var id = cb.getAttribute("data-dd-opt");
+          var vals = Array.prototype.map.call(document.querySelectorAll('[data-dd-opt="' + id + '"]:checked'), function (c) { return c.value; });
+          lib2Open = id;
+          navigate(libUrl(id === "cat" ? { cat: vals.join(",") } : { by: vals.join("|") }));
+        });
+      });
+      document.querySelectorAll("[data-dd-clear]").forEach(function (b) {
+        b.addEventListener("click", function () { var id = b.getAttribute("data-dd-clear"); lib2Open = id; navigate(libUrl(id === "cat" ? { cat: null } : { by: null })); });
+      });
+      document.querySelectorAll("[data-dd-close]").forEach(function (b) {
+        b.addEventListener("click", function () { lib2Open = ""; document.querySelectorAll(".lib2-dd").forEach(function (o) { o.classList.remove("open"); o.querySelector(".lib2-dd-menu").hidden = true; }); });
+      });
+      document.querySelectorAll("[data-dd-find]").forEach(function (inp) {
+        inp.addEventListener("input", function () {
+          var v = inp.value.trim().toLowerCase();
+          inp.parentNode.querySelectorAll(".lib2-opt").forEach(function (o) { o.hidden = !!v && o.textContent.toLowerCase().indexOf(v) === -1; });
+        });
+      });
+      document.addEventListener("mousedown", function lib2Out(e) {
+        if (!document.body.contains(lib2Page)) { document.removeEventListener("mousedown", lib2Out); return; }
+        if (e.target.closest && e.target.closest(".lib2-dd")) return;
+        if (lib2Open) {
+          lib2Open = "";
+          document.querySelectorAll(".lib2-dd").forEach(function (o) { o.classList.remove("open"); o.querySelector(".lib2-dd-menu").hidden = true; o.querySelector(".lib2-dd-btn").setAttribute("aria-expanded", "false"); });
+        }
+      });
+      document.querySelectorAll("[data-lib2-filter]").forEach(function (r) {
+        r.addEventListener("change", function () { navigate(libUrl({ filter: r.value === "all" ? null : r.value })); });
+      });
+      var lib2Sort = document.getElementById("lib2Sort");
+      if (lib2Sort) lib2Sort.addEventListener("change", function () { navigate(libUrl({ sort: lib2Sort.value === "az" ? null : lib2Sort.value })); });
+      document.querySelectorAll("[data-lib2-view]").forEach(function (b) {
+        b.addEventListener("click", function () { navigate(libUrl({ view: b.getAttribute("data-lib2-view") === "grid" ? null : "list" })); });
+      });
+      document.querySelectorAll("[data-lib2-listen]").forEach(function (b) {
+        b.addEventListener("click", function () { if (isSubscribed()) { toast("प्लेबैक जल्द उपलब्ध होगा"); } else { showSubscribeModal(); } });
+      });
+      var lib2Toggle = document.getElementById("lib2PanelToggle");
+      if (lib2Toggle) lib2Toggle.addEventListener("click", function () { document.getElementById("lib2Panel").classList.toggle("show"); });
+    }
     var startBtn = document.getElementById("startReadingBtn");
     if (startBtn) {
       var startBtnBook = resolveBookParam(r.path.split("/")[1]);
@@ -5541,6 +5784,68 @@
     });
 
     window.addEventListener("scroll", updateTopbarSolidity, { passive: true });
+    initLibTray();
+  }
+
+
+  /* ---------------- library: search + filters fold into a pull-down tray once scrolled past ----------------
+     At the top of the page they sit in the page as before.  When they have scrolled up under the top bar, a filter button appears in the
+     bar (desktop and mobile) and pulls them down as a tray; the page keeps its height, so nothing jumps. */
+  var libTrayTick = false;
+  function libTrayEl() { return document.getElementById("libControls"); }
+  function setLibTrayOpen(open) {
+    var c = libTrayEl(), btn = document.getElementById("libTrayBtn"), scrim = document.getElementById("libTrayScrim");
+    if (c) c.classList.toggle("is-open", !!open && c.classList.contains("is-tray"));
+    if (btn) btn.setAttribute("aria-expanded", c && c.classList.contains("is-open") ? "true" : "false");
+    if (scrim) scrim.classList.toggle("show", !!(c && c.classList.contains("is-open")));
+    var isOpen = !!(c && c.classList.contains("is-open"));
+    document.documentElement.style.setProperty("--lib-tray-h", isOpen ? c.firstElementChild.offsetHeight + "px" : "0px");
+  }
+  function updateLibTray() {
+    var c = libTrayEl(), body = document.body;
+    if (!c) { body.classList.remove("lib-tray-on"); setLibTrayOpen(false); return; }
+    var tray = c.firstElementChild;
+    var bar = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--topbar-h")) || 64;
+    var folded = c.classList.contains("is-tray");
+    if (!folded) c.style.minHeight = "";
+    var h = folded ? (parseFloat(c.style.minHeight) || 0) : c.offsetHeight;
+    var gone = c.getBoundingClientRect().top + h <= bar + 4;     // the whole block has scrolled up under the top bar
+    if (gone && !folded) { c.style.minHeight = h + "px"; c.classList.add("is-tray"); }
+    else if (!gone && folded) { c.classList.remove("is-tray", "is-open"); c.style.minHeight = ""; setLibTrayOpen(false); }
+    body.classList.toggle("lib-tray-on", c.classList.contains("is-tray"));
+    if (!c.classList.contains("is-tray")) setLibTrayOpen(false);
+  }
+  function initLibTray() {
+    /* the button and the dimmer are normally in index.html; build them here when an older copy of the page is cached */
+    if (!document.getElementById("libTrayBtn")) {
+      var bar = document.querySelector(".topbar"), srch = bar && bar.querySelector(".global-search-btn");
+      if (bar) {
+        var nb = document.createElement("button");
+        nb.className = "profile-btn lib-tray-btn"; nb.id = "libTrayBtn"; nb.type = "button"; nb.title = "खोज एवं फ़िल्टर"; nb.setAttribute("aria-label", "खोज एवं फ़िल्टर"); nb.setAttribute("aria-expanded", "false");
+        nb.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>';
+        bar.insertBefore(nb, srch || null);
+      }
+    }
+    if (!document.getElementById("libTrayScrim")) {
+      var sc = document.createElement("div"); sc.className = "lib-tray-scrim"; sc.id = "libTrayScrim";
+      var vr = document.getElementById("viewRoot"); if (vr && vr.parentNode) vr.parentNode.insertBefore(sc, vr);
+    }
+    var btn = document.getElementById("libTrayBtn");
+    if (btn) btn.addEventListener("click", function () {
+      var c = libTrayEl(); if (!c) return;
+      setLibTrayOpen(!c.classList.contains("is-open"));
+      if (c.classList.contains("is-open")) { var si = document.getElementById("librarySearch"); if (si && window.innerWidth > 860) si.focus({ preventScroll: true }); }
+    });
+    var scrim = document.getElementById("libTrayScrim");
+    if (scrim) scrim.addEventListener("click", function () { setLibTrayOpen(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") setLibTrayOpen(false); });
+    document.addEventListener("click", function (e) {
+      var c = libTrayEl();
+      if (c && c.classList.contains("is-open") && e.target.closest && e.target.closest("#libControls a")) setLibTrayOpen(false);
+    });
+    var tick = function () { if (libTrayTick) return; libTrayTick = true; requestAnimationFrame(function () { libTrayTick = false; updateLibTray(); }); };
+    window.addEventListener("scroll", tick, { passive: true });
+    window.addEventListener("resize", tick);
   }
 
   function updateTopbarSolidity() {
@@ -5550,7 +5855,7 @@
     topbar.classList.toggle("scrolled", solid);
   }
 
-  function onNavigate() { libraryState.page = 1; panchangState.dayOffset = 0; render(); updateTopbarSolidity(); }
+  function onNavigate() { libraryState.page = 1; panchangState.dayOffset = 0; render(); updateTopbarSolidity(); updateLibTray(); }
 
   window.addEventListener("popstate", onNavigate);
   document.addEventListener("DOMContentLoaded", function () {
@@ -5570,7 +5875,7 @@
     var BOOT_WAIT_MS = 1200, firstDone = false;
     function firstRender() { if (firstDone) return; firstDone = true; onNavigate(); }
     Promise.all([
-      apiGet("/api/book-meta").then(function (data) { applyCatalogueState(data); renderSiteNotice(); }).catch(function () {}),
+      apiGet("/api/book-meta").then(function (data) { applyCatalogueState(data); renderSiteNotice(); renderCustomCss(); }).catch(function () {}),
       loadVrats(),
       apiGet("/api/auth/config").then(function (data) { GOOGLE_CLIENT_ID = data.googleClientId || null; }).catch(function () {}),
       refreshCurrentUser()

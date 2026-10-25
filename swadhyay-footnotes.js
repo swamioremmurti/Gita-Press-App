@@ -93,8 +93,10 @@
         if (sp.classList.contains("fn-ref") || sp.children.length) continue;
         var tx = sp.textContent.trim();
         if (!/^[०-९0-9]{1,2}$/.test(tx) || num(tx) !== mk.n) continue;
+        /* the word before it may be plain text or a styled span of its own (<span>ऊकालो…प्लुतः</span><span>१</span>) */
         var before = sp.previousSibling;
-        if (!(before && before.nodeType === 3 && /[ऀ-ॣ॰-ॿ।॥]$/.test(before.nodeValue))) continue;
+        var tail = before ? (before.nodeType === 3 ? before.nodeValue : before.nodeType === 1 ? before.textContent : "") : "";
+        if (!/[ऀ-ॣ॰-ॿ।॥’”]$/.test(tail)) continue;                // (a closing quote may stand between the word and the number)
         if (doc.defaultView.getComputedStyle(sp).verticalAlign !== "super") sp.classList.add("fn-sup");
         return sp;
       }
@@ -135,6 +137,7 @@
   var CSS =
     ".fn-ref{color:#9a1f12;font-weight:bold;cursor:pointer;text-decoration:none;border-bottom:1px dotted currentColor;padding:0 .14em;border-radius:3px;}" +
     ".fn-ref.fn-sup{vertical-align:super;font-size:.78em;border-bottom:0;padding:0 .1em;}" +
+    ".fn-ref, .fn-sup{color:darkblue !important;}" +
     ".fn-ref:hover{background:rgba(154,31,18,.1);}.fn-ref:focus-visible{outline:2px solid #c45911;outline-offset:1px;}" +
     ".fn-hidden{display:none !important;}" +
     ".fn-modal{position:fixed;left:0;top:0;right:0;bottom:0;z-index:100000;display:flex;align-items:center;justify-content:center;padding:14px;" +

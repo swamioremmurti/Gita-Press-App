@@ -264,3 +264,23 @@ table.tbl { width: 100%; border-collapse: collapse; }
 .site-notice.tone-success { background: #e3f4e6; color: #1d4a27; }
 .site-notice.tone-warning { background: #fde4e1; color: #7a1d12; }
 .site-notice-link { color: inherit; font-weight: 600; text-decoration: underline; }
+
+/* ---------- CSS editor ---------- */
+.css-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.css-ed, .css-tools { position: sticky; top: 76px; }
+.codewrap { display: flex; height: calc(100vh - 290px); min-height: 360px; background: var(--surface); border-bottom: 1px solid var(--line); }
+.gutter { width: 46px; flex: none; overflow: hidden; text-align: right; padding: 12px 8px 12px 0; color: var(--faint); background: var(--surface-2); border-right: 1px solid var(--line);
+  font: 12.5px/1.6 var(--mono); white-space: pre; user-select: none; }
+#code { flex: 1; min-width: 0; border: 0; border-radius: 0; resize: none; padding: 12px; font: 12.5px/1.6 var(--mono); tab-size: 2; white-space: pre; overflow: auto; background: var(--surface); }
+#code:focus { box-shadow: none; }
+.css-tool-body { height: calc(100vh - 220px); min-height: 400px; overflow: auto; }
+.css-pv-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; padding: 10px; border-bottom: 1px solid var(--line); }
+.css-pv-wrap { background: repeating-conic-gradient(var(--surface-2) 0 25%, var(--bg) 0 50%) 0 0 / 16px 16px; padding: 10px; display: flex; justify-content: center; height: calc(100% - 110px); min-height: 320px; }
+.css-pv-wrap iframe { height: 100%; max-width: 100%; border: 1px solid var(--line-strong); background: #fff; border-radius: 6px; }
+.css-var { display: grid; grid-template-columns: minmax(80px, 1fr) 40px minmax(90px, 1.2fr) 30px; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--line); }
+.css-var label { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.css-var input[type=color] { width: 40px; height: 28px; padding: 1px; cursor: pointer; }
+.css-var input[type=text] { padding: 4px 8px; }
+.css-rule { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 8px 10px; margin-bottom: 8px; background: var(--surface-2); }
+.css-rule pre { margin: 0 0 6px; white-space: pre-wrap; word-break: break-word; max-height: 190px; overflow: auto; }
+@media (max-width: 1100px) { .css-grid { grid-template-columns: 1fr; } .css-ed, .css-tools { position: static; } .codewrap { height: 50vh; } .css-tool-body { height: 70vh; } }

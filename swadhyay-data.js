@@ -1365,7 +1365,7 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "swith_arth":  "yes",
-        "arth_hide":  "TXT!para-style-override-4, Footnotes*, para-style-override-7",
+        "arth_hide":  "TXT!center-tight, Footnotes*, para-style-override-7",
         "sizeKB":  1034.3
     },
     {
@@ -3391,7 +3391,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1302
+        "sizeKB":  1352.4
     },
     {
         "file":  "लोक परलोक का सुधार.html",
@@ -5203,5 +5203,32 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  115.8
+    },
+    {
+        "file":  "धर्म क्या है भगवान् क्या है.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  130.2
+    },
+    {
+        "file":  "श्रीनारायणीयम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "श्रीभट्टनारायणतिरि",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  1418.9
+    },
+    {
+        "file":  "प्रेरणाप्रद कथाएँ.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  491.9
     }
 ];

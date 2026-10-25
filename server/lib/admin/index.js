@@ -8,6 +8,7 @@ const media = require('./media');
 const people = require('./people');
 const lms = require('./lms');
 const audio = require('./audio');
+const css = require('./css');
 
 const DAY = 86400000;
 
@@ -113,7 +114,7 @@ async function handle(req, res, pathname, user) {
     if (ctx.method === 'PUT') { await settingsPut(ctx); return true; }
   }
   if (ctx.method === 'GET' && pathname === '/api/admin/backup') { await backup(ctx); return true; }
-  for (const mod of [books, categories, media, audio, people, lms]) {
+  for (const mod of [books, categories, media, audio, css, people, lms]) {
     if (await mod.handle(ctx)) return true;
   }
   return false;

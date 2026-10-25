@@ -225,6 +225,7 @@
     ['/users', '👥', 'Users'],
     ['/comments', '💬', 'Comments', 'comments'],
     ['System'],
+    ['/css', '🎨', 'CSS editor'],
     ['/settings', '⚙', 'Site settings'],
     ['/log', '🕘', 'Activity log']
   ];
@@ -346,7 +347,9 @@
     };
     A.q('#menuBtn').onclick = function () { document.body.classList.toggle('menu-open'); };
     A.q('#scrim').onclick = function () { document.body.classList.remove('menu-open'); };
-    window.addEventListener('hashchange', function () { if (!dispatching) dispatch(); });
+    /* A hashchange to the address already on screen is the echo of "stay on this page" (the unsaved-changes prompt put the
+       address back): re-rendering then would throw the unsaved work away. */
+    window.addEventListener('hashchange', function () { if (!dispatching && location.hash !== lastHash) dispatch(); });
     window.addEventListener('beforeunload', function (e) { if (A.guard && !A.guard(true)) { e.preventDefault(); e.returnValue = ''; } });
     fetch('/api/auth/me', { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (d) {
       if (!d.user) A.showLogin('');

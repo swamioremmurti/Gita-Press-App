@@ -325,7 +325,10 @@ async function handleChapterGet(ctx, id) {
   const ch = await chapterRow(id);
   if (!ch) return sendJSON(ctx.res, 404, { error: 'Chapter not found' });
   const head = await db.get('SELECT prefix FROM book_docs WHERE book_file = ?', [ch.book_file]);
-  sendJSON(ctx.res, 200, { chapter: { id: ch.id, file: ch.book_file, pos: Number(ch.pos), title: ch.title, html: ch.html }, head: head ? headOf(head.prefix) : '' });
+  // the admin's custom book stylesheet is part of what readers see, so the editor shows it too
+  const custom = await require('./css').publicCss();
+  const extra = custom && custom.books ? '<style>' + custom.books.replace(/<\/style/gi, '') + '</style>' : '';
+  sendJSON(ctx.res, 200, { chapter: { id: ch.id, file: ch.book_file, pos: Number(ch.pos), title: ch.title, html: ch.html }, head: (head ? headOf(head.prefix) : '') + extra });
 }
 
 // the <head> of the book (its <style> and stylesheet link), so the editor can show a chapter the way the reader does
