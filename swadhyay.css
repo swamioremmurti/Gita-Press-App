@@ -265,7 +265,7 @@ body:not(.is-home) #viewRoot { padding-top: var(--topbar-h); }
 .book-card-body { margin-top: .5rem; }
 .book-card .book-title { display: block; font-weight: bold; font-size: .92rem; margin-bottom: .15rem; }
 .book-card .book-author { font-size: .75rem; color: var(--muted); }
-.fav-toggle { position: absolute; top: .8rem; right: .8rem; border: none; background: rgba(255,255,255,.85); width: 30px; height: 30px; border-radius: 50%; color: var(--accent); font-size: 1rem; }
+.fav-toggle { position: absolute; top: .8rem; right: .8rem; border: none; background: rgba(255,255,255,.6); width: 25.5px; height: 25.5px; padding: 0; display: inline-flex; align-items: center; justify-content: center; line-height: 1; border-radius: 50%; color: var(--accent); font-size: 1rem; }
 .fav-toggle.active { background: var(--accent); color: #fff; }
 
 .progress-track { background: var(--rule); border-radius: 6px; height: 6px; overflow: hidden; margin-top: .3rem; }
@@ -2627,7 +2627,7 @@ small.vc-next { color: var(--gold) !important; font-weight: 600; margin-top: .1r
 .lib-page .filter-tab.active .chip-ic { color: #fff; }
 
 .lib-page .book-card { box-shadow: 0 6px 20px rgba(60,40,10,.08); }
-.lib-page .fav-toggle { width: 34px; height: 34px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 1.05rem; }
+.lib-page .fav-toggle { width: 29px; height: 29px; background: rgba(255,255,255,.6); box-shadow: 0 2px 8px rgba(0,0,0,.15); font-size: 1.05rem; }
 .lib-page .fav-toggle.active { background: var(--accent); }
 
 /* A book card's three rounded shapes -- the card, the cover's frame, the cover picture -- have only a minimal radius, each a step larger than the

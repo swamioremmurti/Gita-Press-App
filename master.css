@@ -182,6 +182,10 @@ p.Shlok {
 	text-decoration:none;
 	text-indent:0px;
 }
+/* the last line of a shloka of श्रीपंचरत्नगीता: 1em more room before the next one */
+p.Shlok.shloka-end {
+	margin-bottom:1em;
+}
 p.Uvaacha {
 	-epub-ruby-position:over;
 	color:red;
@@ -2572,6 +2576,22 @@ p.Footnotes-4 {
 	border:1px solid BlueViolet;
 }
 p.Numbers {
+	-epub-ruby-position:over;
+	color:navy;
+	font-family:ChanakyaUni, serif;
+	font-size:1.333em;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:bold;
+	line-height:1.2;
+	margin-bottom:0px;
+	margin-left:0px;
+	margin-right:0px;
+	text-align:center;
+	text-decoration:none;
+	text-indent:0px;
+}
+p.Shlok-reference {
 	-epub-ruby-position:over;
 	color:navy;
 	font-family:ChanakyaUni, serif;

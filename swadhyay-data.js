@@ -4428,7 +4428,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  119.1
+        "sizeKB":  118.4
     },
     {
         "file":  "सती द्रौपदी.html",
@@ -5302,5 +5302,41 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  939.1
+    },
+    {
+        "file":  "मूर्तिपूजा-नाम-जपकी महिमा.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  132.7
+    },
+    {
+        "file":  "स्तोत्ररत्नावली.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  951.8
+    },
+    {
+        "file":  "श्रीपंचरत्नगीता.html",
+        "category":  "Gita",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  370.2
+    },
+    {
+        "file":  "नारी-अङ्क.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  7444.5
     }
 ];

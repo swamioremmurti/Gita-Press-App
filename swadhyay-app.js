@@ -416,6 +416,10 @@
   }
 
   var COVER_OVERRIDES = {
+    "नारी-अङ्क.html": "assets/covers/naaree-angk.webp",
+    "श्रीपंचरत्नगीता.html": "assets/covers/shreepncharatnageetaa.webp",
+    "स्तोत्ररत्नावली.html": "assets/covers/stotraratnaavalee.webp",
+    "मूर्तिपूजा-नाम-जपकी महिमा.html": "assets/covers/moortipoojaa-naam-japakee-mahimaa.webp",
     "संतवाणी—ढाई हजार अनमोल बोल.html": "assets/covers/sant-vani-dhai-hazaar-anmol-bol.webp",
     "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html": "assets/covers/prem-kaa-sachchaa-svaroop.webp",
     "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html": "assets/covers/bhagavaan-kaa-hetu-rahit-sauhaard.webp",
@@ -979,6 +983,8 @@
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
   var TITLE_OVERRIDES = {
+    "नारी-अङ्क.html": "नारी-अङ्क",
+    "मूर्तिपूजा-नाम-जपकी महिमा.html": "मूर्तिपूजा-नाम-जपकी महिमा",
     "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय",
     "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html": "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?",
     "परलोक और पुनर्जन्म एवं वैराग्य.html": "परलोक और पुनर्जन्म एवं वैराग्य",
@@ -1051,6 +1057,11 @@
     "bhagavan-kya-hai": "धर्म क्या है भगवान् क्या है.html",
     "धर्म-क्या-है": "धर्म क्या है भगवान् क्या है.html",
     "भगवान्-क्या-है": "धर्म क्या है भगवान् क्या है.html",
+    /* the two books merged into "मूर्तिपूजा-नाम-जपकी महिमा" */
+    "murti-puja": "मूर्तिपूजा-नाम-जपकी महिमा.html",
+    "nam-jap-ki-mahima": "मूर्तिपूजा-नाम-जपकी महिमा.html",
+    "मूर्ति-पूजा": "मूर्तिपूजा-नाम-जपकी महिमा.html",
+    "नाम-जप-की-महिमा": "मूर्तिपूजा-नाम-जपकी महिमा.html",
     /* आत्मोद्धारके साधन was renamed "आत्मोद्धारके साधन भाग - १": its old addresses still work */
     "atmoddharake-sadhan": "आत्मोद्धारके साधन भाग - १.html",
     "आत्मोद्धारके-साधन": "आत्मोद्धारके साधन भाग - १.html"
@@ -1115,7 +1126,9 @@
     "गीता पढ़ने के लाभ.html": true,                                     // merged into "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित)"
     "त्याग से भगवत्प्राप्ति.html": true,                                 // (same)                                // switched off (not a Gita Press book; hidden from the site)
     "धर्म क्या है.html": true,                                         // merged into "धर्म क्या है? भगवान् क्या है ?"
-    "भगवान् क्या है.html": true                                         // (same)
+    "भगवान् क्या है.html": true,                                        // (same)
+    "मूर्ति पूजा.html": true,                                           // merged into "मूर्तिपूजा-नाम-जपकी महिमा"
+    "नाम जप की महिमा.html": true                                        // (same)
   };
 
   /* "Normal, Footnotes*" (the catalogue's arth_hide) -> paragraph selectors for the reader's "hide meaning" mode:
