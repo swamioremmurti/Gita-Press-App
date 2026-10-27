@@ -4011,32 +4011,75 @@
     if (cur.trim()) out.push(cur.trim());
     return out.filter(function (c) { return /[^\s।.!?;,\-–—]/.test(c); });
   }
+  /* The chapter as a list of LINES to read: a line is cut at every line break (<br>) and at every danda / full stop / "?" / "!",
+     so a shloka is read line by line. A verse number ("॥ १७ ॥") is neither read nor highlighted. */
+  var TTS_LETTER = /[^\s\d०-९।॥|.,;:!?'"‘’“”()\[\]\-–—*]/;
+  var TTS_VERSE_NO = /[॥|]+\s*[०-९0-9][०-९0-9.\-–,\s]*[॥|]*/g;
+  function ttsClean(raw) { return raw.replace(/\u0001/g, " ").replace(TTS_VERSE_NO, " ").replace(/[॥|]+/g, "").replace(/\s+/g, " ").trim(); }
   function ttsCollect() {
     var doc = null; try { doc = document.getElementById("readerIframe").contentDocument; } catch (e) {}
     if (!doc || !doc.body) return [];
     var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
+    var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i]";      // shloka paragraphs / spans (class Shlok…) are not read
     els.forEach(function (el) {
       if (el.querySelector(sel)) return;                                            // read the inner paragraph, not its container
-      if (el.closest("[class*='footnote'], [class*='fn-'], nav, script, style")) return;
+      if (el.closest("[class*='footnote'], [class*='fn-'], [class*='shlok' i], nav, script, style")) return;
       var cs = doc.defaultView.getComputedStyle(el);
       if (cs.display === "none" || cs.visibility === "hidden") return;
-      var c = el.cloneNode(true);
-      Array.prototype.forEach.call(c.querySelectorAll("sup, script, style, [class*='footnote'], [class*='fn-']"), function (n) { n.remove(); });
-      var t = (c.textContent || "").replace(/\s+/g, " ").trim();
-      if (t.length > 1) out.push({ el: el, text: t });
+      var entries = [], full = "", node;
+      var w = doc.createTreeWalker(el, 5, { acceptNode: function (n) {
+        if (n.nodeType === 3) return 1;
+        if (n.tagName === "BR") return 1;
+        return n.matches(skip) ? 2 : 3;
+      } });
+      while ((node = w.nextNode())) {
+        if (node.nodeType === 3) { entries.push({ node: node, start: full.length }); full += node.nodeValue; }
+        else full += "\u0001";
+      }
+      var re = /[^\u0001।॥|.!?;]+(?:[।॥|.!?;]+|\u0001+)?|[।॥|.!?;\u0001]+/g, m;
+      while ((m = re.exec(full))) {
+        var text = ttsClean(m[0]);
+        if (!TTS_LETTER.test(text)) continue;                                      // a lone number, danda or the like
+        var s = m.index, e = m.index + m[0].length;
+        while (s < e && /[\s\u0001]/.test(full.charAt(s))) s++;
+        while (e > s && /[\s\u0001]/.test(full.charAt(e - 1))) e--;
+        out.push({ el: el, entries: entries, s: s, e: e, text: text });
+      }
     });
     return out;
   }
+  function ttsPos(entries, off, atEnd) {
+    for (var i = 0; i < entries.length; i++) {
+      var en = entries[i], len = en.node.nodeValue.length;
+      if (off >= en.start && (off < en.start + len || (atEnd && off === en.start + len))) return [en.node, off - en.start];
+    }
+    return null;
+  }
   function ttsMark(on) {
-    var p = tts.paras[tts.pi]; if (!p) return;
+    var doc = null, win = null; try { var f = document.getElementById("readerIframe"); doc = f.contentDocument; win = f.contentWindow; } catch (e) {}
+    if (!doc || !win) return;
+    var hl = win.CSS && win.CSS.highlights && win.Highlight ? win.CSS.highlights : null;
     try {
-      if (on) {
-        tts.saved = { el: p.el, bg: p.el.style.backgroundColor, rad: p.el.style.borderRadius };
-        p.el.style.backgroundColor = "rgba(190, 120, 20, .22)"; p.el.style.borderRadius = "6px";
-        p.el.scrollIntoView({ block: "center", behavior: "smooth" });
-      } else if (tts.saved) {
-        tts.saved.el.style.backgroundColor = tts.saved.bg; tts.saved.el.style.borderRadius = tts.saved.rad; tts.saved = null;
+      if (hl) hl.delete("ks-tts");
+      if (tts.saved) { tts.saved.el.style.backgroundColor = tts.saved.bg; tts.saved = null; }
+      var p = tts.paras[tts.pi];
+      if (!on || !p) return;
+      var a = ttsPos(p.entries, p.s, false), b = ttsPos(p.entries, p.e, true);
+      if (!a || !b) return;
+      var r = doc.createRange(); r.setStart(a[0], a[1]); r.setEnd(b[0], b[1]);
+      if (hl) {
+        if (!doc.getElementById("ks-tts-style")) {
+          var st = doc.createElement("style"); st.id = "ks-tts-style";
+          st.textContent = "::highlight(ks-tts){background-color:rgba(190,120,20,.35);}";
+          doc.head.appendChild(st);
+        }
+        hl.set("ks-tts", new win.Highlight(r));
+      } else {                                                                      // no highlight support: mark the whole paragraph
+        tts.saved = { el: p.el, bg: p.el.style.backgroundColor };
+        p.el.style.backgroundColor = "rgba(190, 120, 20, .22)";
       }
+      var rc = r.getBoundingClientRect();
+      if (rc.top < 70 || rc.bottom > win.innerHeight - 110) win.scrollBy({ top: rc.top - win.innerHeight * 0.35, behavior: "smooth" });
     } catch (e) {}
   }
   function ttsPaint() {
@@ -4057,16 +4100,42 @@
     var u = new window.SpeechSynthesisUtterance(tts.chunks[tts.ci]);
     u.lang = tts.voice ? tts.voice.lang : "hi-IN"; if (tts.voice) u.voice = tts.voice;
     u.rate = tts.rate;
-    var failed = false;
-    u.onend = function () { if (tok !== tts.token || !tts.on || tts.paused) return; if (failed) return; tts.ci++; ttsSpeak(); };
+    var cur = tts.cur = { tok: tok, t0: Date.now(), alive: Date.now(), started: false, len: u.text.length, retried: tts.retryNext };
+    tts.retryNext = false;
+    u.onstart = function () { cur.started = true; cur.alive = Date.now(); };
+    u.onboundary = function () { cur.alive = Date.now(); };
+    u.onend = function () { if (tok !== tts.token || !tts.on || tts.paused) return; tts.errs = 0; tts.ci++; ttsSpeak(); };
     u.onerror = function (ev) {
       if (tok !== tts.token) return;
       var e = ev && ev.error;
       if (e === "canceled" || e === "interrupted") return;
-      failed = true; ttsStop();
-      toast(tx("आवाज़ चलाई नहीं जा सकी — फ़ोन की टेक्स्ट-टू-स्पीच सेटिंग देखें।", "Could not play the voice — check the phone's text-to-speech settings."));
+      ttsGiveUp();
     };
-    try { window.speechSynthesis.speak(u); } catch (e) { ttsStop(); }
+    try { window.speechSynthesis.speak(u); } catch (e) { ttsGiveUp(); }
+  }
+  /* Some engines (Chrome's online voices especially) now and then lose a piece: it never starts, or it ends without saying so.
+     The watchdog notices, says the piece once more, and if that fails too, skips it -- so listening never just halts. */
+  function ttsGiveUp() {
+    if (!tts.on) return;
+    var c = tts.cur;
+    if (c && !c.retried) { tts.retryNext = true; tts.token++; try { window.speechSynthesis.cancel(); } catch (e) {} setTimeout(ttsSpeak, 150); return; }
+    if (++tts.errs >= 4) {
+      ttsStop();
+      toast(tx("आवाज़ चलाई नहीं जा सकी — फ़ोन की टेक्स्ट-टू-स्पीच सेटिंग देखें।", "Could not play the voice — check the phone's text-to-speech settings."));
+      return;
+    }
+    tts.token++; try { window.speechSynthesis.cancel(); } catch (e) {}
+    tts.ci++; setTimeout(ttsSpeak, 150);
+  }
+  function ttsWatch() {
+    var c = tts.cur;
+    if (!tts.on || tts.paused || tts.advancing || !c || c.tok !== tts.token) return;
+    var now = Date.now(), age = now - c.t0, speaking = false;
+    try { speaking = window.speechSynthesis.speaking; } catch (e) {}
+    if (c.started && !speaking && now - c.alive > 1500) {                          // it finished but never said so: carry on
+      tts.errs = 0; tts.token++; tts.ci++; ttsSpeak(); return;
+    }
+    if ((!c.started && age > 5000) || age > 8000 + c.len * 150 / tts.rate) ttsGiveUp();
   }
   function ttsBegin() {
     tts.paras = ttsCollect(); tts.pi = 0; tts.ci = 0; tts.chunks = [];
@@ -4076,11 +4145,12 @@
   function ttsStart() {
     if (!ttsSupported()) { toast(tx("इस ब्राउज़र में सुनने की सुविधा नहीं है।", "Listening is not available in this browser.")); return; }
     ttsPickVoice();
-    tts.on = true; tts.paused = false; ttsPaint();
+    tts.on = true; tts.paused = false; tts.errs = 0; tts.retryNext = false; ttsPaint();
+    clearInterval(tts.wd); tts.wd = setInterval(ttsWatch, 700);
     ttsBegin();
   }
   function ttsStop() {
-    tts.on = false; tts.paused = false; tts.token++;
+    tts.on = false; tts.paused = false; tts.token++; clearInterval(tts.wd);
     try { window.speechSynthesis.cancel(); } catch (e) {}
     ttsMark(false); tts.paras = []; tts.chunks = []; ttsPaint();
   }
