@@ -3770,6 +3770,7 @@
       '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
       '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/><path class="arth-slash" d="M3 3l18 18"/></svg>' +
       '<span class="arth-label">अर्थ</span></button>' +
+      '<button class="reader-icon-btn" id="readerListenBtn" type="button" hidden title="' + esc(tx("अध्याय सुनें", "Listen to this chapter")) + '" aria-label="' + esc(tx("अध्याय सुनें", "Listen to this chapter")) + '" aria-pressed="false">&#127911;</button>' +
       '<button class="reader-icon-btn" id="readerSearchBtn" title="पुस्तक में खोजें" aria-label="पुस्तक में खोजें">&#128269;</button>' +
       '<button class="reader-icon-btn" id="readerBookmarkToggle" title="बुकमार्क" aria-label="बुकमार्क">☆</button>' +
       '<button class="reader-icon-btn" id="readerSettingsToggle" title="सेटिंग्स" aria-label="सेटिंग्स">Aa</button>' +
@@ -3806,6 +3807,14 @@
       '</div>' +
       '<div class="reader-content" id="readerContent">' +
       '<iframe class="reader-iframe" id="readerIframe" title="पुस्तक सामग्री" allow="clipboard-write"></iframe>' +
+      '<div class="reader-tts" id="readerTtsBar" hidden>' +
+      '<button type="button" id="readerTtsPlay" aria-label="' + esc(tx("रोकें / चलाएँ", "Pause / play")) + '">&#10073;&#10073;</button>' +
+      '<span class="reader-tts-pos" id="readerTtsPos"></span>' +
+      '<button type="button" id="readerTtsSlow" aria-label="' + esc(tx("धीमा", "Slower")) + '">&minus;</button>' +
+      '<span class="reader-tts-rate" id="readerTtsRate"></span>' +
+      '<button type="button" id="readerTtsFast" aria-label="' + esc(tx("तेज़", "Faster")) + '">+</button>' +
+      '<button type="button" id="readerTtsStop" aria-label="' + esc(tx("बंद करें", "Stop")) + '">&#10005;</button>' +
+      '</div>' +
       '</div>' +
       '</div>' +
       '<nav class="reader-bottomnav">' +
@@ -3979,7 +3988,145 @@
     setReads(reads);
   }
 
+  /* ---------------- listen to the open chapter (the device's own speech engine; nothing is downloaded) ----------------
+     The chapter's paragraphs are read one after another, cut into short pieces (some engines drop out on long ones),
+     the paragraph being read is highlighted and kept in view, and at the end the next chapter carries on. */
+  var tts = { on: false, paused: false, paras: [], pi: 0, ci: 0, chunks: [], advancing: false, token: 0, rate: 1, voice: null, saved: null };
+  var TTS_RATES = [0.7, 0.85, 1, 1.15, 1.3, 1.5, 1.75, 2];
+  try { var tr = parseFloat(localStorage.getItem("swadhyay_tts_rate")); if (tr >= 0.5 && tr <= 2.5) tts.rate = tr; } catch (e) {}
+  function ttsSupported() { return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); }
+  function ttsPickVoice() {
+    var vs = []; try { vs = window.speechSynthesis.getVoices() || []; } catch (e) {}
+    var hi = vs.filter(function (v) { return /^hi([-_]|$)/i.test(v.lang); });
+    tts.voice = hi.filter(function (v) { return v.localService; })[0] || hi[0] || null;
+  }
+  function ttsChunks(text) {
+    text = text.replace(/[॥]+/g, "। ").replace(/\s+/g, " ").trim();
+    var parts = text.match(/[^।.!?;]+[।.!?;]*/g) || [text], out = [], cur = "";
+    parts.forEach(function (p) {
+      if ((cur + p).length > 170 && cur) { out.push(cur.trim()); cur = ""; }
+      cur += p;
+      while (cur.length > 220) { var cut = cur.lastIndexOf(" ", 200); if (cut < 80) cut = 200; out.push(cur.slice(0, cut).trim()); cur = cur.slice(cut); }
+    });
+    if (cur.trim()) out.push(cur.trim());
+    return out.filter(function (c) { return /[^\s।.!?;,\-–—]/.test(c); });
+  }
+  function ttsCollect() {
+    var doc = null; try { doc = document.getElementById("readerIframe").contentDocument; } catch (e) {}
+    if (!doc || !doc.body) return [];
+    var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
+    els.forEach(function (el) {
+      if (el.querySelector(sel)) return;                                            // read the inner paragraph, not its container
+      if (el.closest("[class*='footnote'], [class*='fn-'], nav, script, style")) return;
+      var cs = doc.defaultView.getComputedStyle(el);
+      if (cs.display === "none" || cs.visibility === "hidden") return;
+      var c = el.cloneNode(true);
+      Array.prototype.forEach.call(c.querySelectorAll("sup, script, style, [class*='footnote'], [class*='fn-']"), function (n) { n.remove(); });
+      var t = (c.textContent || "").replace(/\s+/g, " ").trim();
+      if (t.length > 1) out.push({ el: el, text: t });
+    });
+    return out;
+  }
+  function ttsMark(on) {
+    var p = tts.paras[tts.pi]; if (!p) return;
+    try {
+      if (on) {
+        tts.saved = { el: p.el, bg: p.el.style.backgroundColor, rad: p.el.style.borderRadius };
+        p.el.style.backgroundColor = "rgba(190, 120, 20, .22)"; p.el.style.borderRadius = "6px";
+        p.el.scrollIntoView({ block: "center", behavior: "smooth" });
+      } else if (tts.saved) {
+        tts.saved.el.style.backgroundColor = tts.saved.bg; tts.saved.el.style.borderRadius = tts.saved.rad; tts.saved = null;
+      }
+    } catch (e) {}
+  }
+  function ttsPaint() {
+    var btn = document.getElementById("readerListenBtn"), bar = document.getElementById("readerTtsBar");
+    if (btn) { btn.classList.toggle("on", tts.on); btn.setAttribute("aria-pressed", tts.on ? "true" : "false"); }
+    if (bar) bar.hidden = !tts.on;
+    var pl = document.getElementById("readerTtsPlay"); if (pl) pl.innerHTML = tts.paused ? "&#9654;" : "&#10073;&#10073;";
+    var pos = document.getElementById("readerTtsPos"); if (pos) pos.textContent = tts.paras.length ? (tts.pi + 1) + "/" + tts.paras.length : "…";
+    var rt = document.getElementById("readerTtsRate"); if (rt) rt.textContent = tts.rate + "×";
+  }
+  function ttsSpeak() {
+    if (!tts.on || tts.paused) return;
+    var tok = ++tts.token;
+    var p = tts.paras[tts.pi];
+    if (!p) { ttsChapterDone(); return; }
+    if (!tts.chunks.length) tts.chunks = ttsChunks(p.text), tts.ci = 0;
+    if (tts.ci >= tts.chunks.length) { ttsMark(false); tts.pi++; tts.chunks = []; ttsMark(true); ttsPaint(); ttsSpeak(); return; }
+    var u = new window.SpeechSynthesisUtterance(tts.chunks[tts.ci]);
+    u.lang = tts.voice ? tts.voice.lang : "hi-IN"; if (tts.voice) u.voice = tts.voice;
+    u.rate = tts.rate;
+    var failed = false;
+    u.onend = function () { if (tok !== tts.token || !tts.on || tts.paused) return; if (failed) return; tts.ci++; ttsSpeak(); };
+    u.onerror = function (ev) {
+      if (tok !== tts.token) return;
+      var e = ev && ev.error;
+      if (e === "canceled" || e === "interrupted") return;
+      failed = true; ttsStop();
+      toast(tx("आवाज़ चलाई नहीं जा सकी — फ़ोन की टेक्स्ट-टू-स्पीच सेटिंग देखें।", "Could not play the voice — check the phone's text-to-speech settings."));
+    };
+    try { window.speechSynthesis.speak(u); } catch (e) { ttsStop(); }
+  }
+  function ttsBegin() {
+    tts.paras = ttsCollect(); tts.pi = 0; tts.ci = 0; tts.chunks = [];
+    if (!tts.paras.length) { ttsStop(); toast(tx("इस पृष्ठ पर सुनने योग्य पाठ नहीं मिला।", "Nothing to read aloud on this page.")); return; }
+    ttsMark(true); ttsPaint(); ttsSpeak();
+  }
+  function ttsStart() {
+    if (!ttsSupported()) { toast(tx("इस ब्राउज़र में सुनने की सुविधा नहीं है।", "Listening is not available in this browser.")); return; }
+    ttsPickVoice();
+    tts.on = true; tts.paused = false; ttsPaint();
+    ttsBegin();
+  }
+  function ttsStop() {
+    tts.on = false; tts.paused = false; tts.token++;
+    try { window.speechSynthesis.cancel(); } catch (e) {}
+    ttsMark(false); tts.paras = []; tts.chunks = []; ttsPaint();
+  }
+  function ttsPause(pause) {
+    if (!tts.on) return;
+    tts.paused = pause; tts.token++;
+    try { window.speechSynthesis.cancel(); } catch (e) {}                         // pause() is unreliable on phones: stop, and say this piece again on resume
+    ttsPaint();
+    if (!pause) ttsSpeak();
+  }
+  function ttsSetRate(dir) {
+    var i = 0, best = 99;
+    TTS_RATES.forEach(function (r, k) { if (Math.abs(r - tts.rate) < best) { best = Math.abs(r - tts.rate); i = k; } });
+    tts.rate = TTS_RATES[Math.max(0, Math.min(TTS_RATES.length - 1, i + dir))];
+    try { localStorage.setItem("swadhyay_tts_rate", String(tts.rate)); } catch (e) {}
+    ttsPaint();
+    if (tts.on && !tts.paused) { tts.token++; try { window.speechSynthesis.cancel(); } catch (e) {} ttsSpeak(); }
+  }
+  function ttsChapterDone() {
+    ttsMark(false);
+    if (!reader.chapters || reader.idx >= reader.chapters.length - 1) { ttsStop(); toast(tx("पुस्तक पूरी हुई।", "End of the book.")); return; }
+    var iframe = document.getElementById("readerIframe");
+    tts.advancing = true; tts.paras = []; tts.chunks = []; ttsPaint();
+    var started = false;
+    function go() { if (started) return; started = true; tts.advancing = false; if (tts.on) setTimeout(function () { if (tts.on) ttsBegin(); }, 350); }
+    iframe.addEventListener("load", go, { once: true });
+    setTimeout(go, 3000);
+    readerGo(reader.idx + 1);
+  }
+  function ttsInit() {
+    var btn = document.getElementById("readerListenBtn");
+    if (!btn || btn.dataset.ttsWired) return;
+    btn.dataset.ttsWired = "1";
+    if (!ttsSupported()) return;
+    btn.hidden = false;
+    try { window.speechSynthesis.onvoiceschanged = ttsPickVoice; } catch (e) {}
+    btn.addEventListener("click", function () { if (tts.on) ttsStop(); else ttsStart(); });
+    document.getElementById("readerTtsPlay").addEventListener("click", function () { ttsPause(!tts.paused); });
+    document.getElementById("readerTtsStop").addEventListener("click", ttsStop);
+    document.getElementById("readerTtsSlow").addEventListener("click", function () { ttsSetRate(-1); });
+    document.getElementById("readerTtsFast").addEventListener("click", function () { ttsSetRate(1); });
+    window.addEventListener("pagehide", function () { try { window.speechSynthesis.cancel(); } catch (e) {} });
+  }
+
   function readerGo(idx, anchorId) {
+    if (tts.on && !tts.advancing) ttsStop();                                       // the reader moved on their own: stop listening
     if (!reader.chapters) return;
     idx = Math.max(0, Math.min(reader.chapters.length - 1, idx));
     reader.idx = idx;
@@ -4059,6 +4206,7 @@
     });
     document.getElementById("readerScrim").addEventListener("click", closeDrawerAndSettings);
     document.getElementById("readerSearchBtn").addEventListener("click", readerFindOpen);
+    ttsInit();
     document.getElementById("readerArthBtn").addEventListener("click", function () {
       if (reader.chapters) readerArthSet(!reader.arthHidden, true);
     });
@@ -4258,6 +4406,7 @@
   function closeReader() {
     if (!reader.open) return;
     reader.open = false;
+    ttsStop();
     readerFindClose();
     document.body.classList.remove("reader-active");
     var skBar = document.getElementById("skReadBar"); if (skBar) skBar.remove();

@@ -2970,3 +2970,16 @@ body.lib-tray-on .lib-tray-scrim { display: block; }
 @media (max-width: 860px) { .cat-tabs-wrap .row-nav { width: 34px; height: 34px; } }
 @media (prefers-reduced-motion: reduce) { .cat-tabs-wrap .row-nav { transition: none; } }
 .lib-controls.is-tray .cat-tabs-wrap { --bg: var(--surface); }
+
+/* listen to the open chapter */
+.reader-icon-btn[hidden] { display: none; }
+.reader-icon-btn.on { background: var(--accent); color: #fff; }
+.reader-tts {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); z-index: 5;
+  display: flex; align-items: center; gap: .35rem; padding: .35rem .6rem; border-radius: 26px;
+  background: var(--surface, #fff); color: var(--text, #222); border: 1px solid var(--accent); box-shadow: 0 4px 18px rgba(0,0,0,.25);
+}
+.reader-tts[hidden] { display: none; }
+.reader-tts button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--surface-2, #f1e8d8); color: inherit; font-size: 1rem; cursor: pointer; }
+.reader-tts #readerTtsPlay { background: var(--accent); color: #fff; }
+.reader-tts-pos, .reader-tts-rate { min-width: 2.6rem; text-align: center; font-size: .8rem; }
