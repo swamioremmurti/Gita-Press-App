@@ -23,7 +23,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  87.9
+        "sizeKB":  89.3
     },
     {
         "file":  "जीवन्मुक्तिके रहस्य.html",
@@ -5338,5 +5338,86 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  7444.5
+    },
+    {
+        "file":  "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
+        "category":  "Siksha evam Katha",
+        "author":  "देवर्षि नारद एवं मुनिवर शाण्डिल्य",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  127.7
+    },
+    {
+        "file":  "गरुडपुराण-सारोद्धार.html",
+        "category":  "Purans",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  912.8
+    },
+    {
+        "file":  "मैं नहीं, मेरा नहीं.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीता प्रकाशन, गोरखपुर",
+        "sizeKB":  666.7
+    },
+    {
+        "file":  "रहस्यमयी वार्ता.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीता प्रकाशन, गोरखपुर",
+        "sizeKB":  1130.5
+    },
+    {
+        "file":  "पायो परम बिश्रामु.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीता प्रकाशन, गोरखपुर",
+        "sizeKB":  508.5
+    },
+    {
+        "file":  "बन गये आप अकेले सब कुछ.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीता प्रकाशन, गोरखपुर",
+        "sizeKB":  641.4
+    },
+    {
+        "file":  "सरस भजनावली.html",
+        "category":  "Bajans",
+        "author":  "बजरंगलाल सोनी",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीता प्रकाशन, गोरखपुर",
+        "sizeKB":  218.0
+    },
+    {
+        "file":  "भगवत्कृपा.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  204.6
+    },
+    {
+        "file":  "भक्ति-रहस्य.html",
+        "category":  "Pravachan",
+        "author":  "महामहोपाध्याय पं० गोपीनाथ कविराज",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  824.7
     }
 ];

@@ -96,7 +96,7 @@
         /* the word before it may be plain text or a styled span of its own (<span>ऊकालो…प्लुतः</span><span>१</span>) */
         var before = sp.previousSibling;
         var tail = before ? (before.nodeType === 3 ? before.nodeValue : before.nodeType === 1 ? before.textContent : "") : "";
-        if (!/[ऀ-ॣ॰-ॿ।॥’”]$/.test(tail)) continue;                // (a closing quote may stand between the word and the number)
+        if (!/[ऀ-ॣ॰-ॿ।॥’”;,:?!)\]]$/.test(tail)) continue;          // (a closing quote or a mark of punctuation may stand between the word and the number: "है;१")
         if (doc.defaultView.getComputedStyle(sp).verticalAlign !== "super") sp.classList.add("fn-sup");
         return sp;
       }

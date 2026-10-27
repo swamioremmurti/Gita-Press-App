@@ -416,6 +416,17 @@
   }
 
   var COVER_OVERRIDES = {
+    "व्रत परिचय.html": "assets/covers/vrat-parichay.webp",
+    "सहस्रनामस्तोत्रसंग्रह.html": "assets/covers/sahasranaamastotrasngrah.webp",
+    "नित्यकर्म-प्रयोग.html": "assets/covers/nityakarm-prayog.webp",
+    "भगवत्कृपा.html": "assets/covers/bhagavatkripaa.webp",
+    "सरस भजनावली.html": "assets/covers/saras-bhajanaavalee.webp",
+    "बन गये आप अकेले सब कुछ.html": "assets/covers/ban-gaye-aap-akele-sab-kuchh.webp",
+    "पायो परम बिश्रामु.html": "assets/covers/paayo-param-bishraamu.webp",
+    "रहस्यमयी वार्ता.html": "assets/covers/rahasyamayee-vaartaa.webp",
+    "मैं नहीं, मेरा नहीं.html": "assets/covers/main-naheen-meraa-naheen.webp",
+    "गरुडपुराण-सारोद्धार.html": "assets/covers/garudapuraan-saaroddhaar.webp",
+    "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html": "assets/covers/naarad-bhakti-sootr.webp",
     "नारी-अङ्क.html": "assets/covers/naaree-angk.webp",
     "श्रीपंचरत्नगीता.html": "assets/covers/shreepncharatnageetaa.webp",
     "स्तोत्ररत्नावली.html": "assets/covers/stotraratnaavalee.webp",
@@ -927,6 +938,13 @@
     "राजयोग.html": true,
     "मानस-मुक्ता.html": true,
     "यह कलियुग है!.html": true,
+    "मैं नहीं, मेरा नहीं.html": true,
+    "रहस्यमयी वार्ता.html": true,
+    "पायो परम बिश्रामु.html": true,
+    "बन गये आप अकेले सब कुछ.html": true,
+    "सरस भजनावली.html": true,
+    "भगवत्कृपा.html": true,
+    "भक्ति-रहस्य.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
     "ईस्वर अंस जीव अबिनासी.html": true,
@@ -983,7 +1001,10 @@
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
   var TITLE_OVERRIDES = {
+    "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र",
     "नारी-अङ्क.html": "नारी-अङ्क",
+    "गरुडपुराण-सारोद्धार.html": "गरुडपुराण-सारोद्धार",
+    "भक्ति-रहस्य.html": "भक्ति-रहस्य",
     "मूर्तिपूजा-नाम-जपकी महिमा.html": "मूर्तिपूजा-नाम-जपकी महिमा",
     "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय",
     "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html": "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?",
@@ -1015,6 +1036,11 @@
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "माहात्म्यसहित श्रीमद्भगवद्गीता"
   };
   var SLUG_ALIASES = {
+    /* the two books merged into "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र": their old addresses open it */
+    "narad-bhakti-sutra": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
+    "shandily-bhakti-sutra": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
+    "नारद-भक्ति-सूत्र": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
+    "शाण्डिल्य-भक्ति-सूत्र": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
     /* "वासुदेवः सर्वम्" was "वासुदेव सर्वम्": the old addresses open it */
     "vasudev-sarvam": "वासुदेवः सर्वम्.html",
     "वासुदेव-सर्वम्": "वासुदेवः सर्वम्.html",
@@ -1108,6 +1134,8 @@
     "सुदर्शनसिंह ‘चक्र’": "sudarshan-singh-chakra",
   };
   var HIDDEN_BOOKS = {
+    "नारद भक्ति सूत्र.html": true,                                     // merged into "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र"
+    "शाण्डिल्य-भक्ति-सूत्र.html": true,                                // (same)
     "प्रेम का सच्चा स्वरूप.html": true,                                // merged into "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय"
     "शोक नाश के उपाय.html": true,                                      // (same)
     "भगवान् का हेतु रहित सौहार्द.html": true,                         // merged into "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?"
