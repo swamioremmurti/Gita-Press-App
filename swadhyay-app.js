@@ -946,6 +946,7 @@
     "सरस भजनावली.html": true,
     "भगवत्कृपा.html": true,
     "भक्ति-रहस्य.html": true,
+    "ब्रज-भाव.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
     "ईस्वर अंस जीव अबिनासी.html": true,
@@ -1006,6 +1007,7 @@
     "नारी-अङ्क.html": "नारी-अङ्क",
     "गरुडपुराण-सारोद्धार.html": "गरुडपुराण-सारोद्धार",
     "भक्ति-रहस्य.html": "भक्ति-रहस्य",
+    "ब्रज-भाव.html": "ब्रज-भाव",
     "चित्त शुद्धि भाग - 1.html": "चित्त शुद्धि भाग-1",
     "चित्त शुद्धि भाग - 2.html": "चित्त शुद्धि भाग-2",
     "मूर्तिपूजा-नाम-जपकी महिमा.html": "मूर्तिपूजा-नाम-जपकी महिमा",
@@ -3818,6 +3820,7 @@
       '<iframe class="reader-iframe" id="readerIframe" title="पुस्तक सामग्री" allow="clipboard-write"></iframe>' +
       '<div class="reader-tts" id="readerTtsBar" hidden>' +
       '<button type="button" id="readerTtsPlay" aria-label="' + esc(tx("रोकें / चलाएँ", "Pause / play")) + '">&#10073;&#10073;</button>' +
+      '<span class="reader-tts-spin" id="readerTtsSpin" hidden></span>' +
       '<span class="reader-tts-pos" id="readerTtsPos"></span>' +
       '<button type="button" id="readerTtsSlow" aria-label="' + esc(tx("धीमा", "Slower")) + '">&minus;</button>' +
       '<span class="reader-tts-rate" id="readerTtsRate"></span>' +
@@ -4009,16 +4012,28 @@
     var hi = vs.filter(function (v) { return /^hi([-_]|$)/i.test(v.lang); });
     tts.voice = hi.filter(function (v) { return v.localService; })[0] || hi[0] || null;
   }
+  /* The pieces a line is spoken in: short ones (at most TTS_MAXW words) so that each is quick to prepare and the voice never
+     has a long stretch to chew on. A sentence is cut at the comma / dash nearest its middle, else into equal halves; very short
+     neighbours are joined. (The highlight still covers the whole line.) */
+  var TTS_MAXW = 12;
+  function ttsWords(t) { return t ? t.split(" ").filter(Boolean).length : 0; }
+  function ttsSplit(words, out) {
+    if (words.length <= TTS_MAXW) { out.push(words.join(" ")); return; }
+    var mid = words.length / 2, best = -1, bd = 1e9, i;
+    for (i = 3; i < words.length - 2; i++) if (/[,;:—–]$/.test(words[i - 1]) && Math.abs(i - mid) < bd) { bd = Math.abs(i - mid); best = i; }
+    if (best < 0) best = Math.ceil(words.length / 2);
+    ttsSplit(words.slice(0, best), out); ttsSplit(words.slice(best), out);
+  }
   function ttsChunks(text) {
-    text = text.replace(/[॥]+/g, "। ").replace(/\s+/g, " ").trim();
-    var parts = text.match(/[^।.!?;]+[।.!?;]*/g) || [text], out = [], cur = "";
-    parts.forEach(function (p) {
-      if ((cur + p).length > 170 && cur) { out.push(cur.trim()); cur = ""; }
-      cur += p;
-      while (cur.length > 220) { var cut = cur.lastIndexOf(" ", 200); if (cut < 80) cut = 200; out.push(cur.slice(0, cut).trim()); cur = cur.slice(cut); }
+    text = text.replace(/[॥]+/g, "। ").replace(/s+/g, " ").trim();
+    var sents = text.match(/[^।.!?;]+[।.!?;]*/g) || [text], pieces = [], out = [], cur = "";
+    sents.forEach(function (x) { ttsSplit(x.trim().split(" ").filter(Boolean), pieces); });
+    pieces.forEach(function (p) {
+      if (cur && ttsWords(cur) + ttsWords(p) <= TTS_MAXW) cur += " " + p;
+      else { if (cur) out.push(cur); cur = p; }
     });
-    if (cur.trim()) out.push(cur.trim());
-    return out.filter(function (c) { return /[^\s।.!?;,\-–—]/.test(c); });
+    if (cur) out.push(cur);
+    return out.filter(function (c) { return /[^s।.!?;,-–—]/.test(c); });
   }
   /* The chapter as a list of LINES to read: a line is cut at every line break (<br>) and at every danda / full stop / "?" / "!",
      so a shloka is read line by line. A verse number ("॥ १७ ॥") is neither read nor highlighted. */
@@ -4029,10 +4044,10 @@
     var doc = null; try { doc = document.getElementById("readerIframe").contentDocument; } catch (e) {}
     if (!doc || !doc.body) return [];
     var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
-    var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i]";      // shloka paragraphs / spans (class Shlok…) are not read
+    var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i], [class*='uwach' i]";      // shloka paragraphs / spans (class Shlok…) and speaker lines (class Uwach) are not read
     els.forEach(function (el) {
       if (el.querySelector(sel)) return;                                            // read the inner paragraph, not its container
-      if (el.closest("[class*='footnote'], [class*='fn-'], [class*='shlok' i], nav, script, style")) return;
+      if (el.closest("[class*='footnote'], [class*='fn-'], [class*='shlok' i], [class*='uwach' i], nav, script, style")) return;
       var cs = doc.defaultView.getComputedStyle(el);
       if (cs.display === "none" || cs.visibility === "hidden") return;
       var entries = [], full = "", node;
@@ -4096,7 +4111,10 @@
     if (btn) { btn.classList.toggle("on", tts.on); btn.setAttribute("aria-pressed", tts.on ? "true" : "false"); }
     if (bar) bar.hidden = !tts.on;
     var pl = document.getElementById("readerTtsPlay"); if (pl) pl.innerHTML = tts.paused ? "&#9654;" : "&#10073;&#10073;";
-    var pos = document.getElementById("readerTtsPos"); if (pos) pos.textContent = tts.paras.length ? (tts.pi + 1) + "/" + tts.paras.length : "…";
+    var spin = document.getElementById("readerTtsSpin"); if (spin) spin.hidden = !(tts.on && tts.loading);
+    if (btn) btn.classList.toggle("loading", !!(tts.on && tts.loading));
+    var pos = document.getElementById("readerTtsPos");
+    if (pos) pos.textContent = tts.on && tts.loading ? tx("आवाज़ तैयार…", "Preparing…") : tts.paras.length ? (tts.pi + 1) + "/" + tts.paras.length : "…";
     var rt = document.getElementById("readerTtsRate"); if (rt) rt.textContent = tts.rate + "×";
   }
   /* the next n pieces to be spoken (across lines), so the app's own voice can have them ready */
@@ -4133,7 +4151,7 @@
     };
     try { window.speechSynthesis.speak(u); } catch (e) { ttsGiveUp(); return; }
     try {                                                                           // the app's own voice can get the next piece ready while this one plays
-      if (window.speechSynthesis.prefetch) ttsUpcoming(3).forEach(function (t) { window.speechSynthesis.prefetch(t, tts.rate); });
+      if (window.speechSynthesis.prefetch) ttsUpcoming(4).forEach(function (t) { window.speechSynthesis.prefetch(t, tts.rate); });
     } catch (e) {}
   }
   /* Some engines (Chrome's online voices especially) now and then lose a piece: it never starts, or it ends without saying so.
@@ -4173,7 +4191,7 @@
     ttsBegin();
   }
   function ttsStop() {
-    tts.on = false; tts.paused = false; tts.token++; clearInterval(tts.wd);
+    tts.on = false; tts.paused = false; tts.loading = false; tts.token++; clearInterval(tts.wd);
     try { window.speechSynthesis.cancel(); } catch (e) {}
     ttsMark(false); tts.paras = []; tts.chunks = []; ttsPaint();
   }
@@ -4207,6 +4225,7 @@
     var btn = document.getElementById("readerListenBtn");
     if (!btn || btn.dataset.ttsWired) return;
     btn.dataset.ttsWired = "1";
+    window.__ksTtsState = function (st) { tts.loading = st === "loading"; ttsPaint(); };      // the app says when it is preparing lines
     if (!ttsSupported()) return;
     btn.hidden = false;
     try { window.speechSynthesis.onvoiceschanged = ttsPickVoice; } catch (e) {}

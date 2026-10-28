@@ -2983,3 +2983,10 @@ body.lib-tray-on .lib-tray-scrim { display: block; }
 .reader-tts button { width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--surface-2, #f1e8d8); color: inherit; font-size: 1rem; cursor: pointer; }
 .reader-tts #readerTtsPlay { background: var(--accent); color: #fff; }
 .reader-tts-pos, .reader-tts-rate { min-width: 2.6rem; text-align: center; font-size: .8rem; }
+
+/* listen: the app's voice is preparing lines -- a small spinner in the bar, nothing over the text */
+.reader-tts-spin { width: 14px; height: 14px; border: 2px solid var(--accent); border-top-color: transparent; border-radius: 50%; animation: ksspin .8s linear infinite; }
+.reader-tts-spin[hidden] { display: none; }
+.reader-icon-btn.loading { animation: kspulse 1.2s ease-in-out infinite; }
+@keyframes ksspin { to { transform: rotate(360deg); } }
+@keyframes kspulse { 50% { opacity: .55; } }

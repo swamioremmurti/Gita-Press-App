@@ -192,6 +192,18 @@ const SCHEMA_STATEMENTS = [
     detail     TEXT NOT NULL DEFAULT '',
     created_at INTEGER NOT NULL
   )`,
+  `CREATE TABLE IF NOT EXISTS push_log (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_name  TEXT NOT NULL DEFAULT '',
+    audience   TEXT NOT NULL DEFAULT 'all',
+    title      TEXT NOT NULL DEFAULT '',
+    body       TEXT NOT NULL DEFAULT '',
+    url        TEXT NOT NULL DEFAULT '',
+    status     TEXT NOT NULL DEFAULT '',
+    detail     TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL
+  )`,
+  'CREATE INDEX IF NOT EXISTS idx_push_log_time ON push_log(created_at)',
   'CREATE INDEX IF NOT EXISTS idx_book_chapters_book ON book_chapters(book_file, pos)',
   'CREATE INDEX IF NOT EXISTS idx_chapter_versions_ch ON chapter_versions(chapter_id)',
   'CREATE INDEX IF NOT EXISTS idx_admin_log_time ON admin_log(created_at)',

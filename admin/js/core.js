@@ -224,6 +224,7 @@
     ['Community'],
     ['/users', '👥', 'Users'],
     ['/comments', '💬', 'Comments', 'comments'],
+    ['/push', '🔔', 'Push notifications'],
     ['System'],
     ['/css', '🎨', 'CSS editor'],
     ['/settings', '⚙', 'Site settings'],

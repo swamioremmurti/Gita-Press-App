@@ -5419,5 +5419,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
         "sizeKB":  824.7
+    },
+    {
+        "file":  "ब्रज-भाव.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  697.9
     }
 ];
