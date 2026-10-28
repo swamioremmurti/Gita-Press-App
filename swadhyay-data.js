@@ -152,7 +152,7 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  443.8
     },
     {
-        "file":  "चित शुधि भाग - 1.html",
+        "file":  "चित्त शुद्धि भाग - 1.html",
         "category":  "Swami Sharnanand Sahitya",
         "author":  "स्वामी शरणानन्द जी महाराज",
         "tikakar":  "",
@@ -161,7 +161,7 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  672.1
     },
     {
-        "file":  "चित शुधि भाग - 2.html",
+        "file":  "चित्त शुद्धि भाग - 2.html",
         "category":  "Swami Sharnanand Sahitya",
         "author":  "स्वामी शरणानन्द जी महाराज",
         "tikakar":  "",

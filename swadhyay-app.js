@@ -949,8 +949,8 @@
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
     "ईस्वर अंस जीव अबिनासी.html": true,
-    "चित शुधि भाग - 1.html": true,
-    "चित शुधि भाग - 2.html": true,
+    "चित्त शुद्धि भाग - 1.html": true,
+    "चित्त शुद्धि भाग - 2.html": true,
     "जीवन पथ.html": true,
     "जीवन-दर्शन भाग 1.html": true,
     "जीवन-दर्शन भाग 2.html": true,
@@ -1006,6 +1006,8 @@
     "नारी-अङ्क.html": "नारी-अङ्क",
     "गरुडपुराण-सारोद्धार.html": "गरुडपुराण-सारोद्धार",
     "भक्ति-रहस्य.html": "भक्ति-रहस्य",
+    "चित्त शुद्धि भाग - 1.html": "चित्त शुद्धि भाग-1",
+    "चित्त शुद्धि भाग - 2.html": "चित्त शुद्धि भाग-2",
     "मूर्तिपूजा-नाम-जपकी महिमा.html": "मूर्तिपूजा-नाम-जपकी महिमा",
     "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html": "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय",
     "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html": "भगवान‍्का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं ?",
@@ -1037,6 +1039,12 @@
     "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html": "माहात्म्यसहित श्रीमद्भगवद्गीता"
   };
   var SLUG_ALIASES = {
+    /* "चित्त शुद्धि भाग - 2" was "चित शुधि भाग - 2": the old addresses open it */
+    "chit-shudhi-bhag-2": "चित्त शुद्धि भाग - 2.html",
+    "चित-शुधि-भाग---2": "चित्त शुद्धि भाग - 2.html",
+    /* "चित्त शुद्धि भाग - 1" was "चित शुधि भाग - 1": the old addresses open it */
+    "chit-shudhi-bhag-1": "चित्त शुद्धि भाग - 1.html",
+    "चित-शुधि-भाग---1": "चित्त शुद्धि भाग - 1.html",
     /* the two books merged into "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र": their old addresses open it */
     "narad-bhakti-sutra": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
     "shandily-bhakti-sutra": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
@@ -4091,6 +4099,17 @@
     var pos = document.getElementById("readerTtsPos"); if (pos) pos.textContent = tts.paras.length ? (tts.pi + 1) + "/" + tts.paras.length : "…";
     var rt = document.getElementById("readerTtsRate"); if (rt) rt.textContent = tts.rate + "×";
   }
+  /* the next n pieces to be spoken (across lines), so the app's own voice can have them ready */
+  function ttsUpcoming(n) {
+    var out = [], pi = tts.pi, ci = tts.ci + 1, ch = tts.chunks;
+    while (out.length < n) {
+      if (ci < ch.length) { out.push(ch[ci++]); continue; }
+      pi++;
+      if (!tts.paras[pi]) break;
+      ch = ttsChunks(tts.paras[pi].text); ci = 0;
+    }
+    return out;
+  }
   function ttsSpeak() {
     if (!tts.on || tts.paused) return;
     var tok = ++tts.token;
@@ -4112,7 +4131,10 @@
       if (e === "canceled" || e === "interrupted") return;
       ttsGiveUp();
     };
-    try { window.speechSynthesis.speak(u); } catch (e) { ttsGiveUp(); }
+    try { window.speechSynthesis.speak(u); } catch (e) { ttsGiveUp(); return; }
+    try {                                                                           // the app's own voice can get the next piece ready while this one plays
+      if (window.speechSynthesis.prefetch) ttsUpcoming(3).forEach(function (t) { window.speechSynthesis.prefetch(t, tts.rate); });
+    } catch (e) {}
   }
   /* Some engines (Chrome's online voices especially) now and then lose a piece: it never starts, or it ends without saying so.
      The watchdog notices, says the piece once more, and if that fails too, skips it -- so listening never just halts. */
@@ -4136,7 +4158,7 @@
     if (c.started && !speaking && now - c.alive > 1500) {                          // it finished but never said so: carry on
       tts.errs = 0; tts.token++; tts.ci++; ttsSpeak(); return;
     }
-    if ((!c.started && age > 5000) || age > 8000 + c.len * 150 / tts.rate) ttsGiveUp();
+    if ((!c.started && age > 40000) || age > 12000 + c.len * 150 / tts.rate) ttsGiveUp();           // generous: a fresh start waits for the voice to load and for the first lines to be ready
   }
   function ttsBegin() {
     tts.paras = ttsCollect(); tts.pi = 0; tts.ci = 0; tts.chunks = [];
