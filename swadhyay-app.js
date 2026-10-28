@@ -416,6 +416,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "भक्ति-रहस्य.html": "assets/covers/bhakti-rahasy.webp",
     "व्रत परिचय.html": "assets/covers/vrat-parichay.webp",
     "सहस्रनामस्तोत्रसंग्रह.html": "assets/covers/sahasranaamastotrasngrah.webp",
     "नित्यकर्म-प्रयोग.html": "assets/covers/nityakarm-prayog.webp",

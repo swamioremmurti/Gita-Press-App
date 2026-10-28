@@ -12,7 +12,7 @@ build_bhakti_rahasya.py -- import "भक्ति-रहस्य" (म०म�
     dropped       the printed contents list, the running titles, the "* * * * *" rows between the articles
 The helpers (quotes, OCR slips, registration) are those of tools/build_ramsukhdas_docx.py.  No cover yet: the user supplies it.
 
-    python tools/build_bhakti_rahasya.py "<Bhagti_Rahsya_continuous_print_book.docx>"
+    python tools/build_bhakti_rahasya.py "<Bhagti_Rahsya_continuous_print_book.docx>" ["<portrait of Kaviraj for the प्राक्कथन>"]
 """
 import re
 import sys
@@ -48,7 +48,15 @@ def main():
 
     pics = [(i, p["figs"][0]) for i, p in enumerate(P) if p["figs"]]
     title_pic = picture(pics[0][1], "bhakti-rahasya-01")
-    portrait = picture(pics[1][1], "bhakti-rahasya-02")
+    if len(sys.argv) > 2:                                            # the portrait of Kaviraj the user gave, in place of the docx's own
+        src = Path(sys.argv[2])
+        blob, ext = bc.optimize_image(src.read_bytes(), src.suffix.lower(), 200 * 1024)
+        for old in IMG_DIR.glob("bhakti-rahasya-02.*"):
+            old.unlink()
+        write(IMG_DIR / ("bhakti-rahasya-02" + ext), blob)
+        portrait = '<p class="Image"><span><img class="frame-1" src="image/bhakti-rahasya-02%s" alt=""></span></p>' % ext
+    else:
+        portrait = picture(pics[1][1], "bhakti-rahasya-02")
 
     i_lekhak = next(i for i, p in enumerate(P) if p["t"].startswith("लेखक"))
     lekhak, sampadak = [tidy(x) for x in P[i_lekhak]["t"].split("\n") if tidy(x)][:2]
