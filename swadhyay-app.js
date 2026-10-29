@@ -4045,9 +4045,23 @@
     if (!doc || !doc.body) return [];
     var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
     var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i], [class*='uwach' i]";      // shloka paragraphs / spans (class Shlok…) and speaker lines (class Uwach) are not read
+    /* A paragraph is not read when it, or a small block around it (a verse box), has a class Shlok… / Uwach…. Some books wrap a whole
+       chapter in one outer element with such a class; that wrapper is not a verse, so it must not silence everything inside it:
+       a wrapping element counts only when it holds fewer than 8 blocks or under half of the page's blocks. */
+    var skipOwn = "[class*='shlok' i], [class*='uwach' i]", total = els.length;
+    function skipClassed(el) {
+      if (el.matches(skipOwn)) return true;
+      for (var a = el.parentElement; a && a !== doc.body; a = a.parentElement) {
+        if (!a.matches(skipOwn)) continue;
+        var n = a.querySelectorAll(sel).length;
+        if (n < 8 || n < total / 2) return true;
+      }
+      return false;
+    }
     els.forEach(function (el) {
       if (el.querySelector(sel)) return;                                            // read the inner paragraph, not its container
-      if (el.closest("[class*='footnote'], [class*='fn-'], [class*='shlok' i], [class*='uwach' i], nav, script, style")) return;
+      if (el.closest("[class*='footnote'], [class*='fn-'], nav, script, style")) return;
+      if (skipClassed(el)) return;
       var cs = doc.defaultView.getComputedStyle(el);
       if (cs.display === "none" || cs.visibility === "hidden") return;
       var entries = [], full = "", node;

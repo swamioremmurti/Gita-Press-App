@@ -232,6 +232,7 @@ async function init() {
   // start against a remote Turso DB each of those is a cross-region network hop).
   await client.batch(SCHEMA_STATEMENTS, 'write');
   await ensureColumns('users', { google_id: 'TEXT', avatar_url: 'TEXT', status: "TEXT NOT NULL DEFAULT 'active'", last_login_at: 'INTEGER' });
+  await ensureColumns('push_log', { image: "TEXT NOT NULL DEFAULT ''" });
   await ensureColumns('categories', { sort_order: 'INTEGER NOT NULL DEFAULT 0', hidden: 'INTEGER NOT NULL DEFAULT 0', edited: 'INTEGER NOT NULL DEFAULT 0' });
   return client;
 }

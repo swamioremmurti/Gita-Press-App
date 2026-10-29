@@ -12,7 +12,7 @@ const { audit } = require('./common');
 const SITE = (process.env.SITE_URL || 'https://www.kalyanseva.com').replace(/\/+$/, '');
 const SITE_HOSTS = ['kalyanseva.com', 'www.kalyanseva.com'];
 const AUDIENCES = { all: 'Everyone', test: 'Test devices' };
-const LIMITS = { title: 65, body: 240, url: 300 };
+const LIMITS = { title: 65, body: 240, url: 300, imageUrl: 500, imageBytes: 1024 * 1024 };   // Google advises pictures under 1 MB
 const CHANNEL = 'kalyan_default';          // created by the app (KSMessagingService.ensureChannel)
 const MIN_GAP_MS = 20 * 1000;               // two real sends closer than this are refused (double click, double tab)
 
@@ -76,12 +76,50 @@ function normalizeUrl(u) {
   return parsed.href;
 }
 
+/** A picture address: a path of this site, or any https address that is not an internal one. Returns '' for none. */
+function normalizeImageUrl(u) {
+  u = String(u || '').trim();
+  if (!u) return '';
+  if (u.length > LIMITS.imageUrl) throw httpError(400, 'The picture address is too long');
+  if (u[0] === '/' && u[1] !== '/') return SITE + u;
+  let p;
+  try { p = new URL(u); } catch (e) { throw httpError(400, 'The picture address is not valid'); }
+  if (p.protocol !== 'https:') throw httpError(400, 'The picture must be an https:// address (phones will not load plain http)');
+  const h = p.hostname.toLowerCase();
+  if (h === 'localhost' || h.endsWith('.local') || h.endsWith('.internal') || /^[\d.]+$/.test(h) || h.indexOf(':') !== -1 || h.indexOf('[') !== -1) {
+    throw httpError(400, 'The picture must be on a public website, not a local or numeric address');
+  }
+  return p.href;
+}
+
+/** Asks the picture's address for its headers (as a phone would load it) and refuses anything a phone could not show. */
+async function checkImage(url, doFetch) {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), 7000);
+  let res;
+  try {
+    res = await doFetch(url, { method: 'HEAD', redirect: 'follow', signal: ctl.signal });
+    if (res.status === 405 || res.status === 501) res = await doFetch(url, { method: 'GET', headers: { Range: 'bytes=0-0' }, redirect: 'follow', signal: ctl.signal });
+  } catch (e) {
+    throw httpError(400, 'Could not reach the picture (' + (e.name === 'AbortError' ? 'it took too long' : 'connection failed') + '). Check the address.');
+  } finally { clearTimeout(timer); }
+  const gated = url.indexOf(SITE) === 0 && (res.status === 401 || res.status === 403);
+  if (gated) throw httpError(400, 'Phones cannot load pictures from kalyanseva.com while the pre-launch password screen is on. Use a picture link hosted elsewhere, or send without a picture for now.');
+  if (!res.ok && res.status !== 206) throw httpError(400, 'The picture could not be loaded (HTTP ' + res.status + ').');
+  const type = String((res.headers && res.headers.get && res.headers.get('content-type')) || '').split(';')[0].trim().toLowerCase();
+  if (!/^image\/(png|jpe?g|webp|gif)$/.test(type)) throw httpError(400, 'That address is not a PNG, JPEG, WebP or GIF picture' + (type ? ' (it is ' + type + ')' : '') + '.');
+  const range = String((res.headers && res.headers.get && res.headers.get('content-range')) || '');
+  const total = range.indexOf('/') !== -1 ? Number(range.split('/')[1]) : Number(res.headers && res.headers.get && res.headers.get('content-length'));
+  if (total > LIMITS.imageBytes) throw httpError(400, 'The picture is ' + (total / 1048576).toFixed(1) + ' MB. Notifications show pictures reliably only up to 1 MB: use a smaller or more compressed picture.');
+  return { type, bytes: total || 0 };
+}
+
 function httpError(status, message) { const e = new Error(message); e.status = status; return e; }
 
-function buildMessage({ audience, title, body, url, validateOnly }) {
+function buildMessage({ audience, title, body, url, image, validateOnly }) {
   const message = {
     topic: audience,
-    notification: { title, body },
+    notification: image ? { title, body, image } : { title, body },
     android: { priority: 'HIGH', notification: { channel_id: CHANNEL, default_sound: true } }
   };
   if (url) message.data = { url };
@@ -116,8 +154,8 @@ async function deliver(sa, payload, doFetch) {
 
 /* ---------------------------------------------------------------- routes */
 async function history(limit) {
-  const rows = await db.all('SELECT id, user_name, audience, title, body, url, status, detail, created_at FROM push_log ORDER BY id DESC LIMIT ?', [limit || 30]);
-  return rows.map((r) => ({ id: Number(r.id), by: r.user_name, audience: r.audience, title: r.title, body: r.body, url: r.url, status: r.status, detail: r.detail, at: Number(r.created_at) }));
+  const rows = await db.all('SELECT id, user_name, audience, title, body, url, image, status, detail, created_at FROM push_log ORDER BY id DESC LIMIT ?', [limit || 30]);
+  return rows.map((r) => ({ id: Number(r.id), by: r.user_name, audience: r.audience, title: r.title, body: r.body, url: r.url, image: r.image || '', status: r.status, detail: r.detail, at: Number(r.created_at) }));
 }
 
 async function statusRoute(ctx) {
@@ -127,7 +165,7 @@ async function statusRoute(ctx) {
     problem: c.problem || '',
     projectId: c.sa ? c.sa.project_id : '',
     serviceAccount: c.sa ? c.sa.client_email : '',
-    audiences: AUDIENCES, limits: LIMITS, site: SITE,
+    audiences: AUDIENCES, limits: LIMITS, site: SITE, siteGated: !!process.env.SITE_PASSWORD,
     history: await history(30)
   });
 }
@@ -144,18 +182,21 @@ async function sendRoute(ctx, doFetch) {
   if (body.length > LIMITS.body) throw httpError(400, 'The message is longer than ' + LIMITS.body + ' characters');
   if (!AUDIENCES[audience]) throw httpError(400, 'Choose who should receive it');
   const url = normalizeUrl(b.url);
+  const image = normalizeImageUrl(b.imageUrl);
   const c = serviceAccount();
   if (!c.sa) throw httpError(400, 'Push notifications are not set up yet: ' + c.problem);
+
+  if (image) await checkImage(image, doFetch);
 
   if (!validateOnly) {
     const last = await db.get("SELECT created_at FROM push_log WHERE status = 'sent' ORDER BY id DESC LIMIT 1");
     if (last && Date.now() - Number(last.created_at) < MIN_GAP_MS) throw httpError(429, 'A message was just sent. Wait a few seconds before sending another.');
   }
 
-  const log = (status, detail) => db.run('INSERT INTO push_log (user_name, audience, title, body, url, status, detail, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-    [ctx.user ? ctx.user.name : '', audience, title, body, url, status, String(detail || '').slice(0, 500), Date.now()]);
+  const log = (status, detail) => db.run('INSERT INTO push_log (user_name, audience, title, body, url, image, status, detail, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [ctx.user ? ctx.user.name : '', audience, title, body, url, image, status, String(detail || '').slice(0, 500), Date.now()]);
   try {
-    const result = await deliver(c.sa, buildMessage({ audience, title, body, url, validateOnly }), doFetch);
+    const result = await deliver(c.sa, buildMessage({ audience, title, body, url, image, validateOnly }), doFetch);
     await log(validateOnly ? 'checked' : 'sent', result.name || '');
     await audit(ctx.user, validateOnly ? 'push.check' : 'push.send', title, AUDIENCES[audience]);
     sendJSON(ctx.res, 200, { ok: true, checked: validateOnly, audience, id: result.name || '' });
@@ -178,4 +219,4 @@ async function handle(ctx, doFetch) {
   return false;
 }
 
-module.exports = { handle, _test: { buildMessage, normalizeUrl, makeJwt, serviceAccount, explainFcmError, resetTokenCache: () => { tokenCache = { value: '', exp: 0, key: '' }; } } };
+module.exports = { handle, _test: { buildMessage, normalizeUrl, normalizeImageUrl, checkImage, makeJwt, serviceAccount, explainFcmError, resetTokenCache: () => { tokenCache = { value: '', exp: 0, key: '' }; } } };

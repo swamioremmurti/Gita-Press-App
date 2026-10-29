@@ -30,7 +30,7 @@
               var s = STATUS[h.status] || [h.status, ''];
               return html`<tr><td class="nowrap" title="${A.fmt.date(h.at)}">${A.fmt.ago(h.at)}<div class="small muted">${h.by || ''}</div></td>
                 <td class="nowrap">${aud[h.audience] || h.audience}</td>
-                <td><b>${h.title}</b><div class="small muted">${h.body}</div>${h.url ? html`<div class="small muted">→ ${h.url}</div>` : ''}</td>
+                <td><b>${h.title}</b><div class="small muted">${h.body}</div>${h.url ? html`<div class="small muted">→ ${h.url}</div>` : ''}${h.image ? html`<div class="small muted">🖼 with picture</div>` : ''}</td>
                 <td><span class="badge ${s[1]}">${s[0]}</span>${h.status === 'failed' ? html`<div class="small muted">${h.detail}</div>` : ''}</td></tr>`;
             })}</tbody></table></div>`
         : A.empty('Nothing sent yet', 'Messages you send are listed here.');
@@ -47,6 +47,13 @@
             <div class="grid2"><div class="field"><label for="plink">When tapped, open</label>
                 <select id="plink" style="width:100%">${LINKS.map(function (l) { return html`<option value="${l[0]}">${l[1]}</option>`; })}</select></div>
               <div class="field" id="pother" hidden><label for="pcustom">Page of this site</label><input type="text" id="pcustom" maxlength="${L.url}" placeholder="/read/bhakti-rahasy/17"></div></div>
+            <div class="field"><label>Picture <span class="muted small">(optional)</span></label>
+              <div class="row" style="gap:10px;align-items:center;flex-wrap:wrap">
+                <button class="btn" id="pimgpick" type="button">Choose or upload picture…</button>
+                <button class="btn" id="pimgclear" type="button" hidden>Remove</button>
+                <span class="small muted" id="pimgname"></span></div>
+              <div id="pimgprev" style="margin-top:8px" hidden></div>
+              <p class="small muted" style="margin-top:6px" id="pimgnote">Shown as a large picture under the text. Best: a wide picture (about 2:1) as JPEG or PNG, under 1 MB.</p></div>
             <div class="row" style="margin:6px 0 14px"><label class="switch"><input type="checkbox" id="pcheck"><i></i></label><span><b>Check only</b> <span class="small muted">&ndash; Google validates the message, nobody receives it</span></span></div>
             <button class="btn primary" id="psend" type="button" ${st.configured ? '' : 'disabled'}>Send message</button>
             ${st.configured ? '' : html`<span class="small muted" style="margin-left:10px">Finish the set-up first</span>`}
@@ -61,6 +68,25 @@
           <div class="card"><div class="card-h"><h2>Connection</h2></div><div class="card-b">${setup}</div></div>
         </div></div>`.s;
 
+      var pic = null;          // the chosen picture: { url, name, size, external }
+      function setPic(m) {
+        pic = m;
+        var gated = m && !m.external && st.siteGated;
+        A.q('#pimgclear', view).hidden = !m;
+        A.q('#pimgname', view).textContent = m ? m.name + (m.size ? ' · ' + (m.size / 1024).toFixed(0) + ' KB' : '') : '';
+        A.q('#pimgprev', view).hidden = !m;
+        A.q('#pimgprev', view).innerHTML = m ? html`<img src="${m.url}" alt="" style="max-width:100%;max-height:110px;border-radius:8px">`.s : '';
+        var note = A.q('#pimgnote', view);
+        note.className = 'small ' + (gated || (m && m.size > L.imageBytes) ? '' : 'muted');
+        note.style.color = gated || (m && m.size > L.imageBytes) ? 'var(--bad)' : '';
+        note.textContent = gated
+          ? 'This picture is stored on the site, and phones cannot load it while the pre-launch password screen is on. Choose a picture link hosted elsewhere, or remove it.'
+          : (m && m.size > L.imageBytes) ? 'This picture is over 1 MB. It may not show on every phone: use a smaller one.'
+          : 'Shown as a large picture under the text. Best: a wide picture (about 2:1) as JPEG or PNG, under 1 MB.';
+        preview();
+      }
+      A.q('#pimgpick', view).onclick = function () { A.pickMedia({ kind: 'image', title: 'Choose a notification picture' }).then(function (m) { if (m) setPic(m); }); };
+      A.q('#pimgclear', view).onclick = function () { setPic(null); };
       function val(id) { return A.q('#' + id, view).value; }
       function link() { var l = val('plink'); return l === '__other' ? val('pcustom').trim() : l; }
       function counters() {
@@ -68,12 +94,13 @@
         A.q('#pbc', view).textContent = val('pbody').length + '/' + L.body;
       }
       function preview() {
-        var t = val('ptitle').trim(), b = val('pbody').trim();
+        var t = val('ptitle').trim(), b = val('pbody').trim(), image = pic ? pic.url : '';
         A.q('#pprev', view).innerHTML = html`<div style="display:flex;gap:10px;align-items:flex-start">
           <span style="width:22px;height:22px;border-radius:50%;background:#a51512;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;flex:0 0 auto">🔔</span>
           <div style="min-width:0"><div class="small muted">Kalyan Seva · now</div>
             <div style="font-weight:600;margin-top:2px">${t || 'Title'}</div>
-            <div class="small" style="margin-top:2px;white-space:pre-wrap;color:var(--muted)">${b || 'Your message appears here'}</div></div></div>`.s;
+            <div class="small" style="margin-top:2px;white-space:pre-wrap;color:var(--muted)">${b || 'Your message appears here'}</div>
+            ${image ? html`<img src="${image}" alt="" style="margin-top:8px;max-width:100%;max-height:150px;border-radius:8px;display:block">` : ''}</div></div>`.s;
         counters();
       }
       ['ptitle', 'pbody'].forEach(function (id) { A.q('#' + id, view).oninput = preview; });
@@ -81,7 +108,7 @@
       preview();
 
       A.q('#psend', view).onclick = function () {
-        var payload = { audience: val('paud'), title: val('ptitle').trim(), body: val('pbody').trim(), url: link(), validateOnly: A.q('#pcheck', view).checked };
+        var payload = { audience: val('paud'), title: val('ptitle').trim(), body: val('pbody').trim(), url: link(), imageUrl: pic ? pic.url : '', validateOnly: A.q('#pcheck', view).checked };
         if (!payload.title || !payload.body) { A.toast('Write a title and a message first', 'bad'); return; }
         var who = aud[payload.audience] || payload.audience;
         var ask = payload.validateOnly
@@ -92,7 +119,7 @@
           var btn = A.q('#psend', view); btn.disabled = true; btn.textContent = 'Sending…';
           A.post('/api/admin/push/send', payload).then(function (r) {
             A.toast(r.checked ? 'Checked: Google accepts this message.' : 'Sent to ' + who.toLowerCase() + '.', 'ok');
-            if (!r.checked) { A.q('#ptitle', view).value = ''; A.q('#pbody', view).value = ''; }
+            if (!r.checked) { A.q('#ptitle', view).value = ''; A.q('#pbody', view).value = ''; setPic(null); }
             return A.get('/api/admin/push');
           }).then(function () { location.hash = '#/push?t=' + Date.now(); }).catch(function (e) { A.fail(e); btn.disabled = false; btn.textContent = 'Send message'; });
         });
