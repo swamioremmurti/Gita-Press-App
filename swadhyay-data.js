@@ -5439,15 +5439,6 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  668.8
     },
     {
-        "file":  "सरस-प्रसंग.html",
-        "category":  "Pravachan",
-        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
-        "tikakar":  "",
-        "translator":  "",
-        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  797.0
-    },
-    {
         "file":  "सुखी होनेके उपाय.html",
         "category":  "Pravachan",
         "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
@@ -5464,5 +5455,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
         "sizeKB":  662.6
+    },
+    {
+        "file":  "सरस-प्रसंग.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  797.0
     }
 ];
