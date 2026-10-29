@@ -5446,5 +5446,23 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
         "sizeKB":  797.0
+    },
+    {
+        "file":  "सुखी होनेके उपाय.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  692.1
+    },
+    {
+        "file":  "कालियनागपर कृपा.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  662.6
     }
 ];
