@@ -448,6 +448,18 @@
       if (h) { helpers.tx = h.tx || helpers.tx; helpers.toast = h.toast || helpers.toast; }
       bind();
       document.body.classList.toggle("audio-page", !!document.querySelector('[data-audio-mount="page"]'));
+      /* /audio?play=<track id> (a push notification's link): open that track's list and start it. The address is cleaned so a re-render never replays it.
+         A browser may refuse to start sound without a tap; then the track stays loaded in the player, one tap away. */
+      var want = "";
+      try { want = new URLSearchParams(location.search).get("play") || ""; } catch (e) {}
+      if (want && BY_ID[want] && document.querySelector('[data-audio-mount="page"]')) {
+        try { history.replaceState(null, "", location.pathname); } catch (e) {}
+        S.cat = BY_ID[want].category;
+        if (!(S.cur && S.cur.id === want)) {
+          load(BY_ID[want]);
+          audio.play().catch(function (e) { if (!e || e.name !== "NotAllowedError") onError(); });
+        }
+      }
       refresh();
     },
     homePanelHtml: function () {

@@ -25,5 +25,7 @@ var SWADHYAY_AUDIO_RAW = [
   { id: "bhajan-palane-rang-khelat", title: "पालनैं रँग खेलत", artist: "कल्याण संग्रह", category: "bhajan",
     src: "assets/audio/palane-rang-khelat.mp3", duration: 167 },
   { id: "bhajan-radha-charan-suchi-sukhkand", title: "राधा चरन सुचि सुखकंद", artist: "कल्याण संग्रह", category: "bhajan",
-    src: "assets/audio/radha-charan-suchi-sukhkand.mp3", duration: 160 }
+    src: "assets/audio/radha-charan-suchi-sukhkand.mp3", duration: 160 },
+  { id: "bhajan-naval-brindaban-sobha", title: "नवल बृन्दाबन सोभा (२३३ - पद रत्नाकर)", artist: "कल्याण संग्रह", category: "bhajan",
+    src: "assets/audio/naval-brindaban-sobha.mp3", duration: 163 }
 ];

@@ -416,6 +416,10 @@
   }
 
   var COVER_OVERRIDES = {
+    "सरस-प्रसंग.html": "assets/covers/saras-prasng.webp",
+    "प्रेम और प्रेमी.html": "assets/covers/prem-aur-premee.webp",
+    "सुखी होनेके उपाय.html": "assets/covers/sukhee-honeke-upaay.webp",
+    "कालियनागपर कृपा.html": "assets/covers/kaaliyanaagapar-kripaa.webp",
     "भागवत नवनीत.html": "assets/covers/bhaagavat-navaneet.webp",
     "भजन-संग्रह.html": "assets/covers/bhajan-sngrah.webp",
     "भगवत्प्राप्तिमें भावकी प्रधानता.html": "assets/covers/bhagavatpraaptimen-bhaavakee-pradhaanataa.webp",
