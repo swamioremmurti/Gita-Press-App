@@ -88,9 +88,27 @@ async function findBook(file) {
 async function handleList(ctx) {
   const q = queryOf(ctx.req);
   let list = await allBooks();
-  const cat = cleanQ(q.get('cat')), status = cleanQ(q.get('status')), text = cleanQ(q.get('q')).toLowerCase();
-  if (text) list = list.filter((b) => (b.title + ' ' + b.file + ' ' + b.author + ' ' + b.tikakar + ' ' + b.translator).toLowerCase().includes(text));
+  const cat = cleanQ(q.get('cat')), status = cleanQ(q.get('status')), text = cleanQ(q.get('q')).toLowerCase(), pub = cleanQ(q.get('pub'));
+  const authorQ = cleanQ(q.get('author')).toLowerCase(), live = cleanQ(q.get('live')), sz = cleanQ(q.get('sz'));
+  // every publisher in the library with its number of books (counted before any filter, so the dropdown stays the same while filtering)
+  const pubCount = {};
+  let noPublisher = 0;
+  list.forEach((b) => { const p = (b.publisher || '').trim(); if (p) pubCount[p] = (pubCount[p] || 0) + 1; else noPublisher++; });
+  // every author with the number of books, for the author filter's suggestions
+  const authorCount = {};
+  list.forEach((b) => { const a = (b.author || '').trim(); if (a) authorCount[a] = (authorCount[a] || 0) + 1; });
+  const authors = Object.keys(authorCount).sort((a, b) => authorCount[b] - authorCount[a] || a.localeCompare(b, 'hi')).slice(0, 600).map((name) => ({ name, count: authorCount[name] }));
+  const publishers = Object.keys(pubCount).sort((a, b) => pubCount[b] - pubCount[a] || a.localeCompare(b, 'hi')).map((name) => ({ name, count: pubCount[name] }));
+  if (text) list = list.filter((b) => (b.title + ' ' + b.file + ' ' + b.author + ' ' + b.tikakar + ' ' + b.translator + ' ' + (b.publisher || '')).toLowerCase().includes(text));
   if (cat) list = list.filter((b) => b.categories.includes(cat));
+  if (authorQ === '__none') list = list.filter((b) => !(b.author || '').trim());
+  else if (authorQ) list = list.filter((b) => (b.author || '').toLowerCase().includes(authorQ));
+  if (live === 'on') list = list.filter((b) => b.enabled);
+  else if (live === 'off') list = list.filter((b) => !b.enabled);
+  const SIZES = { s1: [0, 100], s2: [100, 500], s3: [500, 1024], s4: [1024, 5120], s5: [5120, Infinity] };   // KB, from <= size < to
+  if (SIZES[sz]) list = list.filter((b) => b.sizeKB >= SIZES[sz][0] && b.sizeKB < SIZES[sz][1]);
+  if (pub === '__none') list = list.filter((b) => !(b.publisher || '').trim());
+  else if (pub) list = list.filter((b) => (b.publisher || '').trim() === pub);
   if (status === 'enabled') list = list.filter((b) => b.enabled);
   else if (status === 'disabled') list = list.filter((b) => !b.enabled);
   else if (status === 'featured') list = list.filter((b) => b.featured);
@@ -107,7 +125,7 @@ async function handleList(ctx) {
   const size = Math.min(200, Math.max(5, num(q.get('size'), 50)));
   const page = Math.max(1, num(q.get('page'), 1));
   const total = list.length;
-  sendJSON(ctx.res, 200, { total, page, size, books: list.slice((page - 1) * size, page * size) });
+  sendJSON(ctx.res, 200, { total, page, size, publishers, noPublisher, authors, books: list.slice((page - 1) * size, page * size) });
 }
 
 function cleanQ(v) { return v == null ? '' : String(v).trim(); }

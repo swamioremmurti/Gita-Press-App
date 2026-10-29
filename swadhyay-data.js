@@ -5428,5 +5428,23 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
         "sizeKB":  697.9
+    },
+    {
+        "file":  "प्रेम और प्रेमी.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  668.8
+    },
+    {
+        "file":  "सरस-प्रसंग.html",
+        "category":  "Pravachan",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  797.0
     }
 ];

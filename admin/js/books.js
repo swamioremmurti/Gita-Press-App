@@ -15,20 +15,26 @@
   A.route('/books', function (q, view) {
     A.setPage('Books', 'Everything in the library: switch books on and off, edit details, open the chapter editor',
       html`<a class="btn primary" href="#/books/new">+ Add book</a>`);
-    var st = { q: q.get('q') || '', cat: q.get('cat') || '', status: q.get('status') || '', sort: q.get('sort') || 'title', page: Number(q.get('page')) || 1 };
+    var st = { q: q.get('q') || '', cat: q.get('cat') || '', pub: q.get('pub') || '', author: q.get('author') || '', live: q.get('live') || '', sz: q.get('sz') || '', status: q.get('status') || '', sort: q.get('sort') || 'title', page: Number(q.get('page')) || 1 };
     var selected = {}, rows = [];
     return A.categories().then(function (cats) {
       view.innerHTML = html`
         <div class="toolbar">
           <input type="search" class="search" id="bq" placeholder="Search title, file or author…" value="${st.q}">
           <select id="bc"><option value="">All categories</option>${cats.map(function (c) { return html`<option value="${c.key}" ${c.key === st.cat ? 'selected' : ''}>${c.en}</option>`; })}</select>
+          <select id="bp" title="Publisher"><option value="">All publishers</option></select>
+          <input type="search" id="ba" list="authorList" placeholder="Author…" value="${st.author === '__none' ? '' : st.author}" style="width:170px" title="Type part of a name, or pick one">
+          <datalist id="authorList"></datalist>
+          <select id="bz" title="Size">${[['', 'Any size'], ['s1', 'Under 100 KB'], ['s2', '100–500 KB'], ['s3', '500 KB – 1 MB'], ['s4', '1–5 MB'], ['s5', 'Over 5 MB']].map(function (o) { return html`<option value="${o[0]}" ${o[0] === st.sz ? 'selected' : ''}>${o[1]}</option>`; })}</select>
+          <select id="bl" title="Live on the site">${[['', 'Live: any'], ['on', 'Live: on'], ['off', 'Live: off']].map(function (o) { return html`<option value="${o[0]}" ${o[0] === st.live ? 'selected' : ''}>${o[1]}</option>`; })}</select>
           <select id="bs">${[['', 'Any status'], ['enabled', 'Enabled'], ['disabled', 'Disabled'], ['featured', 'Featured'], ['edited', 'Text edited here'], ['created', 'Created here'], ['nocover', 'No cover']].map(function (o) { return html`<option value="${o[0]}" ${o[0] === st.status ? 'selected' : ''}>${o[1]}</option>`; })}</select>
+          <button class="btn sm ghost" id="bclear" type="button" hidden>Clear filters</button>
           <select id="bo">${[['title', 'Sort: title'], ['size', 'Sort: size'], ['updated', 'Sort: recently edited']].map(function (o) { return html`<option value="${o[0]}" ${o[0] === st.sort ? 'selected' : ''}>${o[1]}</option>`; })}</select>
         </div>
         <div id="bulk"></div><div id="btable"></div>`.s;
 
       function push() {
-        history.replaceState(null, '', '#/books' + A.qs({ q: st.q, cat: st.cat, status: st.status, sort: st.sort === 'title' ? '' : st.sort, page: st.page > 1 ? st.page : '' }));
+        history.replaceState(null, '', '#/books' + A.qs({ q: st.q, cat: st.cat, pub: st.pub, author: st.author, sz: st.sz, live: st.live, status: st.status, sort: st.sort === 'title' ? '' : st.sort, page: st.page > 1 ? st.page : '' }));
       }
       function bulkBar() {
         var n = Object.keys(selected).length;
@@ -38,21 +44,45 @@
           <button class="btn sm" data-bulk="addCategory">Add to category…</button><button class="btn sm" data-bulk="removeCategory">Remove from category…</button>
           <button class="btn sm ghost right" data-bulk="clear">Clear selection</button></div>`.s : '';
       }
+      function fillPublishers(d) {
+        var sel = A.q('#bp', view);
+        if (!d.publishers) { sel.hidden = true; return; }            // a server that has not been restarted since the filter was added sends no list
+        sel.hidden = false;
+        var key = d.publishers.length + ':' + d.noPublisher;
+        if (sel.getAttribute('data-key') === key) return;          // same list as before
+        sel.setAttribute('data-key', key);
+        sel.innerHTML = html`<option value="">All publishers</option>
+          ${d.publishers.map(function (p) { return html`<option value="${p.name}" ${p.name === st.pub ? 'selected' : ''}>${p.name} (${p.count})</option>`; })}
+          ${d.noPublisher ? html`<option value="__none" ${st.pub === '__none' ? 'selected' : ''}>No publisher (${d.noPublisher})</option>` : ''}`.s;
+        sel.value = st.pub;
+      }
+      function fillAuthors(d) {
+        var dl = A.q('#authorList', view);
+        if (!d.authors || dl.getAttribute('data-n') === String(d.authors.length)) return;
+        dl.setAttribute('data-n', String(d.authors.length));
+        dl.innerHTML = d.authors.map(function (a) { return html`<option value="${a.name}">${a.count} book${a.count === 1 ? '' : 's'}</option>`.s; }).join('');
+      }
+      function anyFilter() { return !!(st.q || st.cat || st.pub || st.author || st.sz || st.live || st.status); }
+      function showClear() { A.q('#bclear', view).hidden = !anyFilter(); }
       function load() {
         push();
         A.q('#btable', view).innerHTML = A.loading().s;
-        return A.get('/api/admin/books' + A.qs({ q: st.q, cat: st.cat, status: st.status, sort: st.sort, page: st.page, size: 50 })).then(function (d) {
+        return A.get('/api/admin/books' + A.qs({ q: st.q, cat: st.cat, pub: st.pub, author: st.author, sz: st.sz, live: st.live, status: st.status, sort: st.sort, page: st.page, size: 50 })).then(function (d) {
           rows = d.books;
+          fillPublishers(d);
+          fillAuthors(d);
+          showClear();
           var allSel = rows.length && rows.every(function (b) { return selected[b.file]; });
           A.q('#btable', view).innerHTML = rows.length ? html`
             <div class="table-wrap"><table class="tbl"><thead><tr>
-              <th style="width:34px"><input type="checkbox" id="selAll" ${allSel ? 'checked' : ''} aria-label="Select all on this page"></th><th>Book</th><th>Author</th><th>Categories</th><th>Size</th><th>Live</th><th></th></tr></thead><tbody>
+              <th style="width:34px"><input type="checkbox" id="selAll" ${allSel ? 'checked' : ''} aria-label="Select all on this page"></th><th>Book</th><th>Author</th><th>Publisher</th><th>Categories</th><th>Size</th><th>Live</th><th></th></tr></thead><tbody>
               ${rows.map(function (b, i) {
                 return html`<tr class="${selected[b.file] ? 'sel' : ''}"><td><input type="checkbox" data-sel="${i}" ${selected[b.file] ? 'checked' : ''} aria-label="Select ${b.title}"></td>
                   <td><div class="row" style="flex-wrap:nowrap;gap:10px">${A.coverEl(b)}<div style="min-width:0"><div class="t-title hi">${b.title}
                     ${b.featured ? html` <span class="badge accent">Featured</span>` : ''}${b.created ? html` <span class="badge info">Created here</span>` : ''}${b.doc && b.doc.updatedAt ? html` <span class="badge warn" title="The text of this book was edited in the panel">Text edited</span>` : ''}</div>
                     <div class="t-sub hi">${b.file}</div></div></div></td>
                   <td class="hi" style="max-width:200px">${b.author || html`<span class="faint">—</span>`}</td>
+                  <td class="hi muted" style="max-width:150px">${b.publisher || html`<span class="faint">—</span>`}</td>
                   <td>${b.categories.map(function (k) { return html`<span class="chip">${catName(cats, k)}</span>`; })}</td>
                   <td class="nowrap muted">${A.fmt.bytes(b.sizeKB * 1024)}</td>
                   <td>${A.switchEl(b.enabled, 'data-live="' + i + '" title="Show or hide this book on the site"')}</td>
@@ -66,10 +96,17 @@
       }
 
       A.q('#bq', view).oninput = A.debounce(function (e) { st.q = e.target.value.trim(); st.page = 1; load(); }, 250);
-      ['bc:cat', 'bs:status', 'bo:sort'].forEach(function (p) {
+      ['bc:cat', 'bp:pub', 'bz:sz', 'bl:live', 'bs:status', 'bo:sort'].forEach(function (p) {
         var id = p.split(':')[0], key = p.split(':')[1];
         A.q('#' + id, view).onchange = function (e) { st[key] = e.target.value; st.page = 1; load(); };
       });
+      A.q('#ba', view).oninput = A.debounce(function (e) { st.author = e.target.value.trim(); st.page = 1; load(); }, 250);
+      A.q('#bclear', view).onclick = function () {
+        st.q = st.cat = st.pub = st.author = st.sz = st.live = st.status = ''; st.page = 1;
+        ['bq', 'ba'].forEach(function (id) { A.q('#' + id, view).value = ''; });
+        ['bc', 'bp', 'bz', 'bl', 'bs'].forEach(function (id) { A.q('#' + id, view).value = ''; });
+        load();
+      };
       A.on(view, 'click', '[data-page]', function (e, t) { st.page = Number(t.getAttribute('data-page')); load(); });
       A.on(view, 'change', '#selAll', function (e, t) { rows.forEach(function (b) { if (t.checked) selected[b.file] = 1; else delete selected[b.file]; }); load(); });
       A.on(view, 'change', '[data-sel]', function (e, t) {

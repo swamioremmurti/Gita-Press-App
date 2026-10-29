@@ -416,6 +416,12 @@
   }
 
   var COVER_OVERRIDES = {
+    "भागवत नवनीत.html": "assets/covers/bhaagavat-navaneet.webp",
+    "भजन-संग्रह.html": "assets/covers/bhajan-sngrah.webp",
+    "भगवत्प्राप्तिमें भावकी प्रधानता.html": "assets/covers/bhagavatpraaptimen-bhaavakee-pradhaanataa.webp",
+    "भगवत्प्राप्ति की युक्तियाँ.html": "assets/covers/bhagavatpraapti-kee-yuktiyaan.webp",
+    "भगवच्चर्चा.html": "assets/covers/bhagavachcharchaa.webp",
+    "निष्कामभाव से भगवत्प्राप्ति.html": "assets/covers/nishkaamabhaav-se-bhagavatpraapti.webp",
     "दिव्य सन्देश.html": "assets/covers/divy-sandesh.webp",
     "तत्त्वज्ञान कैसे हो.html": "assets/covers/tattvajnyaan-kaise-ho.webp",
     "जैमिनीकृत महाभारतमें भक्तोंकी गाथा.html": "assets/covers/jaimineekrit-mahaabhaaratamen-bhaktonkee-gaathaa.webp",
@@ -952,6 +958,8 @@
     "भगवत्कृपा.html": true,
     "भक्ति-रहस्य.html": true,
     "ब्रज-भाव.html": true,
+    "प्रेम और प्रेमी.html": true,
+    "सरस-प्रसंग.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
     "ईस्वर अंस जीव अबिनासी.html": true,
