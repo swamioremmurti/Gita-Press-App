@@ -416,6 +416,11 @@
   }
 
   var COVER_OVERRIDES = {
+    "दिव्य सन्देश.html": "assets/covers/divy-sandesh.webp",
+    "तत्त्वज्ञान कैसे हो.html": "assets/covers/tattvajnyaan-kaise-ho.webp",
+    "जैमिनीकृत महाभारतमें भक्तोंकी गाथा.html": "assets/covers/jaimineekrit-mahaabhaaratamen-bhaktonkee-gaathaa.webp",
+    "श्रीकृष्ण चैतन्य.html": "assets/covers/shreekrishn-chaitany.webp",
+    "ब्रज-भाव.html": "assets/covers/braj-bhaav.webp",
     "भक्ति-रहस्य.html": "assets/covers/bhakti-rahasy.webp",
     "व्रत परिचय.html": "assets/covers/vrat-parichay.webp",
     "सहस्रनामस्तोत्रसंग्रह.html": "assets/covers/sahasranaamastotrasngrah.webp",

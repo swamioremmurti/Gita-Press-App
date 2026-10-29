@@ -1556,9 +1556,9 @@ p.para-style-override-64 {
 	text-align:justify;
 	text-indent:0px;
 }
-span.char-style-override-1 {
+span.author_name {
 	color:black;
-	font-size:0.714em;
+	font-size:1em;
 	font-style:normal;
 	font-weight:normal;
 }
