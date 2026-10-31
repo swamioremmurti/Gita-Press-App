@@ -5464,5 +5464,32 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
         "sizeKB":  797.0
+    },
+    {
+        "file":  "भाईजी चरितामृत.html",
+        "category":  "Siksha evam Katha",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  1120.5
+    },
+    {
+        "file":  "जैसा बीज वैसा फल.html",
+        "category":  "Siksha evam Katha",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  657.3
+    },
+    {
+        "file":  "योग एवं भक्ति.html",
+        "category":  "Siksha evam Katha",
+        "author":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
+        "sizeKB":  662.0
     }
 ];

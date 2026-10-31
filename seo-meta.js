@@ -97,6 +97,10 @@
       title: BRAND + " — ऑडियो | Bhajan, Satsang, Pravachan, Katha & Audio Books",
       desc: "भजन, सत्संग, प्रवचन, कथा एवं ऑडियो बुक — कल्याण में सुनें। Listen to bhajans, satsang, pravachan, katha and audio books on Kalyan."
     },
+    vangmay: {
+      title: BRAND + " — वाङ्मय | Scripture Explorer: Vedas, Upanishads, Puranas, Itihasa & Darshanas",
+      desc: "वेद, उपनिषद्, पुराण, इतिहास, धर्मशास्त्र और दर्शन — शास्त्रों का शाखा-वृक्ष, उपलब्ध ग्रंथों के सीधे लिंक के साथ। Explore the Sanatana scripture tradition branch by branch, with direct links to the books in the library."
+    },
     hanuman: {
       title: BRAND + " — श्री हनुमान प्रश्नावली यन्त्र | Hanuman Prashnavali",
       desc: "श्री हनुमान प्रश्नावली यन्त्र — ४९ अंकों में प्रश्नों के उत्तर। जप करें, प्रश्न सोचें और अपना अंक पाएँ। Shri Hanuman Prashnavali Yantra: 49 numbered answers as an interactive game."

@@ -416,6 +416,10 @@
   }
 
   var COVER_OVERRIDES = {
+    "श्रीआद्यशंकराचार्यविरचित अपरोक्षानुभूति.html": "assets/covers/shreeaadyashnkaraachaaryavirachit-aparokshaanubhooti.webp",
+    "योग एवं भक्ति.html": "assets/covers/yog-evn-bhakti.webp",
+    "जैसा बीज वैसा फल.html": "assets/covers/jaisaa-beej-vaisaa-phal.webp",
+    "भाईजी चरितामृत.html": "assets/covers/bhaaeejee-charitaamrit.webp",
     "सरस-प्रसंग.html": "assets/covers/saras-prasng.webp",
     "प्रेम और प्रेमी.html": "assets/covers/prem-aur-premee.webp",
     "सुखी होनेके उपाय.html": "assets/covers/sukhee-honeke-upaay.webp",
@@ -966,6 +970,9 @@
     "सरस-प्रसंग.html": true,
     "सुखी होनेके उपाय.html": true,
     "कालियनागपर कृपा.html": true,
+    "भाईजी चरितामृत.html": true,
+    "जैसा बीज वैसा फल.html": true,
+    "योग एवं भक्ति.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
     "ईस्वर अंस जीव अबिनासी.html": true,
@@ -1538,7 +1545,7 @@
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
     help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
     gita: ["गीता LMS", "Gita LMS"], sankalp: ["पाठ-संकल्प", "Path Sankalp"], vrat: ["व्रत एवं पर्व", "Vrats & Festivals"],
-    prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"]
+    prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"], vangmay: ["वाङ्मय", "Vangmay"]
   };
   var SHELL_TITLES = [
     ["#appDrawerBtn", "मेनू", "Menu"], [".global-search-btn", "खोजें", "Search"], [".theme-switch", "डार्क मोड", "Dark mode"],
@@ -5522,7 +5529,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "gita": "gita", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "gita": "gita", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "vangmay": "vangmay", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -5624,6 +5631,8 @@
     resetPageMeta();
   }
   var lastRenderedPath = null;
+  // what the वाङ्मय page needs from the library: the books, their addresses and covers
+  function vangmayCtx() { return { tx: tx, esc: esc, books: BOOKS, bookPath: bookPath, coverEl: coverEl }; }
 
   function render() {
     migrateLegacyHash();
@@ -5689,6 +5698,7 @@
     else if (seg[0] === "gita") { html = window.SwadhyayGita ? window.SwadhyayGita.pageHtml() : viewHome(); }
     else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
+    else if (seg[0] === "vangmay") { html = window.SwadhyayVangmay ? window.SwadhyayVangmay.pageHtml(vangmayCtx()) : viewHome(); }
     else if (seg[0] === "author" && seg[1] !== undefined) {
       var aPerson = resolvePerson(seg[1]);
       if (aPerson) {
@@ -5727,6 +5737,7 @@
     if (window.SwadhyayGita && seg[0] === "gita") window.SwadhyayGita.mount({ tx: tx, toast: toast });
     if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
+    if (window.SwadhyayVangmay && seg[0] === "vangmay") window.SwadhyayVangmay.mount(vangmayCtx());
     loadQuoteOfTheDay();
     if (seg[0] === "chat") wireChatView();
 

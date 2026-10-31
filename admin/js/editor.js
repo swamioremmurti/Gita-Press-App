@@ -75,6 +75,10 @@
           <button class="btn sm tool" data-cmd="underline" title="Underline (Ctrl+U)"><u>U</u></button>
           <button class="btn sm tool" data-cmd="removeFormat" title="Clear text formatting">T<sub>x</sub></button>
           <span class="sep"></span>
+          <span class="row" style="gap:2px" id="falign" title="Text alignment: applied on top of the paragraph style, which stays selected">
+            <button class="btn sm tool" type="button" data-align="left" title="Align left">⯇</button><button class="btn sm tool" type="button" data-align="center" title="Centre">≡</button><button class="btn sm tool" type="button" data-align="right" title="Align right">⯈</button><button class="btn sm tool" type="button" data-align="justify" title="Justify">☰</button><button class="btn sm tool" type="button" data-align="" title="Back to the style's own alignment">Auto</button>
+          </span>
+          <span class="sep"></span>
           <button class="btn sm tool" data-cmd="undo" title="Undo">↶</button><button class="btn sm tool" data-cmd="redo" title="Redo">↷</button>
           <span class="sep"></span>
           <button class="btn sm" id="fimg" type="button">Image</button><button class="btn sm" id="flink" type="button">Link</button>
@@ -235,6 +239,26 @@
       }
       return kids.filter(function (k) { try { return r.intersectsNode(k); } catch (e) { return false; } });
     }
+    // The innermost paragraph-like blocks under the cursor / selection. blocks() stops at the top level, which in many books is a
+    // wrapper div or section; setting a class there never shows because the paragraph inside keeps its own class.
+    var LEAF_SEL = 'p,h1,h2,h3,h4,h5,h6,li,blockquote,div,section,td,th,figure';
+    function leafBlocks() {
+      if (!fdoc) return [];
+      var s = fdoc.getSelection();
+      if (!s || !s.rangeCount) return [];
+      var r = s.getRangeAt(0);
+      var leaves = Array.prototype.filter.call(fdoc.body.querySelectorAll(LEAF_SEL), function (el) { return !el.querySelector(LEAF_SEL); });
+      if (r.collapsed) {
+        var n = r.startContainer.nodeType === 3 ? r.startContainer.parentNode : r.startContainer;
+        var hit = n && n.closest ? n.closest(LEAF_SEL) : null;
+        if (hit && hit.querySelector(LEAF_SEL)) {   // cursor sits in a wrapper between paragraphs: use the leaf after / before the cursor
+          var inside = leaves.filter(function (l) { return hit.contains(l); });
+          hit = inside.filter(function (l) { try { return r.comparePoint(l, 0) >= 0; } catch (e) { return false; } })[0] || inside[inside.length - 1];
+        }
+        return hit && hit !== fdoc.body ? [hit] : [];
+      }
+      return leaves.filter(function (l) { try { return r.intersectsNode(l); } catch (e) { return false; } });
+    }
     function styleOptions() {
       var seen = {}, out = [];
       st.styles.forEach(function (s) { if (!seen[s.cls]) { seen[s.cls] = 1; out.push([s.cls, s.cls + ' (' + s.n + ')']); } });
@@ -248,11 +272,13 @@
       sel.innerHTML = '<option value="">(no style)</option>' + opts.map(function (o) { return '<option value="' + esc(o[0]) + '">' + esc(o[1]) + '</option>'; }).join('') + '<option value="__other">Other…</option>';
     }
     function syncStyle() {
-      var b = blocks()[0], sel = A.q('#fstyle', view);
+      var b = leafBlocks()[0], sel = A.q('#fstyle', view);
       if (!b) return;
       var cls = (b.getAttribute('class') || '').trim();
       if (cls && !Array.prototype.some.call(sel.options, function (o) { return o.value === cls; })) buildStyleSelect(cls);
       sel.value = cls;
+      var al = b.style && b.style.getPropertyValue('text-align');
+      A.qa('[data-align]', view).forEach(function (btn) { btn.classList.toggle('on', !!al && btn.getAttribute('data-align') === al); });
       A.qa('[data-cmd]', view).forEach(function (btn) {
         var c = btn.getAttribute('data-cmd');
         if (c === 'bold' || c === 'italic' || c === 'underline') { try { btn.classList.toggle('on', fdoc.queryCommandState(c)); } catch (e) {} }
@@ -269,7 +295,7 @@
       applyStyle(v);
     };
     function applyStyle(cls) {
-      var bs = blocks();
+      var bs = leafBlocks();
       if (!bs.length) { A.toast('Click inside a paragraph first', 'bad'); return; }
       bs.forEach(function (b) { if (cls) b.setAttribute('class', cls); else b.removeAttribute('class'); });
       buildStyleSelect(cls); A.q('#fstyle', view).value = cls || '';
@@ -278,6 +304,21 @@
     A.qa('[data-cmd]', view).forEach(function (btn) {
       btn.addEventListener('mousedown', function (e) { e.preventDefault(); });
       btn.onclick = function () { if (!fdoc || st.mode !== 'visual') return; fdoc.body.focus(); fdoc.execCommand(btn.getAttribute('data-cmd')); onEdit(); syncStyle(); };
+    });
+    // Alignment is an inline text-align on the paragraph: it beats the class's own alignment and leaves the class untouched.
+    A.qa('[data-align]', view).forEach(function (btn) {
+      btn.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      btn.onclick = function () {
+        if (!fdoc || st.mode !== 'visual') return;
+        var bs = leafBlocks();
+        if (!bs.length) { A.toast('Click inside a paragraph first', 'bad'); return; }
+        var v = btn.getAttribute('data-align');
+        bs.forEach(function (b) {
+          if (v) b.style.setProperty('text-align', v, 'important'); else b.style.removeProperty('text-align');
+          if (!b.getAttribute('style')) b.removeAttribute('style');
+        });
+        onEdit(); syncStyle();
+      };
     });
     A.q('#flabels', view).onchange = function (e) { st.labels = e.target.checked; if (fdoc) fdoc.body.classList.toggle('show-labels', st.labels); };
     function withBlock(fn) {
