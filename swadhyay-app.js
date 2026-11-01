@@ -3721,7 +3721,7 @@
   var READER_PARA_INDENT = "2.2em";
   /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
   var READER_NO_INDENT_BOOKS = { "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html": true };
-  var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.Question,p.Answer";
+  var READER_INDENT_SELECTORS = "p.Text,p.Sambandh,p.Italik,p.Vayakhya,p.Bhav,p.Bhav-1,p.Bhav-2,p.Prashna,p.Uttar,p.Arth,p.Bhav-3,p.Bhav-4,p.Bhav-5,p.Bhav-6,p.Bhav-7,p.Bhav-8,p.Bhav-9,p.Bhav-10,p.Bhav-11,p.Bhav-12,p.Bhav-13,p.Bhav-14,p.Bhav-15,p.Bhav-16,p.Padchched-1,p.Paradhan-Vishay,p.Normal,p.Gadya,p.Text-2,p.Vyakhya,p.TEXT,p.TEXT-2,p.TEXT-1,p.TXT-Bold,p.Text-,p.TXT-hindi,p.prashn,p.samadan";
 
   // night: the page is a white body that a filter inverts; the canvas around it must match what that gives (#121212)
   function readerBg(theme) { return theme === "sepia" ? "#f4ecd8" : theme === "night" ? "#121212" : "#ffffff"; }

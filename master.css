@@ -6891,10 +6891,10 @@ p.Chapter {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Question {
+p.prashn {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:red;
+	color:#c10202;
 	font-family:ChanakyaUni, serif;
 	font-size:1.333em;
 	font-style:normal;
@@ -6908,10 +6908,10 @@ p.Question {
 	text-decoration:none;
 	text-indent:18px;
 }
-p.Answer {
+p.samadan {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
-	color:navy;
+	color:black;
 	font-family:ChanakyaUni, serif;
 	font-size:1.333em;
 	font-style:normal;
@@ -6924,6 +6924,12 @@ p.Answer {
 	text-align:justify;
 	text-decoration:none;
 	text-indent:18px;
+}
+/* "प्रश्न (१)—" and "उत्तर—" labels in गीता बाल प्रश्नोत्तरी */
+p.prashn > span.inline-5,
+p.samadan > span.inline-5,
+p.samadan > span.inline_shlok {
+	font-style:italic;
 }
 
 
