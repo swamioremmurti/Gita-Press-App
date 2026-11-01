@@ -4070,11 +4070,11 @@
     var doc = null; try { doc = document.getElementById("readerIframe").contentDocument; } catch (e) {}
     if (!doc || !doc.body) return [];
     var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
-    var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i], [class*='uwach' i]";      // shloka paragraphs / spans (class Shlok…) and speaker lines (class Uwach) are not read
+    var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i]:not(.inline_shlok), [class*='uwach' i]";      // shloka paragraphs / spans (class Shlok…) and speaker lines (class Uwach) are not read
     /* A paragraph is not read when it, or a small block around it (a verse box), has a class Shlok… / Uwach…. Some books wrap a whole
        chapter in one outer element with such a class; that wrapper is not a verse, so it must not silence everything inside it:
        a wrapping element counts only when it holds fewer than 8 blocks or under half of the page's blocks. */
-    var skipOwn = "[class*='shlok' i], [class*='uwach' i]", total = els.length;
+    var skipOwn = "[class*='shlok' i]:not(.inline_shlok), [class*='uwach' i]", total = els.length;
     function skipClassed(el) {
       if (el.matches(skipOwn)) return true;
       for (var a = el.parentElement; a && a !== doc.body; a = a.parentElement) {

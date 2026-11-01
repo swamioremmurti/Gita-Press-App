@@ -11,7 +11,7 @@ the way the other stotra books (देवीस्तोत्ररत्ना
     7 groups          h1 -> Heading (Chapter_3 .. Chapter_9)         "विनयस्तोत्राणि", "शिवस्तोत्राणि" ...
     80 stotras        h2 -> Sub-Heading (Chapter_G_M), one reader page each
     verses            block_23 -> Shlok          translation  block_24 -> Normal       speaker lines (अर्जुन उवाच) -> Uwach
-    "इति ... सम्पूर्णम्" -> Chapter-End-Text      "अर्जुनने पूछा—" (the speaker prefix of a translation) -> span char-style-override-3
+    "इति ... सम्पूर्णम्" -> Chapter-End-Text      "अर्जुनने पूछा—" (the speaker prefix of a translation) -> span inline_shlok
   * the printed contents page is dropped (its links pointed into the e-book's files; the reader has its own contents list);
   * the 25 end-notes ("Notes" pages) are moved next to the place that points at them and written "N. text" in class Footnotes, so the reader's
     tap-to-open modal (swadhyay-footnotes.js) opens each from its raised number;
@@ -74,8 +74,8 @@ def inline(h, notes, used):
         return "<sup>%s</sup>" % dev(n)
     h = re.sub(r'<sup class="calibre\d+"><a id="back_note_\d+"[^>]*role="doc-noteref">(\d+)</a></sup>', ref, h)
     h = re.sub(r'<br\b[^>]*>', "", h)
-    h = re.sub(r'<b class="calibre(?:10|1)">(.*?)</b>', r'<span class="char-style-override-3">\1</span>', h, flags=re.S)
-    h = re.sub(r'<span class="text_(?:10|18)">(.*?)</span>', r'<span class="char-style-override-3">\1</span>', h, flags=re.S)
+    h = re.sub(r'<b class="calibre(?:10|1)">(.*?)</b>', r'<span class="inline_shlok">\1</span>', h, flags=re.S)
+    h = re.sub(r'<span class="text_(?:10|18)">(.*?)</span>', r'<span class="inline_shlok">\1</span>', h, flags=re.S)
     for _ in range(3):                                           # every other styled wrapper: unwrap
         h = re.sub(r'<span class="text_\d*">(.*?)</span>', r"\1", h, flags=re.S)
     h = re.sub(r'<span style="[^"]*">(.*?)</span>', r"\1", h, flags=re.S)

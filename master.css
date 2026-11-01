@@ -1567,9 +1567,11 @@ span.rg-it {
 	font-style:italic;
 	font-weight:normal;
 }
-span.char-style-override-3 {
+/* inline Shlok-coloured run inside a paragraph (speaker labels, "प्रश्न—", quoted verse words): Shlok red, the surrounding text size */
+span.inline_shlok {
+	color:#c10202;
 	font-family:ChanakyaUni, serif;
-	font-size:0.813em;
+	font-size:1em;
 	font-style:normal;
 	font-weight:normal;
 }
