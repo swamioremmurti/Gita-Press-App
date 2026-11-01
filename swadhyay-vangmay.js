@@ -289,8 +289,8 @@
     var meta = b ? esc(b.author || "") : esc(tx("संग्रह में अभी उपलब्ध नहीं", "Not in the library yet"));
     var body = '<span class="vg-thumb-wrap">' + thumb + '</span>' +
       '<span class="vg-text-body">' +
-        '<span class="vg-text-r">' + esc(t[0]) + '</span>' +
-        '<span class="vg-text-d">' + esc(t[1]) + '</span>' +
+        '<span class="vg-text-r">' + esc(tx(t[1], t[0])) + '</span>' +
+        (tx("", "x") ? '<span class="vg-text-d">' + esc(t[1]) + '</span>' : '') +
         '<span class="vg-text-m">' + meta + '</span>' +
       '</span>' +
       (b ? '<span class="vg-go" aria-hidden="true">›</span>' : '<span class="vg-soon">' + esc(tx("शीघ्र", "Soon")) + '</span>');
@@ -322,7 +322,7 @@
           '<section class="vg-group' + (open ? " is-open" : "") + '">' +
             '<button type="button" class="vg-group-h" data-vg-toggle="' + esc(gk) + '" aria-expanded="' + (open ? "true" : "false") + '">' +
               '<span class="vg-caret" aria-hidden="true">▸</span>' +
-              '<span class="vg-group-t"><b>' + esc(g.r) + '</b><i>' + esc(g.d) + '</i></span>' +
+              '<span class="vg-group-t"><b>' + esc(tx(g.d, g.r)) + '</b>' + (tx("", "x") ? '<i>' + esc(g.d) + '</i>' : '') + '</span>' +
               (gLib ? '<span class="vg-lib">' + gLib + ' ' + esc(tx("उपलब्ध", "available")) + '</span>' : '') +
               '<span class="vg-badge">' + rows.length + ' ' + esc(tx("ग्रंथ", rows.length === 1 ? "text" : "texts")) + '</span>' +
             '</button>' +
@@ -336,7 +336,7 @@
         '<article class="vg-branch' + (open ? " is-open" : "") + '" id="vg-' + br.k + '" data-k="' + br.k + '">' +
           '<button type="button" class="vg-branch-h" data-vg-toggle="' + br.k + '" aria-expanded="' + (open ? "true" : "false") + '">' +
             '<span class="vg-ic vg-c-' + br.k + '" aria-hidden="true">' + br.ic + '</span>' +
-            '<span class="vg-branch-t"><b>' + esc(br.r) + '</b><i>' + esc(br.d) + ' · ' + esc(tx(br.hi, br.en)) + '</i></span>' +
+            '<span class="vg-branch-t"><b>' + esc(tx(br.d, br.r)) + '</b><i>' + esc(tx(br.hi, br.d + " · " + br.en)) + '</i></span>' +
             (c.lib ? '<span class="vg-lib">' + c.lib + ' ' + esc(tx("उपलब्ध", "available")) + '</span>' : '') +
             '<span class="vg-badge">' + c.n + ' ' + esc(tx("ग्रंथ", "books")) + '</span>' +
             '<span class="vg-caret" aria-hidden="true">▾</span>' +
@@ -355,7 +355,7 @@
     var h = '<button type="button" class="vg-chip' + (state.branch === "all" ? " is-on" : "") + '" data-vg-branch="all">' + esc(tx("सभी", "All")) + '</button>';
     TREE.forEach(function (br) {
       h += '<button type="button" class="vg-chip' + (state.branch === br.k ? " is-on" : "") + '" data-vg-branch="' + br.k + '">' +
-        '<span aria-hidden="true">' + br.ic + '</span> ' + esc(br.r) + '</button>';
+        '<span aria-hidden="true">' + br.ic + '</span> ' + esc(tx(br.d, br.r)) + '</button>';
     });
     return h;
   }
@@ -365,23 +365,23 @@
     var tx = ctx.tx, esc = ctx.esc;
     return '<div class="vg-page">' +
       '<section class="vg-hero">' +
-        '<div class="vg-eyebrow">' + esc(tx("वाङ्मय", "VĀṄMAYA")) + ' · SCRIPTURE EXPLORER</div>' +
-        '<h1>' + esc(tx("शास्त्रों का अन्वेषण", "Explore the Scriptures")) + '</h1>' +
+        '<div class="vg-eyebrow">' + esc(tx("वाङ्मय", "VĀṄMAYA")) + ' &bull; SCRIPTURE EXPLORER</div>' +
+        '<h1><span>' + esc(tx("शास्त्रों का अन्वेषण", "Explore the Scriptures")) + '</span></h1>' +
         '<p>' + esc(tx("सनातन धर्म की विशाल ज्ञान-परम्परा को शाखा, वर्ग और ग्रंथ के क्रम से देखें। जो ग्रंथ पुस्तकालय में हैं, उनपर क्लिक करके सीधे पढ़ें।",
                       "Discover the vast knowledge tradition of Sanātana Dharma. Texts that are in this library open straight in the reader.")) + '</p>' +
         '<div class="vg-stats">' +
-          '<div><b>' + TREE.length + '</b><span>' + esc(tx("मुख्य शाखाएँ", "Major branches")) + '</span></div>' +
-          '<div><b>' + resolved.total + '</b><span>' + esc(tx("ग्रंथ-प्रविष्टियाँ", "Book entries")) + '</span></div>' +
-          '<div class="is-lib"><b>' + resolved.books + '</b><span>' + esc(tx("पुस्तकालय में उपलब्ध", "Available in the library")) + '</span></div>' +
-          '<div><b>संस्कृत</b><span>' + esc(tx("मूल परम्परा", "Core tradition")) + '</span></div>' +
+          '<div><i class="vg-si vg-si-1" aria-hidden="true">&#128214;</i><p><b>' + TREE.length + '</b><span>' + esc(tx("मुख्य शाखाएँ", "Major branches")) + '</span></p></div>' +
+          '<div><i class="vg-si vg-si-2" aria-hidden="true">&#128218;</i><p><b>' + resolved.total + '</b><span>' + esc(tx("ग्रंथ-प्रविष्टियाँ", "Book entries")) + '</span></p></div>' +
+          '<div class="is-lib"><i class="vg-si vg-si-3" aria-hidden="true">&#128215;</i><p><b>' + resolved.books + '</b><span>' + esc(tx("पुस्तकालय में उपलब्ध", "Available in the library")) + '</span></p></div>' +
+          '<div><i class="vg-si vg-si-4" aria-hidden="true">ॐ</i><p><b>संस्कृत</b><span>' + esc(tx("मूल परम्परा", "Core tradition")) + '</span></p></div>' +
         '</div>' +
       '</section>' +
       '<div class="vg-tools">' +
-        '<label class="vg-search"><span aria-hidden="true">⌕</span>' +
+        '<label class="vg-search"><span aria-hidden="true">&#128269;</span>' +
           '<input type="search" id="vgSearch" autocomplete="off" placeholder="' + esc(tx("संस्कृत या अंग्रेज़ी नाम से खोजें…", "Search by Sanskrit or English title…")) + '" value="' + esc(state.q) + '"></label>' +
         '<label class="vg-only"><input type="checkbox" id="vgOnlyLib"' + (state.onlyLib ? " checked" : "") + '> ' + esc(tx("केवल उपलब्ध ग्रंथ", "Only books in the library")) + '</label>' +
       '</div>' +
-      '<div class="vg-label">' + esc(tx("शाखा के अनुसार देखें", "Browse by branch")) + '</div>' +
+      '<div class="vg-label"><span>' + esc(tx("शाखा के अनुसार देखें", "Browse by branch")) + '</span></div>' +
       '<div class="vg-chips" id="vgChips">' + chipsHtml(ctx) + '</div>' +
       '<div class="vg-treebar"><h2>' + esc(tx("शास्त्र-वृक्ष", "Scripture tree")) + '</h2>' +
         '<span><button type="button" class="vg-link" id="vgExpand">' + esc(tx("सब खोलें", "Expand all")) + '</button>' +
