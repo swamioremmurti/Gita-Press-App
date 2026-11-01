@@ -86,7 +86,7 @@
     if (sup) return sup;
     if (pass === "digit") {
       /* a styled span that holds only the number and sits straight after a word: the books' superscript digits are often
-         <span class="char-style-override-N">२</span> (the book's own CSS raises them) */
+         <span class="inline-N">२</span> (the book's own CSS raises them) */
       var spans = p.querySelectorAll("span");
       for (i = 0; i < spans.length; i++) {
         var sp = spans[i];

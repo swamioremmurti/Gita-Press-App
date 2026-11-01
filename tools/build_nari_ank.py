@@ -54,6 +54,12 @@ CLASS_MAP = {                       # whole-token renames of a class attribute
     "para-style-override-4": "center-tight", "char-style-override-4": "bold",
     "char-style-override-14": "Shlok-part-2", "char-style-override-15": "Shlok-part-3", "char-style-override-16": "Shlok-part-4",
 }
+# char-style-override-N -> the clubbed inline-M class (tools/inline_class_map.json; 3 -> inline_shlok, 7 -> strong)
+import json as _json
+for _k, _v in _json.load(open(ROOT / "tools" / "inline_class_map.json", encoding="utf-8")).items():
+    CLASS_MAP.setdefault("char-style-override-%s" % _k, "inline-%s" % _v)
+CLASS_MAP.update({"char-style-override-3": "inline_shlok", "char-style-override-7": "strong"})
+
 
 
 def write(p, data):

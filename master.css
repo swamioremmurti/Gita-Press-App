@@ -1579,44 +1579,37 @@ span.bold {
 	font-style:normal;
 	font-weight:bold;
 }
-span.char-style-override-5 {
-	font-size:0.923em;
+span.inline-5 {
+	font-size:1em;
 }
-span.char-style-override-6 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.0em;
+span.inline-6 {
+	font-style:normal;
+	font-weight:bold;
+	font-size:1em;
+}
+span.strong {
+	font-size:1em;
 	font-style:normal;
 	font-weight:bold;
 }
-span.char-style-override-7 {
-	font-size:1.125em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-8 {
-	font-size:0.727em;
-}
-span.char-style-override-9 {
-	font-family:ChanakyaUni, serif;
+span.inline-9 {
 	font-style:normal;
 	font-weight:normal;
+	font-size:1em;
 }
-span.char-style-override-10 {
+span.inline-10 {
 	font-style:italic;
 	font-weight:bold;
+	font-size:1em;
 }
-span.char-style-override-11 {
-	font-size:0.583em;
+span.inline-11 {
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-12 {
+span.inline-12 {
 	color:black;
-	font-size:0.923em;
-}
-span.char-style-override-13 {
-	font-size:0.938em;
-	font-style:normal;
-	font-weight:bold;
+	font-size:1em;
 }
 span.Shlok-part-2 {
 	color:#03037d;
@@ -1635,409 +1628,125 @@ span.Shlok-part-4 {
 	font-style:normal;
 	font-weight:bold;
 }
-span.char-style-override-17 {
-	font-size:0.583em;
+span.inline-17 {
 	font-style:italic;
 	font-weight:normal;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-18 {
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-19 {
-	font-size:0.625em;
-	vertical-align:super;
-}
-span.char-style-override-20 {
+span.inline-20 {
 	color:royalblue;
+	font-size:1em;
 }
-span.char-style-override-21 {
+span.inline-21 {
 	color:royalblue;
-	font-size:0.583em;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-22 {
-	font-size:0.75em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-23 {
-	font-size:0.875em;
-}
-span.char-style-override-24 {
+span.inline-24 {
 	color:blue;
+	font-size:1em;
 }
-span.char-style-override-25 {
-	font-size:0.583em;
+span.inline-25 {
 	font-style:normal;
 	font-weight:bold;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-26 {
-	color:blue;
-}
-span.char-style-override-27 {
+span.inline-27 {
 	color:mediumvioletred;
+	font-size:1em;
 }
-span.char-style-override-28 {
-	font-size:0.875em;
+span.inline-28 {
 	font-style:italic;
 	font-weight:normal;
+	font-size:1em;
 }
-span.char-style-override-29 {
-	color:black;
-}
-span.char-style-override-30 {
-	color:black;
-}
-span.char-style-override-31 {
+span.inline-31 {
 	color:red;
-	font-size:0.75em;
 	font-style:normal;
 	font-weight:bold;
+	font-size:1em;
 }
-span.char-style-override-32 {
-	font-size:0.813em;
-	font-style:italic;
-	font-weight:bold;
-}
-span.char-style-override-33 {
-	font-size:0.813em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-34 {
-	font-size:0.547em;
-	vertical-align:super;
-}
-span.char-style-override-35 {
-	font-size:0.929em;
-}
-span.char-style-override-36 {
+span.inline-36 {
 	color:red;
-	font-size:1.333em;
+	font-size:1em;
 }
-span.char-style-override-37 {
+span.inline-40 {
 	color:black;
-	font-size:0.938em;
-}
-span.char-style-override-38 {
-	color:royalblue;
-	font-size:0.938em;
-}
-span.char-style-override-39 {
-	color:blue;
-	font-size:0.938em;
-}
-span.char-style-override-40 {
-	color:black;
-	font-size:1.083em;
 	font-style:italic;
 	font-weight:normal;
+	font-size:1em;
 }
-span.char-style-override-41 {
+span.inline-41 {
 	color:black;
-	font-family:ChanakyaUni, serif;
 	font-style:normal;
 	font-weight:normal;
+	font-size:1em;
 }
-span.char-style-override-42 {
-	font-size:1.231em;
-}
-span.char-style-override-43 {
+span.inline-43 {
 	color:black;
-	font-size:1.083em;
 	font-style:italic;
 	font-weight:bold;
+	font-size:1em;
 }
-span.char-style-override-44 {
+span.inline-44 {
 	color:navy;
-	font-size:1.167em;
+	font-size:1em;
 }
-span.char-style-override-45 {
-	font-size:0.625em;
-}
-span.char-style-override-46 {
-	font-size:0.75em;
-}
-span.char-style-override-47 {
-	font-size:0.813em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-48 {
-	font-family:ChanakyaUni, serif;
-	font-size:0.923em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-49 {
-	color:red;
-	font-size:0.75em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-50 {
-	font-size:0.938em;
-}
-span.char-style-override-51 {
-	font-size:0.856em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-52 {
-	font-size:0.547em;
-	font-style:normal;
-	font-weight:bold;
-	vertical-align:super;
-}
-span.char-style-override-53 {
-	color:red;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-54 {
+span.inline-54 {
 	color:blue;
-	font-family:ChanakyaUni, serif;
-	font-size:0.8em;
 	font-style:normal;
 	font-weight:normal;
+	font-size:1em;
 }
-span.char-style-override-55 {
-	font-size:1.142em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-56 {
-	font-size:0.583em;
+span.inline-56 {
 	text-decoration:underline;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-57 {
-	font-size:1.083em;
-	font-style:italic;
-	font-weight:bold;
-}
-span.char-style-override-58 {
+span.inline-58 {
 	color:black;
-	font-family:ChanakyaUni, serif;
-	font-size:0.923em;
 	font-style:normal;
 	font-weight:bold;
+	font-size:1em;
 }
-span.char-style-override-59 {
+span.inline-59 {
 	color:blue;
-	font-size:0.583em;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-60 {
-	font-size:0.813em;
-}
-span.char-style-override-61 {
-	font-size:0.619em;
-	vertical-align:super;
-}
-span.char-style-override-62 {
-	color:black;
-	font-family:ChanakyaUni, serif;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-63 {
-	font-size:0.813em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-64 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.142em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-65 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.083em;
-	font-style:italic;
-	font-weight:bold;
-}
-span.char-style-override-66 {
-	color:red;
-	font-size:1.067em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-67 {
-	color:red;
-	font-size:0.75em;
-}
-span.char-style-override-68 {
-	font-size:1.067em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-69 {
-	font-size:1.067em;
-}
-span.char-style-override-70 {
-	color:black;
-	font-size:0.938em;
-}
-span.char-style-override-71 {
-	font-size:0.844em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-72 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.333em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-73 {
-	font-size:0.856em;
-}
-span.char-style-override-74 {
-	font-size:1.142em;
-}
-span.char-style-override-75 {
-	color:black;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-76 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.333em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-77 {
-	font-size:0.856em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-78 {
-	font-family:ChanakyaUni, serif;
-	font-size:0.777em;
+span.inline-78 {
 	font-style:normal;
 	font-weight:normal;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-79 {
+span.inline-79 {
 	font-variant:small-caps;
+	font-size:1em;
 }
-span.char-style-override-80 {
-	font-size:1.054em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-81 {
-	color:black;
-	font-size:1.167em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-82 {
-	color:black;
-	font-size:1.142em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-83 {
-	font-family:ChanakyaUni, serif;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-84 {
+span.inline-84 {
 	color:navy;
 	font-style:normal;
 	font-weight:bold;
+	font-size:1em;
 }
-span.char-style-override-85 {
-	color:black;
-	font-size:0.856em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-86 {
+span.inline-86 {
 	color:maroon;
-	font-size:0.583em;
 	vertical-align:super;
+	font-size:smaller;
+	line-height:0;
 }
-span.char-style-override-87 {
-	font-size:1.142em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-88 {
-	color:royalblue;
-	font-size:1.067em;
-}
-span.char-style-override-89 {
-	color:blue;
-	font-size:1.067em;
-}
-span.char-style-override-90 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.142em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-91 {
-	color:black;
-	font-size:1.231em;
-}
-span.char-style-override-92 {
-	font-size:1.333em;
-}
-span.char-style-override-93 {
-	font-size:0.856em;
-	font-style:italic;
-	font-weight:bold;
-}
-span.char-style-override-94 {
-	color:black;
-	font-family:ChanakyaUni, serif;
-	font-size:0.923em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-95 {
-	font-size:0.9em;
-}
-span.char-style-override-96 {
-	color:red;
-	font-size:1.067em;
-}
-span.char-style-override-97 {
-	font-size:1.154em;
-	font-style:italic;
-	font-weight:normal;
-}
-span.char-style-override-98 {
-	font-size:0.844em;
-}
-span.char-style-override-99 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.125em;
-	font-style:normal;
-	font-weight:bold;
-}
-span.char-style-override-100 {
-	font-family:ChanakyaUni, serif;
-	font-size:1.125em;
-	font-style:normal;
-	font-weight:normal;
-}
-span.char-style-override-101 {
+span.inline-101 {
 	color:#b33c00;
-	font-size:0.875em;
-}
-span.char-style-override-102 {
-	color:red;
-	font-size:1.375em;
-	font-style:normal;
-	font-weight:bold;
+	font-size:1em;
 }
 img {
 	max-width:300px;
