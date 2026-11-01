@@ -918,7 +918,7 @@
     "सामवेद.html": "assets/covers/samved.jpg",
     "अथर्ववेद.html": "assets/covers/atharvaved.jpg",
     "एक लोटा पानी.html": "assets/covers/ek-lota-pani.jpg",
-    "गिता चिंतन.html": "assets/covers/gita-chintan.jpg",
+    "गीता चिंतन.html": "assets/covers/gita-chintan.jpg",
     "देवीस्तोत्ररत्नाकर.html": "assets/covers/devi-stotra-ratnakar.jpg",
     "संक्षिप्त योगवासिष्ठ.html": "assets/covers/sankshipt-yogvasishtha.jpg",
     "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html": "assets/covers/tattva-vivechani.webp",

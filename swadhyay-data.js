@@ -71,7 +71,7 @@ var SWADHYAY_BOOKS_RAW = [
         "sizeKB":  3453.6
     },
     {
-        "file":  "गिता चिंतन.html",
+        "file":  "गीता चिंतन.html",
         "category":  "Gita",
         "author":  "",
         "tikakar":  "",
