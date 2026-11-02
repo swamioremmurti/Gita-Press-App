@@ -5234,7 +5234,7 @@ var SWADHYAY_BOOKS_RAW = [
     {
         "file":  "लव कुश चरित्र.html",
         "category":  "Siksha evam Katha",
-        "author":  "श्रीजयदयालजी गोयन्दका",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
@@ -5261,7 +5261,7 @@ var SWADHYAY_BOOKS_RAW = [
     {
         "file":  "कल्याण कैसे हो.html",
         "category":  "Pravachan",
-        "author":  "श्रीजयदयालजी गोयन्दका",
+        "author":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
@@ -5491,5 +5491,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
         "sizeKB":  662.0
+    },
+    {
+        "file":  "कौषीतकिब्राह्मणोपनिषत्.html",
+        "category":  "Upanishad",
+        "author":  "",
+        "tikakar":  "स्वामी महेशानन्द गिरि",
+        "translator":  "",
+        "publisher":  "मेहता चेरीटेबिल प्रज्ञालय ट्रस्ट",
+        "sizeKB":  174.8
     }
 ];

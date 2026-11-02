@@ -416,6 +416,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "कौषीतकिब्राह्मणोपनिषत्.html": "assets/covers/kausheetakibraahmanopanishat.webp",
     "श्रीआद्यशंकराचार्यविरचित अपरोक्षानुभूति.html": "assets/covers/shreeaadyashnkaraachaaryavirachit-aparokshaanubhooti.webp",
     "योग एवं भक्ति.html": "assets/covers/yog-evn-bhakti.webp",
     "जैसा बीज वैसा फल.html": "assets/covers/jaisaa-beej-vaisaa-phal.webp",
@@ -972,6 +973,7 @@
     "कालियनागपर कृपा.html": true,
     "भाईजी चरितामृत.html": true,
     "जैसा बीज वैसा फल.html": true,
+    "कौषीतकिब्राह्मणोपनिषत्.html": true,
     "योग एवं भक्ति.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
