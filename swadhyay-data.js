@@ -5509,5 +5509,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "बालकृष्ण शर्मा",
         "publisher":  "कालिदास अकादेमी, उज्जैन",
         "sizeKB":  628.0
+    },
+    {
+        "file":  "नारदीयशिक्षा.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  488.8
     }
 ];

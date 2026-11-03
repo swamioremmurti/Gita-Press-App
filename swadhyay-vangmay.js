@@ -53,8 +53,69 @@
     { k: "vedanga", ic: "\u{1F4DC}", r: "Vedāṅga", d: "वेदाङ्ग",
       hi: "वेदों के छह सहायक शास्त्र", en: "Six auxiliary disciplines of the Vedas",
       groups: [
-        { r: "Śikṣā (phonetics)", d: "शिक्षा", t: [
-          ["Pāṇinīya Śikṣā", "पाणिनीय शिक्षा", "पाणिनीयशिक्षा"], ["Yājñavalkya Śikṣā", "याज्ञवल्क्य शिक्षा"], ["Nāradīya Śikṣā", "नारदीय शिक्षा"] ] },
+        { r: "Śikṣā · Prātiśākhyas", d: "शिक्षा · प्रातिशाख्य", t: [
+          ["Ṛgveda Prātiśākhya (47 letters)", "ऋग्वेद प्रातिशाख्य (४७ वर्ण)"],
+          ["Śukla Yajurveda Prātiśākhya (65 letters)", "शुक्ल यजुर्वेद प्रातिशाख्य (६५ वर्ण)"],
+          ["Taittirīya Prātiśākhya (Kṛṣṇa Yajurveda; 52 letters)", "तैत्तिरीय प्रातिशाख्य (कृष्ण यजुर्वेद; ५२ वर्ण)"],
+          ["Atharvaveda Prātiśākhya (Śaunakīya śākhā)", "अथर्ववेद प्रातिशाख्य (शौनकीय शाखा)"],
+          ["Ṛktantra (Sāmaveda Prātiśākhya; 57 letters)", "ऋक्तन्त्र (सामवेद प्रातिशाख्य; ५७ वर्ण)"],
+          ["Puṣpasūtra (second Sāmaveda Prātiśākhya)", "पुष्पसूत्र (सामवेद का द्वितीय प्रातिशाख्य)"] ] },
+        { r: "Śikṣā · General treatises", d: "शिक्षा · सामान्य शास्त्रीय ग्रन्थ", t: [
+          ["Pāṇinīya Śikṣā", "पाणिनीय शिक्षा", "पाणिनीयशिक्षा"],
+          ["Pāṇinīya Śikṣā — versified version", "पाणिनीय शिक्षा — पद्यात्मक पाठ"],
+          ["Pāṇinīya Śikṣā — sūtra form", "पाणिनीय शिक्षा — सूत्ररूप पाठ"],
+          ["Pāṇinīya Śikṣā — accented version", "पाणिनीय शिक्षा — सस्वर (स्वराङ्कित) पाठ"],
+          ["Āpiśali Śikṣā (sūtra form)", "आपिशलि शिक्षा (सूत्ररूप)"],
+          ["Candra Śikṣā (Candragomin, sūtra form)", "चन्द्र शिक्षा (चन्द्रगोमिन्, सूत्ररूप)"],
+          ["Vyāli Śikṣā", "व्यालि शिक्षा"],
+          ["Śambhu Śikṣā", "शम्भु शिक्षा"],
+          ["Siddhānta Śikṣā", "सिद्धान्त शिक्षा"],
+          ["Pārī Śikṣā", "पारी शिक्षा"],
+          ["Sarvasammata Śikṣā", "सर्वसम्मत शिक्षा"],
+          ["Prātiśākhyapradīpa Śikṣā", "प्रातिशाख्यप्रदीप शिक्षा"],
+          ["Śikṣāsaṅgraha (compendium)", "शिक्षासंग्रह (संकलन)"] ] },
+        { r: "Śikṣā · Sāmaveda-related", d: "शिक्षा · सामवेद-सम्बद्ध", t: [
+          ["Nāradīya Śikṣā", "नारदीय शिक्षा", "नारदीयशिक्षा"],
+          ["Lomaśī Śikṣā", "लोमशी शिक्षा"],
+          ["Gautama Śikṣā", "गौतम शिक्षा"] ] },
+        { r: "Śikṣā · Śukla Yajurveda-related", d: "शिक्षा · शुक्ल यजुर्वेद-सम्बद्ध", t: [
+          ["Yājñavalkya Śikṣā (Vājasaneyī / Traisvarya-lakṣaṇa)", "याज्ञवल्क्य शिक्षा (वाजसनेयी / त्रैस्वर्यलक्षण)"],
+          ["Kātyāyanī Śikṣā", "कात्यायनी शिक्षा"],
+          ["Mādhyandina Śikṣā", "माध्यन्दिन शिक्षा"] ] },
+        { r: "Śikṣā · Kṛṣṇa Yajurveda-related", d: "शिक्षा · कृष्ण यजुर्वेद-सम्बद्ध", t: [
+          ["Vyāsa Śikṣā", "व्यास शिक्षा"],
+          ["Bhāradvāja Śikṣā", "भारद्वाज शिक्षा"],
+          ["Cārāyaṇīya Śikṣā", "चारायणीय शिक्षा"],
+          ["Śaiśirīya Śikṣā", "शैशिरीय शिक्षा"] ] },
+        { r: "Śikṣā · Atharvaveda-related", d: "शिक्षा · अथर्ववेद-सम्बद्ध", t: [
+          ["Māṇḍūkī Śikṣā", "माण्डूकी शिक्षा"],
+          ["Māṇḍavya Śikṣā", "माण्डव्य शिक्षा"] ] },
+        { r: "Śikṣā · Attributed to ṛṣis and authors", d: "शिक्षा · ऋषि-लेखक-नामांकित", t: [
+          ["Amoghānandinī Śikṣā", "अमोघानन्दिनी शिक्षा"],
+          ["Laghvamoghānandinī Śikṣā", "लघ्वमोघानन्दिनी शिक्षा"],
+          ["Ātreya Śikṣā", "आत्रेय शिक्षा"],
+          ["Kauṇḍinya Śikṣā", "कौण्डिन्य शिक्षा"],
+          ["Keśavī Śikṣā", "केशवी शिक्षा"],
+          ["Padyātmikā Keśavī Śikṣā", "पद्यात्मिका केशवी शिक्षा"],
+          ["Lakṣmīkānta Śikṣā", "लक्ष्मीकान्त शिक्षा"],
+          ["Mallaśarmakṛta Śikṣā", "मल्लशर्मकृत शिक्षा"],
+          ["Pārāśarī Śikṣā", "पाराशरी शिक्षा"],
+          ["Vāsiṣṭhī (Vasiṣṭha) Śikṣā", "वासिष्ठी (वसिष्ठ) शिक्षा"] ] },
+        { r: "Śikṣā · Recitation & sequence (krama, pada)", d: "शिक्षा · पाठक्रम (क्रम और पद)", t: [
+          ["Āraṇya Śikṣā", "आरण्य शिक्षा"],
+          ["Kramakārikā Śikṣā", "क्रमकारिका शिक्षा"],
+          ["Kramasandhāna Śikṣā", "क्रमसन्धान शिक्षा"] ] },
+        { r: "Śikṣā · Accents & vowels (svara)", d: "शिक्षा · स्वर", t: [
+          ["Svarāṅkuśa Śikṣā", "स्वराङ्कुश शिक्षा"],
+          ["Svarāṣṭaka Śikṣā", "स्वराष्टक शिक्षा"],
+          ["Svaravyañjana Śikṣā", "स्वरव्यञ्जन शिक्षा"] ] },
+        { r: "Śikṣā · Articulation, pause & letters", d: "शिक्षा · उच्चारण, विराम और वर्ण", t: [
+          ["Avasānanirṇaya Śikṣā", "अवसाननिर्णय शिक्षा"],
+          ["Kālanirṇaya Śikṣā", "कालनिर्णय शिक्षा"],
+          ["Mānasvāra Śikṣā", "मानस्वार शिक्षा"],
+          ["Śamāna Śikṣā", "शमान शिक्षा"],
+          ["Ṣoḍaśaślokī Śikṣā", "षोडशश्लोकी शिक्षा"],
+          ["Varṇaratnapradīpa Śikṣā", "वर्णरत्नप्रदीप शिक्षा"] ] },
         { r: "Kalpa (ritual)", d: "कल्प", t: [
           ["Āśvalāyana Śrautasūtra", "आश्वलायन श्रौतसूत्र"], ["Āpastamba Śrautasūtra", "आपस्तम्ब श्रौतसूत्र"],
           ["Pāraskara Gṛhyasūtra", "पारस्कर गृह्यसूत्र"], ["Śulbasūtra", "शुल्बसूत्र"] ] },
