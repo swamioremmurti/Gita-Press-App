@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1000"
+   height="230"
+   viewBox="0 0 1000 230"
+   version="1.1"
+   id="svg724"
+   sodipodi:docname="swara_sanskrit_vector.svg"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs728" />
+  <sodipodi:namedview
+     id="namedview726"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.4277996"
+     inkscape:cx="603.08611"
+     inkscape:cy="46.750862"
+     inkscape:window-width="1366"
+     inkscape:window-height="697"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g710" />
+  <title
+     id="title684">स्वर और सप्त स्वर</title>
+  <desc
+     id="desc686">उदात्तौ, स्वरिताः, अनुदात्तौ; षड्जः, ऋषभः, गान्धारः, मध्यमः, पंचमः, धैवतः, निषादः।</desc>
+  <g
+     fill="#17130f"
+     font-family="'Noto Sans Devanagari','Mangal',sans-serif"
+     font-size="30"
+     font-weight="500"
+     id="g710">
+    <text
+       x="18"
+       y="48"
+       id="text690">उदात्तौ</text>
+    <text
+       x="18"
+       y="119"
+       id="text692">स्वरिताः</text>
+    <text
+       x="18"
+       y="190"
+       id="text694">अनुदात्तौ</text>
+    <text
+       x="196"
+       y="119"
+       id="text696">षड्जः</text>
+    <text
+       x="304"
+       y="193"
+       id="text698">ऋषभः</text>
+    <text
+       x="410"
+       y="49"
+       id="text700">गान्धारः</text>
+    <text
+       x="579"
+       y="119"
+       id="text702">मध्यमः</text>
+    <text
+       x="692"
+       y="119"
+       id="text704">पंचमः</text>
+    <text
+       x="828"
+       y="201"
+       id="text706">धैवतः</text>
+    <text
+       x="876"
+       y="49"
+       id="text708">निषादः</text>
+  </g>
+  <g
+     fill="none"
+     stroke="#211914"
+     stroke-width="2.6"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="g722">
+    <path
+       d="M214 140 L349 172"
+       id="path712" />
+    <path
+       d="M349 172 L455 66"
+       id="path714" />
+    <path
+       d="M 455.05491,66.054914 606.49675,144.5975"
+       id="path716"
+       style="stroke-width:2.70983" />
+    <path
+       d="M 607.10129,145 H 770.97678"
+       id="path718"
+       style="stroke-width:2.62312" />
+    <path
+       d="M771 145 L850 177 L920 75"
+       id="path720" />
+  </g>
+  <metadata
+     id="metadata730">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:title>स्वर और सप्त स्वर</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

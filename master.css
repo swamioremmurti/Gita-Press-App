@@ -7523,3 +7523,14 @@ p.vf-wrap .vf {
 
 /* श्रीरामचरितमानस — sub-heading range line, e.g. "(दोहा २-३)" under the title (Book reading mode) */
 .sh_tl { font-size: 0.8em; font-style: italic; font-weight: normal; }
+
+/* पाणिनीयशिक्षा — a sign drawn as an SVG inside a line of text (the gunkara signs): as tall as the text around it */
+img.inline-sign { height: 1.05em; width: auto; vertical-align: middle; }
+
+/* पाणिनीयशिक्षा — the four yama signs with their names (a list of signs, one per line): the sign in a fixed-width cell so the dashes line up */
+p.sign-row { font-family: ChanakyaUni, serif; font-size: 1.333em; line-height: 1.6; color: black; text-align: left; text-indent: 0; margin: 0 0 4px 1.2em; }
+span.sign-cell { display: inline-block; width: 2.2em; text-align: center; }
+img.sign-col { width: 1.38em; height: auto; vertical-align: middle; }
+
+/* पाणिनीयशिक्षा — the jihvamuliya / upadhmaniya sign (cup over cap) as tall as a letter of the text (ink height of क: 0.68em), sitting on the baseline */
+img.jihva-sign { height: 0.68em; width: auto; vertical-align: baseline; }

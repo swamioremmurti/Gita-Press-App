@@ -54,7 +54,7 @@
       hi: "वेदों के छह सहायक शास्त्र", en: "Six auxiliary disciplines of the Vedas",
       groups: [
         { r: "Śikṣā (phonetics)", d: "शिक्षा", t: [
-          ["Pāṇinīya Śikṣā", "पाणिनीय शिक्षा"], ["Yājñavalkya Śikṣā", "याज्ञवल्क्य शिक्षा"], ["Nāradīya Śikṣā", "नारदीय शिक्षा"] ] },
+          ["Pāṇinīya Śikṣā", "पाणिनीय शिक्षा", "पाणिनीयशिक्षा"], ["Yājñavalkya Śikṣā", "याज्ञवल्क्य शिक्षा"], ["Nāradīya Śikṣā", "नारदीय शिक्षा"] ] },
         { r: "Kalpa (ritual)", d: "कल्प", t: [
           ["Āśvalāyana Śrautasūtra", "आश्वलायन श्रौतसूत्र"], ["Āpastamba Śrautasūtra", "आपस्तम्ब श्रौतसूत्र"],
           ["Pāraskara Gṛhyasūtra", "पारस्कर गृह्यसूत्र"], ["Śulbasūtra", "शुल्बसूत्र"] ] },

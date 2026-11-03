@@ -5500,5 +5500,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "मेहता चेरीटेबिल प्रज्ञालय ट्रस्ट",
         "sizeKB":  174.8
+    },
+    {
+        "file":  "पाणिनीयशिक्षा.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "अवस्थी बच्चूलाल ज्ञान",
+        "translator":  "बालकृष्ण शर्मा",
+        "publisher":  "कालिदास अकादेमी, उज्जैन",
+        "sizeKB":  628.0
     }
 ];

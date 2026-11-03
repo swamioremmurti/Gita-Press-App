@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- the jihvamuliya sign: a cup above a cap, with a gap between them -->
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="274" viewBox="90 113 240 274">
+  <title>जिह्वामूलीय</title>
+  <g fill="none" stroke="#000000" stroke-width="34" stroke-linecap="round">
+    <path d="M120 130 A90 90 0 0 0 300 130"/>
+    <path d="M120 370 A90 90 0 0 1 300 370"/>
+  </g>
+</svg>
