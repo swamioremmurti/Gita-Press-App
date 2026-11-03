@@ -62,7 +62,7 @@ async function updateUser(ctx, id) {
   const b = await readJSON(ctx.req);
   const self = id === ctx.user.id;
   if (b.role !== undefined) {
-    const role = b.role === 'admin' ? 'admin' : 'user';
+    const role = b.role === 'admin' ? 'admin' : b.role === 'editor' ? 'editor' : 'user';
     if (self && role !== 'admin') return sendJSON(ctx.res, 400, { error: 'You cannot remove your own admin access' });
     await db.run('UPDATE users SET role = ? WHERE id = ?', [role, id]);
   }

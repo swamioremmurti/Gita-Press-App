@@ -535,8 +535,8 @@
       A.get(API + '/chapters/' + id + '/versions').then(function (d) {
         var ctl = A.modal({
           title: 'History of “' + st.cur.title + '”', size: 'wide',
-          body: d.versions.length ? html`<p class="muted small" style="margin-bottom:10px">Each time you save, the text before the change is kept (the latest 25).</p>
-            <div class="cols even"><div id="vlist">${d.versions.map(function (v) { return html`<div class="hit" data-v="${v.id}"><b>${A.fmt.date(v.createdAt)}</b> <span class="badge">${v.note || 'saved version'}</span><div class="small muted">${A.fmt.bytes(v.size)}</div></div>`; })}</div>
+          body: d.versions.length ? html`<p class="muted small" style="margin-bottom:10px">Each time you save, the text before the change is kept (the latest 25), with the name of the person who changed it.</p>
+            <div class="cols even"><div id="vlist">${d.versions.map(function (v) { return html`<div class="hit" data-v="${v.id}"><b>${A.fmt.date(v.createdAt)}</b> <span class="badge">${v.note || 'saved version'}</span><div class="small muted">${v.by ? 'Changed by ' + v.by + ' · ' : ''}${A.fmt.bytes(v.size)}</div></div>`; })}</div>
             <div><div id="vprev" class="muted">Select a version to preview it.</div></div></div>` : A.empty('No earlier versions', 'They appear after the first save.'),
           footer: [{ label: 'Close' }]
         });

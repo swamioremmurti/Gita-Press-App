@@ -438,8 +438,11 @@ async function handleReorder(ctx, file) {
 }
 
 async function handleVersions(ctx, id) {
-  const rows = await db.all('SELECT id, note, created_at, length(html) AS size FROM chapter_versions WHERE chapter_id = ? ORDER BY id DESC', [id]);
-  sendJSON(ctx.res, 200, { versions: rows.map((r) => ({ id: r.id, note: r.note, createdAt: Number(r.created_at), size: Number(r.size) })) });
+  // a version holds the text as it was before a change; user_id is the person who made that change
+  const rows = await db.all(
+    `SELECT v.id, v.note, v.created_at, length(v.html) AS size, u.name AS by_name, u.email AS by_email
+     FROM chapter_versions v LEFT JOIN users u ON u.id = v.user_id WHERE v.chapter_id = ? ORDER BY v.id DESC`, [id]);
+  sendJSON(ctx.res, 200, { versions: rows.map((r) => ({ id: r.id, note: r.note, createdAt: Number(r.created_at), size: Number(r.size), by: r.by_name ? r.by_name + ' (' + r.by_email + ')' : '' })) });
 }
 
 async function handleVersionGet(ctx, versionId) {

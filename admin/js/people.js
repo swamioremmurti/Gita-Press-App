@@ -8,7 +8,7 @@
     A.setPage('Users', 'Everyone who has an account on the site');
     var st = { q: q.get('q') || '', role: '', status: '', page: 1 }, rows = [];
     view.innerHTML = html`<div class="toolbar"><input type="search" class="search" id="uq" placeholder="Search name or email…" value="${st.q}">
-      <select id="ur"><option value="">All roles</option><option value="admin">Admins</option><option value="user">Users</option></select>
+      <select id="ur"><option value="">All roles</option><option value="admin">Admins</option><option value="editor">Editors</option><option value="user">Users</option></select>
       <select id="us"><option value="">Any status</option><option value="active">Active</option><option value="suspended">Suspended</option></select></div><div id="utable"></div>`.s;
     function load() {
       var t = A.q('#utable', view);
@@ -18,7 +18,7 @@
           ${rows.map(function (u, i) {
             return html`<tr><td><div class="row" style="flex-wrap:nowrap;gap:10px">${u.avatarUrl ? html`<img src="${u.avatarUrl}" alt="" width="32" height="32" style="border-radius:50%;flex:none" referrerpolicy="no-referrer">` : html`<span class="cover" style="width:32px;height:32px;border-radius:50%">${(u.name || '?').charAt(0).toUpperCase()}</span>`}
               <div style="min-width:0"><div class="t-title">${u.name}${u.id === A.user.id ? html` <span class="badge">You</span>` : ''}</div><div class="t-sub">${u.email}${u.google ? ' · Google' : ''}</div></div></div></td>
-              <td>${u.role === 'admin' ? html`<span class="badge accent">Admin</span>` : html`<span class="badge">User</span>`} ${u.status === 'suspended' ? html`<span class="badge bad">Suspended</span>` : ''}</td>
+              <td>${u.role === 'admin' ? html`<span class="badge accent">Admin</span>` : u.role === 'editor' ? html`<span class="badge info">Editor</span>` : html`<span class="badge">User</span>`} ${u.status === 'suspended' ? html`<span class="badge bad">Suspended</span>` : ''}</td>
               <td class="nowrap">${A.fmt.day(u.createdAt)}</td><td class="nowrap">${u.lastLoginAt ? A.fmt.ago(u.lastLoginAt) : '—'}</td>
               <td class="small muted">${u.reads} book${u.reads === 1 ? '' : 's'} read · ${u.comments} comment${u.comments === 1 ? '' : 's'}${u.lms ? ' · Gita course' : ''}</td>
               <td class="acts"><button class="btn sm" data-open="${i}">Manage</button></td></tr>`;
@@ -41,6 +41,7 @@
         body: html`<p class="muted" style="margin-bottom:12px">${d.user.email} · joined ${A.fmt.date(d.user.createdAt)} · ${d.activeSessions} active sign-in${d.activeSessions === 1 ? '' : 's'}</p>
           <div class="row" style="margin-bottom:16px;gap:8px">
             <button class="btn sm" id="urole" type="button" ${me ? 'disabled title="You cannot change your own role"' : ''}>${d.user.role === 'admin' ? 'Remove admin access' : 'Make admin'}</button>
+            ${d.user.role === 'admin' ? '' : html`<button class="btn sm" id="ued" type="button" ${me ? 'disabled' : ''} title="An editor can proofread books and see the changes, nothing else">${d.user.role === 'editor' ? 'Remove editor access' : 'Make editor'}</button>`}
             <button class="btn sm" id="ustat" type="button" ${me ? 'disabled' : ''}>${d.user.status === 'suspended' ? 'Reactivate account' : 'Suspend account'}</button>
             <button class="btn sm" id="uout" type="button">Sign out everywhere</button>
             <button class="btn sm" id="uname" type="button">Rename</button>
@@ -53,6 +54,11 @@
       A.q('#urole', ctl.body).onclick = function () {
         var toAdmin = d.user.role !== 'admin';
         A.confirm({ title: toAdmin ? 'Make ' + d.user.name + ' an admin?' : 'Remove admin access?', message: toAdmin ? 'Admins can change everything in this panel.' : 'They will no longer be able to open the admin panel.', ok: 'Yes', danger: !toAdmin }).then(function (yes) { if (yes) patch({ role: toAdmin ? 'admin' : 'user' }, 'Role updated'); });
+      };
+      var ued = A.q('#ued', ctl.body);
+      if (ued) ued.onclick = function () {
+        var on = d.user.role !== 'editor';
+        A.confirm({ title: on ? 'Make ' + d.user.name + ' an editor?' : 'Remove editor access?', message: on ? 'Editors can proofread and correct book text and see the changes. They cannot delete anything or open any other part of this panel.' : 'They will no longer be able to open the admin panel.', ok: 'Yes', danger: !on }).then(function (yes) { if (yes) patch({ role: on ? 'editor' : 'user' }, 'Role updated'); });
       };
       A.q('#ustat', ctl.body).onclick = function () {
         var sus = d.user.status !== 'suspended';

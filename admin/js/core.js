@@ -233,8 +233,16 @@
   var routes = [];
   A.route = function (path, fn, opts) { routes.push({ path: path, fn: fn, opts: opts || {} }); };
 
+  /* An editor proofreads books and sees nothing else; the server refuses everything outside this list as well. */
+  var NAV_EDITOR = [
+    ['Proofreading'],
+    ['/books', '📚', 'Books'],
+    ['/changes', '🕘', 'Changes']
+  ];
+  var EDITOR_ROUTES = ['/books', '/editor', '/changes'];
+
   function renderNav(active) {
-    A.q('#nav').innerHTML = NAV.map(function (n) {
+    A.q('#nav').innerHTML = (A.user && A.user.role === 'editor' ? NAV_EDITOR : NAV).map(function (n) {
       if (n.length === 1) return '<div class="nav-group">' + esc(n[0]) + '</div>';
       var on = n[0] === '/' ? active === '/' : (active === n[0] || active.indexOf(n[0] + '/') === 0);
       var count = n[3] && A.counts[n[3]] ? '<span class="count">' + A.counts[n[3]] + '</span>' : '';
@@ -275,6 +283,10 @@
     A.guard = null; A.onLeave && A.onLeave(); A.onLeave = null;
     lastHash = location.hash;
     var loc = A.parseHash();
+    if (A.user.role === 'editor' && EDITOR_ROUTES.indexOf(loc.path) < 0) {
+      var go = loc.path === '/books/edit' && loc.query.get('file') ? '#/editor?file=' + encodeURIComponent(loc.query.get('file')) : '#/books';
+      lastHash = null; location.hash = go; return;
+    }
     var route = routes.find(function (r) { return r.path === loc.path; });
     document.body.classList.remove('menu-open');
     if (!route) { A.setPage('Page not found', ''); A.freshView().innerHTML = render(A.empty('There is nothing here', html`<p><a href="#/">Back to the dashboard</a></p>`)); renderNav(''); return; }
@@ -298,7 +310,7 @@
     var layer = A.q('#layer');
     layer.innerHTML = render(html`<div class="login-wrap"><form class="card login-card" id="loginForm">
       <div class="brand-mark">ॐ</div><h1 style="font-size:21px">Kalyan admin</h1>
-      <p class="muted" style="margin:4px 0 18px">Sign in with an administrator account.</p>
+      <p class="muted" style="margin:4px 0 18px">Sign in with an administrator or editor account.</p>
       ${message ? html`<div class="notice bad" style="margin-bottom:12px">${message}</div>` : ''}
       <div class="field"><label for="le">Email</label><input type="text" id="le" autocomplete="username" required></div>
       <div class="field"><label for="lp">Password</label><input type="password" id="lp" autocomplete="current-password" required></div>
@@ -316,7 +328,7 @@
         .then(function (r) {
           btn.disabled = false;
           if (!r.ok) { var el = A.q('#lerr'); el.hidden = false; el.textContent = r.d.error || 'Sign in failed'; return; }
-          if (r.d.user.role !== 'admin') { var e2 = A.q('#lerr'); e2.hidden = false; e2.textContent = 'This account is not an administrator.'; fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }); return; }
+          if (r.d.user.role !== 'admin' && r.d.user.role !== 'editor') { var e2 = A.q('#lerr'); e2.hidden = false; e2.textContent = 'This account is not an administrator or editor.'; fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }); return; }
           layer.innerHTML = ''; A.enter(r.d.user);
         }).catch(function () { btn.disabled = false; var el = A.q('#lerr'); el.hidden = false; el.textContent = 'Could not reach the server.'; });
     };
@@ -324,15 +336,16 @@
 
   A.enter = function (user) {
     A.user = user;
+    document.body.classList.toggle('is-editor', user.role === 'editor');
     A.q('#layer').innerHTML = '';
     A.q('#app').hidden = false;
-    A.q('#whoami').innerHTML = '<b>' + esc(user.name) + '</b>' + esc(user.email) +
+    A.q('#whoami').innerHTML = '<b>' + esc(user.name) + (user.role === 'editor' ? ' (Editor)' : '') + '</b>' + esc(user.email) +
       ' · <a href="#" id="signOut">Sign out</a>';
     A.q('#signOut').onclick = function (e) {
       e.preventDefault();
       fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }).then(function () { A.showLogin(''); });
     };
-    A.get('/api/admin/comments?status=hidden&size=5').then(function (d) { A.counts.comments = d.total || 0; renderNav(A.parseHash().path); }).catch(function () {});
+    if (user.role === 'admin') A.get('/api/admin/comments?status=hidden&size=5').then(function (d) { A.counts.comments = d.total || 0; renderNav(A.parseHash().path); }).catch(function () {});
     dispatch();
   };
 
@@ -354,7 +367,7 @@
     window.addEventListener('beforeunload', function (e) { if (A.guard && !A.guard(true)) { e.preventDefault(); e.returnValue = ''; } });
     fetch('/api/auth/me', { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (d) {
       if (!d.user) A.showLogin('');
-      else if (d.user.role !== 'admin') A.showLogin('You are signed in as ' + d.user.email + ', which is not an administrator account.');
+      else if (d.user.role !== 'admin' && d.user.role !== 'editor') A.showLogin('You are signed in as ' + d.user.email + ', which is not an administrator or editor account.');
       else A.enter(d.user);
     }).catch(function () { A.showLogin('Could not reach the server.'); });
   };

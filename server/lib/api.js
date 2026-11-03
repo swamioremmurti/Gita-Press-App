@@ -427,9 +427,9 @@ async function handle(req, res, pathname) {
       if (method === 'PUT' || method === 'POST') { await handleGitaLmsPut(req, res, user); return true; }
     }
 
-    // ---- admin routes: everything below requires role === 'admin' (see server/lib/admin/) ----
+    // ---- admin routes: role 'admin' (everything) or 'editor' (proofreading only; admin/index.js narrows it) ----
     if (pathname.startsWith('/api/admin/')) {
-      if (!user || user.role !== 'admin') { sendJSON(res, 403, { error: 'Admin access is required' }); return true; }
+      if (!user || (user.role !== 'admin' && user.role !== 'editor')) { sendJSON(res, 403, { error: 'Admin access is required' }); return true; }
       if (await adminApi.handle(req, res, pathname, user)) return true;
       sendJSON(res, 404, { error: 'Unknown admin route' });
       return true;

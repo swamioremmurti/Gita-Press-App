@@ -279,6 +279,11 @@ table.tbl { width: 100%; border-collapse: collapse; }
 .css-pv-wrap iframe { height: 100%; max-width: 100%; border: 1px solid var(--line-strong); background: #fff; border-radius: 6px; }
 .css-var { display: grid; grid-template-columns: minmax(80px, 1fr) 40px minmax(90px, 1.2fr) 30px; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--line); }
 .css-var label { font-size: 12.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* An editor proofreads only: controls that add, delete, reorder or change the book itself are hidden (the server refuses them too). */
+.is-editor #cadd, .is-editor #btrash, .is-editor #bup, .is-editor #bdown, .is-editor #bsplit, .is-editor #bmerge, .is-editor #bdelch,
+.is-editor #fpdel, .is-editor #brevertbook, .is-editor #bulk, .is-editor #selAll, .is-editor [data-sel], .is-editor label.switch[data-live],
+.is-editor a[href^="#/books/new"], .is-editor a[href^="#/books/edit"] { display: none !important; }
+
 .css-var input[type=color] { width: 40px; height: 28px; padding: 1px; cursor: pointer; }
 .css-var input[type=text] { padding: 4px 8px; }
 .css-rule { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 8px 10px; margin-bottom: 8px; background: var(--surface-2); }

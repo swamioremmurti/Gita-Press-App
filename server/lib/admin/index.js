@@ -1,4 +1,4 @@
-// Admin panel API: every /api/admin/* route. The caller (api.js) has already checked that the user is an admin.
+// Admin panel API: every /api/admin/* route. The caller (api.js) has already checked that the user is an admin or an editor.
 const db = require('../db');
 const { sendJSON, readJSON, queryOf } = require('../http');
 const { audit, kvGet, kvSet, siteSettings, num } = require('./common');
@@ -68,6 +68,18 @@ async function logList(ctx) {
   sendJSON(ctx.res, 200, { total: Number(total.n), page, size, entries: rows.map((r) => ({ id: r.id, who: r.user_name, action: r.action, target: r.target, detail: r.detail, at: Number(r.created_at) })) });
 }
 
+// Every proofreading change (chapter saves, restores, find & replace), newest first -- the editors' "track the changes" page.
+async function changesList(ctx) {
+  const q = queryOf(ctx.req);
+  const size = Math.min(200, Math.max(10, num(q.get('size'), 50))), page = Math.max(1, num(q.get('page'), 1));
+  const file = (q.get('file') || '').trim();
+  const where = "WHERE action IN ('chapter.save', 'chapter.restore', 'book.replace')" + (file ? ' AND target LIKE ?' : '');
+  const args = file ? [file + '%'] : [];
+  const total = await db.get('SELECT COUNT(*) AS n FROM admin_log ' + where, args);
+  const rows = await db.all('SELECT id, user_name, action, target, detail, created_at FROM admin_log ' + where + ' ORDER BY id DESC LIMIT ? OFFSET ?', args.concat([size, (page - 1) * size]));
+  sendJSON(ctx.res, 200, { total: Number(total.n), page, size, entries: rows.map((r) => ({ id: r.id, who: r.user_name, action: r.action, target: r.target, detail: r.detail, at: Number(r.created_at) })) });
+}
+
 async function settingsGet(ctx) { sendJSON(ctx.res, 200, { settings: await siteSettings() }); }
 
 async function settingsPut(ctx) {
@@ -105,11 +117,28 @@ async function backup(ctx) {
   ctx.res.end(JSON.stringify(out));
 }
 
+// An editor proofreads books: read them, change chapter text (every change is kept as a version with the editor's name) and
+// nothing else. No deleting, adding, reordering, reverting, and no other part of the panel. Anything not listed here is refused.
+const EDITOR_ALLOWED = [
+  ['GET', /^\/api\/admin\/books$/], ['GET', /^\/api\/admin\/categories$/],
+  ['GET', /^\/api\/admin\/books\/[^/]+$/], ['GET', /^\/api\/admin\/books\/[^/]+\/(chapters|styles|export)$/],
+  ['POST', /^\/api\/admin\/books\/[^/]+\/replace$/],
+  ['GET', /^\/api\/admin\/chapters\/\d+$/], ['PUT', /^\/api\/admin\/chapters\/\d+$/],
+  ['GET', /^\/api\/admin\/chapters\/\d+\/versions$/], ['POST', /^\/api\/admin\/chapters\/\d+\/restore$/],
+  ['GET', /^\/api\/admin\/versions\/\d+$/], ['GET', /^\/api\/admin\/changes$/]
+];
+function editorMayDo(method, pathname) { return EDITOR_ALLOWED.some((r) => r[0] === method && r[1].test(pathname)); }
+
 /** Returns true when the request was answered. */
 async function handle(req, res, pathname, user) {
   const ctx = { req, res, pathname, method: req.method, user };
+  if (user.role === 'editor' && !editorMayDo(ctx.method, pathname)) {
+    sendJSON(res, 403, { error: 'Editors can only proofread books. This action needs an administrator.' });
+    return true;
+  }
   if (ctx.method === 'GET' && pathname === '/api/admin/dashboard') { await dashboard(ctx); return true; }
   if (ctx.method === 'GET' && pathname === '/api/admin/log') { await logList(ctx); return true; }
+  if (ctx.method === 'GET' && pathname === '/api/admin/changes') { await changesList(ctx); return true; }
   if (pathname === '/api/admin/settings') {
     if (ctx.method === 'GET') { await settingsGet(ctx); return true; }
     if (ctx.method === 'PUT') { await settingsPut(ctx); return true; }
