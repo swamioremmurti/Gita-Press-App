@@ -5518,5 +5518,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
         "sizeKB":  488.8
+    },
+    {
+        "file":  "सामवेदीया लोमशी शिक्षा.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  231.3
     }
 ];
