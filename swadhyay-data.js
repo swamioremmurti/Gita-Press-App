@@ -5527,5 +5527,41 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
         "sizeKB":  231.3
+    },
+    {
+        "file":  "संक्षिप्त कूर्मपुराण.html",
+        "category":  "Purans",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  2279.9
+    },
+    {
+        "file":  "श्रीअष्टलक्ष्मीमहामन्त्रम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  52.5
+    },
+    {
+        "file":  "श्री कार्तवीर्यार्जुन मन्त्र.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  118.0
+    },
+    {
+        "file":  "नवग्रह-मन्त्र-मञ्जरी.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "sizeKB":  80.4
     }
 ];

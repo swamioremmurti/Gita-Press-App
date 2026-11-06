@@ -203,6 +203,17 @@ const SCHEMA_STATEMENTS = [
     detail     TEXT NOT NULL DEFAULT '',
     created_at INTEGER NOT NULL
   )`,
+  // every AI call the site makes (chat answers and the embedding of each question) with the tokens it used -- admin > AI usage
+  `CREATE TABLE IF NOT EXISTS ai_usage (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    kind          TEXT NOT NULL,
+    model         TEXT NOT NULL DEFAULT '',
+    input_tokens  INTEGER NOT NULL DEFAULT 0,
+    output_tokens INTEGER NOT NULL DEFAULT 0,
+    cost_usd      REAL NOT NULL DEFAULT 0,
+    created_at    INTEGER NOT NULL
+  )`,
+  'CREATE INDEX IF NOT EXISTS idx_ai_usage_time ON ai_usage(created_at)',
   'CREATE INDEX IF NOT EXISTS idx_push_log_time ON push_log(created_at)',
   'CREATE INDEX IF NOT EXISTS idx_book_chapters_book ON book_chapters(book_file, pos)',
   'CREATE INDEX IF NOT EXISTS idx_chapter_versions_ch ON chapter_versions(chapter_id)',
@@ -232,6 +243,7 @@ async function init() {
   // start against a remote Turso DB each of those is a cross-region network hop).
   await client.batch(SCHEMA_STATEMENTS, 'write');
   await ensureColumns('users', { google_id: 'TEXT', avatar_url: 'TEXT', status: "TEXT NOT NULL DEFAULT 'active'", last_login_at: 'INTEGER' });
+  await ensureColumns('ai_usage', { cost_usd: 'REAL NOT NULL DEFAULT 0' });
   await ensureColumns('push_log', { image: "TEXT NOT NULL DEFAULT ''" });
   await ensureColumns('categories', { sort_order: 'INTEGER NOT NULL DEFAULT 0', hidden: 'INTEGER NOT NULL DEFAULT 0', edited: 'INTEGER NOT NULL DEFAULT 0' });
   return client;

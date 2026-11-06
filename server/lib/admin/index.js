@@ -10,6 +10,7 @@ const lms = require('./lms');
 const audio = require('./audio');
 const css = require('./css');
 const push = require('./push');
+const usage = require('./usage');
 
 const DAY = 86400000;
 
@@ -144,7 +145,7 @@ async function handle(req, res, pathname, user) {
     if (ctx.method === 'PUT') { await settingsPut(ctx); return true; }
   }
   if (ctx.method === 'GET' && pathname === '/api/admin/backup') { await backup(ctx); return true; }
-  for (const mod of [books, categories, media, audio, css, people, lms, push]) {
+  for (const mod of [books, categories, media, audio, css, people, lms, push, usage]) {
     if (await mod.handle(ctx)) return true;
   }
   return false;

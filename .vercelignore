@@ -28,3 +28,6 @@ server/test-retrieval.js
 
 # the speech service is its own deployment (a Hugging Face Space), not part of this site
 asr-service
+
+# RAG generator tool + its multi-GB output; only server/rag (the packed chat index) ships
+rag-generator

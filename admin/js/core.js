@@ -225,6 +225,7 @@
     ['/users', '👥', 'Users'],
     ['/comments', '💬', 'Comments', 'comments'],
     ['/push', '🔔', 'Push notifications'],
+    ['/usage', '🪙', 'AI usage'],
     ['System'],
     ['/css', '🎨', 'CSS editor'],
     ['/settings', '⚙', 'Site settings'],

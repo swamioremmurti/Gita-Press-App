@@ -28,7 +28,7 @@
     {
       "name": "swadhyay-chat",
       "runtimeExecutable": "node",
-      "runtimeArgs": ["server/server.js"],
+      "runtimeArgs": [".claude/chat-local.js"],
       "port": 5174
     },
     {

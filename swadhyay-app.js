@@ -416,6 +416,9 @@
   }
 
   var COVER_OVERRIDES = {
+    "श्रीअष्टलक्ष्मीमहामन्त्रम्.html": "assets/covers/shreeashtalakshmeemahaamantram.webp",
+    "श्री कार्तवीर्यार्जुन मन्त्र.html": "assets/covers/shree-kartaviryarjun-mantra.webp",
+    "सामवेदीया लोमशी शिक्षा.html": "assets/covers/saamavedeeyaa-lomashee-shikshaa.webp",
     "नारदीयशिक्षा.html": "assets/covers/naaradeeyashikshaa.webp",
     "पाणिनीयशिक्षा.html": "assets/covers/paanineeyashikshaa.webp",
     "कौषीतकिब्राह्मणोपनिषत्.html": "assets/covers/kausheetakibraahmanopanishat.webp",
@@ -979,6 +982,9 @@
     "पाणिनीयशिक्षा.html": true,
     "नारदीयशिक्षा.html": true,
     "सामवेदीया लोमशी शिक्षा.html": true,
+    "श्रीअष्टलक्ष्मीमहामन्त्रम्.html": true,
+    "श्री कार्तवीर्यार्जुन मन्त्र.html": true,
+    "नवग्रह-मन्त्र-मञ्जरी.html": true,
     "योग एवं भक्ति.html": true,
     "जीवन्मुक्तिके रहस्य.html": true,
     "मेरे नाथ! मेरे प्रभो.html": true,
@@ -2101,13 +2107,45 @@
     '<path d="M66 42C44 44 28 38 20 27C34 25 54 30 66 42z"/><path d="M66 42C88 44 104 38 112 27C98 25 78 30 66 42z"/>' +
     '<path d="M2 36c9 0 13-8 21-4M130 36c-9 0-13-8-21-4"/><circle cx="10" cy="31" r="2.2"/><circle cx="122" cy="31" r="2.2"/></svg>';
 
+  /* the coloured category pictures (assets/cat/*.webp, 100px, each under 10 KB); a shelf without one keeps its line icon / emoji */
+  var PROFILE_ICON_HTML = '<span class="ui" style="--ui:url(assets/ui/profile.png)"></span>';   // the top bar's profile button without a photo
+  var CAT_IMGS = {
+    "all": "all", "Vedas": "vedas", "Upanishad": "upanishad", "Vedant": "vedant", "Gita": "gita", "Purans": "purans", "Upa Puran": "upa-puran",
+    "Itihasas": "itihasas", "Stotra evam Naamavali": "stotra", "Bajans": "bajans", "Pravachan": "pravachan", "Siksha evam Katha": "siksha-katha",
+    "Balaupayogi": "balaupayogi", "Nitya Puja evam Karmakand": "nitya-puja", "Swami Sharnanand Sahitya": "sharnanand", "Teerth Sthal": "teerth-sthal"
+  };
+  function catImg(key, size) {
+    return CAT_IMGS[key] ? '<img src="/assets/cat/' + CAT_IMGS[key] + '.webp" width="' + size + '" height="' + size + '" alt="" loading="lazy" decoding="async">' : "";
+  }
+
+  /* the library's one-line control bar: category tabs (the ones that do not fit fold into "अन्य"), the search box and a filter button */
+  function libBarHtml(activeKey, searchHtml, filterChips, filterOn) {
+    var tabs = CATEGORY_META.filter(function (c) { return !c.hidden; }).map(function (c) {
+      var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
+      return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
+        '<span class="cat-ic' + (CAT_IMGS[c.key] ? " has-img" : "") + '" aria-hidden="true">' + (catImg(c.key, 34) || lineIcon(CAT_ICONS[c.key] || CAT_ICONS.all)) + '</span>' +
+        '<span class="cat-tx"><span class="cat-nm">' + esc(tx(c.hi, c.en)) + '</span> <span class="cnt">(' + count + ')</span></span></a>';
+    }).join("");
+    return '<div class="lib-bar" id="libBar">' +
+      '<nav class="lib-bar-cats" id="libCats">' + tabs + '</nav>' +
+      '<div class="lib-more" id="libMore" hidden><button type="button" class="lib-more-btn" id="libMoreBtn" aria-expanded="false" aria-haspopup="true" aria-label="' + esc(tx("अन्य श्रेणियाँ", "More categories")) + '">' +
+        '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="7" cy="7" r="3.2" fill="currentColor"/><circle cx="17" cy="7" r="3.2" fill="currentColor"/><circle cx="7" cy="17" r="3.2" fill="currentColor"/><circle cx="17" cy="17" r="3.2" fill="currentColor"/></svg>' +
+        '<span class="lib-more-lb">' + esc(tx("अन्य", "More")) + '</span><svg class="lib-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>' +
+        '<div class="lib-more-menu" id="libMoreMenu" hidden></div></div>' +
+      searchHtml +
+      '<div class="lib-filter"><button type="button" class="lib-filter-btn' + (filterOn ? " on" : "") + '" id="libFilterBtn" aria-expanded="false" aria-haspopup="true" aria-label="' + esc(tx("फ़िल्टर", "Filters")) + '" title="' + esc(tx("फ़िल्टर", "Filters")) + '">' +
+        '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2.2"/><circle cx="9" cy="17" r="2.2"/></svg></button>' +
+        '<div class="lib-filter-menu" id="libFilterMenu" hidden>' + filterChips + '</div></div>' +
+      '</div>';
+  }
+
   function categoryTabs(activeKey) {
     return '<div class="cat-tabs-wrap">' +
       '<button class="row-nav prev" type="button" aria-label="पिछला"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>' +
       '<nav class="cat-tabs" id="catTabs">' + CATEGORY_META.filter(function (c) { return !c.hidden; }).map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tab' + (c.key === activeKey ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
-          '<span class="cat-ic" aria-hidden="true">' + lineIcon(CAT_ICONS[c.key] || CAT_ICONS.all) + '</span>' +
+          '<span class="cat-ic' + (CAT_IMGS[c.key] ? " has-img" : "") + '" aria-hidden="true">' + (catImg(c.key, 34) || lineIcon(CAT_ICONS[c.key] || CAT_ICONS.all)) + '</span>' +
           '<span class="cat-tx"><span class="cat-nm">' + esc(tx(c.hi, c.en)) + '</span> <span class="cnt">(' + count + ')</span></span></a>';
       }).join("") + '</nav>' +
       '<button class="row-nav next" type="button" aria-label="अगला"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>' +
@@ -2122,7 +2160,7 @@
       '<div class="row-scroll cat-scroll">' + CATEGORY_META.filter(function (c) { return !c.hidden; }).map(function (c) {
         var count = c.key === "all" ? BOOKS.length : BOOKS.filter(function (b) { return b.categoryKeys.indexOf(c.key) !== -1; }).length;
         return '<a class="cat-tile" href="/library?cat=' + encodeURIComponent(c.key) + '">' +
-          '<span class="cat-tile-icon">' + c.icon + '</span>' +
+          '<span class="cat-tile-icon' + (CAT_IMGS[c.key] ? " has-img" : "") + '">' + (catImg(c.key, 56) || c.icon) + '</span>' +
           '<span class="cat-tile-label">' + esc(tx(c.hi, c.en)) + '</span>' +
           '<span class="cat-tile-count">' + count + '</span></a>';
       }).join("") + '</div>' +
@@ -2459,14 +2497,11 @@
     var pageItems = list.slice(0, page * PAGE_SIZE);
 
     /* no heading and no language selector: the search bar, the category strip and the covers come first (the count is on the tab) */
-    var html = '<div class="lib-controls" id="libControls"><div class="lib-controls-tray"><div class="lib-controls-body">' +
-      '<div class="lib-search-wrap"><div class="lib-search lib-search-pill"><span class="lib-search-ic" aria-hidden="true">' + SEARCH_SVG + '</span>' +
+    var searchHtml = '<div class="lib-search-wrap"><div class="lib-search lib-search-pill"><span class="lib-search-ic" aria-hidden="true">' + SEARCH_SVG + '</span>' +
       '<span class="lib-search-box"><input id="librarySearch" type="text" autocomplete="off" placeholder="' + esc(tx("खोजें…", "Search…")) + '" value="' + esc(q) + '">' +
       '<button type="button" id="librarySearchClear" class="lib-search-clear" aria-label="' + esc(tx("खोज मिटाएँ", "Clear search")) + '" title="' + esc(tx("खोज मिटाएँ", "Clear search")) + '"' + (q ? "" : " hidden") + '>&times;</button></span></div>' +
       '<div class="lib-suggest" id="librarySuggest" role="listbox" hidden></div></div>';
-    if (tag) html += '<div class="lib-tag"><span>#' + esc(tag) + '</span> <a href="/library?cat=' + encodeURIComponent(cat) + '" aria-label="' + esc(tx("टैग हटाएँ", "Remove tag")) + '">&times;</a></div>';
-    html += categoryTabs(cat);
-    html += '<div class="filter-tabs">' +
+    var filterChips = '<div class="filter-tabs">' +
       [["all", "सभी", "All"], ["popular", "लोकप्रिय", "Popular"], ["short", "लघु पाठ", "Short reads"]].map(function (f) {
         var key = f[0];
         return '<a class="filter-tab' + (filter === key ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&filter=' + key + (q ? "&q=" + encodeURIComponent(q) : "") + '">' +
@@ -2474,7 +2509,10 @@
       }).join("") +
       '<a class="filter-tab' + (sort !== "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=az"><span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS.az) + '</span>' + esc(tx("वर्णानुक्रम", "A–Z")) + '</a>' +
       '<a class="filter-tab' + (sort === "latest" ? " active" : "") + '" href="/library?cat=' + encodeURIComponent(cat) + '&sort=latest"><span class="chip-ic" aria-hidden="true">' + chipIcon(CHIP_ICONS.latest) + '</span>' + esc(tx("नवीनतम", "Latest")) + '</a>' +
-      '</div>' +
+      '</div>';
+    var tagHtml = (tag ? '<div class="lib-tag"><span>#' + esc(tag) + '</span> <a href="/library?cat=' + encodeURIComponent(cat) + '" aria-label="' + esc(tx("टैग हटाएँ", "Remove tag")) + '">&times;</a></div>' : "");
+    var html = '<div class="lib-controls" id="libControls"><div class="lib-controls-tray"><div class="lib-controls-body">' +
+      libBarHtml(cat, searchHtml, filterChips, filter !== "all" || sort === "latest") + tagHtml +
       '</div></div></div>';
 
     if (!pageItems.length) {
@@ -4775,31 +4813,91 @@
       : '<span class="chat-source-chip">' + inner + "</span>";
   }
 
+  var CHAT_ICON_BOOK = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10.3 5.2 8 4.7 4.5 5v12.5c3.5-.3 5.8.2 7.5 1.5 1.7-1.3 4-1.8 7.5-1.5V5c-3.5-.3-5.8.2-7.5 1.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.5V19" stroke="currentColor" stroke-width="1.6"/></svg>';
+  var CHAT_ICON_USER = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6" fill="currentColor"/><path d="M4.8 20c.5-4 3.4-6.2 7.2-6.2s6.7 2.2 7.2 6.2z" fill="currentColor"/></svg>';
+  var CHAT_ICON_SEND = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 10.5 13.5M21 3l-6.8 18-3.7-7.5L3 9.8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  var CHAT_ICON_PEN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4c-6 .5-11 4.5-12.5 11L6 19l4-1.5C16.500 16 19.500 10 20 4zM6 19c1-3 3-5.500 6-7.500" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+  var CHAT_ICON_CHECK = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.500 12.300 3 3 6-6.500" fill="none" stroke="#fff" stroke-width="2.200" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  var CHAT_FLOURISH = '<svg class="chat-flourish" viewBox="0 0 44 14" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 7c3-6 9-6 11-2 1.5 2.5-1 4.5-3 3.5M42 7c-3-6-9-6-11-2-1.5 2.5 1 4.5 3 3.5"/></g><circle cx="22" cy="7" r="2.2" fill="currentColor"/></svg>';
+  var CHAT_ORNAMENT ='<svg class="chat-ornament" viewBox="0 0 300 20" aria-hidden="true"><path d="M0 10h112M188 10h112" stroke="currentColor" stroke-width="1" opacity=".55"/><g fill="none" stroke="currentColor" stroke-width="1.300"><circle cx="150" cy="10" r="3" fill="currentColor"/><path d="M144 10c-4-7-12-7-16-2 4 0 8 3 10 6M156 10c4-7 12-7 16-2-4 0-8 3-10 6M144 10c-4 7-12 7-16 2 4 0 8-3 10-6M156 10c4 7 12 7 16 2-4 0-8-3-10-6"/></g></svg>';
+
+  // Turns the model's plain-text answer into structured HTML: an optional lead line, numbered/bulleted
+  // items with hexagon badges, paragraphs, and [n] citations as small chips (linked to the cited book).
+  function chatFormat(text, sources) {
+    var cut = text.search(/^\s*(स्रोत|सन्दर्भ|Sources?)\s*[:：]/m);   // sources are shown in their own row below
+    if (cut > -1) text = text.slice(0, cut);
+    var byN = {};
+    (sources || []).forEach(function (s) { byN[s.n] = s; });
+    function cites(h) {
+      return h.replace(/\[(\d+(?:\s*[,，]\s*\d+)*)\]/g, function (m, nums) {
+        return nums.split(/\s*[,，]\s*/).map(function (n) {
+          var s = byN[n], b = s && s.bookId != null ? BOOKS_BY_ID[s.bookId] : null;
+          return b ? '<a class="chat-cite" href="' + bookPath(b) + '" title="' + esc(s.title) + '">' + n + "</a>"
+                   : '<span class="chat-cite">' + n + "</span>";
+        }).join("");
+      });
+    }
+    var out = [], list = null;
+    function closeList() { if (list) { out.push("<ol class=\"chat-list\">" + list.join("") + "</ol>"); list = null; } }
+    text.replace(/\s+$/, "").split("\n").forEach(function (line) {
+      if (!line.trim()) { closeList(); return; }
+      var m = /^\s*([0-9०-९]+)\s*[.)]\s+(.*)$/.exec(line), b = /^\s*[-•]\s+(.*)$/.exec(line);
+      if (m || b) {
+        (list = list || []).push('<li><span class="chat-num">' + (m ? m[1] : "•") + "</span><span>" + cites(esc(m ? m[2] : b[1])) + "</span></li>");
+      } else {
+        closeList();
+        var lead = !out.length && /[:：—-]\s*$/.test(line.trim());
+        out.push('<p class="' + (lead ? "chat-lead" : "chat-para") + '">' + cites(esc(line)) + "</p>");
+      }
+    });
+    closeList();
+    return out.join("");
+  }
+
+  // "Tokens used" line at the end of an answer: what the model read and wrote, plus embedding the question.
+  function chatTokensLine(t) {
+    var u = t.usage;
+    if (!u || t.pending || t.error || !u.total) return "";
+    var n = function (v) { return Number(v || 0).toLocaleString("en-IN"); };
+    // rough cost at the Vercel AI Gateway's per-token rates (the server sends dollars and rupees; null when the model has no listed price)
+    var rupees = function (v) { return v < 0.01 ? "<₹0.01" : "₹" + v.toFixed(2); };
+    var cost = u.usd != null ? ' · <b class="chat-cost">' + bilingual("अनुमानित लागत") + " ≈ " + rupees(u.inr) + "</b>" : "";
+    return '<div class="chat-tokens" title="' + esc(u.model || "") + '"><b>' + bilingual("टोकन खर्च") + ":</b> " + n(u.total) + " " + bilingual("कुल") +
+      " <span>· " + bilingual("इनपुट") + " " + n(u.input) + " · " + bilingual("आउटपुट") + " " + n(u.output) + (u.embed ? " · " + bilingual("खोज") + " " + n(u.embed) : "") + "</span>" + cost + "</div>";
+  }
+
   function chatBubbleInner(t) {
     if (t.error) return '<div class="chat-error">' + esc(t.error) + "</div>";
-    if (t.text) return esc(t.text).replace(/\n/g, "<br>");
+    if (t.text) return chatFormat(t.text, t.sources);
     return '<span class="chat-typing"><span></span><span></span><span></span></span>';
   }
 
   function viewChat() {
     var turnsHtml = chatState.turns.map(function (t, i) {
       if (t.role === "user") {
-        return '<div class="chat-msg chat-msg-user"><div class="chat-bubble">' + esc(t.text).replace(/\n/g, "<br>") + "</div></div>";
+        return '<div class="chat-msg chat-msg-user"><div class="chat-bubble">' + esc(t.text).replace(/\n/g, "<br>") +
+          '</div><span class="chat-avatar">' + CHAT_ICON_USER + "</span></div>";
       }
-      var citHtml = (t.sources && t.sources.length && !t.pending)
-        ? '<div class="chat-sources">' + t.sources.map(chatSourceChip).join("") + "</div>"
+      var hasSrc = t.sources && t.sources.length && !t.pending && !t.error;
+      var foot = hasSrc
+        ? '<div class="chat-foot"><div class="chat-sources"><span class="chat-sources-label">' + CHAT_ICON_BOOK + bilingual("स्रोत :") + "</span>" +
+          t.sources.map(chatSourceChip).join("") + "</div>" +
+          '<span class="chat-verified">' + CHAT_ICON_CHECK + bilingual("उत्तर शास्त्रों पर आधारित है") + "</span></div>"
         : "";
-      return '<div class="chat-msg chat-msg-bot"><div class="chat-bubble" id="chatBubble-' + i + '">' + chatBubbleInner(t) + "</div>" + citHtml + "</div>";
+      return '<div class="chat-msg chat-msg-bot"><div class="chat-ans"><span class="chat-ans-badge">' + CHAT_ICON_BOOK +
+        '</span><div class="chat-ans-body" id="chatBubble-' + i + '">' + chatBubbleInner(t) + "</div>" + foot + chatTokensLine(t) + "</div></div>";
     }).join("");
 
-    var intro = '<div class="chat-msg chat-msg-bot"><div class="chat-bubble">' +
-      bilingual("नमस्ते! गीता प्रेस की पुस्तकोंसे जुड़ा कोई भी प्रश्न पूछें — मैं केवल उन्हीं पुस्तकोंके आधारपर उत्तर दूँगा।") + "</div></div>";
+    var intro = '<div class="chat-msg chat-msg-bot"><div class="chat-ans"><span class="chat-ans-badge">' + CHAT_ICON_BOOK + '</span><div class="chat-ans-body">' +
+      '<p class="chat-lead">' + bilingual("नमस्ते!") + '</p><p class="chat-para">' +
+      bilingual("गीता प्रेस की पुस्तकोंसे जुड़ा कोई भी प्रश्न पूछें — मैं केवल उन्हीं पुस्तकोंके आधारपर उत्तर दूँगा।") + "</p></div></div></div>";
 
-    return '<main class="content-pad chat-page"><div class="page-header"><h1>' + bilingual("प्रश्नोत्तर") + "</h1></div>" +
+    return '<main class="content-pad chat-page"><div class="chat-head"><div class="chat-title">' + CHAT_FLOURISH + "<h1>" + bilingual("प्रश्नोत्तर") + "</h1>" + CHAT_FLOURISH + "</div>" +
+      '<p class="chat-sub"><i></i>' + bilingual("शास्त्रों और ग्रंथों से उत्तर खोजें") + "<i></i></p></div>" +
       '<div class="chat-shell"><div class="chat-messages" id="chatMessages">' + (turnsHtml || intro) + "</div>" +
-      '<form class="chat-input-row" id="chatForm">' +
-      '<input type="text" id="chatInput" placeholder="' + bilingual("अपना प्रश्न लिखें...") + '" autocomplete="off">' +
-      '<button type="submit" class="btn-primary" id="chatSendBtn">' + bilingual("भेजें") + "</button>" +
+      '<form class="chat-input-row" id="chatForm"><label class="chat-input-wrap"><span class="chat-pen">' + CHAT_ICON_PEN + "</span>" +
+      '<input type="text" id="chatInput" placeholder="' + bilingual("अपना प्रश्न लिखें...") + '" autocomplete="off"></label>' +
+      '<button type="submit" class="chat-send" id="chatSendBtn">' + CHAT_ICON_SEND + "<span>" + bilingual("भेजें") + "</span></button>" +
       "</form></div></main>";
   }
 
@@ -4869,7 +4967,9 @@
           if (!evtMatch || !dataMatch) continue;
           var evt = evtMatch[1];
           var data = JSON.parse(dataMatch[1]);
-          if (evt === "sources") {
+          if (evt === "usage") {
+            botTurn.usage = data;
+          } else if (evt === "sources") {
             botTurn.sources = data.sources || [];
           } else if (evt === "delta") {
             botTurn.text += data.text;
@@ -5489,7 +5589,23 @@
     var admin = isAdmin();
     document.querySelectorAll(".admin-only").forEach(function (el) { el.classList.toggle("is-hidden", !admin); });
     var profileBtn = document.getElementById("profileBtn");
-    if (profileBtn) profileBtn.setAttribute("data-logged-in", isLoggedIn() ? "1" : "0");
+    if (profileBtn) {
+      profileBtn.setAttribute("data-logged-in", isLoggedIn() ? "1" : "0");
+      // Google sign-in stores the account photo as avatarUrl; show it in place of the generic icon.
+      var url = CURRENT_USER && typeof CURRENT_USER.avatarUrl === "string" && /^https:\/\//.test(CURRENT_USER.avatarUrl) ? CURRENT_USER.avatarUrl : "";
+      var shown = profileBtn.getAttribute("data-avatar") || "";
+      if (url !== shown) {
+        profileBtn.setAttribute("data-avatar", url);
+        if (url) {
+          // no-referrer: Google's image host refuses some requests that carry another site's referrer
+          profileBtn.innerHTML = '<img class="profile-btn-photo" alt="" referrerpolicy="no-referrer" src="' + esc(url) + '">';
+          var img = profileBtn.firstChild;
+          img.onerror = function () { profileBtn.setAttribute("data-avatar", ""); profileBtn.innerHTML = PROFILE_ICON_HTML; };
+        } else {
+          profileBtn.innerHTML = PROFILE_ICON_HTML;
+        }
+      }
+    }
   }
 
   /* ---------------- router (real paths via the History API -- crawlable/SEO-friendly,
@@ -5791,6 +5907,12 @@
       window.addEventListener("resize", edges);
       edges(); setTimeout(edges, 300);
     });
+
+    fitLibBar();
+    if (document.getElementById("libBar")) {
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLibBar);
+      setTimeout(fitLibBar, 300);
+    }
 
     document.querySelectorAll(".hero-chips .chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
@@ -6190,6 +6312,34 @@
   /* ---------------- library: search + filters fold into a pull-down tray once scrolled past ----------------
      At the top of the page they sit in the page as before.  When they have scrolled up under the top bar, a filter button appears in the
      bar (desktop and mobile) and pulls them down as a tray; the page keeps its height, so nothing jumps. */
+  /* the library bar is one line: show as many category tabs as fit, fold the rest into the "अन्य" menu (on a phone the tabs just scroll) */
+  function fitLibBar() {
+    var cats = document.getElementById("libCats"), more = document.getElementById("libMore"), menu = document.getElementById("libMoreMenu");
+    if (!cats || !more || !menu) return;
+    var tabs = [].slice.call(cats.children);
+    tabs.forEach(function (t) { t.hidden = false; });
+    menu.innerHTML = ""; menu.hidden = true; more.hidden = true;
+    var mb = document.getElementById("libMoreBtn"); if (mb) { mb.setAttribute("aria-expanded", "false"); mb.classList.remove("active"); }
+    if (cats.scrollWidth <= cats.clientWidth + 1) return;
+    more.hidden = false;
+    var i = tabs.length;
+    while (i > 1 && cats.scrollWidth > cats.clientWidth + 1) { i--; tabs[i].hidden = true; }
+    var activeHidden = null;
+    tabs.forEach(function (t) {
+      if (!t.hidden) return;
+      var c = t.cloneNode(true); c.hidden = false; c.className = "lib-more-item" + (t.classList.contains("active") ? " active" : "");
+      menu.appendChild(c);
+      if (t.classList.contains("active")) activeHidden = t;
+    });
+    var lb = more.querySelector(".lib-more-lb");
+    if (lb) lb.textContent = activeHidden ? activeHidden.querySelector(".cat-nm").textContent : tx("अन्य", "More");
+    if (mb && activeHidden) mb.classList.add("active");
+  }
+  function closeLibMenus() {
+    var m = document.getElementById("libMoreMenu"), f = document.getElementById("libFilterMenu"), mb = document.getElementById("libMoreBtn"), fb = document.getElementById("libFilterBtn");
+    if (m) m.hidden = true; if (f) f.hidden = true;
+    if (mb) mb.setAttribute("aria-expanded", "false"); if (fb) fb.setAttribute("aria-expanded", "false");
+  }
   var libTrayTick = false;
   function libTrayEl() { return document.getElementById("libControls"); }
   function setLibTrayOpen(open) {
@@ -6209,8 +6359,8 @@
     if (!folded) c.style.minHeight = "";
     var h = folded ? (parseFloat(c.style.minHeight) || 0) : c.offsetHeight;
     var gone = c.getBoundingClientRect().top + h <= bar + 4;     // the whole block has scrolled up under the top bar
-    if (gone && !folded) { c.style.minHeight = h + "px"; c.classList.add("is-tray"); }
-    else if (!gone && folded) { c.classList.remove("is-tray", "is-open"); c.style.minHeight = ""; setLibTrayOpen(false); }
+    if (gone && !folded) { c.style.minHeight = h + "px"; c.classList.add("is-tray"); fitLibBar(); }
+    else if (!gone && folded) { c.classList.remove("is-tray", "is-open"); c.style.minHeight = ""; setLibTrayOpen(false); fitLibBar(); }
     body.classList.toggle("lib-tray-on", c.classList.contains("is-tray"));
     if (!c.classList.contains("is-tray")) setLibTrayOpen(false);
   }
@@ -6245,6 +6395,20 @@
     var tick = function () { if (libTrayTick) return; libTrayTick = true; requestAnimationFrame(function () { libTrayTick = false; updateLibTray(); }); };
     window.addEventListener("scroll", tick, { passive: true });
     window.addEventListener("resize", tick);
+    window.addEventListener("resize", fitLibBar);
+    /* the "अन्य" menu and the filter menu of the library bar */
+    document.addEventListener("click", function (e) {
+      var t = e.target && e.target.closest ? e.target : null; if (!t) return;
+      var mb = t.closest("#libMoreBtn"), fb = t.closest("#libFilterBtn");
+      if (mb || fb) {
+        var menu = document.getElementById(mb ? "libMoreMenu" : "libFilterMenu"), btn = mb || fb, open = menu.hidden;
+        closeLibMenus();
+        menu.hidden = !open; btn.setAttribute("aria-expanded", open ? "true" : "false");
+        return;
+      }
+      if (!t.closest("#libMoreMenu, #libFilterMenu") || t.closest("a")) closeLibMenus();
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeLibMenus(); });
   }
 
   function updateTopbarSolidity() {

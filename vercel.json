@@ -7,7 +7,7 @@
       "includeFiles": "{index.html,seo-meta.js,swadhyay-data.js,swadhyay-app.js}"
     },
     "api/router.js": {
-      "includeFiles": "{index.html,seo-meta.js,swadhyay-data.js,swadhyay-app.js}"
+      "includeFiles": "{index.html,seo-meta.js,swadhyay-data.js,swadhyay-app.js,server/rag/**}"
     }
   },
   "rewrites": [
