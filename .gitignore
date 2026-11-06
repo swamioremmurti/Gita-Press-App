@@ -10,3 +10,6 @@ tools/cdn/.env
 
 # safety copies made before bulk edits -- kept locally, not in the repo
 backups/
+
+# RAG generator tool + its ~2 GB chunk output (only server/rag, the packed chat index, belongs in the repo)
+rag-generator/output/

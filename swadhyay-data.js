@@ -5562,6 +5562,6 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  80.4
+        "sizeKB":  81.2
     }
 ];

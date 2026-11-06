@@ -100,7 +100,7 @@ def main():
         if "table" in it:
             rows = it["table"]
             stat["tables"] += 1
-            h = ['\t\t\t<table class="Samagri-Table">\n']
+            h = ['\t\t\t<div style="overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%">\n', '\t\t\t<table class="Samagri-Table">\n']   # wide tables scroll sideways on a phone
             for ri, row in enumerate(rows):
                 cells = []
                 for cell in row:
@@ -108,7 +108,7 @@ def main():
                     cells.append(('<th class="Samagri-Table-Head">%s</th>' if ri == 0 else '<td class="Samagri-Table-Cell">%s</td>') % t)
                 stat["rows"] += 1
                 h.append("\t\t\t\t<tr>" + "".join(cells) + "</tr>\n")
-            h.append("\t\t\t</table>\n")
+            h.append("\t\t\t</table>\n\t\t\t</div>\n")
             cur.append("".join(h))
             continue
         if not txt:
