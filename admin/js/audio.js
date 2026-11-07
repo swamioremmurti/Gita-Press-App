@@ -178,6 +178,70 @@
     ctl.close = function (r) { if (preview) { preview.pause(); preview = null; } prevClose(r); };
   }
 
+  /* ------------------------------------------------------------ picker for the book editor */
+  /* Opens the track form (add / edit) from other screens; categories are fetched first. */
+  A.audioTrackForm = function (t, done) {
+    return A.get(API).then(function (d) { trackForm(t, d.categories, done); });
+  };
+  /* Pick a track from the library to put a play button in a book.
+     Resolves { track, label }, { remove: true } (only when o.current is set) or null if cancelled. */
+  A.pickAudio = function (o) {
+    o = o || {};
+    return new Promise(function (resolve) {
+      var settled = false, rows = [], cats = [], q = '', cat = '', prev = null, playingId = null;
+      function stop() { if (prev) { prev.pause(); prev = null; } playingId = null; }
+      var footer = (o.current ? [{ label: 'Remove this button', kind: 'danger', onClick: function () { settled = true; resolve({ remove: true }); } }] : []).concat([{ label: 'Cancel' }]);
+      var ctl = A.modal({
+        title: o.current ? 'Change the audio on this button' : 'Add an audio play button', size: 'wide', sticky: false, footer: footer, autofocus: false,
+        body: html`<div class="field"><label for="plabel">Text shown beside the play button</label><input type="text" id="plabel" class="hi" value="${o.label || ''}" placeholder="Leave empty to use the track title"></div>
+          <div class="toolbar"><input type="search" class="search" id="pq" placeholder="Search the audio library…"><select id="pc"></select>
+            <button class="btn sm" id="padd" type="button">+ New track</button><a class="btn sm" href="#/audio" target="_blank" rel="noopener">Open audio library ↗</a></div>
+          <div id="plist" style="max-height:44vh;overflow:auto"></div>
+          <p class="hint">Readers tap the button to hear the track. The button follows the library: if you later change the file or title of a track, books using it pick that up. Switching a track off in the library keeps the button working with the last known file.</p>`,
+        onClose: function () { stop(); if (!settled) resolve(null); }
+      });
+      var list = A.q('#plist', ctl.body);
+      function draw() {
+        list.innerHTML = rows.length ? html`<div class="table-wrap"><table class="tbl"><tbody>${rows.map(function (t, i) {
+          var cc = cats.find(function (c) { return c.key === t.category; });
+          return html`<tr class="${o.current && o.current.id === t.id ? 'sel' : ''}"><td class="nowrap"><button class="btn sm" type="button" data-pp="${i}" aria-label="Play ${t.title}">${playingId === t.id ? '❚❚' : '▶'}</button></td>
+            <td><div class="t-title hi">${t.title}${t.enabled ? '' : html` <span class="badge warn">Hidden</span>`}</div><div class="t-sub">${t.artist || ''}</div></td>
+            <td><span class="chip">${cc ? cc.icon + ' ' + cc.en : t.category}</span></td><td class="nowrap muted">${dur(t.duration)}</td>
+            <td><div class="acts"><button class="btn sm" type="button" data-pe="${i}">Edit</button><button class="btn sm primary" type="button" data-use="${i}">${o.current && o.current.id === t.id ? 'Keep' : 'Use this'}</button></div></td></tr>`;
+        })}</tbody></table></div>`.s : A.empty('No tracks found', 'Clear the search, or add a new track.').s;
+      }
+      function load() {
+        return A.get(API + A.qs({ q: q, cat: cat })).then(function (d) {
+          rows = d.tracks; cats = d.categories;
+          var sel = A.q('#pc', ctl.body);
+          sel.innerHTML = '<option value="">All categories</option>' + cats.map(function (c) { return '<option value="' + A.esc(c.key) + '"' + (c.key === cat ? ' selected' : '') + '>' + A.esc(c.icon + ' ' + c.en) + '</option>'; }).join('');
+          draw();
+        }).catch(function (e) { list.innerHTML = html`<div class="notice bad">${e.message}</div>`.s; });
+      }
+      A.q('#pq', ctl.body).oninput = A.debounce(function (e) { q = e.target.value.trim(); load(); }, 250);
+      A.q('#pc', ctl.body).onchange = function (e) { cat = e.target.value; load(); };
+      A.q('#padd', ctl.body).onclick = function () { trackForm(null, cats, load); };
+      A.on(list, 'click', '[data-pp]', function (e, t) {
+        var tr = rows[Number(t.getAttribute('data-pp'))];
+        if (playingId === tr.id) { stop(); draw(); return; }
+        stop();
+        prev = new Audio(srcUrl(tr.src));
+        prev.onended = function () { playingId = null; draw(); };
+        prev.onerror = function () { playingId = null; draw(); A.toast('This file could not be played', 'bad'); };
+        playingId = tr.id; draw();
+        prev.play().catch(function () { playingId = null; draw(); });
+      });
+      A.on(list, 'click', '[data-pe]', function (e, t) { trackForm(rows[Number(t.getAttribute('data-pe'))], cats, load); });
+      A.on(list, 'click', '[data-use]', function (e, t) {
+        var tr = rows[Number(t.getAttribute('data-use'))];
+        settled = true;
+        resolve({ track: tr, label: A.q('#plabel', ctl.body).value.trim() || tr.title });
+        ctl.close();
+      });
+      load();
+    });
+  };
+
   /* ------------------------------------------------------------ categories */
   function categories(body) {
     var cats = [];

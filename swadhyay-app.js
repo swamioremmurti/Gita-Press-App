@@ -3639,9 +3639,11 @@
       /* any verse or mantra the book marks with data-audio="<mp3 path>" gets the same play button (any book) */
       '(function(){try{var P=parent.SwadhyayShlokaAudio;if(!P)return;var els=[].slice.call(document.querySelectorAll("[data-audio]"));if(!els.length)return;var bt=[];' +
       'var st=document.createElement("style");' +
-      'st.textContent=".rdr-sh-play{display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;margin-left:.7em;border:0;border-radius:50%;background:#8f1a12;color:#fff;font-size:.6em;line-height:1;vertical-align:middle;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}.rdr-sh-play.on{background:#176b3d}";' +
+      'st.textContent=".rdr-sh-play{display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;margin-left:.7em;border:0;border-radius:50%;background:#8f1a12;color:#fff;font-size:.6em;line-height:1;vertical-align:middle;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}.rdr-sh-play.on{background:#176b3d}p.audio-play{text-align:center;margin:1em 0}p.audio-play .rdr-sh-play{font-size:.8em}";' +
       'document.head.appendChild(st);' +
-      'els.forEach(function(el){var src=el.getAttribute("data-audio"),b=document.createElement("button");b.type="button";b.className="rdr-sh-play";b.setAttribute("aria-label","सुनें");b.textContent="▶";' +
+      'els.forEach(function(el){var src=el.getAttribute("data-audio"),aid=el.getAttribute("data-audio-id");' +
+      'try{var tk=aid&&parent.SwadhyayAudio&&parent.SwadhyayAudio.byId&&parent.SwadhyayAudio.byId(aid);if(tk&&tk.src)src=tk.src;}catch(err){}' +
+      'var b=document.createElement("button");b.type="button";b.className="rdr-sh-play";b.setAttribute("aria-label","सुनें");b.textContent="▶";' +
       'b.addEventListener("click",function(ev){ev.stopPropagation();P.play(src);});b.addEventListener("mousedown",function(ev){ev.stopPropagation();});' +
       'el.appendChild(b);bt.push([src,b]);});' +
       'P.onState(function(k){bt.forEach(function(x){var on=x[0]===k;x[1].classList.toggle("on",on);x[1].textContent=on?"❚❚":"▶";});},"reader-mantra");' +

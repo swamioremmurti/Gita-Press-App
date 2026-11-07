@@ -81,7 +81,7 @@
           <span class="sep"></span>
           <button class="btn sm tool" data-cmd="undo" title="Undo">↶</button><button class="btn sm tool" data-cmd="redo" title="Redo">↷</button>
           <span class="sep"></span>
-          <button class="btn sm" id="fimg" type="button">Image</button><button class="btn sm" id="flink" type="button">Link</button>
+          <button class="btn sm" id="fimg" type="button">Image</button><button class="btn sm" id="faudio" type="button" title="Put a play button for a track from the audio library">Audio</button><button class="btn sm" id="flink" type="button">Link</button>
           <span class="sep"></span>
           <button class="btn sm" id="fpup" type="button" title="Move paragraph up">¶↑</button><button class="btn sm" id="fpdown" type="button" title="Move paragraph down">¶↓</button>
           <button class="btn sm" id="fpadd" type="button" title="Add a paragraph below">¶+</button><button class="btn sm" id="fpdel" type="button" title="Delete paragraph">¶×</button>
@@ -141,7 +141,7 @@
       return '<!DOCTYPE html><html><head><meta charset="utf-8"><base href="' + BASE + '">' + head +
         '<style>html{background:#fff}body{min-height:92vh;outline:0;caret-color:#a51512}p:hover{outline:1px dashed rgba(165,21,18,.35);outline-offset:2px}' +
         'body.show-labels p::before{content:attr(class);display:block;font:600 10px/1.2 system-ui,sans-serif;color:#a51512;opacity:.75;margin-bottom:2px;text-align:left}' +
-        'img{max-width:100%;height:auto}</style></head><body contenteditable="true" spellcheck="false">' + body + '</body></html>';
+        'img{max-width:100%;height:auto}[data-audio]::after{content:"▶ audio";display:inline-block;margin-left:.7em;padding:1px 9px;border-radius:999px;background:#8f1a12;color:#fff;font:600 11px/1.6 system-ui,sans-serif;vertical-align:middle;cursor:pointer;-webkit-user-select:none;user-select:none}</style></head><body contenteditable="true" spellcheck="false">' + body + '</body></html>';
     }
     function ensureSurface() {
       if (frame) return Promise.resolve();
@@ -161,6 +161,7 @@
           fdoc.addEventListener('input', onEdit);
           fdoc.addEventListener('keyup', syncStyle); fdoc.addEventListener('mouseup', syncStyle);
           fdoc.addEventListener('keydown', onKey);
+          fdoc.addEventListener('dblclick', function (e) { var h = e.target.closest && e.target.closest('[data-audio]'); if (h) { e.preventDefault(); audioDialog(h); } });
           fdoc.addEventListener('paste', onPaste);
           fdoc.addEventListener('dragover', function (e) { e.preventDefault(); });
           fdoc.addEventListener('drop', function (e) { e.preventDefault(); });
@@ -352,6 +353,40 @@
         onEdit();
       });
     };
+    /* A play button for a track of the audio library: <p class="audio-play" data-audio="file" data-audio-id="track id">text</p>.
+       The reader puts the button after the text; data-audio-id lets it follow later changes made in the library. */
+    function audioHolder() {
+      var s = fdoc && fdoc.getSelection();
+      if (!s || !s.rangeCount) return null;
+      var n = s.getRangeAt(0).startContainer;
+      if (n.nodeType === 3) n = n.parentNode;
+      return n && n.closest ? n.closest('[data-audio]') : null;
+    }
+    function audioDialog(cur) {
+      if (st.mode !== 'visual') { A.toast('Switch to Visual to add audio', 'bad'); return; }
+      var b = blocks()[0];
+      var isMine = cur && /(^|\s)audio-play(\s|$)/.test(cur.getAttribute('class') || '');
+      A.pickAudio({
+        current: cur ? { id: cur.getAttribute('data-audio-id') || '' } : null,
+        label: cur && isMine ? cur.textContent.trim() : ''
+      }).then(function (r) {
+        if (!r) return;
+        if (r.remove) {
+          if (isMine) { var nx = cur.nextElementSibling || cur.previousElementSibling; cur.remove(); if (nx) caretTo(nx); }
+          else { cur.removeAttribute('data-audio'); cur.removeAttribute('data-audio-id'); }
+          onEdit(); return;
+        }
+        var el = cur;
+        if (!el) {
+          el = fdoc.createElement('p'); el.setAttribute('class', 'audio-play');
+          if (b) b.parentNode.insertBefore(el, b.nextSibling); else fdoc.body.appendChild(el);
+        }
+        el.setAttribute('data-audio', r.track.src); el.setAttribute('data-audio-id', r.track.id);
+        if (!cur || isMine) el.textContent = r.label;
+        caretTo(el); onEdit();
+      });
+    }
+    A.q('#faudio', view).onclick = function () { if (fdoc) audioDialog(audioHolder()); else A.toast('Open a chapter first', 'bad'); };
     A.q('#flink', view).onclick = function () {
       if (st.mode !== 'visual') return;
       var s = fdoc.getSelection();

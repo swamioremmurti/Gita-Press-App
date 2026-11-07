@@ -469,6 +469,8 @@
       return '<main class="content-pad audio-page-wrap"><section class="audio-panel audio-panel-page" data-audio-mount="page"></section></main>';
     },
     hasTracks: function () { return TRACKS.length > 0; },
+    /* a switched-on track by id (a book's audio button asks for the library's current file) */
+    byId: function (id) { return BY_ID[id] || null; },
     /* for the home page's daily-bhajan card */
     tracks: function (cat) { return (cat ? tracksIn(cat) : TRACKS).slice(); },
     play: function (id) { playTrack(id); },

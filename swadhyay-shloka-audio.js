@@ -33,7 +33,7 @@
   }
   /* a key that is a file path ("assets/audio/mantra/x.mp3") plays that file directly: a book marks any mantra or
      verse with data-audio="<path>" and the reader puts a play button on it (see readerInlineScript) */
-  function isPath(key) { return /\.(mp3|m4a|ogg)$/i.test(String(key)); }
+  function isPath(key) { return /\.(mp3|m4a|ogg)$/i.test(String(key)) || /^(https?:\/\/|\/|assets\/)/i.test(String(key)); }
   function has(key) { return isPath(key) || !!index[key]; }
   function fileSrc(p) {
     var m = window.swadhyayMedia ? window.swadhyayMedia(p) : p;
