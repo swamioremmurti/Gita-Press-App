@@ -31,7 +31,14 @@
     }
     return loading;
   }
-  function has(key) { return !!index[key]; }
+  /* a key that is a file path ("assets/audio/mantra/x.mp3") plays that file directly: a book marks any mantra or
+     verse with data-audio="<path>" and the reader puts a play button on it (see readerInlineScript) */
+  function isPath(key) { return /\.(mp3|m4a|ogg)$/i.test(String(key)); }
+  function has(key) { return isPath(key) || !!index[key]; }
+  function fileSrc(p) {
+    var m = window.swadhyayMedia ? window.swadhyayMedia(p) : p;
+    return /^(https?:)?\/\//i.test(m) || m.charAt(0) === "/" ? m : "/" + m;   // the reader page is /read/<slug>/<n>
+  }
   function anchors() {
     var out = {};
     Object.keys(index).forEach(function (k) { if (index[k] && index[k].id) out[index[k].id] = k; });
@@ -46,7 +53,7 @@
   function play(key) {
     if (!has(key)) return;
     if (current === key && !audio.paused) { audio.pause(); return; }
-    if (current !== key) { current = key; audio.src = BASE + key + ".mp3"; }
+    if (current !== key) { current = key; audio.src = isPath(key) ? fileSrc(key) : BASE + key + ".mp3"; }
     else if (audio.ended) audio.currentTime = 0;
     var A = window.SwadhyayAudio;
     if (A && A.pause) A.pause();                       // a bhajan in the background yields to the shloka

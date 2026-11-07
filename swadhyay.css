@@ -3205,6 +3205,21 @@ a.vg-text:hover { border-color: var(--accent); background: var(--surface-2); }
 .vg-empty { padding: 2rem 1rem; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--rule); border-radius: var(--radius); }
 .vg-note { margin-top: 1.3rem; padding: .9rem 1.1rem; border-left: 4px solid var(--gold); background: var(--surface-2); border-radius: 0 12px 12px 0; font-size: .9rem; color: var(--muted); }
 .vg-note b { color: var(--ink); }
+/* /vangmay/advaita: the way in from the main page, and the way back */
+.vg-features { display: block; }
+.vg-feature { display: flex; align-items: center; gap: .9rem; padding: .85rem 1.1rem; border: 1.5px solid #e6cf9e; border-radius: var(--radius); text-decoration: none; color: var(--ink);
+  background: linear-gradient(180deg, #fff6df, #f8e8c3); box-shadow: 0 3px 10px rgba(120,80,20,.14); }
+.vg-feature:hover { border-color: var(--accent); }
+.vg-feature-ic { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 1.6rem; color: #fff;
+  background: radial-gradient(circle at 35% 30%, #8a5bc0, #54318a); box-shadow: inset 0 0 0 3px rgba(255,255,255,.35); }
+.vg-feature-t { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.vg-feature-t b { font-size: 1.1rem; }
+.vg-feature-t i { font-style: normal; font-size: .88rem; color: var(--muted); }
+:root[data-theme="dark"] .vg-feature { background: var(--surface); border-color: var(--rule); }
+.vg-back { display: inline-block; margin-bottom: .3rem; color: #ffd98e; text-decoration: none; font-size: 1rem; }
+.vg-back:hover { text-decoration: underline; }
+.vg-text-m { white-space: normal; }
+
 
 @media (max-width: 640px) {
   .vg-hero { padding: 1.2rem 1rem 1rem; }

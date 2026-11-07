@@ -3636,6 +3636,17 @@
       'if(any)P.onState(function(k){ids.forEach(function(id){var b=btns[id];if(!b)return;var on=SHA[id]===k;b.classList.toggle("on",on);b.textContent=on?"❚❚":"▶";});},"reader");' +
       'if(any)window.addEventListener("pagehide",function(){try{P.onState(function(){},"reader");}catch(e){}});' +
       '}catch(err){}})();' +
+      /* any verse or mantra the book marks with data-audio="<mp3 path>" gets the same play button (any book) */
+      '(function(){try{var P=parent.SwadhyayShlokaAudio;if(!P)return;var els=[].slice.call(document.querySelectorAll("[data-audio]"));if(!els.length)return;var bt=[];' +
+      'var st=document.createElement("style");' +
+      'st.textContent=".rdr-sh-play{display:inline-flex;align-items:center;justify-content:center;width:1.9em;height:1.9em;margin-left:.7em;border:0;border-radius:50%;background:#8f1a12;color:#fff;font-size:.6em;line-height:1;vertical-align:middle;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.3)}.rdr-sh-play.on{background:#176b3d}";' +
+      'document.head.appendChild(st);' +
+      'els.forEach(function(el){var src=el.getAttribute("data-audio"),b=document.createElement("button");b.type="button";b.className="rdr-sh-play";b.setAttribute("aria-label","सुनें");b.textContent="▶";' +
+      'b.addEventListener("click",function(ev){ev.stopPropagation();P.play(src);});b.addEventListener("mousedown",function(ev){ev.stopPropagation();});' +
+      'el.appendChild(b);bt.push([src,b]);});' +
+      'P.onState(function(k){bt.forEach(function(x){var on=x[0]===k;x[1].classList.toggle("on",on);x[1].textContent=on?"❚❚":"▶";});},"reader-mantra");' +
+      'window.addEventListener("pagehide",function(){try{P.onState(function(){},"reader-mantra");}catch(e){}});' +
+      '}catch(err){}})();' +
       'var sx=0,sy=0,t0=0;' +
       'document.addEventListener("touchstart",function(e){var t=e.touches[0];sx=t.clientX;sy=t.clientY;t0=Date.now();},{passive:true});' +
       'document.addEventListener("touchend",function(e){var t=e.changedTouches[0];var dx=t.clientX-sx,dy=t.clientY-sy;' +
@@ -5749,13 +5760,20 @@
       }
       return;
     }
+    if (seg[0] === "vangmay" && seg[1] === "advaita") {
+      setMeta("Kalyan | कल्याण — आदि शंकराचार्य की रचनाएँ | Advaita Vedanta: works attributed to Adi Shankaracharya",
+        "आदि शंकराचार्य के भाष्य, प्रकरण-ग्रन्थ और स्तोत्र — सूची और पुस्तकालय में उपलब्ध ग्रंथों के सीधे लिंक। The works attributed to Adi Shankaracharya (bhashyas, prakarana texts, stotras), with direct links to the books in the library.",
+        "/vangmay/advaita");
+      return;
+    }
     var fixed = SwadhyayMeta.STATIC_ROUTES[seg[0]];
     if (fixed && seg.length === 1) { setMeta(fixed.title, fixed.desc, "/" + seg[0]); return; }
     resetPageMeta();
   }
   var lastRenderedPath = null;
   // what the वाङ्मय page needs from the library: the books, their addresses and covers
-  function vangmayCtx() { return { tx: tx, esc: esc, books: BOOKS, bookPath: bookPath, coverEl: coverEl }; }
+  // (sub = the second path segment, e.g. "advaita" on /vangmay/advaita)
+  function vangmayCtx() { return { tx: tx, esc: esc, books: BOOKS, bookPath: bookPath, readPath: readPath, coverEl: coverEl, sub: parsePath().path.split("/")[1] || "" }; }
 
   function render() {
     migrateLegacyHash();

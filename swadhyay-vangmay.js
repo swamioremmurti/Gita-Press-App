@@ -297,6 +297,220 @@
       ] }
   ];
 
+  /* ---------------- Advaita: the works attributed to Ādi Śaṅkarācārya ----------------
+     Same shape as TREE, opened at /vangmay/advaita.  A text is  [roman, Devanagari, library file, page, note]:
+       page  = the reader page (0-based) of that work inside a collection book -- the link then opens that stotra directly
+       note  = [hi, en] shown in place of the author, for a book that holds the text but is not exactly the work named
+     Page numbers were read from the books' own chapter headings and the "इति श्रीमच्छङ्कराचार्य…" colophons. */
+  var DEVI = "देवीस्तोत्ररत्नाकर", SHIVA = "शिव स्तोत्र रत्नाकर", GANESHA = "गणेशस्तोत्ररत्नाकर",
+      RATNAVALI = "स्तोत्ररत्नावली", HANUMAN = "श्रीहनुमान-अङ्क";
+  var NOT_BHASHYA = ["उपनिषद् का पाठ एवं हिन्दी व्याख्या — शांकरभाष्य नहीं", "Upaniṣad text with Hindi commentary — not Śaṅkara’s bhāṣya"];
+
+  var ADVAITA = [
+    { k: "adv-bhashya", cc: "shruti", ic: "\u{1F4D6}", r: "Bhāṣyas — foundational commentaries", d: "भाष्य",
+      hi: "वेदान्त / अद्वैत के आधारभूत भाष्य", en: "Vedānta / Advaita — foundational commentaries (Bhāṣyas)",
+      groups: [
+        { r: "Brahma Sūtra & Bhagavad Gītā", d: "ब्रह्मसूत्र एवं भगवद्गीता", t: [
+          ["Brahma Sūtra Bhāṣya", "ब्रह्मसूत्र भाष्य", "वेदान्त-दर्शन (ब्रह्मसूत्र)", null,
+            ["ब्रह्मसूत्र (सूत्र एवं हिन्दी व्याख्या) — शांकरभाष्य नहीं", "The Brahma Sūtras with Hindi commentary — not Śaṅkara’s bhāṣya"]],
+          ["Bhagavad Gītā Bhāṣya", "भगवद्गीता भाष्य", "श्रीमद्भगवद्गीता शांकरभाष्य", null, ["शांकरभाष्य, हिन्दी अनुवाद सहित", "Śaṅkara’s bhāṣya with Hindi translation"]] ] },
+        { r: "Upaniṣad Bhāṣyas", d: "उपनिषद् भाष्य", t: [
+          ["Īśa Upaniṣad Bhāṣya", "ईशोपनिषद् भाष्य", "ईशावास्योपनिषद्", null, NOT_BHASHYA],
+          ["Kena Upaniṣad Bhāṣya — Pada and Vākya", "केनोपनिषद् भाष्य — पद एवं वाक्य", "केनोपनिषद्", null, NOT_BHASHYA],
+          ["Kaṭha Upaniṣad Bhāṣya", "कठोपनिषद् भाष्य", "कठोपनिषद्", null, NOT_BHASHYA],
+          ["Praśna Upaniṣad Bhāṣya", "प्रश्नोपनिषद् भाष्य", "प्रश्नोपनिषद्", null,
+            ["मन्त्रार्थ, शांकरभाष्य एवं हिन्दी भाष्यार्थ सहित", "With Śāṅkara-bhāṣya and its Hindi rendering"]],
+          ["Muṇḍaka Upaniṣad Bhāṣya", "मुण्डकोपनिषद् भाष्य", "मुण्डकोपनिषद्", null, NOT_BHASHYA],
+          ["Māṇḍūkya Upaniṣad and Gauḍapāda’s Kārikā — Bhāṣya", "माण्डूक्योपनिषद् एवं गौडपादीय कारिका भाष्य", "माण्डूक्योपनिषद्", null, NOT_BHASHYA],
+          ["Aitareya Upaniṣad Bhāṣya", "ऐतरेयोपनिषद् भाष्य", "ऐतरेयोपनिषद्", null, NOT_BHASHYA],
+          ["Taittirīya Upaniṣad Bhāṣya", "तैत्तिरीयोपनिषद् भाष्य", "तैत्तिरीयोपनिषद्", null, NOT_BHASHYA],
+          ["Chāndogya Upaniṣad Bhāṣya", "छान्दोग्योपनिषद् भाष्य"],
+          ["Bṛhadāraṇyaka Upaniṣad Bhāṣya", "बृहदारण्यकोपनिषद् भाष्य", "u_बृहदारण्यकोपनिषत्", null,
+            ["उपनिषद् का पाठ एवं भावार्थ — शांकरभाष्य नहीं", "Upaniṣad text with meaning — not Śaṅkara’s bhāṣya"]],
+          ["Śvetāśvatara Upaniṣad Bhāṣya", "श्वेताश्वतरोपनिषद् भाष्य", "श्वेताश्वतरोपनिषद्", null, NOT_BHASHYA],
+          ["Nṛsiṃha Tāpanīya Upaniṣad Bhāṣya", "नृसिंहतापनीय उपनिषद् भाष्य"] ] },
+        { r: "Other scriptural & philosophical commentaries attributed", d: "अन्य शास्त्रीय एवं दार्शनिक भाष्य (आरोपित)", t: [
+          ["Sanatsujātīya Bhāṣya", "सनत्सुजातीय भाष्य"],
+          ["Sāṃkhya Kārikā Bhāṣya", "सांख्यकारिका भाष्य"],
+          ["Yoga Sūtra Bhāṣya (Vivaraṇa)", "योगसूत्र भाष्य (विवरण)"],
+          ["Āpastambīya Dharma Sūtra Bhāṣya", "आपस्तम्बीय धर्मसूत्र भाष्य"],
+          ["Gāyatrī Bhāṣya", "गायत्री भाष्य"],
+          ["Hastāmalakīya Bhāṣya", "हस्तामलकीय भाष्य"] ] }
+      ] },
+
+    { k: "adv-prakarana", cc: "darshana", ic: "ॐ", r: "Independent teaching works", d: "प्रकरण-ग्रन्थ",
+      hi: "अद्वैत वेदान्त के स्वतन्त्र उपदेश-ग्रन्थ", en: "Advaita / Vedānta — independent teaching works",
+      groups: [
+        { r: "Prakaraṇa texts", d: "प्रकरण-ग्रन्थ", t: [
+          ["Upadeśa Sāhasrī", "उपदेशसाहस्री"],
+          ["Vivekacūḍāmaṇi", "विवेकचूडामणि", "विवेक चूडामणि"],
+          ["Aparokṣānubhūti", "अपरोक्षानुभूति", "श्रीआद्यशंकराचार्यविरचित अपरोक्षानुभूति"],
+          ["Ātmabodha", "आत्मबोध"],
+          ["Laghu-vākyavṛtti", "लघुवाक्यवृत्ति"],
+          ["Vākyavṛtti", "वाक्यवृत्ति"],
+          ["Sarva-vedānta-siddhānta-sāra-saṅgraha", "सर्ववेदान्तसिद्धान्तसारसङ्ग्रह"],
+          ["Sarva-siddhānta-saṅgraha", "सर्वसिद्धान्तसङ्ग्रह"],
+          ["Prabodha-sudhākara", "प्रबोधसुधाकर"],
+          ["Pañcīkaraṇam", "पञ्चीकरणम्"],
+          ["Advaitānubhūti", "अद्वैतानुभूति"],
+          ["Anātma-śrī-vigrahaṇa", "अनात्मश्रीविगर्हण"],
+          ["Ātmajñānopadeśa-vidhi / Dṛgdarśana-viveka", "आत्मज्ञानोपदेशविधि / दृग्दर्शनविवेक"],
+          ["Ātma-pañcaka / Ātma-śataka / Advaita-pañcaka", "आत्मपञ्चक / आत्मशतक / अद्वैतपञ्चक"],
+          ["Ātmānātma-viveka", "आत्मानात्मविवेक"],
+          ["Brahmajñānāvalī-mālā", "ब्रह्मज्ञानावलीमाला"],
+          ["Brahmānucintana / Ātmānucintana", "ब्रह्मानुचिन्तन / आत्मानुचिन्तन"],
+          ["Eka-śloki", "एकश्लोकी"],
+          ["Jīvanmukta-ānandalaharī / Anubhava-ānandalaharī", "जीवन्मुक्तानन्दलहरी / अनुभवानन्दलहरी"],
+          ["Jñānagaṅgā-śataka", "ज्ञानगङ्गाशतक"],
+          ["Kevalo’ham", "केवलोऽहम्"],
+          ["Māyā-pañcaka", "मायापञ्चक"],
+          ["Nirvāṇa-śataka / Ātma-śataka", "निर्वाणशतक / आत्मशतक"],
+          ["Nirvāṇa-daśaka / Daśa-śloki / Siddhānta-bindu", "निर्वाणदशक / दशश्लोकी / सिद्धान्तबिन्दु"],
+          ["Nirvāṇa-mañjarī", "निर्वाणमञ्जरी"],
+          ["Prauḍhānubhūti", "प्रौढानुभूति"],
+          ["Tattvopadeśa", "तत्त्वोपदेश"],
+          ["Vākyasudhā", "वाक्यसुधा"],
+          ["Vijñāna-naukā / Svarūpānusandhāna", "विज्ञाननौका / स्वरूपानुसन्धान"],
+          ["Vedānta-kesari / Śata-śloki", "वेदान्तकेसरी / शतश्लोकी", "शतश्लोकी"],
+          ["Bodhasāra", "बोधसार"],
+          ["Svātma-nirūpaṇa", "स्वात्मनिरूपण"],
+          ["Svātma-prakāśikā", "स्वात्मप्रकाशिका"] ] }
+      ] },
+
+    { k: "adv-sannyasa", cc: "dharma", ic: "\u{1F4FF}", r: "Sannyāsa, conduct & instruction", d: "सन्न्यास, आचार एवं उपदेश",
+      hi: "सन्न्यास, सदाचार और उपदेश", en: "Sannyāsa, conduct, and instruction",
+      groups: [
+        { r: "Instruction & conduct", d: "उपदेश एवं आचार", t: [
+          ["Ajñānabodhinī", "अज्ञानबोधिनी"],
+          ["Dhanyāṣṭakam", "धन्याष्टकम्", RATNAVALI, 75],
+          ["Guru-aṣṭaka", "गुर्वष्टकम्"],
+          ["Maṭha-āmnāya", "मठाम्नाय"],
+          ["Maṇiratnamālā", "मणिरत्नमाला"],
+          ["Mohamudgara / Dvādaśa-pañjarikā / Bhaja Govindam", "मोहमुद्गर / द्वादशपञ्जरिका / भज गोविन्दम्", RATNAVALI, 78],
+          ["Praśnottara-mālikā", "प्रश्नोत्तरमालिका"],
+          ["Sadācāra-anusandhāna", "सदाचारानुसन्धान"],
+          ["Sādhana-pañcaka / Upadeśa-pañcaka", "साधनपञ्चक / उपदेशपञ्चक", RATNAVALI, 74],
+          ["Sannyāsa-paddhati", "सन्न्यासपद्धति"],
+          ["Śaṅkara-smṛti", "शङ्करस्मृति"] ] }
+      ] },
+
+    { k: "adv-shaiva", cc: "agama", ic: "\u{1F531}", r: "Śaiva tradition", d: "शैव परम्परा",
+      hi: "शिव एवं दक्षिणामूर्ति के स्तोत्र", en: "Śiva and Dakṣiṇāmūrti hymns, Kāśī, forms of Śiva",
+      groups: [
+        { r: "Śiva- and Dakṣiṇāmūrti hymns", d: "शिव एवं दक्षिणामूर्ति स्तोत्र", t: [
+          ["Dakṣiṇāmūrti-aṣṭaka", "दक्षिणामूर्त्यष्टकम्"],
+          ["Dakṣiṇāmūrti-stotra", "दक्षिणामूर्तिस्तोत्रम्", SHIVA, 18],
+          ["Dakṣiṇāmūrti-varṇamālā", "दक्षिणामूर्तिवर्णमाला"],
+          ["Kālabhairava-aṣṭaka", "कालभैरवाष्टकम्", SHIVA, 50],
+          ["Mṛtyuñjaya-mānasa-pūjā", "मृत्युञ्जयमानसपूजा"],
+          ["Śiva-aparādha-bhañjana-stotra", "शिवापराधभञ्जनस्तोत्रम्", SHIVA, 8],
+          ["Śiva-bhujaṅga-prayāta", "शिवभुजङ्गप्रयातम्"],
+          ["Śiva-keśādi-pādānta-stotra", "शिवकेशादिपादान्तस्तोत्रम्"],
+          ["Śiva-mānasa-pūjā", "शिवमानसपूजा", SHIVA, 7],
+          ["Śiva-nāmāvaly-aṣṭaka", "शिवनामावल्यष्टकम्", SHIVA, 40],
+          ["Śiva-pādādi-keśānta-stotra", "शिवपादादिकेशान्तस्तोत्रम्"],
+          ["Śiva-pañcākṣara-nakṣatramālā", "शिवपञ्चाक्षरनक्षत्रमाला"],
+          ["Śiva-pañcākṣara-stotra", "शिवपञ्चाक्षरस्तोत्रम्", SHIVA, 9],
+          ["Śivānandalaharī", "शिवानन्दलहरी"],
+          ["Suvarṇamālā-stuti", "सुवर्णमालास्तुति"],
+          ["Vedasāra-śiva-stotra", "वेदसारशिवस्तोत्रम्", SHIVA, 10] ] },
+        { r: "Śiva pilgrimage / sacred places", d: "शिव-तीर्थ एवं पवित्र स्थान", t: [
+          ["Dvādaśa-jyotirliṅga-stotra", "द्वादशज्योतिर्लिङ्गस्तोत्रम्", SHIVA, 12],
+          ["Kāśī-pañcaka", "काशीपञ्चकम्", DEVI, 46],
+          ["Kāśī-stotra", "काशीस्तोत्रम्"],
+          ["Maṇikarṇikā-aṣṭaka", "मणिकर्णिकाष्टकम्", DEVI, 48] ] },
+        { r: "Śaiva and related forms", d: "शैव एवं सम्बद्ध स्वरूप", t: [
+          ["Ardha-nārīśvara-stotra", "अर्धनारीश्वरस्तोत्रम्", SHIVA, 27],
+          ["Hara-Gaurī-aṣṭaka", "हरगौर्यष्टकम्"],
+          ["Umā-maheśvara-stotra", "उमामहेश्वरस्तोत्रम्", SHIVA, 34] ] }
+      ] },
+
+    { k: "adv-shakta", cc: "purana", ic: "\u{1F338}", r: "Śākta / Devī / Śrīvidyā tradition", d: "शाक्त / देवी / श्रीविद्या परम्परा",
+      hi: "देवी के स्तोत्र एवं श्रीविद्या", en: "Devī and Goddess hymns, Śrīvidyā",
+      groups: [
+        { r: "Devī and Goddess hymns", d: "देवी स्तोत्र", t: [
+          ["Ambā-aṣṭaka", "अम्बाष्टकम्"],
+          ["Annapūrṇā-stotra", "अन्नपूर्णास्तोत्रम्", DEVI, 43],
+          ["Ānanda-laharī / Saundarya-laharī", "आनन्दलहरी / सौन्दर्यलहरी", DEVI, 11],
+          ["Bhavānī-aṣṭaka", "भवान्यष्टकम्", DEVI, 14],
+          ["Bhavānī-bhujaṅga-prayāta", "भवानीभुजङ्गप्रयातम्"],
+          ["Bhramarāmbā-aṣṭaka", "भ्रमराम्बाष्टकम्"],
+          ["Devī-bhujaṅga-prayāta", "देवीभुजङ्गप्रयातम्"],
+          ["Devī-catuḥṣaṣṭi-upacāra-pūjā-stotra", "देवीचतुःषष्ट्युपचारपूजास्तोत्रम्"],
+          ["Durgā-aparādha-bhañjana-stotra", "दुर्गापराधभञ्जनस्तोत्रम् (देव्यपराधक्षमापनस्तोत्र)", DEVI, 20],
+          ["Gaurī-daśaka", "गौरीदशकम्"],
+          ["Kali-aparādha-bhañjana-stotra", "कालीअपराधभञ्जनस्तोत्रम्"],
+          ["Lalitā-pañcaka", "ललितापञ्चकम्", DEVI, 12],
+          ["Mantra-mātṛkā-puṣpamālā", "मन्त्रमातृकापुष्पमाला"],
+          ["Mīnākṣī-pañcaratna", "मीनाक्षीपञ्चरत्नम्", DEVI, 13],
+          ["Mīnākṣī-stotra", "मीनाक्षीस्तोत्रम्"],
+          ["Tripura-sundarī-aṣṭaka", "त्रिपुरसुन्दर्यष्टकम्"],
+          ["Tripura-sundarī-mānasa-pūjā", "त्रिपुरसुन्दरीमानसपूजा"],
+          ["Tripura-sundarī-veda-pāda-stotra", "त्रिपुरसुन्दरीवेदपादस्तोत्रम्"] ] },
+        { r: "Śākta scripture commentary", d: "शाक्त शास्त्र-भाष्य", t: [
+          ["Lalitā-triśatī Bhāṣya", "ललितात्रिशती भाष्य"],
+          ["Prapañcasāra Tantra", "प्रपञ्चसारतन्त्र"] ] },
+        { r: "Other Goddess-related hymns", d: "देवी-सम्बन्धी अन्य स्तोत्र", t: [
+          ["Kalyāṇa-vṛṣṭi", "कल्याणवृष्टिस्तोत्रम्", DEVI, 30],
+          ["Śāradā-bhujaṅga-prayāta", "शारदाभुजङ्गप्रयातम्"] ] }
+      ] },
+
+    { k: "adv-vaishnava", cc: "itihasa", ic: "\u{1F41A}", r: "Vaiṣṇava tradition", d: "वैष्णव परम्परा",
+      hi: "विष्णु, कृष्ण और नारायण के स्तोत्र", en: "Viṣṇu, Kṛṣṇa and Nārāyaṇa hymns; Viṣṇu’s rivers",
+      groups: [
+        { r: "Scriptural commentary", d: "शास्त्रीय भाष्य", t: [
+          ["Viṣṇu-sahasranāma Bhāṣya / Viṣṇu-sahasranāma-stotra Bhāṣya", "विष्णुसहस्रनाम भाष्य",
+            "श्रीविष्णुसहस्रनाम (शांकरभाष्य"] ] },
+        { r: "Viṣṇu, Kṛṣṇa, and Nārāyaṇa hymns", d: "विष्णु, कृष्ण एवं नारायण स्तोत्र", t: [
+          ["Acyuta-aṣṭaka (two versions)", "अच्युताष्टकम् (दो पाठ)", RATNAVALI, 50],
+          ["Ārta-trāṇa-nārāyaṇa-stotra", "आर्तत्राणनारायणस्तोत्रम्"],
+          ["Daśāvatāra-stotra", "दशावतारस्तोत्रम्"],
+          ["Govinda-aṣṭaka", "गोविन्दाष्टकम्", RATNAVALI, 49],
+          ["Hari-nāmāvali-stotra", "हरिनामावलीस्तोत्रम्"],
+          ["Harimīḍe-stotra", "हरिमीडेस्तोत्रम्"],
+          ["Jagannātha-aṣṭaka", "जगन्नाथाष्टकम्"],
+          ["Kṛṣṇa-aṣṭaka (two versions)", "कृष्णाष्टकम् (दो पाठ)", RATNAVALI, 51],
+          ["Lakṣmī-nṛsiṃha-pañcaratna", "लक्ष्मीनृसिंहपञ्चरत्नम्"],
+          ["Nārāyaṇa-stotra", "नारायणस्तोत्रम्"],
+          ["Pāṇḍuraṅga-aṣṭaka", "पाण्डुरङ्गाष्टकम्"],
+          ["Rāma-bhujaṅga-prayāta", "रामभुजङ्गप्रयातम्"],
+          ["Saṅkaṭanāśana Lakṣmī-nṛsiṃha / Karuṇārasa-stotra", "सङ्कटनाशन लक्ष्मीनृसिंह / करुणारसस्तोत्रम्", RATNAVALI, 36],
+          ["Ṣaṭpadi-stotra", "षट्पदीस्तोत्रम्", RATNAVALI, 4],
+          ["Viṣṇu-bhujaṅga-prayāta", "विष्णुभुजङ्गप्रयातम्"],
+          ["Viṣṇu-pādādikeśānta-stotra", "विष्णुपादादिकेशान्तस्तोत्रम्"],
+          ["Dvādaśa-pañjarikā / Bhaja Govindam", "द्वादशपञ्जरिका / भज गोविन्दम्", RATNAVALI, 78] ] },
+        { r: "Viṣṇu-associated sacred rivers", d: "विष्णु-सम्बद्ध पवित्र नदियाँ", t: [
+          ["Yamunā-aṣṭaka (two versions)", "यमुनाष्टकम् (दो पाठ)", DEVI, 55],
+          ["Gaṅgā-aṣṭaka / Gaṅgā-stotra", "गङ्गाष्टकम् / गङ्गास्तोत्रम्", DEVI, 50] ] }
+      ] },
+
+    { k: "adv-ganapatya", cc: "upaveda", ic: "\u{1F418}", r: "Gaṇapatya tradition", d: "गाणपत्य परम्परा",
+      hi: "श्री गणेश के स्तोत्र", en: "Hymns to Gaṇeśa",
+      groups: [
+        { r: "Gaṇeśa hymns", d: "गणेश स्तोत्र", t: [
+          ["Gaṇeśa-bhujaṅga-prayāta", "गणेशभुजङ्गप्रयातम्", GANESHA, 22],
+          ["Gaṇeśa-pañcaratna", "गणेशपञ्चरत्नम्", GANESHA, 7] ] }
+      ] },
+
+    { k: "adv-other", cc: "vedanga", ic: "\u{1F6D5}", r: "Other deity traditions", d: "अन्य देव-परम्पराएँ",
+      hi: "हनुमान् और सुब्रह्मण्य", en: "Hymns to other deities",
+      groups: [
+        { r: "Hanumān & Subrahmaṇya", d: "हनुमान् एवं सुब्रह्मण्य", t: [
+          ["Hanumat-pañcaka / Hanumat-pañcaratna", "हनुमत्पञ्चक / हनुमत्पञ्चरत्नम्", HANUMAN, 6],
+          ["Subrahmaṇya-bhujaṅga-prayāta", "सुब्रह्मण्यभुजङ्गप्रयातम्"] ] }
+      ] },
+
+    { k: "adv-tirtha", cc: "other", ic: "\u{1F30A}", r: "Rivers, pilgrimage & general devotional works", d: "नदी, तीर्थ एवं सामान्य भक्ति-रचनाएँ",
+      hi: "नर्मदा, पुष्कर, प्रातःस्मरण और अन्य", en: "Rivers, pilgrimage, and general devotional works",
+      groups: [
+        { r: "Rivers, pilgrimage & devotion", d: "नदी, तीर्थ एवं भक्ति", t: [
+          ["Narmadā-aṣṭaka", "नर्मदाष्टकम्", DEVI, 59],
+          ["Puṣkara-aṣṭaka", "पुष्कराष्टकम्"],
+          ["Prātaḥ-smaraṇa-stotra", "प्रातःस्मरणस्तोत्रम्", RATNAVALI, 71],
+          ["Amaru-śataka", "अमरुशतकम्"] ] }
+      ] }
+  ];
+
   /* ---------------- helpers ---------------- */
 
   function norm(s) {
@@ -307,8 +521,22 @@
     return norm(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
   }
 
-  var state = { q: "", branch: "all", onlyLib: false, open: { "shruti": true, "shruti/0": true } };
-  var resolved = null;   // TREE with each text's `book` filled in (built once per page view)
+  var COLLECTIONS = {
+    "":        { tree: TREE,    open: { "shruti": true, "shruti/0": true } },
+    "advaita": { tree: ADVAITA, open: { "adv-bhashya": true, "adv-bhashya/0": true, "adv-bhashya/1": true } }
+  };
+  var CUR = TREE, curKey = "";
+  var state = { q: "", branch: "all", onlyLib: false, open: COLLECTIONS[""].open };
+  var resolved = null;   // the current tree with each text's `book` filled in (built once per page view)
+
+  // /vangmay shows the whole scripture tree; /vangmay/advaita the works of Ādi Śaṅkarācārya. Switching resets the search, filter and open groups.
+  function pick(ctx) {
+    var key = COLLECTIONS[ctx.sub || ""] ? (ctx.sub || "") : "";
+    if (key !== curKey) {
+      curKey = key; CUR = COLLECTIONS[key].tree;
+      state = { q: "", branch: "all", onlyLib: false, open: JSON.parse(JSON.stringify(COLLECTIONS[key].open)) };
+    }
+  }
 
   function resolve(ctx) {
     var byFile = {}, list = [];
@@ -316,8 +544,8 @@
       var f = norm(String(b.file || "").replace(/\.html$/, ""));
       byFile[f] = b; list.push([f, b]);
     });
-    var used = 0, total = 0, seen = {};
-    TREE.forEach(function (br) {
+    var used = 0, total = 0, avail = 0, seen = {};
+    CUR.forEach(function (br) {
       br.groups.forEach(function (g) {
         g.t.forEach(function (t) {
           total++;
@@ -329,11 +557,11 @@
             var hits = list.filter(function (p) { return p[0].indexOf(key) === 0; });
             if (hits.length === 1) b = hits[0][1];
           }
-          if (b) { t.book = b; if (!seen[b.file]) { seen[b.file] = 1; used++; } }
+          if (b) { t.book = b; avail++; if (!seen[b.file]) { seen[b.file] = 1; used++; } }
         });
       });
     });
-    resolved = { total: total, books: used };
+    resolved = { total: total, books: used, avail: avail };
   }
 
   function counts(br) {
@@ -347,7 +575,7 @@
   function textRow(ctx, t) {
     var esc = ctx.esc, tx = ctx.tx, b = t.book;
     var thumb = b ? ctx.coverEl(b, "sm") : '<div class="vg-thumb" aria-hidden="true"><span>ॐ</span></div>';
-    var meta = b ? esc(b.author || "") : esc(tx("संग्रह में अभी उपलब्ध नहीं", "Not in the library yet"));
+    var meta = b ? esc(t[4] ? tx(t[4][0], t[4][1]) : (b.author || "")) : esc(tx("संग्रह में अभी उपलब्ध नहीं", "Not in the library yet"));
     var body = '<span class="vg-thumb-wrap">' + thumb + '</span>' +
       '<span class="vg-text-body">' +
         '<span class="vg-text-r">' + esc(tx(t[1], t[0])) + '</span>' +
@@ -356,7 +584,8 @@
       '</span>' +
       (b ? '<span class="vg-go" aria-hidden="true">›</span>' : '<span class="vg-soon">' + esc(tx("शीघ्र", "Soon")) + '</span>');
     return b
-      ? '<a class="vg-text is-open" href="' + esc(ctx.bookPath(b)) + '" title="' + esc(tx("पुस्तक खोलें", "Open in the reader")) + '">' + body + '</a>'
+      ? '<a class="vg-text is-open" href="' + esc(typeof t[3] === "number" && ctx.readPath ? ctx.readPath(b, t[3]) : ctx.bookPath(b)) +
+          '" title="' + esc(typeof t[3] === "number" ? tx("इसी स्तोत्र पर खोलें", "Open at this text in the reader") : tx("पुस्तक खोलें", "Open in the reader")) + '">' + body + '</a>'
       : '<div class="vg-text is-missing">' + body + '</div>';
   }
 
@@ -369,7 +598,7 @@
   function treeHtml(ctx) {
     var tx = ctx.tx, esc = ctx.esc, q = fold(state.q), searching = !!q;
     var out = "", shown = 0;
-    TREE.forEach(function (br) {
+    CUR.forEach(function (br) {
       if (state.branch !== "all" && state.branch !== br.k) return;
       var c = counts(br), groupsHtml = "", brShown = 0;
       br.groups.forEach(function (g, gi) {
@@ -396,7 +625,7 @@
       out +=
         '<article class="vg-branch' + (open ? " is-open" : "") + '" id="vg-' + br.k + '" data-k="' + br.k + '">' +
           '<button type="button" class="vg-branch-h" data-vg-toggle="' + br.k + '" aria-expanded="' + (open ? "true" : "false") + '">' +
-            '<span class="vg-ic vg-c-' + br.k + '" aria-hidden="true">' + br.ic + '</span>' +
+            '<span class="vg-ic vg-c-' + (br.cc || br.k) + '" aria-hidden="true">' + br.ic + '</span>' +
             '<span class="vg-branch-t"><b>' + esc(tx(br.d, br.r)) + '</b><i>' + esc(tx(br.hi, br.d + " · " + br.en)) + '</i></span>' +
             (c.lib ? '<span class="vg-lib">' + c.lib + ' ' + esc(tx("उपलब्ध", "available")) + '</span>' : '') +
             '<span class="vg-badge">' + c.n + ' ' + esc(tx("ग्रंथ", "books")) + '</span>' +
@@ -414,44 +643,83 @@
   function chipsHtml(ctx) {
     var tx = ctx.tx, esc = ctx.esc;
     var h = '<button type="button" class="vg-chip' + (state.branch === "all" ? " is-on" : "") + '" data-vg-branch="all">' + esc(tx("सभी", "All")) + '</button>';
-    TREE.forEach(function (br) {
+    CUR.forEach(function (br) {
       h += '<button type="button" class="vg-chip' + (state.branch === br.k ? " is-on" : "") + '" data-vg-branch="' + br.k + '">' +
         '<span aria-hidden="true">' + br.ic + '</span> ' + esc(tx(br.d, br.r)) + '</button>';
     });
     return h;
   }
 
-  function pageHtml(ctx) {
-    resolve(ctx);
+  // the entrance to /vangmay/advaita, shown on the main page
+  function featureHtml(ctx) {
     var tx = ctx.tx, esc = ctx.esc;
+    return '<div class="vg-label"><span>' + esc(tx("विशेष संग्रह", "Special collections")) + '</span></div>' +
+      '<div class="vg-features"><a class="vg-feature" href="/vangmay/advaita">' +
+        '<span class="vg-feature-ic" aria-hidden="true">ॐ</span>' +
+        '<span class="vg-feature-t"><b>' + esc(tx("अद्वैत — आदि शंकराचार्य की रचनाएँ", "Advaita — the works of Ādi Śaṅkarācārya")) + '</b>' +
+          '<i>' + esc(tx("भाष्य, प्रकरण-ग्रन्थ और स्तोत्र — पुस्तकालय में उपलब्ध ग्रन्थों के सीधे लिंक के साथ",
+                          "Bhāṣyas, prakaraṇa texts and stotras, with direct links to what the library holds")) + '</i></span>' +
+        '<span class="vg-go" aria-hidden="true">›</span>' +
+      '</a></div>';
+  }
+
+  function heroHtml(ctx) {
+    var tx = ctx.tx, esc = ctx.esc, adv = curKey === "advaita";
+    var stats = adv
+      ? '<div><i class="vg-si vg-si-1" aria-hidden="true">&#128214;</i><p><b>' + CUR.length + '</b><span>' + esc(tx("खण्ड", "Sections")) + '</span></p></div>' +
+        '<div><i class="vg-si vg-si-2" aria-hidden="true">&#128218;</i><p><b>' + resolved.total + '</b><span>' + esc(tx("रचनाएँ", "Works listed")) + '</span></p></div>' +
+        '<div class="is-lib"><i class="vg-si vg-si-3" aria-hidden="true">&#128215;</i><p><b>' + resolved.avail + '</b><span>' + esc(tx("पुस्तकालय में उपलब्ध", "Available in the library")) + '</span></p></div>' +
+        '<div><i class="vg-si vg-si-4" aria-hidden="true">ॐ</i><p><b>' + resolved.books + '</b><span>' + esc(tx("पुस्तकें", "Books holding them")) + '</span></p></div>'
+      : '<div><i class="vg-si vg-si-1" aria-hidden="true">&#128214;</i><p><b>' + CUR.length + '</b><span>' + esc(tx("मुख्य शाखाएँ", "Major branches")) + '</span></p></div>' +
+        '<div><i class="vg-si vg-si-2" aria-hidden="true">&#128218;</i><p><b>' + resolved.total + '</b><span>' + esc(tx("ग्रंथ-प्रविष्टियाँ", "Book entries")) + '</span></p></div>' +
+        '<div class="is-lib"><i class="vg-si vg-si-3" aria-hidden="true">&#128215;</i><p><b>' + resolved.books + '</b><span>' + esc(tx("पुस्तकालय में उपलब्ध", "Available in the library")) + '</span></p></div>' +
+        '<div><i class="vg-si vg-si-4" aria-hidden="true">ॐ</i><p><b>संस्कृत</b><span>' + esc(tx("मूल परम्परा", "Core tradition")) + '</span></p></div>';
+    return '<section class="vg-hero">' +
+      (adv ? '<a class="vg-back" href="/vangmay">‹ ' + esc(tx("वाङ्मय", "Vāṅmaya")) + '</a>' : '') +
+      '<div class="vg-eyebrow">' + (adv ? 'ADVAITA VEDĀNTA &bull; ' + esc(tx("वाङ्मय", "VĀṄMAYA")) : esc(tx("वाङ्मय", "VĀṄMAYA")) + ' &bull; SCRIPTURE EXPLORER') + '</div>' +
+      '<h1><span>' + esc(adv ? tx("आदि शंकराचार्य की रचनाएँ", "Works of Ādi Śaṅkarācārya") : tx("शास्त्रों का अन्वेषण", "Explore the Scriptures")) + '</span></h1>' +
+      '<p>' + esc(adv
+        ? tx("आदि शंकराचार्य के नाम से जुड़ी रचनाएँ — भाष्य, प्रकरण-ग्रन्थ, उपदेश और स्तोत्र — नौ खण्डों में। जो रचना पुस्तकालय में है, उस पर क्लिक करके सीधे पढ़ें; स्तोत्र-संग्रह की रचनाएँ उसी स्तोत्र पर खुलती हैं।",
+             "The works attributed to Ādi Śaṅkarācārya — commentaries, teaching texts, instruction and hymns — in nine sections. Click a work that is in the library to read it; a hymn inside a collection opens at that hymn.")
+        : tx("सनातन धर्म की विशाल ज्ञान-परम्परा को शाखा, वर्ग और ग्रंथ के क्रम से देखें। जो ग्रंथ पुस्तकालय में हैं, उनपर क्लिक करके सीधे पढ़ें।",
+             "Discover the vast knowledge tradition of Sanātana Dharma. Texts that are in this library open straight in the reader.")) + '</p>' +
+      '<div class="vg-stats">' + stats + '</div>' +
+    '</section>';
+  }
+
+  function noteHtml(ctx) {
+    var tx = ctx.tx, esc = ctx.esc;
+    if (curKey === "advaita") {
+      return '<aside class="vg-note"><b>' + esc(tx("कर्तृत्व एवं उपलब्धता पर टिप्पणी", "A note on attribution and availability")) + '</b> ' +
+        esc(tx("यह सूची आदि शंकराचार्य के नाम से प्रचलित रचनाओं की है; अनेक रचनाओं के कर्तृत्व पर विद्वानों में मतभेद है। जहाँ पुस्तकालय की पुस्तक में रचना का पाठ है पर वह शांकरभाष्य नहीं है (जैसे ईशादि उपनिषदें और ब्रह्मसूत्र), वहाँ पुस्तक के नीचे यह लिखा है। जिन रचनाओं पर 'शीघ्र' लिखा है, वे अभी संग्रह में नहीं हैं।",
+               "This lists the works that tradition ascribes to Ādi Śaṅkarācārya; the authorship of many is disputed. Where the library holds the text but not Śaṅkara’s commentary on it (the Upaniṣads and the Brahma Sūtras), the line under the book says so. Works marked “Soon” are not in the library yet.")) +
+        '</aside>';
+    }
+    return '<aside class="vg-note"><b>' + esc(tx("वर्गीकरण पर एक टिप्पणी", "A note on classification")) + '</b> ' +
+      esc(tx("यह एक चयनित आधारभूत सूची है, सम्पूर्ण ग्रन्थ-सूची नहीं। कुछ ग्रन्थों के कर्तृत्व पर मतभेद है, कुछ के अनेक पाठ-भेद हैं और कुछ एक से अधिक परम्पराओं में आते हैं।",
+             "This is a curated foundational catalogue, not an exhaustive bibliography. Some works have disputed attribution, multiple recensions, or belong to more than one tradition.")) +
+      '</aside>';
+  }
+
+  function pageHtml(ctx) {
+    pick(ctx);
+    resolve(ctx);
+    var tx = ctx.tx, esc = ctx.esc, adv = curKey === "advaita";
     return '<div class="vg-page">' +
-      '<section class="vg-hero">' +
-        '<div class="vg-eyebrow">' + esc(tx("वाङ्मय", "VĀṄMAYA")) + ' &bull; SCRIPTURE EXPLORER</div>' +
-        '<h1><span>' + esc(tx("शास्त्रों का अन्वेषण", "Explore the Scriptures")) + '</span></h1>' +
-        '<p>' + esc(tx("सनातन धर्म की विशाल ज्ञान-परम्परा को शाखा, वर्ग और ग्रंथ के क्रम से देखें। जो ग्रंथ पुस्तकालय में हैं, उनपर क्लिक करके सीधे पढ़ें।",
-                      "Discover the vast knowledge tradition of Sanātana Dharma. Texts that are in this library open straight in the reader.")) + '</p>' +
-        '<div class="vg-stats">' +
-          '<div><i class="vg-si vg-si-1" aria-hidden="true">&#128214;</i><p><b>' + TREE.length + '</b><span>' + esc(tx("मुख्य शाखाएँ", "Major branches")) + '</span></p></div>' +
-          '<div><i class="vg-si vg-si-2" aria-hidden="true">&#128218;</i><p><b>' + resolved.total + '</b><span>' + esc(tx("ग्रंथ-प्रविष्टियाँ", "Book entries")) + '</span></p></div>' +
-          '<div class="is-lib"><i class="vg-si vg-si-3" aria-hidden="true">&#128215;</i><p><b>' + resolved.books + '</b><span>' + esc(tx("पुस्तकालय में उपलब्ध", "Available in the library")) + '</span></p></div>' +
-          '<div><i class="vg-si vg-si-4" aria-hidden="true">ॐ</i><p><b>संस्कृत</b><span>' + esc(tx("मूल परम्परा", "Core tradition")) + '</span></p></div>' +
-        '</div>' +
-      '</section>' +
+      heroHtml(ctx) +
       '<div class="vg-tools">' +
         '<label class="vg-search"><span aria-hidden="true">&#128269;</span>' +
           '<input type="search" id="vgSearch" autocomplete="off" placeholder="' + esc(tx("संस्कृत या अंग्रेज़ी नाम से खोजें…", "Search by Sanskrit or English title…")) + '" value="' + esc(state.q) + '"></label>' +
         '<label class="vg-only"><input type="checkbox" id="vgOnlyLib"' + (state.onlyLib ? " checked" : "") + '> ' + esc(tx("केवल उपलब्ध ग्रंथ", "Only books in the library")) + '</label>' +
       '</div>' +
-      '<div class="vg-label"><span>' + esc(tx("शाखा के अनुसार देखें", "Browse by branch")) + '</span></div>' +
+      (adv ? '' : featureHtml(ctx)) +
+      '<div class="vg-label"><span>' + esc(adv ? tx("खण्ड के अनुसार देखें", "Browse by section") : tx("शाखा के अनुसार देखें", "Browse by branch")) + '</span></div>' +
       '<div class="vg-chips" id="vgChips">' + chipsHtml(ctx) + '</div>' +
-      '<div class="vg-treebar"><h2>' + esc(tx("शास्त्र-वृक्ष", "Scripture tree")) + '</h2>' +
+      '<div class="vg-treebar"><h2>' + esc(adv ? tx("रचना-सूची", "Works") : tx("शास्त्र-वृक्ष", "Scripture tree")) + '</h2>' +
         '<span><button type="button" class="vg-link" id="vgExpand">' + esc(tx("सब खोलें", "Expand all")) + '</button>' +
         '<button type="button" class="vg-link" id="vgCollapse">' + esc(tx("बन्द करें", "Collapse")) + '</button></span></div>' +
       '<div class="vg-tree" id="vgTree">' + treeHtml(ctx) + '</div>' +
-      '<aside class="vg-note"><b>' + esc(tx("वर्गीकरण पर एक टिप्पणी", "A note on classification")) + '</b> ' +
-        esc(tx("यह एक चयनित आधारभूत सूची है, सम्पूर्ण ग्रन्थ-सूची नहीं। कुछ ग्रन्थों के कर्तृत्व पर मतभेद है, कुछ के अनेक पाठ-भेद हैं और कुछ एक से अधिक परम्पराओं में आते हैं।",
-               "This is a curated foundational catalogue, not an exhaustive bibliography. Some works have disputed attribution, multiple recensions, or belong to more than one tradition.")) +
-      '</aside>' +
+      noteHtml(ctx) +
     '</div>';
   }
 
@@ -493,7 +761,7 @@
       state.onlyLib = e.target.checked; redraw();
     });
     document.getElementById("vgExpand").addEventListener("click", function () {
-      TREE.forEach(function (br) {
+      CUR.forEach(function (br) {
         state.open[br.k] = true;
         br.groups.forEach(function (g, gi) { state.open[br.k + "/" + gi] = true; });
       });

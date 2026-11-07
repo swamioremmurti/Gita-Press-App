@@ -29,6 +29,8 @@ OUT = b.BOOKS / (NAME + ".html")
 PUBLISHER = "कल्याण सेवा ट्रस्ट"
 LOGO = "navagraha-1.png"
 LOGO_SRC = "neetishatakn-1.png"
+# mantras with a recording: the reader puts a play button on a paragraph carrying data-audio (swadhyay-app.js)
+AUDIO = {"ॐ आदित्याय विद्महे मार्तण्डाय धीमहि तन्नः सूर्यः प्रचोदयात्॥": "assets/audio/mantra/surya-gayatri.mp3"}
 HEAD = b.HEAD.replace("<title>%s</title>" % b.NAME, "<title>%s</title>" % NAME)
 
 
@@ -138,7 +140,7 @@ def main():
                     add("Normal", "• " + html)
                 elif bold and re.search(r"[॥।]\s*$", text) and not text.startswith("हवन समिधा"):
                     stat["shlok"] += 1
-                    add("Shlok", b.esc(text))
+                    add("Shlok", b.esc(text), ' data-audio="%s"' % AUDIO[text] if text in AUDIO else "")
                 elif bold and text.endswith(":"):
                     stat["labels"] += 1
                     add("TXT-Bold", b.esc(text))
