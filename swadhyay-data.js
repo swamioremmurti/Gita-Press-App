@@ -5563,5 +5563,56 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
         "sizeKB":  81.2
+    },
+    {
+        "file":  "श्री गुर्वष्टकम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "जगद्गुरु आदि शंकराचार्य",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "guru",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  27.1
+    },
+    {
+        "file":  "श्री अन्नपूर्णाकवचम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "जगद्गुरु आदि शंकराचार्य",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "devi",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  59.9
+    },
+    {
+        "file":  "तैत्तिरीयोपनिषद् (शांकरभाष्य).html",
+        "category":  "Upanishad",
+        "author":  "",
+        "tikakar":  "जगद्गुरु आदि शंकराचार्य",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  876.8
+    },
+    {
+        "file":  "श्वेताश्वतरोपनिषद् (शांकरभाष्य).html",
+        "category":  "Upanishad",
+        "author":  "",
+        "tikakar":  "जगद्गुरु आदि शंकराचार्य",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  947.7
+    },
+    {
+        "file":  "शिवपुराण-कथासार.html",
+        "category":  "Purans",
+        "author":  "राधेश्याम खेमका",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  586.2
     }
 ];

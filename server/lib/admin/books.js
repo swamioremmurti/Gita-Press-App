@@ -12,7 +12,7 @@ const bd = require('../bookdoc');
 const { sendJSON, readJSON, queryOf } = require('../http');
 const { audit, num, batchInChunks } = require('./common');
 
-const OVERRIDE_KEYS = ['title', 'author', 'tikakar', 'translator', 'publisher', 'cover', 'description'];
+const OVERRIDE_KEYS = ['title', 'author', 'tikakar', 'translator', 'publisher', 'cover', 'description', 'stotra'];   // stotra: the stotra category key (admin/stotras.js)
 const MAX_VERSIONS = 25;
 
 const clean = (v) => String(v == null ? '' : v).split(';').map((s) => s.trim()).filter(Boolean).join('; ');
@@ -57,7 +57,7 @@ async function allBooks() {
       tikakar: ov.tikakar != null ? ov.tikakar : (b.tikakars || []).join('; '),
       translator: ov.translator != null ? ov.translator : (b.translators || []).join('; '),
       publisher: ov.publisher != null ? ov.publisher : (b.publisher || ''),
-      cover: ov.cover || b.coverImage || '', description: ov.description || '',
+      cover: ov.cover || b.coverImage || '', description: ov.description || '', stotra: ov.stotra !== undefined ? ov.stotra : (b.stotra || ''),
       sizeKB: b.sizeKB, categories: catsBy[b.file] && catsBy[b.file].length ? catsBy[b.file] : [b.category],
       tags: tagsBy[b.file] || [], enabled: st.enabled, featured: st.featured, overridden: Object.keys(ov).length > 0,
       doc: docBy[b.file] || null
@@ -72,7 +72,7 @@ async function allBooks() {
       title: ov.title || file.replace(/\.html$/i, ''), baseTitle: ov.title || '',
       author: ov.author != null ? ov.author : (raw.author || ''), tikakar: ov.tikakar != null ? ov.tikakar : (raw.tikakar || ''),
       translator: ov.translator != null ? ov.translator : (raw.translator || ''), publisher: ov.publisher != null ? ov.publisher : (raw.publisher || ''),
-      cover: ov.cover || '', description: ov.description || '', sizeKB: raw.sizeKB || 0,
+      cover: ov.cover || '', description: ov.description || '', stotra: ov.stotra || '', sizeKB: raw.sizeKB || 0,
       categories: catsBy[file] && catsBy[file].length ? catsBy[file] : (raw.category ? [raw.category] : []),
       tags: tagsBy[file] || [], enabled: st.enabled, featured: st.featured, overridden: false, doc: docBy[file] || null,
       createdAt: raw.createdAt || 0
@@ -217,6 +217,7 @@ async function handleBulk(ctx) {
       const next = action === 'addCategory' ? [...new Set(cur.concat(key))] : cur.filter((k) => k !== key);
       if (!next.length) continue;
       await setCategories(f, next);
+      await upsertState(f, {});   // record the change (the copy-between-sites screen lists books that have a state row)
     }
   } else return sendJSON(ctx.res, 400, { error: 'Unknown action' });
   await audit(ctx.user, 'book.bulk.' + action, targets.length + ' books', b.category || '');
@@ -616,4 +617,4 @@ async function handle(ctx) {
   return false;
 }
 
-module.exports = { handle, allBooks, findBook, loadStates };
+module.exports = { handle, allBooks, findBook, loadStates, upsertState, setCategories, insertChapters, wipeDoc, fileNameFor };

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<base href="/">
+<title>स्वाध्याय | कल्याण सेवा ट्रस्ट — मुखपृष्ठ (नया डिज़ाइन, प्रारूप)</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="stylesheet" href="home-v2/home.css">
+</head>
+<body>
+
+<div class="proto-ribbon">नया मुखपृष्ठ — डिज़ाइन प्रारूप (केवल स्थानीय) · <a href="/">वर्तमान मुखपृष्ठ</a></div>
+
+<!-- ================= header (desktop) / app bar (mobile) ================= -->
+<header class="hd">
+  <div class="hd-top">
+    <button class="hd-burger" id="hdBurger" aria-label="मेनू" aria-expanded="false"><i></i><i></i><i></i></button>
+    <a class="hd-logo" href="/home-v2/" aria-label="स्वाध्याय — कल्याण सेवा ट्रस्ट">
+      <img src="home-v2/logo.png" alt="स्वाध्याय · कल्याण सेवा ट्रस्ट" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'logo-fallback',innerHTML:'<b>स्वाध्याय</b><small>कल्याण सेवा ट्रस्ट</small>'}))">
+    </a>
+    <form class="hd-search" action="/library" method="get" role="search">
+      <input type="search" name="q" placeholder="ग्रंथ, विषय, श्लोक, प्रश्न या लेखक खोजें…" aria-label="खोजें">
+      <button type="submit" aria-label="खोजें"><span class="mi" style="--i:url(/assets/ui/search.png)"></span></button>
+    </form>
+    <nav class="hd-links"><a href="/help">हमारे बारे में</a><a href="/feedback">सहयोग दें</a><a href="/help">संपर्क</a></nav>
+    <button class="hd-icon hd-bell" aria-label="सूचनाएँ"><span class="mi" style="--i:url(/assets/ui/notifications.png)"></span><s></s></button>
+    <a class="hd-login" href="/login"><span class="mi" style="--i:url(/assets/ui/profile.png)"></span><span>प्रवेश / सदस्य बनें</span></a>
+    <a class="hd-icon hd-prof" href="/login" aria-label="प्रोफ़ाइल"><span class="mi" style="--i:url(/assets/ui/profile.png)"></span></a>
+  </div>
+  <nav class="hd-nav" id="hdNav">
+    <a class="on" href="/home-v2/"><span class="mi" style="--i:url(/assets/ui/home.png)"></span>मुखपृष्ठ</a>
+    <a href="/library"><span class="mi" style="--i:url(/assets/ui/granthalay.png)"></span>ग्रंथालय</a>
+    <a href="/myreads"><span class="mi" style="--i:url(/assets/ui/myreads.png)"></span>दैनिक स्वाध्याय</a>
+    <a href="/gita"><span class="mi" style="--i:url(/assets/ui/gita-lms.png)"></span>अध्ययन पाठ्यक्रम</a>
+    <a href="/audio"><span class="mi" style="--i:url(/assets/ui/audio.png)"></span>श्रवण एवं दर्शन</a>
+    <a href="/stotras"><span class="mi" style="--i:url(/assets/ui/vangmay.png)"></span>पर्व एवं उपासना</a>
+    <a href="/chat"><span class="mi" style="--i:url(/assets/ui/prashnavali.png)"></span>प्रश्नोत्तर</a>
+    <a href="/vangmay"><span class="mi" style="--i:url(/assets/ui/menu.png)"></span>अधिक</a>
+  </nav>
+</header>
+
+<main class="pg">
+
+  <!-- ================= आज का श्लोक ================= -->
+  <section class="hero" id="hero">
+    <div class="hero-txt">
+      <span class="ribbon">आज का श्लोक</span>
+      <div class="hero-date" id="heroDate"><b></b><small>पंचांग देखें →</small></div>
+      <p class="hero-sh" id="heroSh">कर्मण्येवाधिकारस्ते मा फलेषु कदाचन ।<br>मा कर्मफलहेतुर्भूर्मा ते सङ्गोऽस्त्वकर्मणि ॥</p>
+      <p class="hero-src" id="heroSrc">— श्रीमद्भगवद्गीता 2.47</p>
+      <p class="hero-mean" id="heroMean">अर्थ: तुम्हारा अधिकार केवल कर्म करने में है, उसके फल में कभी नहीं।</p>
+      <div class="hero-btns">
+        <a class="btn-fill" id="heroRead" href="/gita">अर्थ एवं भावार्थ पढ़ें <span>→</span></a>
+        <a class="btn-line d-only" href="/gita"><span class="mi" style="--i:url(/assets/ui/library.png)"></span>विस्तृत अध्ययन</a>
+        <a class="btn-line d-only" href="/audio"><span class="mi" style="--i:url(/assets/ui/audio.png)"></span>श्रवण करें</a>
+        <button class="btn-line d-only" id="heroShare" type="button"><span>⤴</span>साझा करें</button>
+        <button class="btn-line d-only" id="heroSave" type="button"><span>☆</span><em>सहेजें</em></button>
+      </div>
+    </div>
+    <div class="hero-dots m-only"><i class="on"></i><i></i><i></i></div>
+  </section>
+
+  <!-- ================= quick tiles ================= -->
+  <nav class="tiles tiles-d" aria-label="शीघ्र पहुँच">
+    <a href="/library?cat=pravachan"><img src="assets/images/daily/gita.webp" alt=""><b>आज का चिंतन</b><small>जीवन के लिए प्रेरक विचार</small></a>
+    <a href="/library"><img src="assets/images/daily/manas.webp" alt=""><b>आज का ज्ञान</b><small>शास्त्रीय विषय पर संक्षिप्त लेख</small></a>
+    <a href="/stotras"><img src="assets/images/daily/bhajan.webp" alt=""><b>आज की उपासना</b><small>मन्त्र, स्तोत्र, पूजा-विधि</small></a>
+    <a href="/chat"><img src="assets/ai-ask-bg.webp" alt=""><b>आज का प्रश्न</b><small>सनातन धर्म से जुड़ा रोचक प्रश्न</small></a>
+    <a href="/panchang"><img src="assets/panchang-bg.webp" alt=""><b>पंचांग</b><small>तिथि, नक्षत्र, योग, मुहूर्त</small></a>
+    <a href="/gita"><img src="assets/images/vrat/hero.webp" alt=""><b>अध्ययन यात्रा</b><small>नियत क्रम से गहन अध्ययन</small></a>
+    <a href="/library?cat=all&sort=latest"><img src="assets/vangmay-bg.webp" alt=""><b>नवीन सामग्री</b><small>नए ग्रंथ, लेख, ऑडियो, वीडियो</small></a>
+  </nav>
+  <nav class="tiles tiles-m" aria-label="शीघ्र पहुँच">
+    <a href="/library"><span class="mi" style="--i:url(/assets/ui/granthalay.png)"></span><b>ग्रंथालय</b></a>
+    <a class="hi" href="/myreads"><span class="mi" style="--i:url(/assets/ui/myreads.png)"></span><b>दैनिक स्वाध्याय</b></a>
+    <a href="/audio"><span class="mi" style="--i:url(/assets/ui/audio.png)"></span><b>श्रवण एवं दर्शन</b></a>
+    <a href="/panchang"><span class="mi" style="--i:url(/assets/ui/panchang.png)"></span><b>पंचांग</b></a>
+    <a href="/stotras"><span class="mi" style="--i:url(/assets/ui/vangmay.png)"></span><b>उपासना</b></a>
+    <a href="/gita"><span class="mi" style="--i:url(/assets/ui/gita-lms.png)"></span><b>अध्ययन पाठ्यक्रम</b></a>
+    <a href="/chat"><span class="mi" style="--i:url(/assets/ui/prashnavali.png)"></span><b>प्रश्नोत्तर</b></a>
+    <a href="/vangmay"><span class="mi" style="--i:url(/assets/ui/menu.png)"></span><b>और भी</b></a>
+  </nav>
+
+  <!-- ================= special study + parv ================= -->
+  <div class="duo">
+    <section class="card sec" id="secStudy">
+      <h2><span class="mi" style="--i:url(/assets/ui/library.png)"></span>आज का विशेष अध्ययन<a class="all m-only" href="/library">सभी देखें →</a></h2>
+      <a class="study" href="/gita">
+        <img src="assets/images/gita/hero-art.webp" alt="">
+        <div>
+          <h3>कर्मयोग का वास्तविक स्वरूप</h3>
+          <p>गीता के अनुसार निष्काम कर्म, कर्तव्य और आत्मिक शुद्धि का संबंध समझें।</p>
+          <div class="meta"><span>◷ 8 मिनट</span><span>▤ 3 मुख्य बिंदु</span><span class="d-only">≋ सरल व्याख्या</span></div>
+          <span class="btn-fill d-only">अध्ययन प्रारंभ करें <span>→</span></span>
+        </div>
+        <i class="play m-only">▶</i>
+      </a>
+    </section>
+
+    <section class="card sec" id="secParv">
+      <h2><span class="mi" style="--i:url(/assets/ui/panchang.png)"></span>आज के पर्व एवं विशेष</h2>
+      <a class="parv" href="/panchang">
+        <div class="parv-d"><b id="pvDay">गुरुवार</b><span id="pvDate"></span><small>पंचांग के अनुसार</small></div>
+        <ul>
+          <li><b>देवउठनी एकादशी (आगामी)</b> – 12 नवंबर</li>
+          <li><b>प्रदोष व्रत</b> – 8 नवंबर</li>
+          <li><b>तुलसी विवाह का महत्व</b></li>
+          <li class="d-only"><b>चातुर्मास समापन</b></li>
+        </ul>
+        <i class="chev m-only">›</i>
+      </a>
+      <a class="more d-only" href="/panchang">पूर्ण विवरण देखें →</a>
+    </section>
+  </div>
+
+  <!-- ================= topics + journeys ================= -->
+  <div class="duo duo-b">
+    <section class="card sec" id="secTopics">
+      <h2><span class="mi" style="--i:url(/assets/ui/granthalay.png)"></span>विषयानुसार ज्ञान</h2>
+      <div class="topics">
+        <a href="/gita"><img src="assets/images/gita/banner-m.webp" alt=""><b>श्रीमद्भगवद्गीता</b></a>
+        <a href="/library?cat=itihasas"><img src="assets/cat/itihasas.webp" alt=""><b>रामायण</b></a>
+        <a href="/library?cat=purans"><img src="assets/cat/purans.webp" alt=""><b>शिव तत्त्व</b></a>
+        <a href="/hanuman"><img src="assets/images/shalaka/hero-m.webp" alt=""><b>हनुमान उपासना</b></a>
+        <a href="/stotras"><img src="assets/cat/stotra.webp" alt=""><b>देवी माहात्म्य</b></a>
+        <i class="chev m-only">›</i>
+      </div>
+    </section>
+
+    <section class="card sec d-only" id="secJourney">
+      <h2><span class="mi" style="--i:url(/assets/ui/gita-lms.png)"></span>अध्ययन यात्राएँ (चरणबद्ध कोर्स)</h2>
+      <ul class="journey">
+        <li><a href="/gita"><img src="assets/images/gita/hero-art.webp" alt=""><div><b>21 दिन – गीता अध्ययन</b><small>गीता के मुख्य संदेशों का क्रमबद्ध अध्ययन</small></div><i>›</i></a></li>
+        <li><a href="/library?cat=purans"><img src="assets/cat/purans.webp" alt=""><div><b>21 दिन – शिव तत्त्व</b><small>शिव दर्शन, उपासना और जीवन में प्रयोग</small></div><i>›</i></a></li>
+        <li><a href="/hanuman"><img src="assets/images/shalaka/hero-m.webp" alt=""><div><b>21 दिन – हनुमान साधना</b><small>मन्त्र, स्तोत्र, उपासना और कृपाप्राप्ति</small></div><i>›</i></a></li>
+      </ul>
+      <a class="more" href="/gita">सभी अध्ययन यात्राएँ देखें →</a>
+    </section>
+  </div>
+
+  <!-- ================= listen + watch (desktop) ================= -->
+  <div class="duo d-only">
+    <section class="card sec" id="secListen">
+      <h2><span class="mi" style="--i:url(/assets/ui/audio.png)"></span>श्रवण एवं दर्शन
+        <span class="tabs"><a class="on" href="/audio">प्रवचन</a><a href="/audio">पाठ</a><a href="/stotras">स्तोत्र</a><a href="/audio">कथा</a><a href="/audio">भजन</a></span></h2>
+      <a class="media" href="/audio">
+        <div class="thumb"><img src="assets/images/daily/gita.webp" alt=""><i>▶</i><em>28:16</em></div>
+        <div class="minfo"><b>गीता प्रवचन – अध्याय 2</b><small>जीवन में समता की साधना</small>
+          <div class="bar"><i>▶</i><span><u></u></span><em>00:00 / 28:16</em></div></div>
+      </a>
+    </section>
+    <section class="card sec" id="secWatch">
+      <h2><span class="mi" style="--i:url(/assets/ui/audio.png)"></span>आज की वीडियो प्रस्तुति</h2>
+      <a class="media" href="/audio">
+        <div class="thumb"><img src="assets/images/vrat/hero.webp" alt=""><i>▶</i><em>12:34</em></div>
+        <div class="minfo"><b>तुलसी विवाह – कथा, महत्व और पूजन विधि</b><small>कार्तिक मास की पावन परम्परा</small></div>
+      </a>
+    </section>
+  </div>
+
+  <!-- ================= ask + new content (desktop) ================= -->
+  <div class="duo duo-c d-only">
+    <section class="card sec" id="secAsk">
+      <h2><span class="mi" style="--i:url(/assets/ui/prashnavali.png)"></span>प्रश्नोत्तर – अपने प्रश्न पूछें</h2>
+      <ul class="qa">
+        <li><a href="/chat?q=कर्म और भाग्य"><i>Q</i>क्या गीता के अनुसार कर्म और भाग्य में विरोध है ?</a></li>
+        <li><a href="/chat?q=तुलसी विवाह"><i>Q</i>तुलसी विवाह कब और कैसे करें ?</a></li>
+        <li><a href="/chat?q=मन को एकाग्र"><i>Q</i>मन को एकाग्र करने के सरल उपाय क्या हैं ?</a></li>
+      </ul>
+      <a class="more" href="/chat">और प्रश्न देखें →</a>
+    </section>
+    <section class="card sec" id="secNew">
+      <h2><span class="mi" style="--i:url(/assets/ui/favorites.png)"></span>नवीन सामग्री <span class="pill">नया</span></h2>
+      <ul class="newlist" id="newList"></ul>
+    </section>
+  </div>
+
+  <!-- ================= newsletter + whatsapp ================= -->
+  <div class="duo duo-d">
+    <form class="news" id="newsForm">
+      <span class="mi big" style="--i:url(/assets/ui/notifications.png)"></span>
+      <div><b>दैनिक स्वाध्याय</b><small>प्रतिदिन प्रेरक श्लोक, चिंतन एवं नवीन सामग्री अपने ईमेल/व्हाट्सऐप पर प्राप्त करें।</small></div>
+      <input type="email" placeholder="अपना ईमेल दर्ज करें" aria-label="ईमेल">
+      <button class="btn-fill" type="submit">सदस्य बनें</button>
+    </form>
+    <a class="wa d-only" href="#" onclick="return false"><i>✆</i><div><b>या हमें WhatsApp पर जुड़ें</b><span class="btn-green">जुड़ें</span></div></a>
+  </div>
+</main>
+
+<footer class="ft d-only">
+  <div class="ft-brand"><img src="home-v2/logo.png" alt="" onerror="this.style.display='none'"><p>कल्याण सेवा ट्रस्ट की एक डिजिटल पहल, जिसका उद्देश्य सनातन धर्म के प्रामाणिक ग्रंथों, शिक्षाओं और जीवनोपयोगी ज्ञान को सभी तक सरल रूप में पहुँचाना है।</p></div>
+  <div class="ft-col"><h4>मुख्य अनुभाग</h4><a href="/home-v2/">मुखपृष्ठ</a><a href="/library">ग्रंथालय</a><a href="/myreads">दैनिक स्वाध्याय</a><a href="/gita">अध्ययन पाठ्यक्रम</a><a href="/audio">श्रवण एवं दर्शन</a><a href="/stotras">पर्व एवं उपासना</a></div>
+  <div class="ft-col"><h4>लोकप्रिय विषय</h4><a href="/gita">गीता</a><a href="/library?cat=itihasas">रामायण</a><a href="/library?cat=upanishad">उपनिषद</a><a href="/library?cat=purans">शिव तत्त्व</a><a href="/hanuman">हनुमान उपासना</a><a href="/stotras">देवी माहात्म्य</a></div>
+  <div class="ft-col"><h4>हमारे बारे में</h4><a href="/help">परिचय</a><a href="/help">उद्देश्य</a><a href="/feedback">संपर्क करें</a><a href="/help">सहयोग</a><a href="/help">उपयोग की शर्तें</a></div>
+  <div class="ft-col ft-join"><h4>हमसे जुड़ें</h4><p>अध्ययन, श्रवण एवं स्वाध्याय अब आपके मोबाइल पर</p></div>
+  <div class="ft-copy">© कल्याण सेवा ट्रस्ट · सर्वाधिकार सुरक्षित</div>
+</footer>
+
+<!-- ================= bottom nav (mobile) ================= -->
+<nav class="bn m-only">
+  <a class="on" href="/home-v2/"><span class="mi" style="--i:url(/assets/ui/home.png)"></span>मुख्य पृष्ठ</a>
+  <a href="/library"><span class="mi" style="--i:url(/assets/ui/library.png)"></span>ग्रंथालय</a>
+  <a href="/myreads"><span class="mi" style="--i:url(/assets/ui/myreads.png)"></span>स्वाध्याय</a>
+  <a href="/audio"><span class="mi" style="--i:url(/assets/ui/audio.png)"></span>श्रवण</a>
+  <a href="/panchang"><span class="mi" style="--i:url(/assets/ui/panchang.png)"></span>पंचांग</a>
+</nav>
+
+<script src="swadhyay-data.js"></script>
+<script src="home-v2/home.js"></script>
+</body>
+</html>

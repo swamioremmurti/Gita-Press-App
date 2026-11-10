@@ -452,6 +452,7 @@
     "रहस्यमयी वार्ता.html": "assets/covers/rahasyamayee-vaartaa.webp",
     "मैं नहीं, मेरा नहीं.html": "assets/covers/main-naheen-meraa-naheen.webp",
     "गरुडपुराण-सारोद्धार.html": "assets/covers/garudapuraan-saaroddhaar.webp",
+    "शिवपुराण-कथासार.html": "assets/covers/shivpuran-kathasar.webp",
     "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html": "assets/covers/naarad-bhakti-sootr.webp",
     "नारी-अङ्क.html": "assets/covers/naaree-angk.webp",
     "श्रीपंचरत्नगीता.html": "assets/covers/shreepncharatnageetaa.webp",
@@ -938,6 +939,8 @@
     "ऐतरेयोपनिषद्.html": "assets/covers/aitareyopanishad.jpg",
     "तैत्तिरीयोपनिषद्.html": "assets/covers/taittiriyopanishad.jpg",
     "श्वेताश्वतरोपनिषद्.html": "assets/covers/shvetashvataropanishad.jpg",
+    "तैत्तिरीयोपनिषद् (शांकरभाष्य).html": "assets/covers/taittiriyopanishad-shankara-bhashya.webp",
+    "श्वेताश्वतरोपनिषद् (शांकरभाष्य).html": "assets/covers/shvetashvataropanishad-shankara-bhashya.jpg",
     "ईस्वर अंस जीव अबिनासी.html": "assets/covers/ishwar-ansh-jeev-abinasi.webp",
     "मेरे नाथ! मेरे प्रभो.html": "assets/covers/mere-nath-mere-prabho.webp",
     "अयोध्या-माहात्म्य.html": "assets/covers/ayodhya-mahatmya.jpg",
@@ -1045,6 +1048,7 @@
     "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र",
     "नारी-अङ्क.html": "नारी-अङ्क",
     "गरुडपुराण-सारोद्धार.html": "गरुडपुराण-सारोद्धार",
+    "शिवपुराण-कथासार.html": "शिवपुराण-कथासार",
     "भक्ति-रहस्य.html": "भक्ति-रहस्य",
     "ब्रज-भाव.html": "ब्रज-भाव",
     "चित्त शुद्धि भाग - 1.html": "चित्त शुद्धि भाग-1",
@@ -1284,6 +1288,7 @@
       featured: false,
       contentHref: null,         // set when the admin panel edited the text: the reader then loads it from the API
       isGitaPress: ov.isGitaPress !== undefined ? !!ov.isGitaPress : !NON_GITA_PRESS_BOOKS[b.file],
+      stotra: ov.stotra || b.stotra || "",   // the stotra category key when this book is a stotra page (swadhyay-stotra.js): listed on /stotras, opens in the stotra viewer
       swithArth: arthSel.length > 0,    // reader gets a button to hide the meaning/commentary (only shloks stay)
       arthHideSel: arthSel
     };
@@ -1359,6 +1364,7 @@
   }
   function bookPath(book) { return "/book/" + encodeURIComponent(book.slug); }
   function readPath(book, chapterIdx) {
+    if (book.stotra) return "/stotra/" + encodeURIComponent(book.slug);   // a stotra is one continuous page: "start reading" opens the stotra viewer
     return "/read/" + encodeURIComponent(book.slug) + (chapterIdx !== undefined && chapterIdx !== null ? "/" + chapterIdx : "");
   }
 
@@ -1461,6 +1467,7 @@
     (data.disabled || []).forEach(function (file) { if (BOOKS_BY_FILE[file]) dropBook(BOOKS_BY_FILE[file]); });
     buildPeople();
     if (data.audio && window.SwadhyayAudio && window.SwadhyayAudio.applyState) window.SwadhyayAudio.applyState(data.audio);
+    if (window.SwadhyayStotra && window.SwadhyayStotra.applyCategories) window.SwadhyayStotra.applyCategories(data.stotraCats);
     if (data.site) SITE_STATE = { announcement: data.site.announcement || null, lms: data.site.lms || { enabled: true, notice: "" } };
     SITE_STATE.css = data.css || null;
   }
@@ -1558,7 +1565,7 @@
     panchang: ["पंचांग", "Panchang"], admin: ["एडमिन पैनल", "Admin Panel"], settings: ["सेटिंग्स", "Settings"],
     help: ["सहायता", "Help"], feedback: ["विषय सुधार", "Feedback"],
     gita: ["गीता LMS", "Gita LMS"], sankalp: ["पाठ-संकल्प", "Path Sankalp"], vrat: ["व्रत एवं पर्व", "Vrats & Festivals"],
-    prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"], vangmay: ["वाङ्मय", "Vangmay"]
+    prashnavali: ["प्रश्नावली", "Prashnavali"], shalaka: ["राम शलाका", "Ram Shalaka"], hanuman: ["हनुमान प्रश्नावली", "Hanuman Prashnavali"], vangmay: ["वाङ्मय", "Vangmay"], stotras: ["स्तोत्र", "Stotras"]
   };
   var SHELL_TITLES = [
     ["#appDrawerBtn", "मेनू", "Menu"], [".global-search-btn", "खोजें", "Search"], [".theme-switch", "डार्क मोड", "Dark mode"],
@@ -2672,6 +2679,73 @@
 
     lib2Open = "";                                              // the dropdown is drawn open once, not on every later redraw
     return '<main class="content-pad lib-page lib2-page">' + '<div class="lib2">' + panel + main + '</div></main>';
+  }
+
+  /* ---- "About the book" shows the book's own preface (निवेदन / प्रकाशकीय / प्रस्तावना ...) when it has one ----
+     Only the first ~96 KB of the book file is requested (Range), the preface is cut out of it and shown in place of the generated blurb;
+     a book without a recognisable preface, or whose admin description is set, keeps the blurb. */
+  var PREFACE_RE = /^(?:(?:श्री)?प्रकाशक(?:ीय| ?का निवेदन| ?का वक्तव्य)?|(?:नम्र |विनम्र |प्रकाशकका )?निवेदन|प्रस्तावना|भूमिका|प्राक्कथन|सम्पादकीय|संपादकीय|पुरोवाक्|अपनी बात|दो शब्द|आमुख)[\s:।]*$/;
+  var prefaceCache = {};
+  function extractPreface(htmlText) {
+    var doc = new DOMParser().parseFromString(htmlText, "text/html");
+    var nodes = Array.prototype.slice.call(doc.body.querySelectorAll("p, hr"));
+    function has(el, re) { return re.test(" " + (el.getAttribute("class") || "") + " "); }
+    var start = -1, label = "";
+    for (var i = 0; i < nodes.length; i++) {
+      var n = nodes[i];
+      if (n.tagName !== "P" || !has(n, /\s(?:Heading|Sub-Heading)[\s]/)) continue;
+      var t = (n.textContent || "").replace(/\s+/g, " ").trim();
+      if (PREFACE_RE.test(t)) { start = i; label = t; break; }
+      if (i > 200 && start < 0) break;                      // the preface comes first: stop after the first few headings
+    }
+    if (start < 0) return null;
+    var out = [], chars = 0;
+    for (var j = start + 1; j < nodes.length; j++) {
+      var p = nodes[j];
+      if (p.tagName === "HR") break;
+      if (has(p, /\s(?:Heading|Sub-Heading|Chapter-End-Text|Page-Break|Image|Footnotes)[\s]/) || has(p, /\scover-/)) {
+        if (has(p, /\s(?:Heading|Sub-Heading)[\s]/)) break;
+        continue;
+      }
+      var sups = p.querySelectorAll("sup"); for (var s = 0; s < sups.length; s++) sups[s].parentNode.removeChild(sups[s]);
+      var txt = (p.textContent || "").replace(/\s+/g, " ").trim();
+      if (!txt) continue;
+      var cls = has(p, /\sShlok/) ? "about-sh" : (has(p, /\s(?:TXT-Right|Shlok-Right)[\s]/) ? "about-sign" : "");
+      out.push({ t: txt, c: cls });
+      chars += txt.length;
+    }
+    return out.length ? { label: label, paras: out, chars: chars } : null;
+  }
+  function loadPreface(book) {
+    var host = document.getElementById("aboutBlock");
+    if (!host || book.description) return;
+    function show(pf) {
+      var cur = document.getElementById("aboutBlock");
+      if (!pf || !cur || cur.getAttribute("data-book") !== String(book.id)) return;
+      var long = pf.chars > 1600;
+      cur.innerHTML = '<h3>' + esc(tx("इस पुस्तक के बारे में", "About this book")) + '</h3>' +
+        '<div class="about-preface-label">' + esc(pf.label) + '</div>' +
+        '<div class="about-preface' + (long ? " clamp" : "") + '" id="aboutPreface">' +
+        pf.paras.map(function (x) { return '<p' + (x.c ? ' class="' + x.c + '"' : "") + '>' + esc(x.t) + '</p>'; }).join("") + '</div>' +
+        (long ? '<button type="button" class="about-more" id="aboutMore">' + esc(tx("और पढ़ें", "Read more")) + '</button>' : "");
+      var more = document.getElementById("aboutMore");
+      if (more) more.addEventListener("click", function () {
+        var box = document.getElementById("aboutPreface");
+        var open = box.classList.toggle("clamp") === false;
+        more.textContent = open ? tx("कम दिखाएँ", "Show less") : tx("और पढ़ें", "Read more");
+      });
+    }
+    if (prefaceCache.hasOwnProperty(book.file)) { show(prefaceCache[book.file]); return; }
+    fetch(book.contentHref || book.href, { headers: { Range: "bytes=0-98303" } }).then(function (res) {
+      if (!res.ok) throw new Error("fetch failed");
+      return res.text();
+    }).then(function (text) {
+      var cut = text.lastIndexOf("</p>");
+      var pf = null;
+      try { pf = extractPreface(cut > 0 && text.length >= 98000 ? text.slice(0, cut + 4) : text); } catch (e) {}
+      prefaceCache[book.file] = pf;
+      show(pf);
+    }).catch(function () { prefaceCache[book.file] = null; });
   }
 
   function genBlurb(book) {
@@ -4739,7 +4813,7 @@
     html += '</section>';
 
     html += '<div class="detail-tab-panel active" data-panel="intro">' +
-      '<div class="about-block"><h3>' + esc(tx("इस पुस्तक के बारे में", "About this book")) + '</h3><p>' + genBlurb(book) + '</p></div></div>';
+      '<div class="about-block" id="aboutBlock" data-book="' + book.id + '"><h3>' + esc(tx("इस पुस्तक के बारे में", "About this book")) + '</h3><p>' + genBlurb(book) + '</p></div></div>';
     html += '<div class="detail-tab-panel" data-panel="toc" id="tocPanel"></div>';
     html += '<div class="detail-tab-panel" data-panel="comments" id="commentsPanel">' + renderCommentsTab(book) + '</div>';
 
@@ -5665,7 +5739,7 @@
   }
 
   function setActiveNav(path) {
-    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "gita": "gita", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "vangmay": "vangmay", "admin": "admin", "login": "login", "signup": "login" };
+    var map = { "": "home", "library": "library", "favorites": "favorites", "myreads": "myreads", "notes": "notes", "chat": "chat", "settings": "settings", "panchang": "panchang", "help": "help", "feedback": "feedback", "authors": "authors", "author": "authors", "audio": "audio", "gita": "gita", "sankalp": "home", "vrat": "home", "shalaka": "shalaka", "hanuman": "hanuman", "vangmay": "vangmay", "stotras": "stotras", "stotra": "stotras", "admin": "admin", "login": "login", "signup": "login" };
     var key = map[path.split("/")[0]] || "";
     document.querySelectorAll("[data-nav]").forEach(function (el) {
       el.classList.toggle("active", el.getAttribute("data-nav") === key);
@@ -5762,6 +5836,14 @@
       }
       return;
     }
+    if (seg[0] === "stotra" && seg[1] !== undefined) {
+      var stb = resolveBookParam(seg[1]);
+      if (stb && stb.stotra) {
+        setMeta("Kalyan | कल्याण — " + stb.title + " | स्तोत्र पाठ एवं अर्थ | " + (stb.author || "Stotra"),
+          stb.title + " — मूल पाठ, पद-विच्छेद एवं शब्दार्थ और भावार्थ सहित। " + stb.title + " with word-by-word meaning and translation.", "/stotra/" + encodeURIComponent(stb.slug));
+        return;
+      }
+    }
     if (seg[0] === "vangmay" && seg[1] === "advaita") {
       setMeta("Kalyan | कल्याण — आदि शंकराचार्य की रचनाएँ | Advaita Vedanta: works attributed to Adi Shankaracharya",
         "आदि शंकराचार्य के भाष्य, प्रकरण-ग्रन्थ और स्तोत्र — सूची और पुस्तकालय में उपलब्ध ग्रंथों के सीधे लिंक। The works attributed to Adi Shankaracharya (bhashyas, prakarana texts, stotras), with direct links to the books in the library.",
@@ -5775,6 +5857,12 @@
   var lastRenderedPath = null;
   // what the वाङ्मय page needs from the library: the books, their addresses and covers
   // (sub = the second path segment, e.g. "advaita" on /vangmay/advaita)
+  // what the stotra pages need from the library: the books, their addresses and covers, and a way to read a book's HTML
+  function stotraCtx(book) {
+    return { tx: tx, esc: esc, books: BOOKS, bookPath: bookPath, readPath: readPath, coverEl: coverEl, book: book || null,
+      isFav: function (b) { return !!b && isFavorite(b.id); }, toggleFav: function (b) { return toggleFavorite(b.id); },
+      loadText: function (b) { return fetch(b.contentHref || b.href).then(function (res) { if (!res.ok) throw new Error("fetch failed"); return res.text(); }); } };
+  }
   function vangmayCtx() { return { tx: tx, esc: esc, books: BOOKS, bookPath: bookPath, readPath: readPath, coverEl: coverEl, sub: parsePath().path.split("/")[1] || "" }; }
 
   function render() {
@@ -5796,6 +5884,7 @@
       var rBook = resolveBookParam(seg[1]);
       var rCh = seg[2] !== undefined ? parseInt(seg[2], 10) : null;
       if (!rBook) { navigate("/library"); return; }
+      if (rBook.stotra) { try { history.replaceState(null, "", readPath(rBook)); } catch (e) {} render(); return; }   // old /read/<stotra> links land in the stotra viewer
       var rSegDecoded; try { rSegDecoded = decodeURIComponent(seg[1]); } catch (e) { rSegDecoded = seg[1]; }
       if (rSegDecoded !== rBook.slug) { try { history.replaceState(null, "", readPath(rBook, isNaN(rCh) ? null : rCh) + location.search); } catch (e) {} }   // earlier address -> current one
       setPageMeta(rBook);
@@ -5842,6 +5931,12 @@
     else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
     else if (seg[0] === "vangmay") { html = window.SwadhyayVangmay ? window.SwadhyayVangmay.pageHtml(vangmayCtx()) : viewHome(); }
+    else if (seg[0] === "stotras") { html = window.SwadhyayStotra ? window.SwadhyayStotra.hubHtml(stotraCtx()) : viewHome(); }
+    else if (seg[0] === "stotra" && seg[1] !== undefined) {
+      var sBook = resolveBookParam(seg[1]);
+      if (sBook && sBook.stotra && window.SwadhyayStotra) { html = window.SwadhyayStotra.viewerHtml(stotraCtx(sBook)); }
+      else { try { history.replaceState(null, "", sBook ? bookPath(sBook) : "/stotras"); } catch (e) {} html = sBook ? viewBook(sBook.id) : (window.SwadhyayStotra ? window.SwadhyayStotra.hubHtml(stotraCtx()) : viewHome()); pageBook = sBook; }
+    }
     else if (seg[0] === "author" && seg[1] !== undefined) {
       var aPerson = resolvePerson(seg[1]);
       if (aPerson) {
@@ -5881,6 +5976,8 @@
     if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
     if (window.SwadhyayVangmay && seg[0] === "vangmay") window.SwadhyayVangmay.mount(vangmayCtx());
+    if (window.SwadhyayStotra && seg[0] === "stotras") window.SwadhyayStotra.mountHub(stotraCtx());
+    if (window.SwadhyayStotra && seg[0] === "stotra" && seg[1] !== undefined) { var sb2 = resolveBookParam(seg[1]); if (sb2 && sb2.stotra) window.SwadhyayStotra.mountViewer(stotraCtx(sb2)); }
     loadQuoteOfTheDay();
     if (seg[0] === "chat") wireChatView();
 
@@ -6098,6 +6195,7 @@
       var book = BOOKS_BY_ID[bookId];
       var panels = document.querySelectorAll(".detail-tab-panel");
       var commentsLoaded = false;
+      loadPreface(book);
       detailTabs.querySelectorAll(".detail-tab").forEach(function (tabBtn) {
         tabBtn.addEventListener("click", function () {
           var target = tabBtn.getAttribute("data-tab");

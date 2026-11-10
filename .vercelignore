@@ -31,3 +31,15 @@ asr-service
 
 # RAG generator tool + its multi-GB output; only server/rag (the packed chat index) ships
 rag-generator
+
+# source data for the importers and the database seed (the site reads server/lib/vrat-catalogue.json instead), and the docs
+database
+docs
+
+# local-only entry point and helper (Vercel runs api/router.js and api/seo.js)
+server/server.js
+server/create-editor.js
+server/.env.example
+
+# design prototype of the new home page: local only until the design is decided (served at /home-v2/ by server/server.js)
+home-v2

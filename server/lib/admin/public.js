@@ -8,9 +8,10 @@ const { siteSettings } = require('./common');
 const lms = require('./lms');
 const audio = require('./audio');
 const css = require('./css');
+const stotras = require('./stotras');
 
 async function publicMeta() {
-  const [cats, tags, authorsLink, states, docs, categories, site, audioState, customCss] = await Promise.all([
+  const [cats, tags, authorsLink, states, docs, categories, site, audioState, customCss, stotraCats] = await Promise.all([
     db.all('SELECT bc.book_file, c.key, c.hi, c.en, c.icon FROM book_categories bc JOIN categories c ON c.key = bc.category_key'),
     db.all('SELECT bt.book_file, t.id, t.label FROM book_tags bt JOIN tags t ON t.id = bt.tag_id'),
     db.all('SELECT ba.book_file, a.id, a.name, a.photo_path FROM book_authors ba JOIN authors a ON a.id = ba.author_id'),
@@ -19,7 +20,8 @@ async function publicMeta() {
     db.all('SELECT key, hi, en, icon, hidden, edited FROM categories ORDER BY sort_order, rowid'),
     siteSettings(),
     audio.publicAudio(),
-    css.publicCss()
+    css.publicCss(),
+    stotras.publicCategories()
   ]);
 
   const meta = {};
@@ -45,7 +47,7 @@ async function publicMeta() {
   docs.forEach((r) => { content[r.book_file] = Number(r.updated_at); });
 
   return {
-    meta, disabled, featured, overrides, created, content, audio: audioState, css: customCss,
+    meta, disabled, featured, overrides, created, content, audio: audioState, css: customCss, stotraCats,
     categories: categories.map((c) => ({ key: c.key, hi: c.hi, en: c.en, icon: c.icon, hidden: Number(c.hidden) === 1, edited: Number(c.edited) === 1 })),
     site: { announcement: site.announcement.enabled && site.announcement.text ? site.announcement : null, lms: site.lms }
   };

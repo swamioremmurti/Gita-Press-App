@@ -178,7 +178,7 @@
       groups: [
         { r: "Mahāpurāṇas", d: "महापुराण", t: [
           ["Brahma Purāṇa", "ब्रह्मपुराण", "संक्षिप्त ब्रह्मपुराण"], ["Padma Purāṇa", "पद्मपुराण", "संक्षिप्त पद्मपुराण"],
-          ["Viṣṇu Purāṇa", "विष्णुपुराण", "श्रीविष्णुपुराण"], ["Śiva Purāṇa", "शिवपुराण", "संक्षिप्त शिवपुराण"],
+          ["Viṣṇu Purāṇa", "विष्णुपुराण", "श्रीविष्णुपुराण"], ["Śiva Purāṇa", "शिवपुराण", "संक्षिप्त शिवपुराण"], ["Śiva Purāṇa Kathāsāra", "शिवपुराण-कथासार", "शिवपुराण-कथासार"],
           ["Bhāgavata Purāṇa", "श्रीमद्भागवतमहापुराण", "श्रीमद्भागवतमहापुराण"],
           ["Nārada Purāṇa", "नारदपुराण", "संक्षिप्त नारदपुराण"], ["Mārkaṇḍeya Purāṇa", "मार्कण्डेयपुराण", "संक्षिप्त मार्कण्डेयपुराण"],
           ["Agni Purāṇa", "अग्निपुराण", "अग्निपुराण"], ["Bhaviṣya Purāṇa", "भविष्यपुराण"],
@@ -323,11 +323,13 @@
           ["Muṇḍaka Upaniṣad Bhāṣya", "मुण्डकोपनिषद् भाष्य", "मुण्डकोपनिषद्", null, NOT_BHASHYA],
           ["Māṇḍūkya Upaniṣad and Gauḍapāda’s Kārikā — Bhāṣya", "माण्डूक्योपनिषद् एवं गौडपादीय कारिका भाष्य", "माण्डूक्योपनिषद्", null, NOT_BHASHYA],
           ["Aitareya Upaniṣad Bhāṣya", "ऐतरेयोपनिषद् भाष्य", "ऐतरेयोपनिषद्", null, NOT_BHASHYA],
-          ["Taittirīya Upaniṣad Bhāṣya", "तैत्तिरीयोपनिषद् भाष्य", "तैत्तिरीयोपनिषद्", null, NOT_BHASHYA],
+          ["Taittirīya Upaniṣad Bhāṣya", "तैत्तिरीयोपनिषद् भाष्य", "तैत्तिरीयोपनिषद् (शांकरभाष्य)", null,
+            ["मन्त्रार्थ, शांकरभाष्य एवं हिन्दी भाष्यार्थ सहित", "With Śāṅkara-bhāṣya and its Hindi rendering"]],
           ["Chāndogya Upaniṣad Bhāṣya", "छान्दोग्योपनिषद् भाष्य"],
           ["Bṛhadāraṇyaka Upaniṣad Bhāṣya", "बृहदारण्यकोपनिषद् भाष्य", "u_बृहदारण्यकोपनिषत्", null,
             ["उपनिषद् का पाठ एवं भावार्थ — शांकरभाष्य नहीं", "Upaniṣad text with meaning — not Śaṅkara’s bhāṣya"]],
-          ["Śvetāśvatara Upaniṣad Bhāṣya", "श्वेताश्वतरोपनिषद् भाष्य", "श्वेताश्वतरोपनिषद्", null, NOT_BHASHYA],
+          ["Śvetāśvatara Upaniṣad Bhāṣya", "श्वेताश्वतरोपनिषद् भाष्य", "श्वेताश्वतरोपनिषद् (शांकरभाष्य)", null,
+            ["मन्त्रार्थ, शांकरभाष्य एवं हिन्दी भाष्यार्थ सहित", "With Śāṅkara-bhāṣya and its Hindi rendering"]],
           ["Nṛsiṃha Tāpanīya Upaniṣad Bhāṣya", "नृसिंहतापनीय उपनिषद् भाष्य"] ] },
         { r: "Other scriptural & philosophical commentaries attributed", d: "अन्य शास्त्रीय एवं दार्शनिक भाष्य (आरोपित)", t: [
           ["Sanatsujātīya Bhāṣya", "सनत्सुजातीय भाष्य"],

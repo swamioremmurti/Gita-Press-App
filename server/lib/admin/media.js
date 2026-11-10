@@ -12,6 +12,7 @@ const { sendJSON, readJSON, queryOf } = require('../http');
 const { audit, num } = require('./common');
 
 const MAX_UPLOAD = 3 * 1024 * 1024;
+const MAX_IMAGE = 50 * 1000;   // pictures are kept under 50 KB (decimal): the admin screen compresses before upload
 const TYPES = {
   'image/png': ['image', '.png'], 'image/jpeg': ['image', '.jpg'], 'image/webp': ['image', '.webp'], 'image/gif': ['image', '.gif'],
   'audio/mpeg': ['audio', '.mp3'], 'audio/mp4': ['audio', '.m4a'], 'audio/ogg': ['audio', '.ogg'], 'audio/wav': ['audio', '.wav'],
@@ -64,6 +65,7 @@ async function upload(ctx) {
   if (m) data = m[1];
   const bytes = Buffer.from(data, 'base64');
   if (!bytes.length) return sendJSON(ctx.res, 400, { error: 'The file is empty' });
+  if (type[0] === 'image' && bytes.length > MAX_IMAGE) return sendJSON(ctx.res, 413, { error: 'Pictures must be under 50 KB (this one is ' + Math.round(bytes.length / 1024) + ' KB). The admin screen shrinks pictures automatically; upload through it, or reduce the picture first.' });
   if (bytes.length > MAX_UPLOAD) return sendJSON(ctx.res, 413, { error: 'The file is larger than ' + (MAX_UPLOAD / 1048576) + ' MB. Host it elsewhere and add it as a link.' });
   const name = safeName(b.name, type[1]);
   await db.run('INSERT INTO media (name, kind, mime, size, data, alt, folder, user_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',

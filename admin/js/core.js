@@ -216,6 +216,7 @@
     ['/', '▦', 'Dashboard'],
     ['Library'],
     ['/books', '📚', 'Books'],
+    ['/stotras', '🙏', 'Stotras'],
     ['/categories', '🗂', 'Categories & tags'],
     ['/audio', '🎵', 'Audio library'],
     ['/media', '🖼', 'Media'],
@@ -228,6 +229,7 @@
     ['/usage', '🪙', 'AI usage'],
     ['System'],
     ['/css', '🎨', 'CSS editor'],
+    ['/sync', '⇄', 'Copy between sites'],
     ['/settings', '⚙', 'Site settings'],
     ['/log', '🕘', 'Activity log']
   ];

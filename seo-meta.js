@@ -101,6 +101,10 @@
       title: BRAND + " — वाङ्मय | Scripture Explorer: Vedas, Upanishads, Puranas, Itihasa & Darshanas",
       desc: "वेद, उपनिषद्, पुराण, इतिहास, धर्मशास्त्र और दर्शन — शास्त्रों का शाखा-वृक्ष, उपलब्ध ग्रंथों के सीधे लिंक के साथ। Explore the Sanatana scripture tradition branch by branch, with direct links to the books in the library."
     },
+    stotras: {
+      title: BRAND + " — स्तोत्र-संग्रह | Stotras with Meaning, by Deity & Theme",
+      desc: "सभी स्तोत्र एक स्थान पर — देवता के अनुसार, मूल पाठ और पद-विच्छेद, शब्दार्थ एवं भावार्थ सहित। All stotras in one place, by deity, with the Sanskrit text, word-by-word meaning and translation."
+    },
     hanuman: {
       title: BRAND + " — श्री हनुमान प्रश्नावली यन्त्र | Hanuman Prashnavali",
       desc: "श्री हनुमान प्रश्नावली यन्त्र — ४९ अंकों में प्रश्नों के उत्तर। जप करें, प्रश्न सोचें और अपना अंक पाएँ। Shri Hanuman Prashnavali Yantra: 49 numbered answers as an interactive game."

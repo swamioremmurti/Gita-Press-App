@@ -7,10 +7,56 @@
   var KIND_ICON = { image: '🖼', audio: '🎵', video: '🎬', document: '📄', other: '📎', folder: '📁' };
   var ACCEPT = 'image/png,image/jpeg,image/webp,image/gif,audio/mpeg,audio/mp4,audio/ogg,audio/wav,application/pdf';
 
+  /* Every picture is kept under 50 KB (the server refuses larger ones): it is shrunk in the browser first, trying the largest size and the
+     best quality that fits. Small pictures that already fit are left untouched. */
+  var IMG_LIMIT = 48000;           // bytes we aim for; the server's hard limit is 50 KB
+  var IMG_ORIGINAL_MAX = 30 * 1024 * 1024;
+  function canvasBlob(canvas, type, q) { return new Promise(function (res) { canvas.toBlob(res, type, q); }); }
+  function compressImage(file) {
+    if (file.size <= IMG_LIMIT) return Promise.resolve({ file: file, changed: false });   // already small enough (a small GIF keeps its animation)
+    return createImageBitmap(file).then(function (bmp) {
+      var long = Math.max(bmp.width, bmp.height);
+      var edges = [1600, 1280, 1024, 800, 640, 512, 400, 320, 256].filter(function (e) { return e < long; });
+      edges.unshift(long > 1600 ? 1600 : long);
+      var qualities = [0.82, 0.7, 0.58, 0.46, 0.34];
+      var chain = Promise.resolve(null), tried = 0;
+      edges.forEach(function (edge) {
+        qualities.forEach(function (q) {
+          chain = chain.then(function (found) {
+            if (found) return found;
+            var s = Math.min(1, edge / long), w = Math.max(1, Math.round(bmp.width * s)), h = Math.max(1, Math.round(bmp.height * s));
+            var c = document.createElement('canvas'); c.width = w; c.height = h;
+            c.getContext('2d').drawImage(bmp, 0, 0, w, h);
+            tried++;
+            return canvasBlob(c, 'image/webp', q).then(function (b) {
+              if (b && b.type === 'image/webp') return b.size <= IMG_LIMIT ? { blob: b, w: w, h: h } : null;
+              // a browser without WebP encoding: JPEG on a white background
+              var c2 = document.createElement('canvas'); c2.width = w; c2.height = h;
+              var x = c2.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, w, h); x.drawImage(bmp, 0, 0, w, h);
+              return canvasBlob(c2, 'image/jpeg', q).then(function (j) { return j && j.size <= IMG_LIMIT ? { blob: j, w: w, h: h } : null; });
+            });
+          });
+        });
+      });
+      return chain.then(function (r) {
+        if (bmp.close) bmp.close();
+        if (!r) throw new Error(file.name + ' could not be reduced under 50 KB. Try a simpler or smaller picture.');
+        var base = file.name.replace(/\.[A-Za-z0-9]+$/, '');
+        var ext = r.blob.type === 'image/webp' ? '.webp' : '.jpg';
+        return { file: new File([r.blob], base + ext, { type: r.blob.type }), changed: true, w: r.w, h: r.h };
+      });
+    }, function () { throw new Error(file.name + ' could not be read as a picture.'); });
+  }
+
   function uploadOne(file, folder) {
-    if (file.size > MAX) return Promise.reject(new Error(file.name + ' is ' + A.fmt.bytes(file.size) + '. The limit is 3 MB; host larger files elsewhere and add them as a link.'));
-    return A.readFile(file).then(function (data) {
-      return A.post('/api/admin/media', { name: file.name, mime: file.type, data: data, folder: folder || '' });
+    var isImage = /^image\//.test(file.type);
+    if (isImage && file.size > IMG_ORIGINAL_MAX) return Promise.reject(new Error(file.name + ' is ' + A.fmt.bytes(file.size) + '. Pictures larger than 30 MB cannot be processed here.'));
+    if (!isImage && file.size > MAX) return Promise.reject(new Error(file.name + ' is ' + A.fmt.bytes(file.size) + '. The limit is 3 MB; host larger files elsewhere and add them as a link.'));
+    return (isImage ? compressImage(file) : Promise.resolve({ file: file, changed: false })).then(function (c) {
+      if (c.changed) A.toast(file.name + ': ' + A.fmt.bytes(file.size) + ' → ' + A.fmt.bytes(c.file.size) + ' (' + c.w + '×' + c.h + ')', 'ok');
+      return A.readFile(c.file).then(function (data) {
+        return A.post('/api/admin/media', { name: c.file.name, mime: c.file.type, data: data, folder: folder || '' });
+      });
     });
   }
   A.uploadFiles = function (files, folder) {
