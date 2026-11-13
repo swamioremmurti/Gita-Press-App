@@ -16,16 +16,18 @@ const DATA = path.join(ROOT, 'swadhyay-data.js');
 
 function entryText(file, st, sizeKB) {
   const q = (s) => JSON.stringify(s);
+  // an Upanishad (or other text) shown in the stotra layout but not a stotra: "libraryCategory" in the JSON, and "stview" instead of "stotra"
+  const lib = st.libraryCategory || '';
   const rows = [
-    ['file', file], ['category', F.LIBRARY_CATEGORY], ['author', st.author || ''], ['tikakar', ''], ['translator', ''],
-    ['publisher', st.publisher || 'कल्याण सेवा ट्रस्ट'], ['stotra', st.category || 'other'], ['swith_arth', 'yes'], ['arth_hide', F.ARTH_HIDE]
+    ['file', file], ['category', lib || F.LIBRARY_CATEGORY], ['author', st.author || ''], ['tikakar', ''], ['translator', ''],
+    ['publisher', st.publisher || 'कल्याण सेवा ट्रस्ट'], lib ? ['stview', 'yes'] : ['stotra', st.category || 'other'], ['swith_arth', 'yes'], ['arth_hide', F.ARTH_HIDE]
   ].map(([k, v]) => '        ' + q(k) + ':  ' + q(v) + ',\n').join('');
   return '    {\n' + rows + '        "sizeKB":  ' + sizeKB + '\n    }';
 }
 
 function build(slug) {
   const st = JSON.parse(fs.readFileSync(path.join(SRC, slug + '.json'), 'utf8'));
-  const file = st.title.replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim() + '.html';
+  const file = st.title.replace(/¦/g, '').replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim() + '.html';
   const out = F.buildHtml(st).html;
   fs.writeFileSync(path.join(BOOKS, file), out, 'utf8');
   const sizeKB = Math.round(Buffer.byteLength(out, 'utf8') / 102.4) / 10;

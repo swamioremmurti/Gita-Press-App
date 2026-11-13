@@ -227,6 +227,7 @@
     ['/comments', '💬', 'Comments', 'comments'],
     ['/push', '🔔', 'Push notifications'],
     ['/usage', '🪙', 'AI usage'],
+    ['/questions', '❓', 'Chat questions', 'questions'],
     ['System'],
     ['/css', '🎨', 'CSS editor'],
     ['/sync', '⇄', 'Copy between sites'],
@@ -348,6 +349,7 @@
       e.preventDefault();
       fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' }).then(function () { A.showLogin(''); });
     };
+    if (user.role === 'admin') A.get('/api/admin/questions?status=new&size=10').then(function (d) { A.counts.questions = d.counts.new || 0; renderNav(A.parseHash().path); }).catch(function () {});
     if (user.role === 'admin') A.get('/api/admin/comments?status=hidden&size=5').then(function (d) { A.counts.comments = d.total || 0; renderNav(A.parseHash().path); }).catch(function () {});
     dispatch();
   };

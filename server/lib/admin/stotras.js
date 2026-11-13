@@ -107,7 +107,7 @@ async function validate(b) {
   const verses = rawVerses.map((v, i) => {
     const lines = (Array.isArray(v.lines) ? v.lines : String(v.lines == null ? '' : v.lines).split('\n')).map((x) => clip(x, 400)).filter(Boolean);
     if (!lines.length) throw fail(400, 'Verse ' + (i + 1) + ' has no Sanskrit text');
-    const pad = (Array.isArray(v.pad) ? v.pad : F.parsePadText(v.pad)).map((p) => [clip(p[0], 200), clip(p[1], 400)]).filter((p) => p[0] || p[1]);
+    const pad = (Array.isArray(v.pad) ? v.pad : F.parsePadText(v.pad)).map((p) => (p[3] ? [clip(p[0], 200), clip(p[1], 1200), clip(p[2], 300), /^\d+-\d+$/.test(String(p[3])) ? String(p[3]) : ''] : [clip(p[0], 200), clip(p[1], 1200)])).filter((p) => p[0] || p[1]);
     return { label: clip(v.label, 80), lines, pad, bhav: clip(v.bhav, 6000) };
   });
   const audio = clip(b.audio, 600);

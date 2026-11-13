@@ -1582,6 +1582,10 @@ span.bold {
 span.inline-5 {
 	font-size:1em;
 }
+/* the same reset span inside a Shlok paragraph (was inline-5 there, 2026-11-12): the verse's own colour and font, the paragraph's size */
+span.Shlok {
+	font-size:1em;
+}
 span.inline-6 {
 	font-style:normal;
 	font-weight:bold;
@@ -7119,6 +7123,11 @@ p[class*="Footnotes"] + p[class*="Footnotes"] {
 	padding-top: 6px;
 }
 
+/* p.Normal (above) comes after p.center and was overriding its text-align: a "Normal center" line is centered (no first-line indent) */
+p.Normal.center {
+	text-align:center;
+	text-indent:0px;
+}
 p.Normal em {
 	color:#8a7f6a;
 	font-size:0.85em;
@@ -7559,6 +7568,7 @@ p.stotra-arth-pad {
 }
 p.stotra-arth-pad b.stotra-w { color:#8f1a12; font-weight:bold; }
 p.stotra-arth-pad span.stotra-eq { color:#8a6a3a; padding:0 .2em; }
+p.stotra-arth-pad span.stotra-br { color:#6b5a3a; font-size:.92em; }
 p.stotra-arth-bhav {
 	color:black;
 	font-family:ChanakyaUni, serif;

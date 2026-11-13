@@ -11,6 +11,7 @@ const audio = require('./audio');
 const css = require('./css');
 const push = require('./push');
 const usage = require('./usage');
+const questions = require('./questions');
 const sync = require('./sync');
 const stotras = require('./stotras');
 
@@ -147,7 +148,7 @@ async function handle(req, res, pathname, user) {
     if (ctx.method === 'PUT') { await settingsPut(ctx); return true; }
   }
   if (ctx.method === 'GET' && pathname === '/api/admin/backup') { await backup(ctx); return true; }
-  for (const mod of [books, categories, stotras, media, audio, css, people, lms, push, usage, sync]) {
+  for (const mod of [books, categories, stotras, media, audio, css, people, lms, push, usage, questions, sync]) {
     if (await mod.handle(ctx)) return true;
   }
   return false;

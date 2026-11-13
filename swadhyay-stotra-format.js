@@ -14,7 +14,10 @@
    such as फलश्रुति, class stotra-vlabel). Its "Start reading" opens the stotra viewer. Paragraph classes (all <p>, so the reader's अर्थ hide button works on them):
      Shlok  (data-verse="n")        the Sanskrit verse, lines joined with <br>
      stotra-arth-label              "पद-विच्छेद एवं शब्दार्थ:"
-     stotra-arth-pad                one word and its meaning:  <b class="stotra-w">word</b> <span class="stotra-eq">=</span> meaning
+     stotra-arth-pad                one word and its meaning:  <b class="stotra-w">word</b> <span class="stotra-br">(a + b)</span> <span class="stotra-eq">=</span> meaning
+                                    a verse word (or phrase) with the meaning of its parts joined; the optional word break is in the stotra-br span and
+                                    data-t="first-last" gives the index of the verse words it covers (the tap-a-word tooltip of the viewer);
+                                    pad rows are [word, meaning, wordBreak, "first-last"], the last two optional
      stotra-arth-bhav               the meaning (bhavartha) of the verse
    The catalogue entry of such a book carries  "swith_arth": "yes", "arth_hide": "stotra-arth*"  (ARTH_HIDE below).      */
 (function (root, factory) {
@@ -47,6 +50,10 @@
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; });
   }
+  /* "¦" inside a line of a verse marks where a long compound may be cut on a phone: it becomes a hidden break whose "-" (end of the first
+     line, start of the second) only shows below 700 px (swadhyay.css .st-hy); on a wide screen the word stays whole. */
+  var HY = '<span class="st-hy"><span class="st-hy-e"></span><span class="st-hy-b"></span><span class="st-hy-s"></span></span>';
+  function lineHtml(s) { return esc(s).split("¦").join(HY); }
   function unesc(s) {
     return String(s).replace(/&nbsp;/g, " ").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, "&");
   }
@@ -66,6 +73,16 @@
   }
   function padText(pad) { return (pad || []).map(function (p) { return p[0] + " = " + p[1]; }).join("\n"); }
 
+  /* long one-word titles and where they may be cut ("¦"): the stotra viewer, the book page (cut in two on a phone) and the cards (cut only if the title
+     does not fit, with a soft hyphen) all take it from here */
+  var SOFT_TITLES = {
+    "श्रीदत्तात्रेयापराधक्षमापणस्तोत्रम् २": "श्रीदत्तात्रेयापराध¦क्षमापणस्तोत्रम् २",
+    "श्रीगणेशापराधक्षमापणस्तोत्रम्": "श्रीगणेशापराध¦क्षमापणस्तोत्रम्",
+    "श्रीगणेशभुजङ्गप्रयातस्तोत्रम्": "श्रीगणेशभुजङ्ग¦प्रयातस्तोत्रम्"
+  };
+  function hyTitle(t) { return SOFT_TITLES[t] || null; }
+  function softTitle(t) { var h = SOFT_TITLES[t]; return h ? esc(h).split("¦").join("&shy;") : esc(t); }
+
   function digits(n) { return String(n).replace(/\d/g, function (d) { return "०१२३४५६७८९".charAt(+d); }); }
 
   /* ------------------------------------------------------------------ build */
@@ -75,10 +92,13 @@
 
   /* the whole stotra is ONE page of the book: title, introduction, every verse, the closing line */
   function buildHtml(st) {
-    var title = trim(st.title) || "स्तोत्र";
+    var title = trim(String(st.title || "").split("¦").join("")) || "स्तोत्र";
+    /* a "¦" in the title (or the title's titleHy twin, as parseHtml returns it) marks where it may be cut in two on a phone */
+    var hy = trim(st.titleHy || st.title || "");
+    if (hy.split("¦").join("") !== title) hy = title;
     var h = "";
     if (trim(st.invocation)) h += p("cover-Shri-Hari", esc(trim(st.invocation)));
-    h += p("cover-Book-Name", esc(title));
+    h += p("cover-Book-Name", lineHtml(hy));
     if (trim(st.subtitle)) h += p("cover-subtitle", esc(trim(st.subtitle)));
     if (trim(st.publisher)) h += p("cover-Publisher-Note", esc(trim(st.publisher)));
 
@@ -92,12 +112,18 @@
     verses.forEach(function (v, i) {
       var lines = splitLines(v.lines != null ? v.lines : v.text);
       if (trim(v.label)) h += p("stotra-vlabel", esc(trim(v.label)));
-      h += p("Shlok", lines.map(esc).join("<br>"), ' data-verse="' + (i + 1) + '"');
+      /* four lines = two half-verses: the two lines of a half share a row when they fit (styles .st-pr/.st-ln); the newline between them keeps the parse below one line each */
+      var shl = lines.length === 4
+        ? [0, 2].map(function (k) { return '<span class="st-pr"><span class="st-ln">' + lineHtml(lines[k]) + '</span>\n<span class="st-ln">' + lineHtml(lines[k + 1]) + '</span></span>'; }).join("<br>")
+        : lines.map(lineHtml).join("<br>");
+      h += p("Shlok", shl, ' data-verse="' + (i + 1) + '"');
       var pad = (v.pad || []).filter(function (x) { return x && (trim(x[0]) || trim(x[1])); });
       if (pad.length) {
         h += p("stotra-arth-label", esc(PAD_LABEL));
         pad.forEach(function (x) {
-          h += p("stotra-arth-pad", '<b class="stotra-w">' + esc(trim(x[0])) + '</b> <span class="stotra-eq">=</span> ' + esc(trim(x[1])));
+          var brk = trim(x[2]), span = /^\d+-\d+$/.test(trim(x[3])) ? trim(x[3]) : "";
+          h += p("stotra-arth-pad", '<b class="stotra-w">' + esc(trim(x[0])) + '</b>' + (brk ? ' <span class="stotra-br">(' + esc(brk) + ')</span>' : "") +
+            ' <span class="stotra-eq">=</span> ' + esc(trim(x[1])), span ? ' data-t="' + span + '"' : "");
         });
       }
       paragraphs(v.bhav).forEach(function (x) { h += p("stotra-arth-bhav", esc(x)); });
@@ -118,12 +144,12 @@
     var out = [], re = /<p\b([^>]*)>([\s\S]*?)<\/p>/gi, m;
     while ((m = re.exec(chapterHtml))) {
       var cm = m[1].match(/class=["']([^"']*)["']/i);
-      var vm = m[1].match(/data-verse=["'](\d+)["']/i);
-      out.push({ cls: cm ? cm[1].split(/\s+/) : [], verse: vm ? +vm[1] : 0, inner: m[2] });
+      var vm = m[1].match(/data-verse=["'](\d+)["']/i), tm = m[1].match(/data-t=["'](\d+-\d+)["']/i);
+      out.push({ cls: cm ? cm[1].split(/\s+/) : [], verse: vm ? +vm[1] : 0, span: tm ? tm[1] : "", inner: m[2] });
     }
     return out;
   }
-  function plain(inner) { return trim(unesc(String(inner).replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "")).replace(/[ \t]+/g, " ")); }
+  function plain(inner) { return trim(unesc(String(inner).replace(/<span class="st-hy">(?:<span[^>]*><\/span>){3}<\/span>/g, "¦").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "")).replace(/[ \t]+/g, " ")); }
   function has(par, c) { return par.cls.indexOf(c) !== -1; }
   // an older build gave every verse a heading "श्लोक ९ (फलश्रुति)": only a real name ("फलश्रुति") is a label now
   function cleanLabel(t) {
@@ -146,7 +172,7 @@
     paraList(body).forEach(function (par) {
       var text = plain(par.inner);
       if (has(par, "cover-Shri-Hari")) { st.invocation = text; return; }
-      if (has(par, "cover-Book-Name")) { st.title = text; return; }
+      if (has(par, "cover-Book-Name")) { st.title = text.split("¦").join(""); if (text.indexOf("¦") !== -1) st.titleHy = text; return; }
       if (has(par, "cover-subtitle")) { st.subtitle = st.subtitle ? st.subtitle + " — " + text : text; return; }
       if (has(par, "cover-Publisher-Note")) { st.publisher = text; return; }
       if (has(par, "Chapter-End-Text")) { st.closing = text; return; }
@@ -160,8 +186,8 @@
       var cur = st.verses[st.verses.length - 1];
       if (has(par, "stotra-arth-label")) return;
       if (has(par, "stotra-arth-pad") && cur) {
-        var wm = par.inner.match(/<b[^>]*class=["'][^"']*stotra-w[^"']*["'][^>]*>([\s\S]*?)<\/b>\s*(?:<span[^>]*>=<\/span>)?\s*([\s\S]*)$/i);
-        if (wm) cur.pad.push([plain(wm[1]), plain(wm[2])]);
+        var wm = par.inner.match(/<b[^>]*class=["'][^"']*stotra-w[^"']*["'][^>]*>([\s\S]*?)<\/b>\s*(?:<span[^>]*class=["']stotra-br["'][^>]*>\(([^)]*)\)<\/span>)?\s*(?:<span[^>]*>=<\/span>)?\s*([\s\S]*)$/i);
+        if (wm) cur.pad.push(par.span ? [plain(wm[1]), plain(wm[3]), plain(wm[2] || ""), par.span] : [plain(wm[1]), plain(wm[3])]);
         else { var i = text.indexOf("="); cur.pad.push(i < 0 ? [text, ""] : [trim(text.slice(0, i)), trim(text.slice(i + 1))]); }
         return;
       }
@@ -177,5 +203,5 @@
   }
 
   return { PAD_LABEL: PAD_LABEL, ARTH_HIDE: ARTH_HIDE, LIBRARY_CATEGORY: LIBRARY_CATEGORY, CATEGORIES: CATEGORIES, buildHtml: buildHtml,
-    parseHtml: parseHtml, parsePadText: parsePadText, padText: padText, digits: digits, esc: esc };
+    parseHtml: parseHtml, parsePadText: parsePadText, padText: padText, digits: digits, esc: esc, lineHtml: lineHtml, hyTitle: hyTitle, softTitle: softTitle };
 });

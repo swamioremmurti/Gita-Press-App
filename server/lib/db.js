@@ -214,6 +214,32 @@ const SCHEMA_STATEMENTS = [
     created_at    INTEGER NOT NULL
   )`,
   'CREATE INDEX IF NOT EXISTS idx_ai_usage_time ON ai_usage(created_at)',
+  // finished chat answers, reused for the same question (server/lib/chatLog.js) -- admin > Chat questions
+  `CREATE TABLE IF NOT EXISTS chat_cache (
+    qkey        TEXT PRIMARY KEY,
+    question    TEXT NOT NULL,
+    answer      TEXT NOT NULL,
+    sources     TEXT NOT NULL DEFAULT '[]',
+    model       TEXT NOT NULL DEFAULT '',
+    ver         TEXT NOT NULL DEFAULT '',
+    hits        INTEGER NOT NULL DEFAULT 0,
+    created_at  INTEGER NOT NULL,
+    last_hit_at INTEGER NOT NULL DEFAULT 0
+  )`,
+  // questions the chat could not answer from the books ("information not available"), for the team to review
+  `CREATE TABLE IF NOT EXISTS chat_unanswered (
+    id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    qkey      TEXT NOT NULL UNIQUE,
+    question  TEXT NOT NULL,
+    answer    TEXT NOT NULL DEFAULT '',
+    sources   TEXT NOT NULL DEFAULT '[]',
+    times     INTEGER NOT NULL DEFAULT 1,
+    status    TEXT NOT NULL DEFAULT 'new',
+    note      TEXT NOT NULL DEFAULT '',
+    first_at  INTEGER NOT NULL,
+    last_at   INTEGER NOT NULL
+  )`,
+  'CREATE INDEX IF NOT EXISTS idx_chat_unanswered_status ON chat_unanswered(status, last_at)',
   'CREATE INDEX IF NOT EXISTS idx_push_log_time ON push_log(created_at)',
   'CREATE INDEX IF NOT EXISTS idx_book_chapters_book ON book_chapters(book_file, pos)',
   'CREATE INDEX IF NOT EXISTS idx_chapter_versions_ch ON chapter_versions(chapter_id)',

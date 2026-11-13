@@ -5574,7 +5574,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "guru",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  27.1
+        "sizeKB":  32.2
     },
     {
         "file":  "श्री अन्नपूर्णाकवचम्.html",
@@ -5586,7 +5586,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "devi",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  59.9
+        "sizeKB":  69.3
     },
     {
         "file":  "तैत्तिरीयोपनिषद् (शांकरभाष्य).html",
@@ -5614,5 +5614,77 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  586.2
+    },
+    {
+        "file":  "जगदम्बा अपराधक्षमापण स्तोत्रम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "devi",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  29.2
+    },
+    {
+        "file":  "श्रीगणेशापराधक्षमापणस्तोत्रम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "ganesha",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  111.7
+    },
+    {
+        "file":  "श्रीदत्तात्रेयापराधक्षमापणस्तोत्रम् २.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "श्रीमद् वासुदेवानन्दसरस्वती (टेंबे स्वामी)",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "guru",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  45.2
+    },
+    {
+        "file":  "श्रीललितात्रिपुरसुन्दरी-अपराधक्षमापणस्तोत्रम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "devi",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  80.7
+    },
+    {
+        "file":  "श्रीगणेशभुजङ्गप्रयातस्तोत्रम्.html",
+        "category":  "Stotra evam Naamavali",
+        "author":  "आदि शंकराचार्य",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stotra":  "ganesha",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  35.1
+    },
+    {
+        "file":  "आत्मोपनिषद्.html",
+        "category":  "Upanishad",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "कल्याण सेवा ट्रस्ट",
+        "stview":  "yes",
+        "swith_arth":  "yes",
+        "arth_hide":  "stotra-arth*",
+        "sizeKB":  147.8
     }
 ];

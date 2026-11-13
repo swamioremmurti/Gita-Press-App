@@ -119,7 +119,7 @@
       title: base.title, audio: base.audio || '', invocation: base.invocation || '', subtitle: base.subtitle || '', author: base.author || '', publisher: base.publisher || '', category: base.category || '',
       closing: base.closing || '',
       intro: (base.intro || []).map(function (s) { return { title: s.title || '', text: s.text || '' }; }),
-      verses: (base.verses || []).map(function (v) { return { label: v.label || '', lines: (v.lines || []).join('\n'), pad: (v.pad || []).map(function (p) { return p[0] + ' = ' + p[1]; }).join('\n'), bhav: v.bhav || '' }; })
+      verses: (base.verses || []).map(function (v) { return { label: v.label || '', lines: (v.lines || []).join('\n'), pad: (v.pad || []).map(function (p) { return p[0] + ' = ' + p[1]; }).join('\n'), padSrc: v.pad || [], bhav: v.bhav || '' }; })
     };
     if (!st.verses.length) st.verses.push({ label: '', lines: '', pad: '', bhav: '' });
     var dirty = false;
@@ -210,10 +210,15 @@
       if (st.verses.length === 1) return A.toast('A stotra needs at least one verse', 'bad');
       A.confirm({ title: 'Delete verse ' + (i + 1) + '?', message: 'It is removed from the stotra when you save.', ok: 'Delete verse', danger: true }).then(function (yes) { if (yes) { st.verses.splice(i, 1); touch(); draw(); } });
     });
+    /* the word rows as loaded keep their word break and the verse words they cover (the tap-a-word tooltip), unless the text of the rows was edited */
+    function padFor(v) {
+      var src = v.padSrc || [];
+      return src.length && v.pad === src.map(function (p) { return p[0] + ' = ' + p[1]; }).join('\n') ? src : v.pad;
+    }
     A.on(view, 'click', '#save', function (e, btn) {
       var body = {
         title: st.title, audio: st.audio, category: st.category, author: st.author, publisher: st.publisher, invocation: st.invocation, subtitle: st.subtitle, closing: st.closing,
-        intro: st.intro, verses: st.verses.map(function (v) { return { label: v.label, lines: v.lines.split('\n'), pad: v.pad, bhav: v.bhav }; })
+        intro: st.intro, verses: st.verses.map(function (v) { return { label: v.label, lines: v.lines.split('\n'), pad: padFor(v), bhav: v.bhav }; })
       };
       btn.disabled = true;
       (file ? A.put(API + '/' + encodeURIComponent(file), body) : A.post(API, body)).then(function (r) {

@@ -1044,6 +1044,7 @@
   };
 
   // Display-only title overrides — shown in the app, never alters the underlying book file.
+  function cardTitle(t) { var SF = window.SwadhyayStotraFormat; return SF && SF.softTitle ? SF.softTitle(t) : esc(t); }   // a long stotra name may break at its soft hyphen
   var TITLE_OVERRIDES = {
     "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html": "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र",
     "नारी-अङ्क.html": "नारी-अङ्क",
@@ -1288,6 +1289,7 @@
       featured: false,
       contentHref: null,         // set when the admin panel edited the text: the reader then loads it from the API
       isGitaPress: ov.isGitaPress !== undefined ? !!ov.isGitaPress : !NON_GITA_PRESS_BOOKS[b.file],
+      stview: !!b.stview,   // a text shown in the stotra viewer (verse, word list, commentary) that is NOT a stotra (an Upanishad): opens at /stotra/<slug>, is not listed on /stotras
       stotra: ov.stotra || b.stotra || "",   // the stotra category key when this book is a stotra page (swadhyay-stotra.js): listed on /stotras, opens in the stotra viewer
       swithArth: arthSel.length > 0,    // reader gets a button to hide the meaning/commentary (only shloks stay)
       arthHideSel: arthSel
@@ -1364,7 +1366,7 @@
   }
   function bookPath(book) { return "/book/" + encodeURIComponent(book.slug); }
   function readPath(book, chapterIdx) {
-    if (book.stotra) return "/stotra/" + encodeURIComponent(book.slug);   // a stotra is one continuous page: "start reading" opens the stotra viewer
+    if (book.stotra || book.stview) return "/stotra/" + encodeURIComponent(book.slug);   // a stotra is one continuous page: "start reading" opens the stotra viewer
     return "/read/" + encodeURIComponent(book.slug) + (chapterIdx !== undefined && chapterIdx !== null ? "/" + chapterIdx : "");
   }
 
@@ -2003,7 +2005,7 @@
       '</a>' +
       '<button class="fav-toggle ' + (fav ? "active" : "") + '" data-fav="' + book.id + '" title="पसंदीदा">♥</button>' +
       '<div class="book-card-body">' +
-      '<a href="' + bookPath(book) + '" class="book-title">' + esc(book.title) + '</a>' +
+      '<a href="' + bookPath(book) + '" class="book-title">' + cardTitle(book.title) + '</a>' +
       '<div class="book-author">' + esc(book.author) + '</div>' +
       '</div></div>';
   }
@@ -2014,7 +2016,7 @@
     return '<div class="book-row-item" data-id="' + book.id + '">' +
       '<a class="book-card-link" href="' + bookPath(book) + '">' + coverEl(book, "sm") + '</a>' +
       '<div class="book-row-body">' +
-      '<a href="' + bookPath(book) + '" class="book-title">' + esc(book.title) + '</a>' +
+      '<a href="' + bookPath(book) + '" class="book-title">' + cardTitle(book.title) + '</a>' +
       (read ? '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div><span class="progress-pct">' + pct + '%</span>' :
         '<div class="book-author">' + esc(book.author) + '</div>') +
       '</div></div>';
@@ -2242,7 +2244,7 @@
           special.others.map(function (o) { return '<a href="' + vratPath(o) + '">' + esc(o.name) + '</a>'; }).join("") + '</div>'
         : "";
       banner = '<div class="festival-banner">' +
-        '<div class="festival-icon">' + esc(v.icon || "🔱") + '</div>' +
+        '<div class="festival-icon">' + vratIco(v, "🔱") + '</div>' +
         '<div class="festival-body"><small class="festival-when">' + esc(vratWhen(panchang)) + '</small><h4>' + esc(v.name) + '</h4><p>' + esc(v.intro) + '</p>' + more +
         '<a class="btn-outline festival-cta" href="' + vratPath(v) + '">' + esc(tx("विस्तार देखें", "View details")) + ' →</a></div>' +
         '</div>';
@@ -2269,6 +2271,7 @@
       '<div class="cta-banner-body"><h3>' + esc(tx("आज क्या पढ़ें?", "What to read today?")) + '</h3>' +
       '<p>' + esc(tx("आज के दिन के अनुसार उपयुक्त पाठ, स्तोत्र और साधना सुझाव", "Readings, stotras and sadhana suggestions suited to today")) + '</p>' +
       '<span class="btn-primary">' + esc(tx("देखें", "View")) + ' →</span></div>' +
+      '<div class="cta-banner-cover" title="' + esc(book.title) + '">' + coverEl(book, "md") + '</div>' +
       '</a></section>';
   }
 
@@ -2594,7 +2597,7 @@
     return '<div class="book-card lib2-card" data-id="' + book.id + '">' +
       '<a class="book-card-link" href="' + bookPath(book) + '">' + coverEl(book, "md") + '</a>' +
       '<div class="lib2-card-body">' +
-      '<a href="' + bookPath(book) + '" class="book-title">' + esc(book.title) + '</a>' +
+      '<a href="' + bookPath(book) + '" class="book-title">' + cardTitle(book.title) + '</a>' +
       '<div class="lib2-author">' + esc(book.author || "") + '</div>' +
       '<div class="lib2-tags">' + tags + '</div>' +
       '<div class="lib2-acts">' +
@@ -4771,7 +4774,8 @@
       '<button class="bd-mini-btn ' + (fav ? "active" : "") + '" id="favBtn" data-fav="' + book.id + '" title="' + esc(tx("पसंदीदा में जोड़ें", "Add to favourites")) + '" aria-label="' + esc(tx("पसंदीदा में जोड़ें", "Add to favourites")) + '">' + favBtnInner(fav) + '</button>' +
       '<button class="bd-mini-btn" id="shareBtn" title="' + esc(tx("साझा करें", "Share")) + '" aria-label="' + esc(tx("साझा करें", "Share")) + '">' + svgIcon(BD_ICONS.share, 18) + '</button>' +
       '</div>';
-    html += '<h1 class="bd-title">' + esc(mainTitle) + '</h1>';
+    var SF = window.SwadhyayStotraFormat, hyTitle = SF && SF.hyTitle ? SF.hyTitle(mainTitle) : null;
+    html += '<h1 class="bd-title">' + (hyTitle && SF && SF.lineHtml ? SF.lineHtml(hyTitle) : esc(mainTitle)) + '</h1>';
     if (subTitle) html += '<p class="bd-subtitle">( ' + esc(subTitle) + ' )</p>';
 
     html += '<div class="bd-tags">' + book.categoryMetas.map(function (cm) {
@@ -4916,6 +4920,9 @@
     var byN = {};
     (sources || []).forEach(function (s) { byN[s.n] = s; });
     function cites(h) {
+      // **verse line** -> bold (the assistant marks shlokas, dohas and chaupais this way); a "**" still open at the end of a line
+      // (the answer is streaming) is bolded to the end, and any stray ** is dropped
+      h = h.replace(/\*\*([^*\n]+?)\*\*/g, '<strong class="chat-verse">$1</strong>').replace(/\*\*([^*\n]+)$/, '<strong class="chat-verse">$1</strong>').replace(/\*\*/g, "");
       return h.replace(/\[(\d+(?:\s*[,，]\s*\d+)*)\]/g, function (m, nums) {
         return nums.split(/\s*[,，]\s*/).map(function (n) {
           var s = byN[n], b = s && s.bookId != null ? BOOKS_BY_ID[s.bookId] : null;
@@ -5098,7 +5105,7 @@
     var list = vratsFor(p).slice(0, 8);
     if (!list.length) return "";
     return '<div class="pd-section-title">' + bilingual("व्रत एवं पर्व") + '</div><div class="pd-vrats">' +
-      list.map(function (v) { return '<a class="pd-vrat" href="' + vratPath(v) + '"><span aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' + esc(v.name) + '</a>'; }).join("") + '</div>';
+      list.map(function (v) { return '<a class="pd-vrat" href="' + vratPath(v) + '"><span aria-hidden="true">' + vratIco(v) + '</span>' + esc(v.name) + '</a>'; }).join("") + '</div>';
   }
   function viewPanchang() {
     var city = getPanchangCity();
@@ -5231,19 +5238,37 @@
     var nx = vratNext(v) || vratNextFar(v);
     return nx ? '<small class="vc-next">📅 ' + esc(vratNextText(nx)) + '</small>' : "";
   }
+  /* a vrat's icon: the deity picture (assets/deity/<name>.webp) when the vrat belongs to one deity, else its emoji. First match wins. */
+  var VRAT_DEITY = [
+    [/नृसिंह/, "narasimha"], [/स्कन्द|कार्तिकेय/, "kumaraswamy"], [/जन्माष्टमी|जगन्नाथ/, "krishna"],
+    [/^दशहरा|राम\s?नवमी/, "rama"], [/हनुमद्|हनुमान्\s?जयंती|^मंगलवार/, "hanuman"],
+    [/गणेश|संकष्ट|विनायक/, "ganesha"], [/दुर्गा/, "durga"], [/शिवरात्रि|प्रदोष|सोमवार|भैरव/, "shiva"],
+    [/गौरी|गणगौर|हरितालिका|उमा/, "parvati"], [/लक्ष्मी|दीपावली|धन\s?तेरस/, "lakshmi"],
+    [/बसंत\s?पंचमी|बसन्त\s?पंचमी|वसन्त\s?पंचमी|वसंत\s?पंचमी/, "saraswati"],
+    [/एकादशी|^श्रीसत्यनारायण|^अनंत चतुर्दशी|^बृहस्पतिवार/, "vishnu"]
+  ];
+  function vratDeity(v) {
+    var nm = v.name || "";
+    for (var i = 0; i < VRAT_DEITY.length; i++) if (VRAT_DEITY[i][0].test(nm)) return VRAT_DEITY[i][1];
+    return v.icon === "🐘" ? "ganesha" : "";
+  }
+  function vratIco(v, fallback) {
+    var d = vratDeity(v);
+    return d ? '<img class="st-di" src="/assets/deity/' + d + '.webp" width="96" height="96" alt="" loading="lazy" decoding="async">' : esc(v.icon || fallback || "🙏");
+  }
   function vratRow(v) {
     var sub = vratSub(v);
-    return '<a class="vrow" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+    return '<a class="vrow" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + vratIco(v) + '</span>' +
       '<span class="vc-tx"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '</span><i class="vc-go" aria-hidden="true">›</i></a>';
   }
   function vratTile(v) {
     var sub = vratSub(v);
-    return '<a class="vtile" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+    return '<a class="vtile" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + vratIco(v) + '</span>' +
       '<b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '<i class="vc-go" aria-hidden="true">›</i></a>';
   }
   function vratTodayCard(v) {
     var sub = vratSub(v);
-    return '<a class="vtoday" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vt-thumb" aria-hidden="true">' + esc(v.icon || "🙏") + '</span>' +
+    return '<a class="vtoday" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vt-thumb" aria-hidden="true">' + vratIco(v) + '</span>' +
       '<span class="vt-body"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") +
       '<span class="vt-btn">' + esc(tx("विवरण देखें", "View details")) + ' →</span></span><i class="vc-go" aria-hidden="true">›</i></a>';
   }
@@ -5372,7 +5397,7 @@
     var p = getPanchang(new Date(), getPanchangCity());
     var isToday = vratsFor(p).some(function (x) { return x.slug === v.slug; });
     var chips = [v.maas, v.tithi].filter(Boolean).map(function (c) { return '<span class="vrat-chip">' + esc(c) + '</span>'; }).join("");
-    var html = '<header class="vrat-head"><span class="vh-ic" aria-hidden="true">' + esc(v.icon || "🙏") + '</span><div><h1>' + esc(v.name) + '</h1>' +
+    var html = '<header class="vrat-head"><span class="vh-ic" aria-hidden="true">' + vratIco(v) + '</span><div><h1>' + esc(v.name) + '</h1>' +
       '<div class="vrat-chips">' + chips + (isToday ? '<span class="vrat-chip is-today">' + esc(tx("आज", "Today")) + '</span>' : "") + '</div>' +
       vratNextBlock(v) +
       ((v.aliases || []).length ? '<p class="vrat-alias">' + esc(tx("अन्य नाम: ", "Also known as: ")) + esc(v.aliases.join(" · ")) + '</p>' : "") + '</div></header>';
@@ -5838,8 +5863,8 @@
     }
     if (seg[0] === "stotra" && seg[1] !== undefined) {
       var stb = resolveBookParam(seg[1]);
-      if (stb && stb.stotra) {
-        setMeta("Kalyan | कल्याण — " + stb.title + " | स्तोत्र पाठ एवं अर्थ | " + (stb.author || "Stotra"),
+      if (stb && (stb.stotra || stb.stview)) {
+        setMeta("Kalyan | कल्याण — " + stb.title + " | " + (stb.stotra ? "स्तोत्र पाठ एवं अर्थ | " + (stb.author || "Stotra") : "पाठ एवं अर्थ | " + (stb.author || "Upanishad")),
           stb.title + " — मूल पाठ, पद-विच्छेद एवं शब्दार्थ और भावार्थ सहित। " + stb.title + " with word-by-word meaning and translation.", "/stotra/" + encodeURIComponent(stb.slug));
         return;
       }
@@ -5884,7 +5909,7 @@
       var rBook = resolveBookParam(seg[1]);
       var rCh = seg[2] !== undefined ? parseInt(seg[2], 10) : null;
       if (!rBook) { navigate("/library"); return; }
-      if (rBook.stotra) { try { history.replaceState(null, "", readPath(rBook)); } catch (e) {} render(); return; }   // old /read/<stotra> links land in the stotra viewer
+      if (rBook.stotra || rBook.stview) { try { history.replaceState(null, "", readPath(rBook)); } catch (e) {} render(); return; }   // old /read/<stotra> links land in the stotra viewer
       var rSegDecoded; try { rSegDecoded = decodeURIComponent(seg[1]); } catch (e) { rSegDecoded = seg[1]; }
       if (rSegDecoded !== rBook.slug) { try { history.replaceState(null, "", readPath(rBook, isNaN(rCh) ? null : rCh) + location.search); } catch (e) {} }   // earlier address -> current one
       setPageMeta(rBook);
@@ -5934,7 +5959,7 @@
     else if (seg[0] === "stotras") { html = window.SwadhyayStotra ? window.SwadhyayStotra.hubHtml(stotraCtx()) : viewHome(); }
     else if (seg[0] === "stotra" && seg[1] !== undefined) {
       var sBook = resolveBookParam(seg[1]);
-      if (sBook && sBook.stotra && window.SwadhyayStotra) { html = window.SwadhyayStotra.viewerHtml(stotraCtx(sBook)); }
+      if (sBook && (sBook.stotra || sBook.stview) && window.SwadhyayStotra) { html = window.SwadhyayStotra.viewerHtml(stotraCtx(sBook)); }
       else { try { history.replaceState(null, "", sBook ? bookPath(sBook) : "/stotras"); } catch (e) {} html = sBook ? viewBook(sBook.id) : (window.SwadhyayStotra ? window.SwadhyayStotra.hubHtml(stotraCtx()) : viewHome()); pageBook = sBook; }
     }
     else if (seg[0] === "author" && seg[1] !== undefined) {
@@ -5977,7 +6002,7 @@
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
     if (window.SwadhyayVangmay && seg[0] === "vangmay") window.SwadhyayVangmay.mount(vangmayCtx());
     if (window.SwadhyayStotra && seg[0] === "stotras") window.SwadhyayStotra.mountHub(stotraCtx());
-    if (window.SwadhyayStotra && seg[0] === "stotra" && seg[1] !== undefined) { var sb2 = resolveBookParam(seg[1]); if (sb2 && sb2.stotra) window.SwadhyayStotra.mountViewer(stotraCtx(sb2)); }
+    if (window.SwadhyayStotra && seg[0] === "stotra" && seg[1] !== undefined) { var sb2 = resolveBookParam(seg[1]); if (sb2 && (sb2.stotra || sb2.stview)) window.SwadhyayStotra.mountViewer(stotraCtx(sb2)); }
     loadQuoteOfTheDay();
     if (seg[0] === "chat") wireChatView();
 
