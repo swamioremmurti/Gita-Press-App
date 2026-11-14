@@ -416,6 +416,14 @@
   }
 
   var COVER_OVERRIDES = {
+    "जगदम्बा अपराधक्षमापण स्तोत्रम्.html": "assets/covers/jagadambaa-aparaadhakshamaapan-stotram.webp",
+    "श्री अन्नपूर्णाकवचम्.html": "assets/covers/shree-annapoornaakavacham.webp",
+    "श्री गुर्वष्टकम्.html": "assets/covers/shree-gurvashtakam.webp",
+    "आत्मोपनिषद्.html": "assets/covers/aatmopanishad.webp",
+    "श्रीललितात्रिपुरसुन्दरी-अपराधक्षमापणस्तोत्रम्.html": "assets/covers/shreelalitaatripurasundaree-aparaadhakshamaapanastotram.webp",
+    "श्रीगणेशापराधक्षमापणस्तोत्रम्.html": "assets/covers/shreeganeshaaparaadhakshamaapanastotram.webp",
+    "श्रीदत्तात्रेयापराधक्षमापणस्तोत्रम् २.html": "assets/covers/shreedattaatreyaaparaadhakshamaapanastotram-2.webp",
+    "श्रीगणेशभुजङ्गप्रयातस्तोत्रम्.html": "assets/covers/shreeganeshabhujanggaprayaatastotram.webp",
     "श्रीअष्टलक्ष्मीमहामन्त्रम्.html": "assets/covers/shreeashtalakshmeemahaamantram.webp",
     "श्री कार्तवीर्यार्जुन मन्त्र.html": "assets/covers/shree-kartaviryarjun-mantra.webp",
     "सामवेदीया लोमशी शिक्षा.html": "assets/covers/saamavedeeyaa-lomashee-shikshaa.webp",
@@ -5238,7 +5246,117 @@
     var nx = vratNext(v) || vratNextFar(v);
     return nx ? '<small class="vc-next">📅 ' + esc(vratNextText(nx)) + '</small>' : "";
   }
-  /* a vrat's icon: the deity picture (assets/deity/<name>.webp) when the vrat belongs to one deity, else its emoji. First match wins. */
+  /* the vrat's own picture (assets/vrat/<name>.webp, 96px, each under 15 KB), by the vrat's slug */
+  var VRAT_IMG = {
+    "achala-saptami": "achala_saptami_saura_saptami_vrat",
+    "ahoi-ashtami": "ahoi_ashtami_vrat",
+    "ऐन्द्रीपूजन": "aindri_pujan",
+    "akshaya-navami": "akshaya_navami",
+    "akshaya-tritiya": "akshaya_tritiya_vrat",
+    "amavasya-vrat": "amavasya_vrat",
+    "अम्बिकाव्रत": "ambikavrat",
+    "ananta-tritiya-vrat": "anant_tritiya_ras_kalyanini_vrat",
+    "govardhan-puja": "annakut_govardhan_puja",
+    "ardra-darshan": "ardra_darshan_margashirsha",
+    "आरोग्यव्रत": "arogya_vrat_chaitra",
+    "अशोककलिकाप्राशनव्रत": "ashok_kalika_prashan_vrat",
+    "ashtaka-shraddha": "ashtaka_shraddha_hemant_shishir",
+    "बालेन्दुव्रत": "balenduvrat",
+    "bhagavat-daan": "bhagavat_daan_bhadrapad_purnima",
+    "bhagavat-katharambh": "bhagavat_katha_shubh_tithiyan",
+    "bhai-dooj": "bhai_dooj_yama_dvitiya",
+    "भवानीव्रत": "bhavani_vrat",
+    "bhishma-ashtami": "bhishmashtami_bhishma_nirvan",
+    "बिल्वत्रिरात्रिव्रत": "bilvatriratri_vrat",
+    "budhvar-vrat": "budhvar_vrat",
+    "चैत्री-अमा": "chaitri_ama_amavasya_vrat",
+    "चैत्री-पूर्णिमा": "chaitri_purnima_hanuman_vijayotsav_satyanarayan",
+    "चण्डिकानवमी": "chandika_navami",
+    "chandrayan-vrat": "chandrayana_shiva_jap_vrat",
+    "chaturmas-deeksha": "chaturmas_vrat_diksha",
+    "दोलनोत्सव": "dolanotsav",
+    "दुर्गन्धि-दुर्भाग्यनाशक-व्रत": "durgandhi_durbhagyanashak_vrat",
+    "dwadashi-vishnu": "dwadashi_vishnu_tithi_vishnu_dwadashak_vrat",
+    "ganga-dussehra": "ganga_dussehra_parv",
+    "guru-purnima": "guru_purnima_vyas_purnima_vrat",
+    "हरिपूजा": "haripuja_ashadh",
+    "होलामहोत्सव": "holamahotsav_dhuredi_chharandi_navaneshti",
+    "holi": "holikotsav_parv",
+    "indradhvaj-utsav": "indradhvajotsav",
+    "जलधेनुदान-व्रत": "jaladhenu_daan_vrat",
+    "कदलीव्रत": "kadali_vrat",
+    "कमलसप्तमी": "kamal_saptami",
+    "कामदेवव्रत": "kamdev_vrat_trayodashi",
+    "kartik-maas-vrat": "kartik_mas_daan_jap_tap",
+    "kartik-purnima": "kartik_purnima_ganga_snan",
+    "करवीरव्रत": "karvirvrat",
+    "karva-chauth": "karwa_chauth_kark_chaturthi_vrat",
+    "केदारदर्शन-व्रत": "kedar_darshan_vrat",
+    "कोकिलाव्रत": "kokilavrat",
+    "कुमारव्रत": "kumarvrat",
+    "मदनद्वादशी": "madan_dwadashi",
+    "मदनपूजा": "madan_puja_kamdev_puja",
+    "मधुसूदनपूजा": "madhusudan_puja_vaishakh_dwadashi",
+    "magha-purnima": "magh_purnima_jagran_snan_shiva_pujan",
+    "mahalaya-shraddha": "mahalaya_shraddha_pitru_paksha",
+    "महिषघ्नीव्रत": "mahishaghni_vrat",
+    "मातृकाव्रत": "matrika_vrat",
+    "mauni-amavasya": "mauni_amavasya_vrat",
+    "मोदनव्रत": "modanvrat",
+    "nag-panchami": "nag_panchami_vrat",
+    "नामसप्तमी": "namasaptami",
+    "nav-samvatsar": "nav_samvatsar_pratipada_vrat",
+    "नेत्रव्रत": "netravrat",
+    "निम्बसप्तमी": "nimba_saptami",
+    "पंचतपव्रत": "panchatap_vrat",
+    "पंचरात्र-व्रत": "panchratra_vrat",
+    "परशुराम-जयन्ती": "parashuram_jayanti",
+    "parayan-vidhan": "parayan_vidhan_ramayan_devibhagwat_kartik",
+    "पार्वती-पूजा": "parvati_puja_jyeshtha_tritiya",
+    "paush-saptami-khichdi": "paush_shukla_saptami_khichdi_shiva_pujan",
+    "payovrat": "payovrat",
+    "पितृव्रत": "pitruvrat",
+    "punsavan-vrat": "pumsavan_vrat",
+    "purnima-vrat": "purnima_vrat_evam_daan",
+    "पुत्र-प्राप्तिव्रत": "putra_prapti_vrat_vaishakh",
+    "radha-ashtami": "radha_ashtami_vrat",
+    "raksha-bandhan": "raksha_bandhan_parv",
+    "रम्भाव्रत": "rambhavrat",
+    "ravivar-vrat": "ravivar_vrat",
+    "rishi-panchami": "rishi_panchami_vrat",
+    "sankranti": "sankranti_parv",
+    "संतानाष्टमी": "santanashtami_chaitra",
+    "santoshi-mata": "santoshi_mata_vrat",
+    "सौभाग्यव्रत": "saubhagya_vrat_chaitra",
+    "shanivar-vrat": "shanivar_vrat",
+    "sharad-purnima": "sharad_purnima_vrat",
+    "शर्करासप्तमी": "sharkara_saptami",
+    "shashthi-vrat": "shashthi_devsenapujan_vrat",
+    "शीतलाष्टमी": "sheetalashtami",
+    "श्रीव्रत": "shrivrat_chaitra",
+    "शुक्लादेवी-पूजा": "shukladevi_puja_shiv_puja",
+    "shukravar-vrat": "shukravar_vrat",
+    "sita-navami": "sita_navami_vrat",
+    "सूर्यव्रत": "suryavrat_saptami",
+    "grahan": "surya_chandra_grahan_vrat",
+    "तिलकव्रत": "tilakvrat",
+    "tirth-parv": "tirtha_parv_mahbharat_vanparv",
+    "तिथीशपूजन-व्रत": "tithish_pujan_vrat",
+    "tithi-niyam": "tithi_niyam_punya_tithiyan",
+    "tulsi-vivah": "tulsi_vivah_vrat",
+    "वह्निव्रत": "vahnivrat",
+    "वैशाखी-अष्टमी": "vaishakhi_ashtami_aparajita_puja",
+    "वैशाखी-पूर्णिमा": "vaishakh_purnima_satyanarayan_dharmaraj_vrat",
+    "वैशाखस्नान-व्रत": "vaishakh_snan_vrat",
+    "वामनपूजा": "vaman_puja_ashadh",
+    "वारुणीयोग-महावारुणी-महामहावारुणी": "varuni_yog_mahavaruni_mahamahavaruni",
+    "vat-savitri": "vat_savitri_vrat",
+    "विद्याव्रत": "vidyavrat",
+    "vamana-dwadashi": "vijaya_dwadashi_vaman_jayanti",
+    "विश्वेदेवपूजन": "vishvedevi_pujan",
+    "विवस्वान्व्रत": "vivasvanvrat"
+  };
+  /* a vrat's icon: its own picture, else the deity picture (assets/deity/<name>.webp) when the vrat belongs to one deity, else its emoji. First match wins. */
   var VRAT_DEITY = [
     [/नृसिंह/, "narasimha"], [/स्कन्द|कार्तिकेय/, "kumaraswamy"], [/जन्माष्टमी|जगन्नाथ/, "krishna"],
     [/^दशहरा|राम\s?नवमी/, "rama"], [/हनुमद्|हनुमान्\s?जयंती|^मंगलवार/, "hanuman"],
@@ -5253,6 +5371,8 @@
     return v.icon === "🐘" ? "ganesha" : "";
   }
   function vratIco(v, fallback) {
+    var own = VRAT_IMG[v.slug];
+    if (own) return '<img class="st-di" src="/assets/vrat/' + own + '.webp" width="96" height="96" alt="" loading="lazy" decoding="async">';
     var d = vratDeity(v);
     return d ? '<img class="st-di" src="/assets/deity/' + d + '.webp" width="96" height="96" alt="" loading="lazy" decoding="async">' : esc(v.icon || fallback || "🙏");
   }
@@ -5265,12 +5385,6 @@
     var sub = vratSub(v);
     return '<a class="vtile" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vc-ic" aria-hidden="true">' + vratIco(v) + '</span>' +
       '<b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") + vratNextHtml(v) + '<i class="vc-go" aria-hidden="true">›</i></a>';
-  }
-  function vratTodayCard(v) {
-    var sub = vratSub(v);
-    return '<a class="vtoday" href="' + vratPath(v) + '" data-q="' + vratSearchText(v) + '" data-r="' + esc(vratRomanIndex(v)) + '"><span class="vt-thumb" aria-hidden="true">' + vratIco(v) + '</span>' +
-      '<span class="vt-body"><b>' + esc(v.name) + '</b>' + (sub ? '<small>' + esc(sub) + '</small>' : "") +
-      '<span class="vt-btn">' + esc(tx("विवरण देखें", "View details")) + ' →</span></span><i class="vc-go" aria-hidden="true">›</i></a>';
   }
   /* the month a vrat is filed under: of the months it is observed in, the one that comes first from the running month on */
   function vratMonthFrom(v, now) {
@@ -5293,22 +5407,162 @@
   /* o = { title, icon, list, shape: "today" | "tile" | "row", limit, cls, aside (html next to the title) } */
   function vratSection(o) {
     if (!o.list.length) return "";
-    var card = o.shape === "today" ? vratTodayCard : o.shape === "tile" ? vratTile : vratRow;
-    return '<section class="vs vs-' + o.shape + (o.cls ? " " + o.cls : "") + '"><header class="vs-head"><span class="vs-ic" aria-hidden="true">' + o.icon + '</span><h2>' + esc(o.title) + '</h2>' +
+    var card = o.shape === "tile" ? vratTile : vratRow;
+    return '<section class="vs vs-' + o.shape + (o.cls ? " " + o.cls : "") + '"' + (o.id ? ' id="' + esc(o.id) + '"' : "") + '><header class="vs-head">' + (o.icon ? '<span class="vs-ic" aria-hidden="true">' + o.icon + '</span>' : "") + '<h2>' + esc(o.title) + '</h2>' +
       '<span class="vs-pill">' + o.list.length + ' ' + esc(tx("व्रत / पर्व", "vrats / festivals")) + '</span>' + (o.aside || "") +
       (o.list.length > o.limit ? '<button type="button" class="vs-all" data-vs-all>' + esc(tx("देखें सभी", "See all")) + ' <i>›</i></button>' : "") + '</header>' +
       '<div class="vs-grid">' + o.list.map(function (v, i) { return i < o.limit ? card(v) : card(v).replace("<a ", '<a data-extra ') ; }).join("") + '</div></section>';
   }
-  var VRAT_POPULAR = [["एकादशी", "एकादशी"], ["नवरात्रि", "नवरात्र"], ["शिवरात्रि", "शिवरात्रि"], ["करवा चौथ", "करवा चौथ"], ["दीपावली", "दीपावली"], ["संकष्टी चतुर्थी", "संकष्ट"]];
+  /* ---- the list page: hero + search, "today" (a slider), four ways to browse, the main deities, and the list itself ----
+     The list under them follows the chosen way of browsing: by month (the default), A-Z, by deity or by kind of vrat; a search replaces it
+     with the matches from the whole list. */
+  var VRAT_POPULAR = [
+    ["एकादशी", "एकादशी", "deity/vishnu"], ["प्रदोष", "प्रदोष", "deity/shiva"], ["संकष्टी चतुर्थी", "संकष्ट", "deity/ganesha"],
+    ["पूर्णिमा", "पूर्णिमा", "vrat/purnima_vrat_evam_daan"], ["अमावस्या", "अमावस्या", "vrat/amavasya_vrat"],
+    ["नवरात्रि", "नवरात्र", "deity/durga"], ["करवा चौथ", "करवा चौथ", "vrat/karwa_chauth_kark_chaturthi_vrat"]
+  ];
+  /* a vrat belongs to the first deity whose pattern its name matches; chip = shown in the row of main deities */
+  var VRAT_GROUPS = [
+    { k: "shani", hi: "शनि देव", en: "shani", emoji: "🪐", chip: 1, re: /शनिवार|शनि/ },
+    { k: "hanuman", hi: "हनुमान जी", en: "hanuman", img: "deity/hanuman", chip: 1, re: /हनुमद्|हनुमान|^मंगलवार/ },
+    { k: "rama", hi: "श्री राम", en: "ram rama sita", img: "deity/rama", chip: 1, re: /राम\s?नवमी|^दशहरा|सीता\s?नवमी/ },
+    { k: "krishna", hi: "श्री कृष्ण", en: "krishna", img: "deity/krishna", chip: 1, re: /जन्माष्टमी|जगन्नाथ|राधा|गोवर्धन|अन्नकूट|दोलनोत्सव|^भागवत/ },
+    { k: "ganesha", hi: "श्री गणेश", en: "ganesh ganesha ganpati", img: "deity/ganesha", chip: 1, re: /गणेश|संकष्ट|विनायक|वक्रतुण्ड|दूर्वागणपति|मनोरथ चतुर्थी|रथोत्सव चतुर्थी|कृच्छ्रचतुर्थी|अंगारक|माघ शुक्ल चतुर्थी|मोदनव्रत|^बुधवार/ },
+    { k: "lakshmi", hi: "माँ लक्ष्मी", en: "lakshmi laxmi", img: "deity/lakshmi", chip: 1, re: /लक्ष्मी|दीपावली|धन\s?तेरस|^श्रीव्रत|^शुक्रवार|अक्षय तृतीया/ },
+    { k: "durga", hi: "माँ दुर्गा", en: "durga devi mata", img: "deity/durga", chip: 1, re: /दुर्गा|नवरात्र|चण्डिका|महिषघ्नी|अम्बिका|भवानी|संतोषी|शीतला|गौरी|गणगौर|हरितालिका|उमा|पार्वती|मातृका|कोकिला/ },
+    { k: "shiva", hi: "भगवान शिव", en: "shiva shiv mahadev", img: "deity/shiva", chip: 1, re: /शिवरात्रि|प्रदोष|सोमवार|भैरव|शिव|चान्द्रायण|बिल्व|केदार|शुक्लादेवी/ },
+    { k: "vishnu", hi: "भगवान विष्णु", en: "vishnu hari narayan", img: "deity/vishnu", chip: 1, re: /एकादशी|सत्यनारायण|अनंत चतुर्दशी|^बृहस्पतिवार|वामन|हरिपूजा|मधुसूदन|विष्णु|पयोव्रत|तुलसी|चातुर्मास|नृसिंह|परशुराम/ },
+    { k: "surya", hi: "सूर्य देव", en: "surya sun", emoji: "☀️", re: /सूर्य|रविवार|विवस्वान्|अचला सप्तमी|निम्बसप्तमी|कमलसप्तमी|शर्करासप्तमी|नामसप्तमी|संक्रान्ति/ },
+    { k: "other", hi: "अन्य व्रत एवं पर्व", en: "other", emoji: "🙏", re: /./ }
+  ];
+  function vratGroup(v) {
+    if (v._dg) return v._dg;
+    var nm = v.name || "";
+    for (var i = 0; i < VRAT_GROUPS.length; i++) if (VRAT_GROUPS[i].re.test(nm)) return (v._dg = VRAT_GROUPS[i]);
+    return (v._dg = VRAT_GROUPS[VRAT_GROUPS.length - 1]);
+  }
+  function vratGroupIco(g, size) {
+    return g.img ? '<img class="st-di" src="/assets/' + g.img + '.webp" width="' + size + '" height="' + size + '" alt="" loading="lazy" decoding="async">' : '<span class="vd-emoji">' + g.emoji + '</span>';
+  }
+  function vratHay(v) { return ((v.name || "") + " " + (v.aliases || []).join(" ") + " " + (v.maas || "") + " " + (v.tithi || "") + " " + vratGroup(v).hi).toLowerCase(); }
+  function vratMatch(v, q, qRoman) {
+    if (vratHay(v).indexOf(q) !== -1) return true;
+    if (!qRoman) return false;
+    if (!v._ri) v._ri = vratRomanIndex(v) + " " + vratGroup(v).en;
+    return vratRomanHit(v._ri, qRoman);
+  }
+  var vratUI = { mode: "month", deity: "", q: "" };
+
   function vratHero() {
     return '<header class="vrat-hero"><div class="vrat-hero-in"><span class="vh-lotus" aria-hidden="true">🪷</span>' +
-      '<h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1>' +
+      '<div class="vh-title"><i class="vh-orn" aria-hidden="true"></i><h1>' + esc(tx("व्रत एवं पर्व", "Vrats & Festivals")) + '</h1><i class="vh-orn r" aria-hidden="true"></i></div>' +
       '<p>' + esc(tx("भारतीय सनातन परम्परा के पवित्र व्रत, पर्व और तिथियों का विस्तृत मार्गदर्शन", "A detailed guide to the sacred vrats, festivals and tithis of the Sanatan tradition")) + '</p>' +
-      '<form class="vh-search" role="search" id="vratForm"><span aria-hidden="true">🔍</span><input id="vratSearch" type="search" autocomplete="off" placeholder="' + esc(tx("व्रत, पर्व, मास या तिथि खोजें…", "Search a vrat, festival, month or tithi…")) + '" aria-label="' + esc(tx("खोजें", "Search")) + '">' +
+      '<form class="vh-search" role="search" id="vratForm"><span aria-hidden="true">🔍</span><input id="vratSearch" type="search" autocomplete="off" placeholder="' + esc(tx("व्रत, पर्व या देवी-देवता का नाम खोजें…", "Search a vrat, festival or deity…")) + '" aria-label="' + esc(tx("खोजें", "Search")) + '">' +
       '<button type="submit">' + esc(tx("खोजें", "Search")) + '</button></form>' +
-      '<div class="vh-pop"><span>' + esc(tx("लोकप्रिय खोज:", "Popular:")) + '</span>' + VRAT_POPULAR.map(function (c) {
-        return '<button type="button" class="vh-chip" data-vq="' + esc(c[1]) + '">' + esc(c[0]) + '</button>';
-      }).join("") + '</div></div></header>';
+      '<div class="vh-pop"><span>' + esc(tx("लोकप्रिय खोजें:", "Popular:")) + '</span>' + VRAT_POPULAR.map(function (c) {
+        return '<button type="button" class="vh-chip" data-vq="' + esc(c[1]) + '"><img src="/assets/' + c[2] + '.webp" width="22" height="22" alt="" loading="lazy">' + esc(c[0]) + '</button>';
+      }).join("") + '<button type="button" class="vh-chip vh-chip-all" data-vgo="az">' + esc(tx("सभी देखें", "See all")) + ' &rarr;</button></div></div></header>';
+  }
+
+  /* "today": a slider, 3.5 cards on a desktop and 2.5 on a phone, so the next card is always peeking in */
+  function vratTodayBox(p, todays) {
+    var cal = '<svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.2h.01M12 17.2h.01"/></svg>';
+    var head = '<header class="vtb-head"><span class="vtb-ic">' + cal + '</span><h2>' + esc(tx("आज के व्रत एवं पर्व", "Today's vrats & festivals")) + '</h2>' +
+      '<span class="vtb-pill">' + esc(tx("आज: ", "Today: ") + p.weekdayHi + ", " + formatHindiDate(p.date)) + '</span>' +
+      '<span class="vtb-pill">' + esc((p.adhika ? "अधिक " : "") + p.maas + " " + p.paksha + " पक्ष, " + p.tithiName) + '</span>' +
+      '<a class="vtb-link" href="/panchang">' + esc(tx("आज का पंचांग देखें", "Today's panchang")) + ' &rarr;</a></header>';
+    var body = todays.length
+      ? '<div class="row-scroll-wrap"><button class="row-nav prev" type="button" aria-label="पिछला">‹</button><div class="row-scroll vt-scroll">' + todays.map(vratTodayCard).join("") +
+        '</div><button class="row-nav next" type="button" aria-label="अगला">›</button></div>'
+      : '<p class="vtb-none">' + esc(tx("आज कोई विशेष व्रत या पर्व नहीं है। नीचे आगामी व्रत देखें।", "No special vrat or festival today. See the coming ones below.")) + '</p>';
+    return '<section class="vtb">' + head + body + '</section>';
+  }
+  function vratTodayCard(v) {
+    var m = /^(.*?)\s*\(([^)]*)\)\s*$/.exec(v.name || ""), main = m ? m[1] : v.name, par = m ? "(" + m[2] + ")" : vratSub(v);
+    return '<a class="vtoday" href="' + vratPath(v) + '"><span class="vt-thumb" aria-hidden="true">' + vratIco(v) + '</span>' +
+      '<span class="vt-body"><b>' + esc(main) + '</b>' + (par ? '<small class="vt-par">' + esc(par) + '</small>' : "") +
+      (v.intro ? '<span class="vt-intro">' + esc(v.intro) + '</span>' : "") +
+      '<span class="vt-btn">' + esc(tx("विस्तार से पढ़ें", "Read more")) + ' &rarr;</span></span></a>';
+  }
+
+  var VRAT_BROWSE = [
+    ["az", "अक्षरानुक्रम (A–Z)", "Alphabetical (A–Z)", "व्रतों की पूरी सूची हिन्दी वर्णमाला के अनुसार", "The full list in Hindi alphabetical order", '<span class="vb-glyph">अ</span>'],
+    ["month", "माह के अनुसार", "By month", "प्रत्येक मास में आने वाले सभी व्रत एवं पर्व", "Every vrat and festival of each month",
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.2h.01M12 17.2h.01M16 17.2h.01"/></svg>'],
+    ["deity", "देवता के अनुसार", "By deity", "जिस देवता से संबंधित व्रत देखना चाहते हैं", "The vrats of the deity you worship",
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21V6M7.5 7.5c0 3.4 2 5 4.5 5s4.5-1.6 4.5-5M7.5 7.5V3.5M16.5 7.5V3.5M12 6V3"/></svg>'],
+    ["type", "व्रत के प्रकार से", "By kind", "नियमित, वार आधारित, पर्व-उत्सव आदि", "Monthly, weekly, festivals and more",
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6.5h6M8 6.5c-2.5 2.3-2.5 7 0 10 1.2 1.6 2.4 2.5 4 2.5s2.8-.9 4-2.5c2.5-3 2.5-7.7 0-10M10 3.5c1-.8 3-.8 4 0v3h-4z"/></svg>']
+  ];
+  function vratBrowseHtml() {
+    return '<div class="vbrowse">' + VRAT_BROWSE.map(function (b) {
+      return '<button type="button" class="vb-card" data-vgo="' + b[0] + '"><span class="vb-ic">' + b[5] + '</span>' +
+        '<span class="vb-tx"><b>' + esc(tx(b[1], b[2])) + '</b><small>' + esc(tx(b[3], b[4])) + '</small></span><i class="vc-go" aria-hidden="true">›</i></button>';
+    }).join("") + '</div>';
+  }
+  function vratDeitiesHtml() {
+    return '<section class="vdeities"><header class="vs-head"><span class="vs-ic" aria-hidden="true">🪷</span><h2>' + esc(tx("प्रमुख देवताओं के व्रत", "Vrats of the main deities")) + '</h2>' +
+      '<button type="button" class="vs-all" data-vgo="deity">' + esc(tx("सभी देवता देखें", "All deities")) + ' <i>›</i></button></header>' +
+      '<div class="vd-row">' + VRAT_GROUPS.filter(function (g) { return g.chip; }).map(function (g) {
+        var n = VRATS.filter(function (v) { return v.kind !== "variant" && v.kind !== "event" && vratGroup(v) === g; }).length;
+        return '<button type="button" class="vd-chip" data-vdeity="' + g.k + '" title="' + n + '">' + vratGroupIco(g, 64) + '<b>' + esc(g.hi) + '</b></button>';
+      }).join("") +
+      '<button type="button" class="vd-chip vd-all" data-vgo="deity"><span class="vd-grid" aria-hidden="true"><i></i><i></i><i></i><i></i></span><b>' + esc(tx("सभी देखें", "See all")) + '</b></button></div></section>';
+  }
+
+  /* ---- the list under the browse cards ---- */
+  function vratSortKey(v) { var n = String(v.name || "").replace(/^[\s(\[]+/, ""), s = n.replace(/^श्री\s*/, ""); return s.length > 2 ? s : n; }
+  function vratMainHtml(p) {
+    var show = VRATS.filter(function (v) { return v.kind !== "variant"; }), q = vratUI.q, html = "";
+    if (q) {
+      var qRoman = normalizeRoman(devanagariToRoman(q));
+      var hits = show.filter(function (v) { return vratMatch(v, q, qRoman); }).sort(vratByNext);
+      return hits.length ? vratSection({ title: tx("खोज परिणाम", "Search results"), icon: "🔍", list: hits, shape: "row", limit: 9999 })
+        : '<p class="vrat-empty">' + esc(tx("कोई प्रविष्टि नहीं मिली।", "Nothing found.")) + '</p>';
+    }
+    if (vratUI.mode === "az") {
+      var all = show.filter(function (v) { return v.kind !== "event"; }).sort(function (a, b) { return vratSortKey(a).localeCompare(vratSortKey(b), "hi"); });
+      var by = {}, letters = [];
+      all.forEach(function (v) { var l = vratSortKey(v).charAt(0); if (!by[l]) { by[l] = []; letters.push(l); } by[l].push(v); });
+      html += '<nav class="va-bar" aria-label="' + esc(tx("अक्षर", "Letters")) + '">' + letters.map(function (l) { return '<button type="button" data-vva="' + esc(l) + '">' + esc(l) + '</button>'; }).join("") + '</nav>';
+      letters.forEach(function (l) { html += vratSection({ id: "va-" + l, title: l, icon: "", list: by[l], shape: "row", limit: 9999 }); });
+      return html;
+    }
+    if (vratUI.mode === "deity") {
+      var chosen = VRAT_GROUPS.filter(function (g) { return g.k === vratUI.deity; })[0];
+      var pool = show.filter(function (v) { return v.kind !== "event"; });
+      VRAT_GROUPS.forEach(function (g) {
+        if (chosen && g !== chosen) return;
+        var list = pool.filter(function (v) { return vratGroup(v) === g; }).sort(vratByNext);
+        html += vratSection({ title: g.hi, icon: g.img ? vratGroupIco(g, 34) : g.emoji, list: list, shape: "row", limit: chosen ? 9999 : 6 });
+      });
+      return html || '<p class="vrat-empty">' + esc(tx("कोई प्रविष्टि नहीं मिली।", "Nothing found.")) + '</p>';
+    }
+    if (vratUI.mode === "type") {
+      function by_(kinds) { return show.filter(function (v) { return kinds.indexOf(v.kind) !== -1; }); }
+      html += vratSection({ title: tx("प्रत्येक मास की तिथियों के व्रत", "Monthly tithi vrats"), icon: "🌙", shape: "row", limit: 6, list: by_(["tithi"]).sort(vratByNext) });
+      html += vratSection({ title: tx("साप्ताहिक (वार के) व्रत", "Weekly vrats"), icon: "🪷", shape: "row", limit: 7, list: by_(["weekly"]).sort(vratByNext) });
+      html += vratSection({ title: tx("पर्व एवं उत्सव", "Festivals"), icon: "🪔", shape: "row", limit: 6, list: by_(["festival"]).sort(vratByNext) });
+      html += vratSection({ title: tx("शास्त्रीय सन्दर्भ एवं नियम", "Scriptural references & rules"), icon: "📜", shape: "row", limit: 6, list: by_(["reference", "other"]) });
+      html += vratSection({ title: tx("शास्त्रों में वर्णित तिथियाँ एवं घटनाएँ", "Dated events in the scriptures"), icon: "🏹", shape: "row", limit: 6, list: by_(["event"]) });
+      return html;
+    }
+    /* by month (the default): from the running month on */
+    var festivals = show.filter(function (v) { return v.kind === "festival"; });
+    var now = HINDU_MONTHS.indexOf(p.maas), order = [];
+    for (var k = 0; k < 12; k++) order.push(((now === -1 ? 0 : now) + k) % 12);
+    if (p.adhika) order.unshift(12); else order.push(12);          // in an adhika month that group is the running one
+    order.push(13);
+    var curNow = now === -1 ? 0 : now;
+    order.forEach(function (mi) {
+      var list = festivals.filter(function (v) { return vratMonthFrom(v, curNow) === mi; }).sort(vratByNext);
+      var running = mi === (p.adhika ? 12 : now);
+      var title = mi < 12 ? HINDU_MONTHS[mi] + tx(" मास", " month") : mi === 12 ? tx("अधिक मास", "Adhika month") : tx("अन्य", "Other");
+      html += vratSection({ title: title, icon: running ? "📖" : "🪔", list: list, shape: running ? "tile" : "row", limit: 6, cls: running ? "is-now" : "",
+        aside: running ? '<span class="vs-now">' + esc(tx("चल रहा है", "running now")) + '</span>' : "" });
+    });
+    return html + '<p class="vrat-note">📅 ' + esc(tx("चल रहे मास से आरम्भ करके आगे के मास क्रम से। हर व्रत के नीचे उसकी अगली सम्भावित अंग्रेज़ी तिथि दी गयी है — यह खगोलीय गणना (" + getPanchangCity().hi + ") से निकली अनुमानित तिथि है; पर्व-निर्णय के लिए स्थानीय पंचांग देखें।",
+      "Starting from the running month and following the months in order. Under each vrat is its next probable English date, worked out from an astronomical calculation (" + getPanchangCity().key + "); check a local panchang for the final date.")) + '</p>';
   }
 
   function viewVratList() {
@@ -5317,60 +5571,46 @@
       return '<section class="vrat-page">' + vratHero() + '<main class="content-pad vrat-wrap vrat-sheet"><p class="vrat-loading">' + esc(tx("लोड हो रहा है…", "Loading…")) + '</p></main></section>';
     }
     var p = getPanchang(new Date(), getPanchangCity());
-    var todays = vratsFor(p), show = VRATS.filter(function (v) { return v.kind !== "variant"; });
-    var html = '<section class="vrat-page">' + vratHero() + '<main class="content-pad vrat-wrap vrat-sheet">';
-    html += vratSection({
-      title: tx("आज के व्रत एवं पर्व", "Today's vrats & festivals"), icon: "🗓️", list: todays, shape: "today", limit: 4, cls: "is-today",
-      aside: '<a class="vs-date" href="/panchang">📅 ' + esc(tx("आज: ", "Today: ")) + esc(p.weekdayHi + ", " + formatHindiDate(p.date)) + ' <i>›</i></a>'
-    });
-    var festivals = show.filter(function (v) { return v.kind === "festival"; });
-    var now = HINDU_MONTHS.indexOf(p.maas), order = [];
-    for (var k = 0; k < 12; k++) order.push(((now === -1 ? 0 : now) + k) % 12);
-    if (p.adhika) order.unshift(12); else order.push(12);          // in an adhika month that group is the running one
-    order.push(13);
-    var curNow = now === -1 ? 0 : now, first = true;
-    order.forEach(function (mi) {
-      var list = festivals.filter(function (v) { return vratMonthFrom(v, curNow) === mi; }).sort(vratByNext);
-      var running = mi === (p.adhika ? 12 : now);
-      var title = mi < 12 ? HINDU_MONTHS[mi] + tx(" मास", " month") : mi === 12 ? tx("अधिक मास", "Adhika month") : tx("अन्य", "Other");
-      html += vratSection({ title: title, icon: running ? "📖" : "🪔", list: list, shape: running ? "tile" : "row", limit: 6, cls: running ? "is-now" : "",
-        aside: running ? '<span class="vs-now">' + esc(tx("चल रहा है", "running now")) + '</span>' : "" });
-    });
-    html += vratSection({ title: tx("प्रत्येक मास की तिथियों के व्रत", "Monthly tithi vrats"), icon: "🌙", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "tithi"; }).sort(vratByNext) });
-    html += vratSection({ title: tx("साप्ताहिक व्रत", "Weekly vrats"), icon: "🪷", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "weekly"; }).sort(vratByNext) });
-    html += vratSection({ title: tx("शास्त्रीय सन्दर्भ एवं नियम", "Scriptural references & rules"), icon: "📜", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "reference" || v.kind === "other"; }) });
-    html += vratSection({ title: tx("शास्त्रों में वर्णित तिथियाँ एवं घटनाएँ", "Dated events in the scriptures"), icon: "🏹", shape: "row", limit: 6, list: show.filter(function (v) { return v.kind === "event"; }) });
-    html += '<p class="vrat-empty" hidden>' + esc(tx("कोई प्रविष्टि नहीं मिली।", "Nothing found.")) + '</p>' +
-      '<p class="vrat-note">📅 ' + esc(tx("चल रहे मास से आरम्भ करके आगे के मास क्रम से। हर व्रत के नीचे उसकी अगली सम्भावित अंग्रेज़ी तिथि दी गयी है — यह खगोलीय गणना (" + getPanchangCity().hi + ") से निकली अनुमानित तिथि है; पर्व-निर्णय के लिए स्थानीय पंचांग देखें।",
-        "Starting from the running month and following the months in order. Under each vrat is its next probable English date, worked out from an astronomical calculation (" + getPanchangCity().key + "); check a local panchang for the final date.")) + '</p>' +
+    vratUI.q = "";
+    return '<section class="vrat-page">' + vratHero() + '<main class="content-pad vrat-wrap vrat-sheet">' +
+      vratTodayBox(p, vratsFor(p)) +
+      '<div class="vs-label"><span aria-hidden="true">📖</span><h2>' + esc(tx("व्रत एवं पर्व ब्राउज़ करें", "Browse vrats & festivals")) + '</h2></div>' + vratBrowseHtml() +
+      vratDeitiesHtml() +
+      '<div id="vratMain" class="vmain"></div>' +
       '</main></section>';
-    return html;
   }
   function wireVratList() {
-    var page = document.querySelector(".vrat-page"), box = document.getElementById("vratSearch");
-    if (!page || !box) return;
-    function filter() {
-      var q = box.value.trim().toLowerCase(), any = false, qRoman = normalizeRoman(devanagariToRoman(q));
-      page.classList.toggle("is-searching", !!q);
-      page.querySelectorAll("[data-q]").forEach(function (c) {
-        var hit = !q || c.getAttribute("data-q").indexOf(q) !== -1 || (qRoman && vratRomanHit(c.getAttribute("data-r") || "", qRoman));
-        c.hidden = !hit; if (hit) any = true;
-      });
-      page.querySelectorAll(".vs").forEach(function (g) { g.hidden = !g.querySelector("[data-q]:not([hidden])"); });
-      var none = page.querySelector(".vrat-empty"); if (none) none.hidden = any;
+    var page = document.querySelector(".vrat-page"), box = document.getElementById("vratSearch"), main = document.getElementById("vratMain");
+    if (!page || !box || !main) return;
+    var p = getPanchang(new Date(), getPanchangCity()), timer = null;
+    function sync() {
+      page.querySelectorAll("[data-vgo]").forEach(function (b) { b.classList.toggle("is-on", !vratUI.q && b.getAttribute("data-vgo") === vratUI.mode && !vratUI.deity); });
+      page.querySelectorAll("[data-vdeity]").forEach(function (b) { b.classList.toggle("is-on", !vratUI.q && vratUI.mode === "deity" && b.getAttribute("data-vdeity") === vratUI.deity); });
     }
-    box.addEventListener("input", filter);
+    function draw() { main.innerHTML = vratMainHtml(p); sync(); }
+    function toList() { main.scrollIntoView({ behavior: "smooth", block: "start" }); }
+    function go(mode, deity) { vratUI.mode = mode; vratUI.deity = deity || ""; vratUI.q = ""; box.value = ""; draw(); toList(); }
+    function search(q) { vratUI.q = q.trim().toLowerCase(); draw(); }
+    box.addEventListener("input", function () { clearTimeout(timer); timer = setTimeout(function () { search(box.value); }, 120); });
     var form = document.getElementById("vratForm");
-    if (form) form.addEventListener("submit", function (e) { e.preventDefault(); filter(); var first = page.querySelector("[data-q]:not([hidden])"); if (first && box.value.trim()) first.scrollIntoView({ block: "center", behavior: "smooth" }); });
+    if (form) form.addEventListener("submit", function (e) { e.preventDefault(); clearTimeout(timer); search(box.value); if (vratUI.q) toList(); });
     page.addEventListener("click", function (e) {
-      var chip = e.target.closest ? e.target.closest("[data-vq]") : null;
-      if (chip) { box.value = chip.getAttribute("data-vq"); filter(); return; }
-      var all = e.target.closest ? e.target.closest("[data-vs-all]") : null;
+      var t = e.target.closest ? e.target : null; if (!t) return;
+      var chip = t.closest("[data-vq]");
+      if (chip) { box.value = chip.getAttribute("data-vq"); search(box.value); toList(); return; }
+      var dd = t.closest("[data-vdeity]");
+      if (dd) { go("deity", dd.getAttribute("data-vdeity")); return; }
+      var g = t.closest("[data-vgo]");
+      if (g) { go(g.getAttribute("data-vgo"), ""); return; }
+      var va = t.closest("[data-vva]");
+      if (va) { var el = document.getElementById("va-" + va.getAttribute("data-vva")); if (el) el.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+      var all = t.closest("[data-vs-all]");
       if (all) {
         var sec = all.closest(".vs"), open = sec.classList.toggle("is-open");
         all.innerHTML = esc(open ? tx("कम दिखाएँ", "Show less") : tx("देखें सभी", "See all")) + " <i>" + (open ? "‹" : "›") + "</i>";
       }
     });
+    draw();
   }
 
   function viewVrat(slug) {

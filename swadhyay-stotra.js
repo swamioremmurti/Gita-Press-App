@@ -350,10 +350,10 @@
             '<button type="button" class="st-sw-l" data-st-mode="pat" aria-pressed="' + (m === "pat") + '">' + esc(tx("पाठ", "Recite")) + '<small>' + esc(tx("केवल संस्कृत", "Sanskrit only")) + '</small></button>' +
             '<button type="button" class="st-sw" data-st-modesw role="switch" aria-checked="' + (m === "read") + '" aria-label="' + esc(tx("पाठ / अर्थ सहित", "Recite / With meaning")) + '"><i></i></button>' +
             '<button type="button" class="st-sw-l" data-st-mode="read" aria-pressed="' + (m === "read") + '">' + esc(tx("अर्थ सहित", "With meaning")) + '<small>' + esc(tx("पदार्थ व भावार्थ", "Word meanings")) + '</small></button></div></div>' +
-          '<div class="st-set-row"><span>' + esc(F.PAD_LABEL.replace(/:$/, "")) + '</span>' +
+          '<div class="st-set-row' + (m === "pat" ? " is-disabled" : "") + '" id="stWmRow"><span>' + esc(F.PAD_LABEL.replace(/:$/, "")) + '</span>' +
             '<div class="st-seg" data-pos="' + ["off", "tap", "list"].indexOf(wmMode()) + '" role="group">' +
               [["off", "बंद", "Off", "केवल श्लोक", "Verse only"], ["tap", "शब्द पर टैप", "Tap a word", "पद-विच्छेद व अर्थ", "Break & meaning"], ["list", "पूरी सूची", "Full list", "हर श्लोक के नीचे", "Under each verse"]].map(function (o) {
-                return '<button type="button" data-st-wm="' + o[0] + '" data-d="' + esc(tx(o[3], o[4])) + '" aria-pressed="' + (wmMode() === o[0]) + '">' + esc(tx(o[1], o[2])) + '</button>';
+                return '<button type="button" data-st-wm="' + o[0] + '" data-d="' + esc(tx(o[3], o[4])) + '" aria-pressed="' + (wmMode() === o[0]) + '"' + (m === "pat" ? " disabled" : "") + '>' + esc(tx(o[1], o[2])) + '</button>';
               }).join("") + '</div>' +
             '<p class="st-seg-d" id="stSegD">' + esc(tx.apply(null, wmMode() === "off" ? ["केवल श्लोक", "Verse only"] : wmMode() === "tap" ? ["पद-विच्छेद व अर्थ", "Break & meaning"] : ["हर श्लोक के नीचे", "Under each verse"])) + '</p></div>' +
           '<div class="st-set-row"><span>' + esc(tx("फ़ॉन्ट आकार", "Font size")) + '</span><div class="st-set-size">' +
@@ -713,6 +713,8 @@
         root.classList.toggle("st-mode-pat", m === "pat"); root.classList.toggle("st-mode-read", m === "read");
         [].forEach.call(root.querySelectorAll("[data-st-mode]"), function (x) { x.setAttribute("aria-pressed", x.getAttribute("data-st-mode") === m ? "true" : "false"); });
         [].forEach.call(root.querySelectorAll("[data-st-modesw]"), function (x) { x.setAttribute("aria-checked", m === "read" ? "true" : "false"); });
+        var wr = document.getElementById("stWmRow");      // पद-विच्छेद एवं शब्दार्थ only means something with the meaning shown: off in पाठ mode
+        if (wr) { wr.classList.toggle("is-disabled", m === "pat"); [].forEach.call(wr.querySelectorAll("[data-st-wm]"), function (x) { x.disabled = m === "pat"; }); }
         return;
       }
       var wb = e.target.closest("[data-st-wm]");
