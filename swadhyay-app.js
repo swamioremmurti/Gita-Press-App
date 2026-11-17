@@ -416,6 +416,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "संक्षिप्त कूर्मपुराण.html": "assets/covers/snkshipt-koormapuraan.webp",
     "जगदम्बा अपराधक्षमापण स्तोत्रम्.html": "assets/covers/jagadambaa-aparaadhakshamaapan-stotram.webp",
     "श्री अन्नपूर्णाकवचम्.html": "assets/covers/shree-annapoornaakavacham.webp",
     "श्री गुर्वष्टकम्.html": "assets/covers/shree-gurvashtakam.webp",
@@ -3185,7 +3186,7 @@
        मासपारायण विश्राम, one page each) is never cut into parts, however long it is. */
     if (html.indexOf('data-whole-page="1"') !== -1) return null;
     var re = /<\/p>/g, m, cuts = [], last = 0;
-    var HEAD_P = /^<p\b[^>]*\bclass="(?:[^"]*\s)?(?:Heading|Sub-[Hh]ead|Chapter-Heading|Main-Heading)/;
+    var HEAD_P = /^<p\b[^>]*\bclass="(?:[^"]*\s)?(?:Heading|Sub-[Hh]ead|Chapter-Heading|Main-Heading|Book-Title)/;
     while ((m = re.exec(html))) {
       var end = m.index + 4, acc = end - last;
       if (acc < READER_PAGE_TARGET) continue;
@@ -3292,7 +3293,9 @@
       } else {
         // Nothing headed has appeared yet (or this book has no headings anywhere) --
         // keep the old per-page fallback so headless books still paginate sensibly.
-        chapters.push({ html: html, label: "पृष्ठ " + (chapters.length + 1), legacy: chunk.legacy });
+        // the book's own title page (class cover-… / Book-Title) is named as such, not "पृष्ठ 1"
+        var isTitlePage = !chapters.length && /class="(?:[^"]*\s)?(?:cover-|Main-Heading|Book-Title)/.test(html);
+        chapters.push({ html: html, label: isTitlePage ? "शीर्षक पृष्ठ" : "पृष्ठ " + (chapters.length + 1), legacy: chunk.legacy });
       }
     });
 
@@ -6193,6 +6196,7 @@
     else if (seg[0] === "vrat") { html = seg[1] ? viewVrat(decodeURIComponent(seg[1])) : viewVratList(); }
     else if (seg[0] === "sankalp") { html = window.SwadhyaySankalp ? window.SwadhyaySankalp.pageHtml() : viewHome(); }
     else if (seg[0] === "gita") { html = window.SwadhyayGita ? window.SwadhyayGita.pageHtml() : viewHome(); }
+    else if (seg[0] === "gita-pat-test") { html = window.SwadhyayGitaPat ? window.SwadhyayGitaPat.pageHtml(seg[1], tx) : viewHome(); }
     else if (seg[0] === "shalaka") { html = window.SwadhyayShalaka ? window.SwadhyayShalaka.pageHtml() : viewHome(); }
     else if (seg[0] === "hanuman") { html = window.SwadhyayHanuman ? window.SwadhyayHanuman.pageHtml() : viewHome(); }
     else if (seg[0] === "vangmay") { html = window.SwadhyayVangmay ? window.SwadhyayVangmay.pageHtml(vangmayCtx()) : viewHome(); }
@@ -6238,6 +6242,7 @@
     if (seg[0] === "vrat") { if (seg[1]) loadVratDetail(decodeURIComponent(seg[1])); else wireVratList(); }
     if (window.SwadhyaySankalp && seg[0] === "sankalp") window.SwadhyaySankalp.mount({ tx: tx, toast: toast });
     if (window.SwadhyayGita && seg[0] === "gita") window.SwadhyayGita.mount({ tx: tx, toast: toast });
+    if (window.SwadhyayGitaPat && seg[0] === "gita-pat-test") window.SwadhyayGitaPat.mount({ tx: tx, toast: toast });
     if (window.SwadhyayShalaka && seg[0] === "shalaka") window.SwadhyayShalaka.mount({ tx: tx, toast: toast });
     if (window.SwadhyayHanuman && seg[0] === "hanuman") window.SwadhyayHanuman.mount({ tx: tx, toast: toast });
     if (window.SwadhyayVangmay && seg[0] === "vangmay") window.SwadhyayVangmay.mount(vangmayCtx());

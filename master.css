@@ -186,6 +186,61 @@ p.Shlok {
 p.Shlok.shloka-end {
 	margin-bottom:1em;
 }
+/* "Shloka Pair": a two-line shloka (line 1 ।, <br>, line 2 ॥ N॥) set so the । of line 1 and the first ॥ of line 2 end on one vertical.
+   The verse number (N॥) is a zero-width box that hangs outside that edge, in the padding on the right.
+   Phone: the lines are as wide as the page; a line that wraps starts at the left and its last part ends at the right edge. */
+p.Shlok.shloka-pair {
+	margin-bottom:.5em;
+	padding-right:2.4em;            /* room for the hanging verse number */
+	text-align:left;
+	text-align-last:right;
+}
+p.Shlok.shloka-pair .shloka-no {
+	display:inline-block;
+	width:0;
+	white-space:nowrap;
+	text-indent:.3em;
+}
+/* shloka-quad: the two long lines of a pair are broken in half on a phone (<br class="shloka-mbr"> between the halves),
+   giving four lines of one width, flush left and right, the । / ॥ ending the 2nd and 4th. On wide screens the halves join. */
+p.Shlok.shloka-pair.shloka-quad {
+	display:table;
+	max-width:100%;
+	margin-left:auto;
+	margin-right:auto;
+	padding-right:0;
+	text-align:justify;
+	text-align-last:justify;
+}
+/* wide screens: every block the same width, both lines flush left and right */
+@media (min-width:720px) {
+	p.Shlok.shloka-pair .shloka-mbr {
+		display:none;
+	}
+	p.Shlok.shloka-pair {
+		width:14em;                 /* wide enough for the longest ordinary verse */
+		max-width:100%;
+		padding-right:0;
+		margin-left:auto;
+		margin-right:auto;
+		text-align:justify;
+		text-align-last:justify;
+	}
+	/* a four-line verse joined into two long lines: every one the same width */
+	p.Shlok.shloka-pair.shloka-quad {
+		display:block;
+		width:22em;
+	}
+	/* a two-line verse with longer lines (a Hindi poem): every one the same, wider width */
+	p.Shlok.shloka-pair.shloka-long {
+		width:20em;
+	}
+	/* a verse with longer lines than that: as wide as its own longer line */
+	p.Shlok.shloka-pair.shloka-wide {
+		display:table;
+		width:auto;
+	}
+}
 p.Uvaacha {
 	-epub-ruby-position:over;
 	color:red;
@@ -6515,9 +6570,10 @@ p.Pad-sankhya {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Main-Heading---Book-Name-etc- {
+/* the book's title on its title page (was Main-Heading---Book-Name-etc-): maroon */
+p.Book-Title {
 	-epub-ruby-position:over;
-	color:#b33c00;
+	color:#800000;
 	font-family:ChanakyaUni, serif;
 	font-size:2.083em;
 	font-style:normal;

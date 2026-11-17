@@ -80,6 +80,15 @@
       ]
     },
     {
+      "source": "/gita-pat-test/:path*",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
       "source": "/admin/:path*",
       "headers": [
         {
