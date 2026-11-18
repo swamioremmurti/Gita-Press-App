@@ -6,7 +6,7 @@ build_sadhan_kalpataru.py -- (re)import "साधन-कल्पतरु" fro
   * the head is the library's (master.css linked, nothing else), the title is the book's own;
   * the "प्रथम पृष्ठ" / "अंतिम पृष्ठ" labels (the export's own contents markers) are dropped;
   * the title page's "गीता सेवा ट्रस्ट" line (class Title-Page---Gita-Seva-Trust, which master.css does not have) becomes the library's publisher
-    note, class cover-Publisher-Note: "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"; no other mention of it remains
+    note, class cover-Publisher-Note: "गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"; no other mention of it remains
     (the script stops if one does);
   * the contents anchors toc_marker-N-M become Chapter_N_M (ids and in-book links);
   * footnotes: the reader turns a footnote into a tap-to-open modal (swadhyay-footnotes.js) when the note starts with a mark it knows --
@@ -32,7 +32,7 @@ NAME = "साधन-कल्पतरु"
 OUT = BOOKS / (NAME + ".html")
 BACKUP = ROOT / "backups" / "before-sadhan-kalpataru-reimport"
 MASTER_CSS = ROOT / "master.css"
-NOTE = "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"
+NOTE = "गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"
 STRUCTURAL = {"epub-page", "page-break", "Basic-Graphics-Frame"}
 
 HEAD = """<!DOCTYPE html>

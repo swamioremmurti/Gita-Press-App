@@ -85,7 +85,7 @@ def main():
     for ln in ("त्वमेव माता च पिता त्वमेव", "त्वमेव बन्धुश्च सखा त्वमेव।", "त्वमेव विद्या द्रविणं त्वमेव", "त्वमेव सर्वं मम देवदेव॥"):
         title.append('\t\t\t<p class="cover-Tvamev-mata">%s</p>\n' % ln)
     title += ['\t\t\t<p class="cover-Tvamev-mata">&nbsp;</p>\n',
-              '\t\t\t<p class="cover-Publisher-Note">गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।</p>\n', "\t\t</div>\n"]
+              '\t\t\t<p class="cover-Publisher-Note">गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।</p>\n', "\t\t</div>\n"]
     pages.append("".join(title))
 
     first = next(n for n, it in enumerate(items) if it.get("st") == "Heading1")

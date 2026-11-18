@@ -8,7 +8,7 @@ The source is a Gita Press book export, so it already uses the library's classes
   * the head is the library's (master.css linked, nothing else), the title is the book's own;
   * the "प्रथम पृष्ठ" and "अंतिम पृष्ठ" labels (the export's own contents markers) are dropped;
   * the title page's "गीता सेवा ट्रस्ट" line (class Title-Page---Gita-Seva-Trust, which master.css does not have) becomes the library's publisher
-    note, class cover-Publisher-Note:  "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"; no other mention of it remains
+    note, class cover-Publisher-Note:  "गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"; no other mention of it remains
     (the script stops if one does);
   * the contents anchors toc_marker-N become Chapter_N (as in every other book; see tools/rename_toc_ids.py);
   * every class left in the book is one master.css defines (the library's own page wrappers epub-page / page-break / Basic-Graphics-Frame aside);
@@ -28,7 +28,7 @@ NAME = "श्रीगणेशसहस्रनामस्तोत्रम
 OUT = BOOKS / (NAME + ".html")
 DATA_JS = ROOT / "swadhyay-data.js"
 MASTER_CSS = ROOT / "master.css"
-NOTE = "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"
+NOTE = "गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"
 
 HEAD = """<!DOCTYPE html>
 <html lang="hi">

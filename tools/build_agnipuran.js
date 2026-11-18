@@ -20,7 +20,7 @@ const ROOT = path.join(__dirname, '..');
 const BOOKS = path.join(ROOT, 'Gita Press Books', 'Gita Press Books');
 const NAME = 'अग्निपुराण';
 const IMG_DIR = 'image/agni-puran';
-const NOTE = 'गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।';
+const NOTE = 'गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।';
 const apply = process.argv.includes('--apply');
 
 const DEV = '०१२३४५६७८९';

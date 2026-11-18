@@ -305,7 +305,7 @@ def main():
              '\t\t\t<p class="cover-Tvamev-mata">त्वमेव विद्या द्रविणं त्वमेव   </p>\n'
              '\t\t\t<p class="cover-Tvamev-mata">त्वमेव सर्वं मम देवदेव॥</p>\n'
              '\t\t\t<p class="cover-Tvamev-mata">&nbsp;</p>\n'
-             '\t\t\t<p class="cover-Publisher-Note para-style-override-2">गीता प्रेस के मूल ग्रंथ — '
+             '\t\t\t<p class="cover-Publisher-Note para-style-override-2">गीताप्रेस के मूल ग्रंथ — '
              'सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।<span></span></p>\n\t\t</div>\n</section>')
     head = bc.BOOK_TEMPLATE_HEAD.format(title="भक्त-चरिताङ्क")
     html = head + "\n\n<hr class=\"page-break\">\n\n".join([cover] + out_sections) + "\n\n</body>\n</html>\n"

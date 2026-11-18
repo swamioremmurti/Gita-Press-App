@@ -23,7 +23,7 @@ const ROOT = path.join(__dirname, '..');
 const BOOKS = path.join(ROOT, 'Gita Press Books', 'Gita Press Books');
 const NAME = 'संतवाणी—ढाई हजार अनमोल बोल';
 const OUT = path.join(BOOKS, NAME + '.html');
-const NOTE = 'गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।';
+const NOTE = 'गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।';
 const apply = process.argv.includes('--apply');
 
 const src = fs.readFileSync(SRC, 'utf8');

@@ -34,7 +34,7 @@ OUT = BOOKS / (NAME + ".html")
 BACKUP = ROOT / "backups" / "before-nari-ank-full"
 MASTER_CSS = ROOT / "master.css"
 DATA_JS = ROOT / "swadhyay-data.js"
-NOTE = "गीता प्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"
+NOTE = "गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।"
 STRUCTURAL = {"epub-page", "page-break", "Basic-Graphics-Frame"}
 
 HEAD = """<!DOCTYPE html>
