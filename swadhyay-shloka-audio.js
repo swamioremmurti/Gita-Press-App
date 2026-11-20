@@ -22,6 +22,7 @@
   var audio = new Audio();
   audio.preload = "none";
   var current = null;
+  var queue = [], qi = 0;                     // a key may name several files joined by "|": they play one after the other
   var listeners = {};
 
   function load() {
@@ -34,6 +35,7 @@
   /* a key that is a file path ("assets/audio/mantra/x.mp3") plays that file directly: a book marks any mantra or
      verse with data-audio="<path>" and the reader puts a play button on it (see readerInlineScript) */
   function isPath(key) { return /\.(mp3|m4a|ogg)$/i.test(String(key)) || /^(https?:\/\/|\/|assets\/)/i.test(String(key)); }
+  function srcOf(k) { return isPath(k) ? fileSrc(k) : BASE + k + ".mp3"; }
   function has(key) { return isPath(key) || !!index[key]; }
   function fileSrc(p) {
     var m = window.swadhyayMedia ? window.swadhyayMedia(p) : p;
@@ -53,15 +55,21 @@
   function play(key) {
     if (!has(key)) return;
     if (current === key && !audio.paused) { audio.pause(); return; }
-    if (current !== key) { current = key; audio.src = isPath(key) ? fileSrc(key) : BASE + key + ".mp3"; }
-    else if (audio.ended) audio.currentTime = 0;
+    if (current !== key) { current = key; queue = String(key).split("|"); qi = 0; audio.src = srcOf(queue[0]); }
+    else if (audio.ended) { qi = 0; if (queue.length > 1) audio.src = srcOf(queue[0]); else audio.currentTime = 0; }
     var A = window.SwadhyayAudio;
     if (A && A.pause) A.pause();                       // a bhajan in the background yields to the shloka
     audio.play().catch(function () { current = null; notify(); });
   }
-  function stop() { audio.pause(); audio.currentTime = 0; current = null; notify(); }
+  function stop() { qi = 0; audio.pause(); audio.currentTime = 0; current = null; notify(); }
 
-  ["play", "pause", "ended"].forEach(function (ev) { audio.addEventListener(ev, notify); });
+  function more() { return qi < queue.length - 1; }
+  audio.addEventListener("play", notify);
+  audio.addEventListener("pause", function () { if (audio.ended && more()) return; notify(); });   // between two files of one key it is not a pause
+  audio.addEventListener("ended", function () {
+    if (more()) { qi++; audio.src = srcOf(queue[qi]); audio.play().catch(function () { current = null; notify(); }); }
+    else notify();
+  });
   document.addEventListener("swadhyay-audio-state", function () {      // the bhajan player started: stop the shloka
     var A = window.SwadhyayAudio;
     if (current && !audio.paused && A && A.isActive && A.isActive()) stop();

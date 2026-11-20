@@ -338,7 +338,7 @@
   function pledgeText(name) { var n = (name || "").trim() || T("साधक", "the learner"); return isEn() ? PLEDGE.en(n) : PLEDGE.hi(n); }
   var FEATS = [
     ["📖", ["2 श्लोक प्रतिदिन", "2 shlokas a day"], ["व्यवस्थित क्रम से", "in the book's order"]],
-    ["🎧", ["शुद्ध उच्चारण", "Right recitation"], ["ऑडियो के साथ (जहाँ उपलब्ध)", "with audio (where recorded)"]],
+    ["🎧", ["शुद्ध उच्चारण", "Right recitation"], ["हर श्लोक के ऑडियो के साथ", "with audio for every shloka"]],
     ["📝", ["सरल हिंदी अर्थ", "Simple Hindi meaning"], ["और भावार्थ", "and the idea behind it"]],
     ["🌱", ["जीवन में अनुप्रयोग", "Living it"], ["व्यावहारिक सीख", "a practical lesson"]]
   ];
@@ -1051,9 +1051,23 @@
 
   /* ================================================================== a day: lesson or revision */
   function versesOf(d) { return getChapter(d.ch).then(function (data) { return data.shlokas.slice(d.a - 1, d.b); }); }
-  function playBtn(ch, v) {
-    var SA = window.SwadhyayShlokaAudio, key = ch + "_" + v;
-    return SA && SA.has(key) ? '<button type="button" class="gl-play" data-gl="audio" data-key="' + key + '" aria-label="' + esc(T("श्लोक सुनें", "Listen")) + '">▶</button>' : '';
+  /* Every shloka has a recording: assets/audio/gita-pat/CC_VVV.mp3 (the same files as the गीता पाठ page, tools/build_gita_pat.py).
+     Those files number chapter 13 from Arjuna's opening question (13.1), which this course's text does not carry, so there verse v is file v+1. */
+  function padN(n, w) { n = String(n); while (n.length < w) n = "0" + n; return n; }
+  function audioKey(ch, v) {
+    var n = parseInt(v, 10);
+    if (!n) return "";
+    return "assets/audio/gita-pat/" + padN(ch, 2) + "_" + padN(ch === 13 ? n + 1 : n, 3) + ".mp3";
+  }
+  /* the spoken उवाच line ("संजय उवाच" ...) is its own short clip, played before the verse when the lesson shows that line */
+  function uvachClip(s) {
+    var c = /अर्जुन/.test(s) ? "arjuna" : /भगवान/.test(s) ? "bhagavan" : /धृतराष्ट्र/.test(s) ? "dhritarashtra" : /स[ंञ्]*जय/.test(s) ? "sanjaya" : "";
+    return c ? "assets/audio/gita-pat/UV_" + c + ".mp3" : "";
+  }
+  function playBtn(ch, v, uvach) {
+    var SA = window.SwadhyayShlokaAudio, key = audioKey(ch, v), uv = uvach ? uvachClip(uvach) : "";
+    if (key && uv) key = uv + "|" + key;
+    return SA && key && SA.has(key) ? '<button type="button" class="gl-play" data-gl="audio" data-key="' + key + '" aria-label="' + esc(T("श्लोक सुनें", "Listen")) + '">▶</button>' : '';
   }
   function lessonHtml(d, verses) {
     var ok = isDone(d.n), tk = V.tick[d.n] = V.tick[d.n] || {};
@@ -1062,13 +1076,13 @@
     var sec;
     if (!rev) {
       var shl = verses.map(function (e) {
-        var rec = playBtn(d.ch, e.v);
+        var rec = playBtn(d.ch, e.v, e.s);
         return '<div class="gl-verse">' + (e.s ? '<small class="gl-spk">' + esc(e.s) + '</small>' : '') + '<div class="gl-sans">' + e.t.map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div>' + rec +
           '<small class="gl-vno">' + esc(T("श्लोक ", "Shloka ")) + dev(d.ch) + '.' + dev(e.v) + '</small></div>';
       }).join("");
       var mean = verses.map(function (e) { return '<div class="gl-mean"><b>' + dev(d.ch) + '.' + dev(e.v) + '</b><p>' + esc(e.m || T("इस श्लोक का भावार्थ पुस्तक में पढ़ें।", "Read the meaning of this shloka in the book.")) + '</p></div>'; }).join("");
       var hidden = V.shown[d.n];
-      sec = step(1, "📖", T("श्लोक सुनें और पढ़ें", "Listen and read"), T("5 मिनट", "5 min"), shl + '<p class="gl-hint">' + esc(T("श्लोक को धीरे-धीरे, सही उच्चारण के साथ दो-तीन बार पढ़ें।", "Read the shloka slowly, two or three times, with right pronunciation.")) + (verses.every(function (e) { return !playBtn(d.ch, e.v); }) ? ' ' + esc(T("(इन श्लोकों की रिकॉर्डिंग अभी उपलब्ध नहीं।)", "(No recording of these shlokas yet.)")) : '') + '</p>', tk.a, "a") +
+      sec = step(1, "📖", T("श्लोक सुनें और पढ़ें", "Listen and read"), T("5 मिनट", "5 min"), shl + '<p class="gl-hint">' + esc(T("श्लोक को धीरे-धीरे, सही उच्चारण के साथ दो-तीन बार पढ़ें।", "Read the shloka slowly, two or three times, with right pronunciation.")) + (verses.every(function (e) { return !playBtn(d.ch, e.v, e.s); }) ? ' ' + esc(T("(इन श्लोकों की रिकॉर्डिंग अभी उपलब्ध नहीं।)", "(No recording of these shlokas yet.)")) : '') + '</p>', tk.a, "a") +
         step(2, "💡", T("अर्थ और भाव समझें", "Understand the meaning"), T("10 मिनट", "10 min"), mean + '<button type="button" class="gl-link" data-gl="book" data-arg="' + esc(verses[0].id) + '">📚 ' + esc(T("पदच्छेद, अन्वय और विस्तृत टीका पुस्तक में पढ़ें", "Read the word-by-word meaning and full commentary in the book")) + '</button>', tk.b, "b") +
         step(3, "🧠", T("दोहराएँ और स्वयं जाँचें", "Repeat and self-check"), T("5 मिनट", "5 min"),
           '<p class="gl-hint">' + esc(T("श्लोक देखे बिना बोलने का प्रयास करें, फिर मिलाकर देखें।", "Try to say the shloka without looking, then check.")) + '</p>' +
@@ -1082,7 +1096,7 @@
         '<p class="gl-hint">' + esc(T("याद है: ", "Remembered: ")) + '<b>' + dev(cnt) + '/' + dev(n) + '</b></p>' + speakNote() + verses.map(function (e) {
           var open = V.shown[d.n + ":" + e.v], mk = !!okc[e.v];
           return '<div class="gl-rv' + (mk ? " is-ok" : "") + '"><button type="button" class="gl-rv-h" data-gl="rvopen" data-arg="' + d.n + ":" + e.v + '" aria-expanded="' + !!open + '"><b>' + dev(d.ch) + '.' + dev(e.v) + '</b><span>' + esc(e.t[0]) + '</span><i>' + (open ? "▴" : "▾") + '</i></button>' +
-            (open ? '<div class="gl-rv-b"><div class="gl-sans gl-sans-sm">' + e.t.map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div>' + playBtn(d.ch, e.v) + '<p class="gl-mean-p">' + esc(e.m || "") + '</p>' + speakBlock(d.n + ":" + e.v, e.t) + '</div>' : '') +
+            (open ? '<div class="gl-rv-b"><div class="gl-sans gl-sans-sm">' + e.t.map(function (l) { return "<p>" + esc(l) + "</p>"; }).join("") + '</div>' + playBtn(d.ch, e.v, e.s) + '<p class="gl-mean-p">' + esc(e.m || "") + '</p>' + speakBlock(d.n + ":" + e.v, e.t) + '</div>' : '') +
             '<button type="button" class="gl-mk' + (mk ? " is-on" : "") + '" data-gl="rvmark" data-arg="' + d.n + ":" + e.v + '">' + (mk ? "✓ " + esc(T("याद है", "remembered")) : esc(T("याद है", "I remember"))) + '</button></div>';
         }).join("") + '</div></div>';
     }
