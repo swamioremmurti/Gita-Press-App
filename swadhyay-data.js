@@ -5686,5 +5686,41 @@ var SWADHYAY_BOOKS_RAW = [
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
         "sizeKB":  147.8
+    },
+    {
+        "file":  "जीवन-निर्माण.html",
+        "category":  "Siksha evam Katha",
+        "author":  "सुदर्शनसिंह ‘चक्र’",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "",
+        "sizeKB":  78.5
+    },
+    {
+        "file":  "कल्कि अवतार.html",
+        "category":  "Siksha evam Katha",
+        "author":  "सुदर्शनसिंह ‘चक्र’",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "",
+        "sizeKB":  735.0
+    },
+    {
+        "file":  "ब्रज का एक दिन.html",
+        "category":  "Siksha evam Katha",
+        "author":  "सुदर्शनसिंह ‘चक्र’",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "श्री राम अध्यात्म प्रन्यास, हनुमद्धाम, शुकतीर्थ",
+        "sizeKB":  354.5
+    },
+    {
+        "file":  "भारतीय मनोविज्ञान.html",
+        "category":  "Siksha evam Katha",
+        "author":  "सुदर्शनसिंह ‘चक्र’",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "आनन्द कानन प्रकाशन",
+        "sizeKB":  323.6
     }
 ];

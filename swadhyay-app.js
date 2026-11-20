@@ -416,6 +416,10 @@
   }
 
   var COVER_OVERRIDES = {
+    "भारतीय मनोविज्ञान.html": "assets/covers/bhaarateey-manovijnyaan.webp",
+    "ब्रज का एक दिन.html": "assets/covers/braj-kaa-ek-din.webp",
+    "कल्कि अवतार.html": "assets/covers/kalki-avataar.webp",
+    "जीवन-निर्माण.html": "assets/covers/jeevan-nirmaan.webp",
     "संक्षिप्त कूर्मपुराण.html": "assets/covers/snkshipt-koormapuraan.webp",
     "जगदम्बा अपराधक्षमापण स्तोत्रम्.html": "assets/covers/jagadambaa-aparaadhakshamaapan-stotram.webp",
     "श्री अन्नपूर्णाकवचम्.html": "assets/covers/shree-annapoornaakavacham.webp",
@@ -964,6 +968,10 @@
   // Gita Prakashan, Tirumala Tirupati Devasthanam, etc.) — affiliate buy buttons are
   // hidden for these since Gita Press does not sell them.
   var NON_GITA_PRESS_BOOKS = {
+    "भारतीय मनोविज्ञान.html": true,
+    "ब्रज का एक दिन.html": true,
+    "कल्कि अवतार.html": true,
+    "जीवन-निर्माण.html": true,
     "श्रीकृष्ण विज्ञान.html": true,
     "अथर्वशिखोपनिषत्.html": true,
     "नीतिशतकं.html": true,
