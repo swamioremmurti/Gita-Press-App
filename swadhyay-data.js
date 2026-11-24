@@ -2095,7 +2095,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  228.6
+        "sizeKB":  229.0
     },
     {
         "file":  "पद-रत्नाकर.html",
@@ -5604,7 +5604,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "जगद्गुरु आदि शंकराचार्य",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  947.7
+        "sizeKB":  940.5
     },
     {
         "file":  "शिवपुराण-कथासार.html",
@@ -5722,5 +5722,14 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "आनन्द कानन प्रकाशन",
         "sizeKB":  323.6
+    },
+    {
+        "file":  "श्रीकृष्णांक.html",
+        "category":  "Siksha evam Katha",
+        "author":  "",
+        "tikakar":  "",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "sizeKB":  5602.7
     }
 ];

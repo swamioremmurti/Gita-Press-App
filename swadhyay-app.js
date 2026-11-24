@@ -416,6 +416,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "श्रीकृष्णांक.html": "assets/covers/shreekrishnaank.webp",
     "भारतीय मनोविज्ञान.html": "assets/covers/bhaarateey-manovijnyaan.webp",
     "ब्रज का एक दिन.html": "assets/covers/braj-kaa-ek-din.webp",
     "कल्कि अवतार.html": "assets/covers/kalki-avataar.webp",
@@ -666,7 +667,7 @@
     "नारद भक्ति सूत्र.html": "assets/covers/naarad-bhakti-sootr.webp",
     "नारी धर्म.html": "assets/covers/naaree-dharm.webp",
     "नारी-शिक्षा.html": "assets/covers/naaree-shikshaa.webp",
-    "नित्यकर्म-पूजाप्रकाश.html": "assets/covers/nityakarm-poojaaprakaash.webp",
+    "नित्यकर्म-पूजाप्रकाश.html": "assets/covers/nityakarm-poojaaprakaash-2.webp",
     "नित्ययोग की प्राप्ति.html": "assets/covers/nityayog-kee-praapti.webp",
     "निष्काम श्रद्धा और प्रेम.html": "assets/covers/nishkaam-shraddhaa-aur-prem.webp",
     "नेत्रों में भगवान् को बसा लें.html": "assets/covers/netron-men-bhagavaan-ko-basaa-len.webp",
@@ -3760,6 +3761,9 @@
       'try{parent.__readerScrollSave(pct);}catch(err){}' +
       '},400);' +
       '},{passive:true});' +
+      /* a link written <a data-goto="<id>"> (e.g. a book's own index of pictures) jumps to the page of the book that holds that id */
+      'document.addEventListener("click",function(ev){var gl=ev.target&&ev.target.closest?ev.target.closest("a[data-goto]"):null;if(!gl)return;' +
+      'ev.preventDefault();try{parent.__readerGotoAnchor(gl.getAttribute("data-goto"));}catch(err){}});' +
       'if(ANCHOR_ID){setTimeout(function(){' +
       /* "find:<n>": the nth occurrence of the reader's current in-book search. Marked by the parent's matcher, then
          kept centred while fonts/images settle (unless the reader has already scrolled themselves). */
@@ -3950,6 +3954,14 @@
     removeHighlightEntry(readerStateKey(), reader.idx, text);
   };
   window.__readerToast = function (msg) { toast(msg); };
+  /* in-book link: go to the reader page that holds the element with this id (see the data-goto handler in the page script) */
+  window.__readerGotoAnchor = function (id) {
+    if (!reader.open || !reader.chapters || !id) return;
+    var needle = 'id="' + id + '"';
+    for (var i = 0; i < reader.chapters.length; i++) {
+      if (reader.chapters[i].html.indexOf(needle) !== -1) { readerGo(i, id); return; }
+    }
+  };
 
   function readerOverlayShell() {
     return '<div class="reader-overlay" id="readerOverlay">' +
@@ -5794,7 +5806,8 @@
     "श्रद्धेय स्वामी श्रीरामसुखदासजी महाराज": "assets/authors/ramsukhdas.webp",
     "श्रद्धेय श्रीजयदयालजी गोयन्दका": "assets/authors/jaydayal-goyandka.webp",
     "श्रीगोस्वामी तुलसीदासजी": "assets/authors/tulsidas.webp",
-    "स्वामी शरणानन्द जी महाराज": "assets/authors/sharananand.webp"
+    "स्वामी शरणानन्द जी महाराज": "assets/authors/sharananand.webp",
+    "सुदर्शनसिंह ‘चक्र’": "assets/authors/sudarshansingh-chakra.webp"
   };
 
   function authorAvatarEl(author, size) {
