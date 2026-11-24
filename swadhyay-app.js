@@ -3910,6 +3910,8 @@
          by those more specific selectors -- this reading-comfort control needs to win everywhere. */
       /* one font for every book: the head of a book file may still say Georgia, and some paragraph classes name no font at all */
       "body, body *{font-family:'ChanakyaUni',serif !important;}" +
+      /* the one exception: the Vedic anusvara sign ᳬं (span.ved-anu), which ChanakyaUni does not have (font-face in master.css) */
+      "body span.ved-anu{font-family:'TiroDevanagariSanskrit','ChanakyaUni',serif !important;}" +
       /* a very long heading word (लघुसिद्धान्तकौमुद्यांगणेष्वपठितानाम्...) breaks instead of making the page scroll sideways */
       "p.Heading, p.Sub-Heading{overflow-wrap:anywhere;}" +
       'body, body *{line-height:' + lineHeight + 'em !important;}' +
