@@ -2095,7 +2095,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  229.0
+        "sizeKB":  229.7
     },
     {
         "file":  "पद-रत्नाकर.html",

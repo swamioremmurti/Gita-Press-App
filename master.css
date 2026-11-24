@@ -1,6 +1,7 @@
 /* the one font of the whole project (the books name it as ChanakyaUni) */
 @font-face { font-family: 'ChanakyaUni'; src: url('fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: 'ChanakyaUni'; src: url('fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'TiroDevanagariSanskrit'; src: url('fonts/TiroDevanagariSanskrit-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
 
 * {
 	font-family:ChanakyaUni, serif;
@@ -7679,4 +7680,10 @@ details.filler-box[open] > summary.filler-sum::before {
 summary.filler-sum:hover {
 	opacity: 1;
 	background: rgba(201, 164, 99, 0.18);
+}
+
+/* the Vedic anusvara sign ᳬं (U+1CEC U+0902), which ChanakyaUni lacks: set in Tiro Devanagari Sanskrit */
+span.ved-anu {
+	font-family: 'TiroDevanagariSanskrit', ChanakyaUni, serif;
+	font-weight: inherit;
 }
