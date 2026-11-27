@@ -1,0 +1,15 @@
+Hindi text-to-phoneme converter used by the book reader's "listen" voice in the browser.
+
+From the npm package @diffusionstudio/piper-wasm, version 1.0.0
+  https://github.com/diffusionstudio/piper-wasm   (package licence label: MIT)
+
+It is a WebAssembly build of:
+  piper-phonemize   (MIT)                  https://github.com/rhasspy/piper-phonemize
+  eSpeak NG         (GPL-3.0-or-later)     https://github.com/espeak-ng/espeak-ng
+Because it contains eSpeak NG, this converter is distributed under the GNU General Public License,
+version 3 or later: https://www.gnu.org/licenses/gpl-3.0.txt
+The source code is available at the addresses above.
+
+Changed for this site (2026-11-27): piper_phonemize.data holds only the eSpeak NG data needed for
+Hindi and English, and the file table inside piper_phonemize.js was rewritten to match. The program
+itself (piper_phonemize.wasm) is unchanged.

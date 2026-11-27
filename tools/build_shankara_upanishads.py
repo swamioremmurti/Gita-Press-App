@@ -315,7 +315,7 @@ def cover(cfg):
     L += ['\t\t\t<p class="cover-Tvamev-mata">&nbsp;</p>\n',
           '\t\t\t<p class="cover-Author-Name"><span class="bold">भाष्यकार—</span>जगद्गुरु आदि शंकराचार्य</p>\n',
           '\t\t\t<p class="cover-Publisher-Note para-style-override-3">गीताप्रेस के मूल ग्रंथ — सरल एवं सुगम पठन के लिए नवीन प्रस्तुति।'
-          '<span class="inline-5"></span></p>\n', "</div>\n"]
+          '<span class="quote"></span></p>\n', "</div>\n"]
     return "".join(L)
 
 

@@ -1,3 +1,5 @@
+@font-face { font-family: 'NotoSerifDevanagari'; src: url('/fonts/NotoSerifDevanagari-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; ascent-override: 90%; descent-override: 32%; line-gap-override: 0%; }
+@font-face { font-family: 'NotoSerifDevanagari'; src: url('/fonts/NotoSerifDevanagari-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; ascent-override: 90%; descent-override: 32%; line-gap-override: 0%; }
 /* Kalyan admin panel. Plain CSS, no build step. Colours are tokens on :root; dark mode redefines them. */
 :root {
   --bg: #f5f3ef; --surface: #ffffff; --surface-2: #faf8f5; --line: #e6e0d8; --line-strong: #d3cabd;
@@ -8,7 +10,7 @@
   --shadow-lg: 0 18px 50px rgba(20, 16, 12, .28);
   --radius: 10px; --radius-sm: 7px;
   --sidebar-w: 248px;
-  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", "Noto Sans Devanagari", sans-serif;
+  --font: 'NotoSerifDevanagari', serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   color-scheme: light;
 }
@@ -32,7 +34,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 [hidden] { display: none !important; }
 .muted { color: var(--muted); } .faint { color: var(--faint); } .small { font-size: 12px; } .mono { font-family: var(--mono); font-size: 12px; }
 .right { margin-left: auto; } .nowrap { white-space: nowrap; } .grow { flex: 1; min-width: 0; }
-.hi { font-family: "Noto Sans Devanagari", "Nirmala UI", var(--font); }
+.hi { font-family: var(--font); }
 
 /* ---------- layout ---------- */
 .app { display: flex; min-height: 100vh; }
@@ -211,7 +213,7 @@ table.tbl { width: 100%; border-collapse: collapse; }
 .ch-item.active { background: var(--accent-soft); border-color: var(--accent-line); }
 .ch-item.drop { border-top: 2px solid var(--accent); }
 .ch-item .no { width: 28px; text-align: right; color: var(--faint); font-size: 12px; flex: none; }
-.ch-item .tt { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: "Noto Sans Devanagari", "Nirmala UI", var(--font); }
+.ch-item .tt { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font); }
 .ch-item .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
 .ch-item .grab { cursor: grab; color: var(--faint); flex: none; }
 .ed-main { display: flex; flex-direction: column; min-width: 0; min-height: 0; background: var(--surface-2); }

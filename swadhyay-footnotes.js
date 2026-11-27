@@ -2,7 +2,7 @@
    under the paragraph.
 
    The reader runs readerInlineScript inside the book's iframe, which calls SwadhyayFootnotes.init(document) on that page. Here:
-     1. Footnote paragraphs are the <p> whose class starts Footnote / Footnotes / Foot-note / Futnote / Futnoot (Footnotes-Bold,
+     1. Footnote paragraphs are the <p> whose class is fn, or starts Footnote / Footnotes / Foot-note / Futnote / Futnoot (Footnotes-Bold,
         Footnotes-Right ...). Footnote paragraphs that directly follow each other make a block.
      2. A block is cut into notes at every paragraph that starts with a marker -- "*", "**", "[१]", "(१)", "१." or "१)"; a paragraph
         without a marker belongs to the note before it ("स बुद्धिमान्...", "(गीता ४। १८)").
@@ -14,7 +14,7 @@
 (function () {
   "use strict";
 
-  var FN_CLASS = /^(?:foot-?note|futnoo?te?|xfootnote)/i;
+  var FN_CLASS = /^(?:fn$|foot-?note|futnoo?te?|xfootnote)/i;
   var LOOK_BACK = 80;
   var MARK_RE = /^\s*(\*{1,4}|\[\s*([०-९0-9]+)\s*\]|\(\s*([०-९0-9]+)\s*\)|([०-९0-9]+)\s*[.)])/;
   var DEV = "०१२३४५६७८९";

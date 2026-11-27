@@ -245,7 +245,7 @@
           var file = e.target.value;
           if (!file) { frame.srcdoc = bookFrameDoc(SAMPLE_BOOK); return; }
           fetch('/Gita Press Books/Gita Press Books/' + file.split('/').map(encodeURIComponent).join('/')).then(function (r) { return r.text(); }).then(function (t) {
-            var m = t.match(/<body[^>]*>([\s\S]*)<\/body>/i), body = (m ? m[1] : t).split(/<hr[^>]*page-break[^>]*>/i).slice(0, 3).join('<hr>');
+            var m = t.match(/<body[^>]*>([\s\S]*)<\/body>/i), body = (m ? m[1] : t).split(/<hr\s*\/?>|<hr[^>]*page-break[^>]*>/i).slice(0, 3).join('<hr>');
             frame.srcdoc = bookFrameDoc(body.slice(0, 60000));
           }).catch(function () { A.toast('Could not load that book', 'bad'); });
         };

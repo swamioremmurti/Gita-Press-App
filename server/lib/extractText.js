@@ -68,7 +68,7 @@ function packParagraphs(paras, page) {
 function extractChunks(html, bookLabel) {
   const cleaned = html.replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<script[\s\S]*?<\/script>/gi, ' ');
 
-  const sectionRe = /<section\b[^>]*class="[^"]*epub-page[^"]*"[^>]*data-page="(\d+)"[^>]*>([\s\S]*?)<\/section>/gi;
+  const sectionRe = /<section\b[^>]*class="(?:[^"]*\s)?(?:epub-)?page(?:\s[^"]*)?"[^>]*data-page="(\d+)"[^>]*>([\s\S]*?)<\/section>/gi;
   const sections = [];
   let m;
   while ((m = sectionRe.exec(cleaned))) sections.push({ page: parseInt(m[1], 10), html: m[2] });

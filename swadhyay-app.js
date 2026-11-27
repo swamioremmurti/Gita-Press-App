@@ -2836,7 +2836,7 @@
   }
 
   /* ---------------- in-app book reader ----------------
-     Books are fetched, split into "chapters" at every <hr class="page-break"> (the
+     Books are fetched, split into "chapters" at every <hr> (the
      universal chapter-boundary convention used across the whole library), and rendered
      one chapter at a time inside a sandboxed same-origin iframe. The iframe keeps every
      book's own master.css (with its hard-coded per-class colors) fully isolated from the
@@ -2973,7 +2973,7 @@
   // around it -- so a plain string split is far more robust here than trying to
   // re-group an arbitrarily-nested DOM tree.
   function splitBookChapters(bodyHtml) {
-    var raw = bodyHtml.split(/<hr[^>]*\bclass=["']page-break["'][^>]*>/i);
+    var raw = bodyHtml.split(/<hr\s*\/?>|<hr[^>]*\bclass=["']page-break["'][^>]*>/i);
     var chunks = raw.map(function (s) { return s.trim(); }).filter(function (s) { return s.length > 0; });
     return chunks.length ? chunks : [bodyHtml];
   }
@@ -3873,8 +3873,8 @@
   /* The recorded Gita shlokas are listed by anchor id ("Chapter_9_3", ...). Those ids are only meaningful in the Gita book below; many other books
      have headings with the same ids, and must not get a play button there. */
   var SHLOKA_AUDIO_BOOKS = { "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html": true };
-  /* Chanakya Uni is drawn small for its size, so a book is set 30% larger than the size the reader's A-/A+ buttons show (the buttons keep their
-     own scale: 19 means 19 x 1.3 px on the page). Everything in a book is sized in em, so it all grows together. */
+  /* A book is set 30% larger than the size the reader's A-/A+ buttons show (the buttons keep their own scale: 19 means 19 x 1.3 px
+     on the page). Everything in a book is sized in em, so it all grows together. */
   var READER_FONT_SCALE = 1.3;
   var READER_PARA_INDENT = "2.2em";
   /* books whose paragraphs read better flush left (short instruction lines, step lists): no first-line indent at all, not even master.css's own */
@@ -3909,11 +3909,7 @@
          almost every paragraph class, so a plain body{line-height} rule would be overridden
          by those more specific selectors -- this reading-comfort control needs to win everywhere. */
       /* one font for every book: the head of a book file may still say Georgia, and some paragraph classes name no font at all */
-      "body, body *{font-family:'ChanakyaUni',serif !important;}" +
-      /* verses (Shlok) are set in Noto Serif Devanagari; this must come before the ved-anu rule (same specificity, the later one wins) */
-      "body p.Shlok, body p.Shlok *{font-family:'NotoSerifDevanagari','ChanakyaUni',serif !important;}" +
-      /* the Vedic anusvara sign ᳬं (span.ved-anu) is Noto Serif Devanagari too, also where it stands outside a verse (ChanakyaUni does not have it) */
-      "body span.ved-anu{font-family:'NotoSerifDevanagari','ChanakyaUni',serif !important;}" +
+      "body, body *{font-family:'NotoSerifDevanagari',serif !important;}" +
       /* a very long heading word (लघुसिद्धान्तकौमुद्यांगणेष्वपठितानाम्...) breaks instead of making the page scroll sideways */
       "p.Heading, p.Sub-Heading{overflow-wrap:anywhere;}" +
       'body, body *{line-height:' + lineHeight + 'em !important;}' +
@@ -4196,18 +4192,26 @@
     setReads(reads);
   }
 
-  /* ---------------- listen to the open chapter (the device's own speech engine; nothing is downloaded) ----------------
+  /* ---------------- listen to the open chapter (on the device; no sound is made on a server or kept) ----------------
      The chapter's paragraphs are read one after another, cut into short pieces (some engines drop out on long ones),
-     the paragraph being read is highlighted and kept in view, and at the end the next chapter carries on. */
-  var tts = { on: false, paused: false, paras: [], pi: 0, ci: 0, chunks: [], advancing: false, token: 0, rate: 1, voice: null, saved: null };
+     the paragraph being read is highlighted and kept in view, and at the end the next chapter carries on.
+     Two voices, both our own (never the device's built-in text-to-speech): Hindi prose by Piper "pratham", shlokas (class Shlok…)
+     and speaker lines (class Uwach) by the Sanskrit voice Alpa. In a browser both come from swadhyay-voice.js; in the Android app
+     Hindi goes to the app's engine through its speechSynthesis bridge, Sanskrit through swadhyay-voice.js to the app's engine.
+     A line that cannot be read is skipped. Text in other scripts is not read. */
+  var tts = { on: false, paused: false, paras: [], pi: 0, ci: 0, chunks: [], advancing: false, token: 0, run: 0, rate: 1, saved: null };
   var TTS_RATES = [0.7, 0.85, 1, 1.15, 1.3, 1.5, 1.75, 2];
   try { var tr = parseFloat(localStorage.getItem("swadhyay_tts_rate")); if (tr >= 0.5 && tr <= 2.5) tts.rate = tr; } catch (e) {}
-  function ttsSupported() { return !!(window.speechSynthesis && window.SpeechSynthesisUtterance); }
-  function ttsPickVoice() {
-    var vs = []; try { vs = window.speechSynthesis.getVoices() || []; } catch (e) {}
-    var hi = vs.filter(function (v) { return /^hi([-_]|$)/i.test(v.lang); });
-    tts.voice = hi.filter(function (v) { return v.localService; })[0] || hi[0] || null;
+  /* inside the Android app, Hindi is spoken through the app's bridge (it answers as window.speechSynthesis) */
+  function ttsInApp() { return !!window.KSAndroid; }
+  function ttsCanRead(kind) {
+    if (kind === "hi" && ttsInApp()) return !!(window.speechSynthesis && window.SpeechSynthesisUtterance);
+    var voice = window.SwadhyayVoice;
+    return !!(voice && voice.supported(kind));
   }
+  function ttsSupported() { return ttsCanRead("hi") || ttsCanRead("sa"); }
+  function ttsNoStart() { ttsStop(); toast(tx("आवाज़ शुरू नहीं हो सकी — इंटरनेट देखकर फिर कोशिश करें।", "The voice could not start — check your connection and try again.")); }
+  function ttsNoSound() { ttsStop(); toast(tx("आवाज़ चलाई नहीं जा सकी।", "Could not play the voice.")); }
   /* The pieces a line is spoken in: short ones (at most TTS_MAXW words) so that each is quick to prepare and the voice never
      has a long stretch to chew on. A sentence is cut at the comma / dash nearest its middle, else into equal halves; very short
      neighbours are joined. (The highlight still covers the whole line.) */
@@ -4221,7 +4225,7 @@
     ttsSplit(words.slice(0, best), out); ttsSplit(words.slice(best), out);
   }
   function ttsChunks(text) {
-    text = text.replace(/[॥]+/g, "। ").replace(/s+/g, " ").trim();
+    text = text.replace(/[॥]+/g, "। ").replace(/\s+/g, " ").trim();
     var sents = text.match(/[^।.!?;]+[।.!?;]*/g) || [text], pieces = [], out = [], cur = "";
     sents.forEach(function (x) { ttsSplit(x.trim().split(" ").filter(Boolean), pieces); });
     pieces.forEach(function (p) {
@@ -4229,8 +4233,9 @@
       else { if (cur) out.push(cur); cur = p; }
     });
     if (cur) out.push(cur);
-    return out.filter(function (c) { return /[^s।.!?;,-–—]/.test(c); });
+    return out.filter(function (c) { return TTS_HINDI.test(c); });                  // the Hindi voice reads Devanagari only
   }
+  var TTS_HINDI = /[ऄ-हॐक़-ॡॲ-ॿ]/;
   /* The chapter as a list of LINES to read: a line is cut at every line break (<br>) and at every danda / full stop / "?" / "!",
      so a shloka is read line by line. A verse number ("॥ १७ ॥") is neither read nor highlighted. */
   var TTS_LETTER = /[^\s\d०-९।॥|.,;:!?'"‘’“”()\[\]\-–—*]/;
@@ -4240,15 +4245,16 @@
     var doc = null; try { doc = document.getElementById("readerIframe").contentDocument; } catch (e) {}
     if (!doc || !doc.body) return [];
     var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
-    var skip = "sup, script, style, [class*='footnote'], [class*='fn-'], [class*='shlok' i]:not(.inline_shlok), [class*='uwach' i]";      // shloka paragraphs / spans (class Shlok…) and speaker lines (class Uwach) are not read
-    /* A paragraph is not read when it, or a small block around it (a verse box), has a class Shlok… / Uwach…. Some books wrap a whole
-       chapter in one outer element with such a class; that wrapper is not a verse, so it must not silence everything inside it:
+    var skip = "sup, script, style, [class*='footnote'], .fn, [class*='fn-']";
+    /* A paragraph is a shloka (or speaker line) when it, or a small block around it (a verse box), has a class Shlok… / Uwach….
+       Some books wrap a whole chapter in one outer element with such a class; that wrapper is not a verse, so it does not count:
        a wrapping element counts only when it holds fewer than 8 blocks or under half of the page's blocks. */
-    var skipOwn = "[class*='shlok' i]:not(.inline_shlok), [class*='uwach' i]", total = els.length;
-    function skipClassed(el) {
-      if (el.matches(skipOwn)) return true;
+    var verse = "[class*='shlok' i]:not(.inline_shlok), [class*='uwach' i]", total = els.length;
+    var sanskrit = ttsCanRead("sa"), hindi = ttsCanRead("hi");
+    function verseClassed(el) {
+      if (el.matches(verse)) return true;
       for (var a = el.parentElement; a && a !== doc.body; a = a.parentElement) {
-        if (!a.matches(skipOwn)) continue;
+        if (!a.matches(verse)) continue;
         var n = a.querySelectorAll(sel).length;
         if (n < 8 || n < total / 2) return true;
       }
@@ -4256,28 +4262,52 @@
     }
     els.forEach(function (el) {
       if (el.querySelector(sel)) return;                                            // read the inner paragraph, not its container
-      if (el.closest("[class*='footnote'], [class*='fn-'], nav, script, style")) return;
-      if (skipClassed(el)) return;
+      if (el.closest("[class*='footnote'], .fn, [class*='fn-'], nav, script, style")) return;
       var cs = doc.defaultView.getComputedStyle(el);
       if (cs.display === "none" || cs.visibility === "hidden") return;
-      var entries = [], full = "", node;
+      var whole = verseClassed(el);
+      /* verse numbers and source references -- "(श्लोक-५)", "(गीता २।४७)" -- are not read by either voice */
+      if (el.closest("[class*='shlok-number' i], [class*='shlok-reference' i], [class*='shloka-no' i]")) return;
+      if (whole && /^\s*[(\[][^()\[\]]*[)\]]\s*[।॥]?\s*$/.test(el.textContent)) return;
+      var entries = [], full = "", runs = [], sa = null, node;                      // runs: where the voice changes within the paragraph
       var w = doc.createTreeWalker(el, 5, { acceptNode: function (n) {
         if (n.nodeType === 3) return 1;
         if (n.tagName === "BR") return 1;
         return n.matches(skip) ? 2 : 3;
       } });
       while ((node = w.nextNode())) {
-        if (node.nodeType === 3) { entries.push({ node: node, start: full.length }); full += node.nodeValue; }
-        else full += "\u0001";
+        if (node.nodeType !== 3) { full += "\u0001"; continue; }
+        if (TTS_LETTER.test(node.nodeValue)) {                                      // spaces and dandas go with what is before them
+          var is = whole;
+          for (var a = node.parentElement; !is && a && a !== el; a = a.parentElement) is = a.matches(verse);
+          if (is !== sa) {
+            if (sa !== null) full += "\u0001";
+            sa = is; runs.push({ at: full.length, sa: is });
+          }
+        }
+        entries.push({ node: node, start: full.length }); full += node.nodeValue;
       }
-      var re = /[^\u0001।॥|.!?;]+(?:[।॥|.!?;]+|\u0001+)?|[।॥|.!?;\u0001]+/g, m;
+      /* a reference in brackets inside a verse ("… (गीता २।४७)") is blanked, so its dandas do not cut it into pieces */
+      if (runs.some(function (r) { return r.sa; })) full = full.replace(/\([^()\u0001]*\)/g, function (x) { return new Array(x.length + 1).join(" "); });
+      var re = /[^\u0001।॥|.!?;]+(?:[।॥|.!?;]+|\u0001+)?|[।॥|.!?;\u0001]+/g, m, r = 0;
       while ((m = re.exec(full))) {
-        var text = ttsClean(m[0]);
-        if (!TTS_LETTER.test(text)) continue;                                      // a lone number, danda or the like
+        if (!TTS_LETTER.test(ttsClean(m[0]))) continue;                             // a lone number, danda or the like
         var s = m.index, e = m.index + m[0].length;
         while (s < e && /[\s\u0001]/.test(full.charAt(s))) s++;
         while (e > s && /[\s\u0001]/.test(full.charAt(e - 1))) e--;
-        out.push({ el: el, entries: entries, s: s, e: e, text: text });
+        while (r + 1 < runs.length && runs[r + 1].at <= s) r++;
+        if (!runs[r] || !runs[r].sa) {
+          if (hindi && TTS_HINDI.test(m[0])) out.push({ el: el, entries: entries, s: s, e: e, text: ttsClean(m[0]) });
+          continue;
+        }
+        if (!sanskrit) continue;                                                    // no Sanskrit voice here: verses stay unread
+        var text = m[0].replace(/\u0001/g, " ").replace(TTS_VERSE_NO, "॥ ").replace(/\s+/g, " ").trim();      // the voice pauses at dandas
+        var prev = out[out.length - 1];
+        if (prev && prev.sa && /[ऀ-ॿ‌‍][-‐‑­]$/.test(prev.text)) {          // a word broken at the line end
+          prev.text = prev.text.slice(0, -1) + text; prev.endEntries = entries; prev.e = e;
+          continue;
+        }
+        out.push({ el: el, entries: entries, s: s, e: e, text: text, sa: true });
       }
     });
     return out;
@@ -4298,7 +4328,7 @@
       if (tts.saved) { tts.saved.el.style.backgroundColor = tts.saved.bg; tts.saved = null; }
       var p = tts.paras[tts.pi];
       if (!on || !p) return;
-      var a = ttsPos(p.entries, p.s, false), b = ttsPos(p.entries, p.e, true);
+      var a = ttsPos(p.entries, p.s, false), b = ttsPos(p.endEntries || p.entries, p.e, true);
       if (!a || !b) return;
       var r = doc.createRange(); r.setStart(a[0], a[1]); r.setEnd(b[0], b[1]);
       if (hl) {
@@ -4327,26 +4357,68 @@
     if (pos) pos.textContent = tts.on && tts.loading ? tx("आवाज़ तैयार…", "Preparing…") : tts.paras.length ? (tts.pi + 1) + "/" + tts.paras.length : "…";
     var rt = document.getElementById("readerTtsRate"); if (rt) rt.textContent = tts.rate + "×";
   }
-  /* the next n pieces to be spoken (across lines), so the app's own voice can have them ready */
+  /* the next n Hindi pieces to be spoken (across lines), so the voice can have them ready; verses are never made ahead */
   function ttsUpcoming(n) {
-    var out = [], pi = tts.pi, ci = tts.ci + 1, ch = tts.chunks;
+    var out = [], pi = tts.pi, ci = tts.ci + 1, ch = tts.paras[pi] && tts.paras[pi].sa ? [] : tts.chunks;
     while (out.length < n) {
       if (ci < ch.length) { out.push(ch[ci++]); continue; }
       pi++;
       if (!tts.paras[pi]) break;
-      ch = ttsChunks(tts.paras[pi].text); ci = 0;
+      ch = tts.paras[pi].sa ? [] : ttsChunks(tts.paras[pi].text); ci = 0;
     }
     return out;
   }
+  function ttsPrefetch() {
+    try {                                                   // the next Hindi is made ready while this plays: a few pieces in the app, one in a browser
+      if (!ttsInApp()) { ttsUpcoming(1).forEach(function (t) { window.SwadhyayVoice.prefetch("hi", t, tts.rate); }); return; }
+      if (window.speechSynthesis.prefetch) ttsUpcoming(4).forEach(function (t) { window.speechSynthesis.prefetch(t, tts.rate); });
+    } catch (e) {}
+  }
+  /* a verse is kept whole (the Sanskrit voice pauses at its dandas) unless it is very long */
+  function ttsVerseChunks(text) {
+    var words = text.split(" "), out = [];
+    if (words.length <= 2 * TTS_MAXW) return [text];
+    ttsSplit(words, out);
+    return out;
+  }
+  /* silence both voices */
+  function ttsHush() {
+    clearTimeout(tts.spin);
+    if (ttsInApp()) { try { window.speechSynthesis.cancel(); } catch (e) {} }
+    try { if (window.SwadhyayVoice) window.SwadhyayVoice.cancel(); } catch (e) {}
+  }
+  /* A piece spoken through swadhyay-voice.js: every verse, and in a browser the Hindi too. One that cannot be said is skipped.
+     Shlokas: after 6 in a row the Sanskrit voice is left off. Hindi: if the voice cannot start, or 4 pieces in a row fail, stop. */
+  function ttsSpeakOwn(tok, kind) {
+    var voice = window.SwadhyayVoice;
+    tts.cur = { tok: tok, own: true };                                              // this voice times itself
+    function current() { return tok === tts.token && tts.on && !tts.paused; }
+    function next() { clearTimeout(tts.spin); tts.loading = false; tts.ci++; ttsSpeak(); }
+    clearTimeout(tts.spin);
+    tts.spin = setTimeout(function () { if (current()) { tts.loading = true; ttsPaint(); } }, 700);
+    voice.speak(kind, tts.chunks[tts.ci], tts.rate, {
+      start: function () { if (!current()) return; clearTimeout(tts.spin); tts.loading = false; ttsPaint(); },
+      end: function () { if (!current()) return; if (kind === "sa") tts.saErrs = 0; else tts.errs = 0; next(); },
+      error: function () {
+        if (!current()) return;
+        if (kind === "sa") { if (++tts.saErrs >= 6) voice.disable("sa"); }
+        else if (!voice.supported("hi")) { ttsNoStart(); return; }
+        else if (++tts.errs >= 4) { ttsNoSound(); return; }
+        next();
+      }
+    });
+    if (current()) ttsPrefetch();
+  }
   function ttsSpeak() {
-    if (!tts.on || tts.paused) return;
+    if (!tts.on || tts.paused || tts.advancing) return;                             // between two chapters: ttsChapterDone carries on
     var tok = ++tts.token;
     var p = tts.paras[tts.pi];
     if (!p) { ttsChapterDone(); return; }
-    if (!tts.chunks.length) tts.chunks = ttsChunks(p.text), tts.ci = 0;
+    if (!tts.chunks.length) tts.chunks = p.sa ? ttsVerseChunks(p.text) : ttsChunks(p.text), tts.ci = 0;
     if (tts.ci >= tts.chunks.length) { ttsMark(false); tts.pi++; tts.chunks = []; ttsMark(true); ttsPaint(); ttsSpeak(); return; }
-    var u = new window.SpeechSynthesisUtterance(tts.chunks[tts.ci]);
-    u.lang = tts.voice ? tts.voice.lang : "hi-IN"; if (tts.voice) u.voice = tts.voice;
+    if (p.sa || !ttsInApp()) { ttsSpeakOwn(tok, p.sa ? "sa" : "hi"); return; }
+    var u = new window.SpeechSynthesisUtterance(tts.chunks[tts.ci]);               // the app's Hindi voice
+    u.lang = "hi-IN";
     u.rate = tts.rate;
     var cur = tts.cur = { tok: tok, t0: Date.now(), alive: Date.now(), started: false, len: u.text.length, retried: tts.retryNext };
     tts.retryNext = false;
@@ -4357,30 +4429,25 @@
       if (tok !== tts.token) return;
       var e = ev && ev.error;
       if (e === "canceled" || e === "interrupted") return;
+      if (e === "voice-unavailable") { ttsNoStart(); return; }
       ttsGiveUp();
     };
     try { window.speechSynthesis.speak(u); } catch (e) { ttsGiveUp(); return; }
-    try {                                                                           // the app's own voice can get the next piece ready while this one plays
-      if (window.speechSynthesis.prefetch) ttsUpcoming(4).forEach(function (t) { window.speechSynthesis.prefetch(t, tts.rate); });
-    } catch (e) {}
+    ttsPrefetch();
   }
-  /* Some engines (Chrome's online voices especially) now and then lose a piece: it never starts, or it ends without saying so.
-     The watchdog notices, says the piece once more, and if that fails too, skips it -- so listening never just halts. */
+  /* The app's Hindi voice: should a piece never start, or end without saying so, the watchdog notices, says it once more, and if
+     that fails too, skips it -- so listening never just halts. */
   function ttsGiveUp() {
     if (!tts.on) return;
     var c = tts.cur;
-    if (c && !c.retried) { tts.retryNext = true; tts.token++; try { window.speechSynthesis.cancel(); } catch (e) {} setTimeout(ttsSpeak, 150); return; }
-    if (++tts.errs >= 4) {
-      ttsStop();
-      toast(tx("आवाज़ चलाई नहीं जा सकी — फ़ोन की टेक्स्ट-टू-स्पीच सेटिंग देखें।", "Could not play the voice — check the phone's text-to-speech settings."));
-      return;
-    }
-    tts.token++; try { window.speechSynthesis.cancel(); } catch (e) {}
+    if (c && !c.retried) { tts.retryNext = true; tts.token++; ttsHush(); setTimeout(ttsSpeak, 150); return; }
+    if (++tts.errs >= 4) { ttsNoSound(); return; }
+    tts.token++; ttsHush();
     tts.ci++; setTimeout(ttsSpeak, 150);
   }
   function ttsWatch() {
     var c = tts.cur;
-    if (!tts.on || tts.paused || tts.advancing || !c || c.tok !== tts.token) return;
+    if (!tts.on || tts.paused || tts.advancing || !c || c.tok !== tts.token || c.own) return;     // swadhyay-voice.js times itself
     var now = Date.now(), age = now - c.t0, speaking = false;
     try { speaking = window.speechSynthesis.speaking; } catch (e) {}
     if (c.started && !speaking && now - c.alive > 1500) {                          // it finished but never said so: carry on
@@ -4391,24 +4458,31 @@
   function ttsBegin() {
     tts.paras = ttsCollect(); tts.pi = 0; tts.ci = 0; tts.chunks = [];
     if (!tts.paras.length) { ttsStop(); toast(tx("इस पृष्ठ पर सुनने योग्य पाठ नहीं मिला।", "Nothing to read aloud on this page.")); return; }
+    if (window.SwadhyayVoice) {            // the models this page needs start loading now, the one wanted first before the other
+      var kinds = tts.paras.map(function (p) { return p.sa ? "sa" : "hi"; });
+      kinds.filter(function (k, i) { return kinds.indexOf(k) === i && !(k === "hi" && ttsInApp()); })
+        .forEach(function (k) { window.SwadhyayVoice.warm(k); });
+    }
     ttsMark(true); ttsPaint(); ttsSpeak();
   }
   function ttsStart() {
     if (!ttsSupported()) { toast(tx("इस ब्राउज़र में सुनने की सुविधा नहीं है।", "Listening is not available in this browser.")); return; }
-    ttsPickVoice();
-    tts.on = true; tts.paused = false; tts.errs = 0; tts.retryNext = false; ttsPaint();
+    tts.on = true; tts.paused = false; tts.errs = 0; tts.saErrs = 0; tts.retryNext = false; ttsPaint();
+    if (window.SwadhyayVoice) window.SwadhyayVoice.unlock();                       // sound has to be allowed during the tap
     clearInterval(tts.wd); tts.wd = setInterval(ttsWatch, 700);
     ttsBegin();
   }
   function ttsStop() {
-    tts.on = false; tts.paused = false; tts.loading = false; tts.token++; clearInterval(tts.wd);
-    try { window.speechSynthesis.cancel(); } catch (e) {}
+    tts.on = false; tts.paused = false; tts.loading = false; tts.advancing = false; tts.token++; tts.run++; clearInterval(tts.wd);
+    ttsHush();
+    if (window.SwadhyayVoice) window.SwadhyayVoice.release();                      // drops any sound; frees the models (a browser: shortly after)
     ttsMark(false); tts.paras = []; tts.chunks = []; ttsPaint();
   }
   function ttsPause(pause) {
     if (!tts.on) return;
     tts.paused = pause; tts.token++;
-    try { window.speechSynthesis.cancel(); } catch (e) {}                         // pause() is unreliable on phones: stop, and say this piece again on resume
+    ttsHush(); tts.loading = false;                                               // pause() is unreliable on phones: stop, and say this piece again on resume
+    if (!pause && window.SwadhyayVoice) window.SwadhyayVoice.unlock();
     ttsPaint();
     if (!pause) ttsSpeak();
   }
@@ -4418,15 +4492,19 @@
     tts.rate = TTS_RATES[Math.max(0, Math.min(TTS_RATES.length - 1, i + dir))];
     try { localStorage.setItem("swadhyay_tts_rate", String(tts.rate)); } catch (e) {}
     ttsPaint();
-    if (tts.on && !tts.paused) { tts.token++; try { window.speechSynthesis.cancel(); } catch (e) {} ttsSpeak(); }
+    if (tts.on && !tts.paused) { tts.token++; ttsHush(); ttsSpeak(); }
   }
   function ttsChapterDone() {
     ttsMark(false);
     if (!reader.chapters || reader.idx >= reader.chapters.length - 1) { ttsStop(); toast(tx("पुस्तक पूरी हुई।", "End of the book.")); return; }
     var iframe = document.getElementById("readerIframe");
     tts.advancing = true; tts.paras = []; tts.chunks = []; ttsPaint();
-    var started = false;
-    function go() { if (started) return; started = true; tts.advancing = false; if (tts.on) setTimeout(function () { if (tts.on) ttsBegin(); }, 350); }
+    var started = false, run = tts.run;                                             // a stop in the meantime ends this hand-over
+    function go() {
+      if (started || run !== tts.run) return;
+      started = true;
+      setTimeout(function () { if (run !== tts.run) return; tts.advancing = false; ttsBegin(); }, 350);
+    }
     iframe.addEventListener("load", go, { once: true });
     setTimeout(go, 3000);
     readerGo(reader.idx + 1);
@@ -4438,13 +4516,12 @@
     window.__ksTtsState = function (st) { tts.loading = st === "loading"; ttsPaint(); };      // the app says when it is preparing lines
     if (!ttsSupported()) return;
     btn.hidden = false;
-    try { window.speechSynthesis.onvoiceschanged = ttsPickVoice; } catch (e) {}
     btn.addEventListener("click", function () { if (tts.on) ttsStop(); else ttsStart(); });
     document.getElementById("readerTtsPlay").addEventListener("click", function () { ttsPause(!tts.paused); });
     document.getElementById("readerTtsStop").addEventListener("click", ttsStop);
     document.getElementById("readerTtsSlow").addEventListener("click", function () { ttsSetRate(-1); });
     document.getElementById("readerTtsFast").addEventListener("click", function () { ttsSetRate(1); });
-    window.addEventListener("pagehide", function () { try { window.speechSynthesis.cancel(); } catch (e) {} });
+    window.addEventListener("pagehide", ttsHush);
   }
 
   function readerGo(idx, anchorId) {
@@ -4658,6 +4735,7 @@
   function openReader(bookId, startIdx, anchorId) {
     var book = BOOKS_BY_ID[bookId];
     if (!book) { navigate("/library"); return; }
+    if (tts.on) ttsStop();                                                         // the page being read is about to be replaced
 
     document.body.classList.add("reader-active");
     if (!document.getElementById("readerOverlay")) {
@@ -4686,7 +4764,7 @@
 
     var iframe = document.getElementById("readerIframe");
     readerPaintFrame(iframe, reader.theme);
-    iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:ChanakyaUni,serif;padding:2rem;color:#888;text-align:center;' + (reader.theme === "night" ? "background:#121212;" : "") + '">लोड हो रहा है…</body></html>';
+    iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:NotoSerifDevanagari,serif;padding:2rem;color:#888;text-align:center;' + (reader.theme === "night" ? "background:#121212;" : "") + '">लोड हो रहा है…</body></html>';
     document.getElementById("readerTitleText").textContent = book.title;
     if (window.SwadhyaySankalp) window.SwadhyaySankalp.readerBar(book.file);   // today's portion of an active पाठ-संकल्प
 
@@ -4719,7 +4797,7 @@
         proceed(buildReaderBook(bookId, text));
       }).catch(function (err) {
         try { console.error("reader: the book could not be opened", err); } catch (e) {}
-        iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:ChanakyaUni,serif;padding:2rem;color:#a51512;text-align:center;">' +
+        iframe.srcdoc = '<!DOCTYPE html><html><body style="font-family:NotoSerifDevanagari,serif;padding:2rem;color:#a51512;text-align:center;">' +
           'पुस्तक लोड नहीं हो सकी। <a href="' + esc(book.href) + '" target="_blank">यहाँ खोलें</a></body></html>';
       });
     }

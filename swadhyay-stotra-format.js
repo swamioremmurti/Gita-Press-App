@@ -28,7 +28,7 @@
 
   var PAD_LABEL = "पद-विच्छेद एवं शब्दार्थ:";
   var ARTH_HIDE = "stotra-arth*";
-  var PAGE_BREAK = '<hr class="page-break">';
+  var PAGE_BREAK = '<hr>';
   var LIBRARY_CATEGORY = "Stotra evam Naamavali";
 
   /* the built-in stotra categories (the admin can replace the list: Stotras -> Categories) */
@@ -130,7 +130,7 @@
     });
     var closing = splitLines(st.closing).map(esc).join("<br>");
     if (closing) h += p("Chapter-End-Text", closing);
-    var page = '<section class="epub-page" data-page="1">\n<div class="Basic-Graphics-Frame">\n' + h + "\t\t</div>\n</section>";
+    var page = '<section class="page" data-page="1">\n' + h + "</section>";
 
     var audio = audioPath(st.audio);
     var prefix = '<!DOCTYPE html>\n<html lang="hi">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n<title>' +

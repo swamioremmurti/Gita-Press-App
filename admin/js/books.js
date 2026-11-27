@@ -249,7 +249,7 @@
         <div class="card"><div class="card-h"><h2>Start from</h2></div><div class="card-b">
           <label class="check" style="margin-bottom:10px"><input type="radio" name="mode" value="blank" checked> <span><b>A blank book</b> — a title page and one chapter, then write in the chapter editor</span></label>
           <label class="check"><input type="radio" name="mode" value="html"> <span><b>An HTML file</b> — a book already converted to the library’s format (page breaks between chapters)</span></label>
-          <div class="field" id="nfilebox" style="margin-top:12px" hidden><label for="nfile">Book file</label><input type="file" id="nfile" accept=".html,.htm,text/html"><span class="hint">Chapters are the pieces between <span class="mono">&lt;hr class="page-break"&gt;</span> lines.</span></div>
+          <div class="field" id="nfilebox" style="margin-top:12px" hidden><label for="nfile">Book file</label><input type="file" id="nfile" accept=".html,.htm,text/html"><span class="hint">Chapters are the pieces between <span class="mono">&lt;hr&gt;</span> lines.</span></div>
         </div></div>
         <div class="card"><div class="card-h"><h2>Details</h2></div><div class="card-b">
           <div class="field"><label for="ntitle">Title</label><input type="text" id="ntitle" class="hi" required></div>

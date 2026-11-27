@@ -1,0 +1,12 @@
+Hindi voice used by the book reader's "listen" button.
+
+Piper voice "hi_IN-pratham-medium", 8-bit (int8) version as packaged for sherpa-onnx; the same file
+the Kalyan Seva Android app uses. Not changed for this site.
+
+  Piper voices:  https://huggingface.co/rhasspy/piper-voices
+  Piper:         https://github.com/rhasspy/piper
+
+Licence: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 (CC BY-NC-SA 4.0)
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+Non-commercial use only. This voice must be removed or replaced if the site or app becomes paid or
+otherwise commercial.

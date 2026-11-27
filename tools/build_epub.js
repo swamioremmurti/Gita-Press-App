@@ -31,24 +31,20 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 // ---- 1. style and font out of the head --------------------------------------------------------------------
 const sS = html.indexOf('<style>') + 7, sE = html.indexOf('</style>');
 let headCss = html.slice(sS, sE);
-let fontFile = null;
-headCss = headCss.replace(/@font-face\s*\{[^}]*\}/g, block => {
-  const m = /url\(\s*data:[^;]*;base64,([A-Za-z0-9+/=\s]+)\)/.exec(block);
-  if (m && !fontFile) { fontFile = Buffer.from(m[1].replace(/\s+/g, ''), 'base64'); return ''; }
-  return block;
-});
+const FONT_FILES = ['NotoSerifDevanagari-Regular.woff2', 'NotoSerifDevanagari-Bold.woff2'];
+headCss = headCss.replace(/@font-face\s*\{[^}]*\}/g, '');   // the book's own embedded fonts are left out
 // the site's page styling (body width, dashed page lines) does not belong in a book
-headCss = headCss.replace(/\n\s*body \{[^}]*\}/, '').replace(/\n\s*html \{[^}]*\}/, '').replace(/\n\s*\.epub-page \{[^}]*\}/, '').replace(/\n\s*\.page-break \{[^}]*\}/, '');
+headCss = headCss.replace(/\n\s*body \{[^}]*\}/, '').replace(/\n\s*html \{[^}]*\}/, '').replace(/\n\s*\.(?:epub-)?page \{[^}]*\}/, '').replace(/\n\s*\.page-break \{[^}]*\}/, '');
 let masterCss = fs.existsSync(MASTER_CSS) ? fs.readFileSync(MASTER_CSS, 'utf8') : '';
 masterCss = masterCss.replace(/@font-face\s*\{[^}]*\}/g, '').replace(/size-adjust:[^;]*;/g, '');
-const css = '@font-face { font-family: "ChanakyaUni"; src: url(fonts/ChanakyaUni.otf) format("opentype"); font-weight: normal; font-style: normal; }\n' +
-  'body { margin: 0; padding: 0 0.6em; font-family: "ChanakyaUni", serif; }\n' +
+const css = FONT_FILES.map((f, i) => '@font-face { font-family: "NotoSerifDevanagari"; src: url(fonts/' + f + ') format("woff2"); font-weight: ' + (i ? 'bold' : 'normal') + '; font-style: normal; }\n').join('') +
+  'body { margin: 0; padding: 0 0.6em; font-family: "NotoSerifDevanagari", serif; }\n' +
   masterCss + '\n' + headCss;
 
 // ---- 2. body into pages -------------------------------------------------------------------------------------
 let body = html.slice(html.indexOf('<body>') + 6, html.lastIndexOf('</body>'));
 body = body.replace(/<a\b[^>]*toc-float-btn[\s\S]*?<\/a>/g, '');          // the floating "contents" button of the web page
-let parts = body.split(/<hr class="page-break"\s*\/?>/).map(p => p.trim()).filter(p => p.length);
+let parts = body.split(/<hr\s*\/?>|<hr class="page-break"\s*\/?>/).map(p => p.trim()).filter(p => p.length);
 // the book's own contents page is not part of the EPUB text: readers show the navigation (nav.xhtml) instead
 const tocIds = [];
 parts = parts.filter(p => { if (/<section class="toc"/.test(p)) { for (const m of p.matchAll(/\sid="([^"]+)"/g)) tocIds.push(m[1]); return false; } return true; });
@@ -180,7 +176,7 @@ files['OEBPS/toc.ncx'] = Buffer.from(ncx, 'utf8');
 
 // ---- 6. package ------------------------------------------------------------------------------------------------
 files['OEBPS/style.css'] = Buffer.from(css, 'utf8');
-if (fontFile) files['OEBPS/fonts/ChanakyaUni.otf'] = fontFile;
+FONT_FILES.forEach(f => { files['OEBPS/fonts/' + f] = fs.readFileSync(path.resolve(__dirname, '..', 'fonts', f)); });
 if (COVER) files['OEBPS/images/cover.jpg'] = fs.readFileSync(COVER);
 const imgDir = path.join(path.dirname(SRC), 'image');
 const MT = { jpeg: 'image/jpeg', jpg: 'image/jpeg', png: 'image/png', gif: 'image/gif', svg: 'image/svg+xml' };
@@ -194,7 +190,7 @@ const manifest = [
   '<item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>',
   '<item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>',
   '<item id="css" href="style.css" media-type="text/css"/>',
-  fontFile ? '<item id="font" href="fonts/ChanakyaUni.otf" media-type="application/vnd.ms-opentype"/>' : '',
+  ...FONT_FILES.map((f, i) => '<item id="font' + i + '" href="fonts/' + f + '" media-type="font/woff2"/>'),
   COVER ? '<item id="cover-image" href="images/cover.jpg" media-type="image/jpeg" properties="cover-image"/>' : '',
   ...imgList.map((n, i) => '<item id="img' + i + '" href="images/' + esc(n) + '" media-type="' + (MT[path.extname(n).slice(1).toLowerCase()] || 'application/octet-stream') + '"/>'),
   ...parts.map((_, i) => '<item id="p' + i + '" href="' + fileOf(i) + '" media-type="application/xhtml+xml"/>')
@@ -239,6 +235,6 @@ const entries = [['mimetype', Buffer.from('application/epub+zip'), true]];
 for (const k of Object.keys(files).sort()) entries.push([k, files[k], false]);
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 fs.writeFileSync(OUT, zip(entries));
-console.log('pages:', parts.length, '| contents entries:', playOrder, '| pictures:', imgList.length, '| font:', fontFile ? (fontFile.length / 1024).toFixed(0) + ' KB' : 'none', '| links to missing ids:', badLinks);
+console.log('pages:', parts.length, '| contents entries:', playOrder, '| pictures:', imgList.length, '| fonts:', FONT_FILES.length, '| links to missing ids:', badLinks);
 if (missingPics.length) console.log('pictures named in the book but not in its image folder (left out):', missingPics.join(', '));
 console.log('written', OUT, (fs.statSync(OUT).size / 1048576).toFixed(2) + ' MB');

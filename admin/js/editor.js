@@ -1,5 +1,5 @@
 /* Chapter editor: pick a book, then edit it chapter by chapter.
-   - Chapters are the pieces between <hr class="page-break"> lines, exactly as the reader cuts them.
+   - Chapters are the pieces between <hr> lines, exactly as the reader cuts them.
    - The visual editor is an iframe that loads the book's own stylesheet, so paragraphs look the way readers see them.
    - Every save keeps the previous text (History); deleted chapters can be recovered (Trash). */
 (function () {
@@ -140,8 +140,8 @@
     function frameSource(head, body) {
       return '<!DOCTYPE html><html><head><meta charset="utf-8"><base href="' + BASE + '">' + head +
         '<style>html{background:#fff}body{min-height:92vh;outline:0;caret-color:#a51512}p:hover{outline:1px dashed rgba(165,21,18,.35);outline-offset:2px}' +
-        'body.show-labels p::before{content:attr(class);display:block;font:600 10px/1.2 system-ui,sans-serif;color:#a51512;opacity:.75;margin-bottom:2px;text-align:left}' +
-        'img{max-width:100%;height:auto}[data-audio]::after{content:"▶ audio";display:inline-block;margin-left:.7em;padding:1px 9px;border-radius:999px;background:#8f1a12;color:#fff;font:600 11px/1.6 system-ui,sans-serif;vertical-align:middle;cursor:pointer;-webkit-user-select:none;user-select:none}</style></head><body contenteditable="true" spellcheck="false">' + body + '</body></html>';
+        'body.show-labels p::before{content:attr(class);display:block;font:600 10px/1.2 NotoSerifDevanagari,serif;color:#a51512;opacity:.75;margin-bottom:2px;text-align:left}' +
+        'img{max-width:100%;height:auto}[data-audio]::after{content:"▶ audio";display:inline-block;margin-left:.7em;padding:1px 9px;border-radius:999px;background:#8f1a12;color:#fff;font:600 11px/1.6 NotoSerifDevanagari,serif;vertical-align:middle;cursor:pointer;-webkit-user-select:none;user-select:none}</style></head><body contenteditable="true" spellcheck="false">' + body + '</body></html>';
     }
     function ensureSurface() {
       if (frame) return Promise.resolve();

@@ -143,7 +143,7 @@ function classify(cls) {
   const has = re => c.some(x => re.test(x));
   if (has(/^cover-/i) || has(/^Page-Break(-\d+)?$/) || has(/^Tavmev-Mata/i) || has(/^Tvamev/i)) return 'skip';
   if (has(/^Footnotes?-(right)$/i)) return 'note-attr';
-  if (has(/^Footnotes?/i)) return 'note';
+  if (has(/^(?:Footnotes?|fn$)/i)) return 'note';
   if (has(/^Sub-Heading-2$/i)) return 'h3';
   if (has(/^Sub-Head(ing)?(-\d+)?$/i)) return 'h2';
   if (has(/^(Main-)?Heading/i) || has(/^Title-page/i)) return 'h1';
@@ -158,8 +158,8 @@ function parseBook(html) {
     .replace(/<style[\s\S]*?<\/style>/gi, ' ')
     .replace(/<script[\s\S]*?<\/script>/gi, ' ')
     .replace(/<!--[\s\S]*?-->/g, ' ');
-  const hasSections = /class="[^"]*epub-page/.test(body);
-  const re = /<section\b[^>]*data-page="(\d+)"[^>]*>|<hr\b[^>]*class="[^"]*page-break[^"]*"[^>]*>|<tr\b[^>]*>([\s\S]*?)<\/tr>|<p\b([^>]*)>([\s\S]*?)<\/p>/gi;
+  const hasSections = /class="(?:[^"]*\s)?(?:epub-)?page(?:\s|")/.test(body);
+  const re = /<section\b[^>]*data-page="(\d+)"[^>]*>|<hr\s*\/?>|<hr\b[^>]*class="[^"]*page-break[^"]*"[^>]*>|<tr\b[^>]*>([\s\S]*?)<\/tr>|<p\b([^>]*)>([\s\S]*?)<\/p>/gi;
   const paras = [];
   let page = hasSections ? null : null;
   let part = 1, m;
@@ -175,7 +175,7 @@ function parseBook(html) {
       }
       continue;
     }
-    if (m[3] === undefined) { part++; continue; }      // <hr class="page-break"> in flat books
+    if (m[3] === undefined) { part++; continue; }      // <hr> in flat books
     const attrs = m[3];
     const cls = (/class="([^"]*)"/.exec(attrs) || [, ''])[1];
     const id = (/\bid="([^"]*)"/.exec(attrs) || [, ''])[1];

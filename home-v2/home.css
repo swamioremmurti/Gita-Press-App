@@ -1,12 +1,12 @@
-@font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; size-adjust: 120%; }
-@font-face { font-family: 'ChanakyaUni'; src: url('/fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; size-adjust: 120%; }
+@font-face { font-family: 'NotoSerifDevanagari'; src: url('/fonts/NotoSerifDevanagari-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; size-adjust: 102%; ascent-override: 90%; descent-override: 32%; line-gap-override: 0%; }
+@font-face { font-family: 'NotoSerifDevanagari'; src: url('/fonts/NotoSerifDevanagari-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; size-adjust: 102%; ascent-override: 90%; descent-override: 32%; line-gap-override: 0%; }
 
 :root {
   --bg: #fbf2de; --bg2: #f6e6c4; --card: #fffaf0; --ink: #3b1d0e; --muted: #7a5a3c;
   --red: #a51512; --red-d: #7d0e0c; --gold: #d9a85a; --gold-l: #efd49a; --rule: #e3c98d;
   --shadow: 0 2px 10px rgba(110, 60, 10, .14);
 }
-* { box-sizing: border-box; font-family: 'ChanakyaUni', serif; }
+* { box-sizing: border-box; font-family: 'NotoSerifDevanagari', serif; }
 html { -webkit-text-size-adjust: 100%; }
 body { margin: 0; color: var(--ink); line-height: 1.45;
   background: radial-gradient(1200px 500px at 50% -80px, #fff6df 0, transparent 70%), var(--bg); }

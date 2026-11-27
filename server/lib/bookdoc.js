@@ -1,6 +1,6 @@
 // Book text as the admin panel's chapter editor sees it.
 //
-// A book file is one HTML document; the reader cuts it into chapters at every <hr class="page-break">
+// A book file is one HTML document; the reader cuts it into chapters at every bare <hr> (older books and database copies still carry <hr class="page-break">, which is accepted too)
 // (swadhyay-app.js: splitBookChapters). The editor uses the same cut, so "chapter N" means the same piece
 // in both places. A document is stored as   prefix + chapter + <hr> + chapter ... + suffix
 // where prefix is everything up to and including <body ...> and suffix is </body></html>.
@@ -14,8 +14,8 @@ const path = require('path');
 
 const PROJECT_ROOT = path.resolve(__dirname, '..', '..');
 const BOOKS_DIR = path.join(PROJECT_ROOT, 'Gita Press Books', 'Gita Press Books');
-const PAGE_BREAK = '<hr class="page-break">';
-const PAGE_BREAK_RE = /<hr[^>]*\bclass=["']page-break["'][^>]*>/ig;
+const PAGE_BREAK = '<hr>';
+const PAGE_BREAK_RE = /<hr\s*\/?>|<hr[^>]*\bclass=["']page-break["'][^>]*>/ig;
 
 function splitDoc(html) {
   html = String(html || '');

@@ -23,7 +23,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  89.3
+        "sizeKB":  89
     },
     {
         "file":  "जीवन्मुक्तिके रहस्य.html",
@@ -32,7 +32,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  272.4
+        "sizeKB":  273.2
     },
     {
         "file":  "मेरे नाथ! मेरे प्रभो.html",
@@ -41,7 +41,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  112.8
+        "sizeKB":  113
     },
     {
         "file":  "ईस्वर अंस जीव अबिनासी.html",
@@ -50,7 +50,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  663.6
+        "sizeKB":  665.4
     },
     {
         "file":  "अयोध्या-माहात्म्य.html",
@@ -59,7 +59,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीविश्वेश्वरीप्रसादजी शुक्ल",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1800.2
+        "sizeKB":  1806.1
     },
     {
         "file":  "श्रीलिङ्ग-महापुराण (केवल हिन्दी).html",
@@ -68,7 +68,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3453.6
+        "sizeKB":  3463.1
     },
     {
         "file":  "गीता चिंतन.html",
@@ -77,7 +77,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2103.7
+        "sizeKB":  2071.3
     },
     {
         "file":  "शिव स्तोत्र रत्नाकर.html",
@@ -86,7 +86,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  818.3
+        "sizeKB":  821.1
     },
     {
         "file":  "श्रीकृष्ण विज्ञान.html",
@@ -95,7 +95,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "पुरोहित रामप्रताप",
         "publisher":  "",
-        "sizeKB":  505.8
+        "sizeKB":  475.8
     },
     {
         "file":  "अमोघ शिवकवच.html",
@@ -104,7 +104,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  53.7
+        "sizeKB":  53.6
     },
     {
         "file":  "आदित्यहृदयस्तोत्रम्.html",
@@ -113,7 +113,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  28.9
+        "sizeKB":  29.3
     },
     {
         "file":  "श्रीहनुमानचालीसा.html",
@@ -122,7 +122,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  117.4
+        "sizeKB":  116.3
     },
     {
         "file":  "रामरक्षास्तोत्रम्.html",
@@ -131,7 +131,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  32.9
+        "sizeKB":  32.8
     },
     {
         "file":  "तिरुपति-यात्रा.html",
@@ -140,7 +140,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "डॉ. एस.टी. अरुण कुमारी",
         "publisher":  "तिरुमल तिरुपति देवस्थानम्, तिरुपति",
-        "sizeKB":  253
+        "sizeKB":  253.7
     },
     {
         "file":  "अयोध्या-दर्शन.html",
@@ -149,7 +149,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  443.8
+        "sizeKB":  444.3
     },
     {
         "file":  "चित्त शुद्धि भाग - 1.html",
@@ -158,7 +158,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  672.1
+        "sizeKB":  673.9
     },
     {
         "file":  "चित्त शुद्धि भाग - 2.html",
@@ -167,7 +167,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  848
+        "sizeKB":  849.6
     },
     {
         "file":  "जीवन पथ.html",
@@ -176,7 +176,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  424
+        "sizeKB":  424.6
     },
     {
         "file":  "जीवन-दर्शन भाग 1.html",
@@ -185,7 +185,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  517
+        "sizeKB":  518.7
     },
     {
         "file":  "जीवन-दर्शन भाग 2.html",
@@ -194,7 +194,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  572.9
+        "sizeKB":  574.5
     },
     {
         "file":  "दर्शन और नीति.html",
@@ -203,7 +203,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  340.9
+        "sizeKB":  341.6
     },
     {
         "file":  "दुःख का प्रभाव.html",
@@ -212,7 +212,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  402.2
+        "sizeKB":  403.7
     },
     {
         "file":  "पथ प्रदीप.html",
@@ -221,7 +221,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  246.1
+        "sizeKB":  246.7
     },
     {
         "file":  "पाथेय - 1.html",
@@ -230,7 +230,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  514.9
+        "sizeKB":  519.1
     },
     {
         "file":  "पाथेय - 2.html",
@@ -239,7 +239,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  450.1
+        "sizeKB":  453.4
     },
     {
         "file":  "प्रबोधनी.html",
@@ -248,7 +248,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  58.5
+        "sizeKB":  58.7
     },
     {
         "file":  "प्रश्नोत्तरी संतवाणी - 1.html",
@@ -257,7 +257,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  343.7
+        "sizeKB":  356.9
     },
     {
         "file":  "प्रश्नोत्तरी संतवाणी - 2.html",
@@ -266,7 +266,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  516.7
+        "sizeKB":  542.9
     },
     {
         "file":  "प्रार्थना तथा पद.html",
@@ -275,7 +275,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  32.5
+        "sizeKB":  33.1
     },
     {
         "file":  "प्रेरणा पथ.html",
@@ -284,7 +284,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  728.5
+        "sizeKB":  729.3
     },
     {
         "file":  "मंगलमय विधान.html",
@@ -293,7 +293,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  236.2
+        "sizeKB":  236.5
     },
     {
         "file":  "मानव की मांग.html",
@@ -302,7 +302,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  841.6
+        "sizeKB":  844.1
     },
     {
         "file":  "मानव सेवा संघ परिचय.html",
@@ -311,7 +311,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  220.3
+        "sizeKB":  221.2
     },
     {
         "file":  "मानवता के मूल सिधान्त.html",
@@ -320,7 +320,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  284.9
+        "sizeKB":  285.7
     },
     {
         "file":  "मानव–दर्शन.html",
@@ -329,7 +329,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  716.9
+        "sizeKB":  717.5
     },
     {
         "file":  "मूक-सत्संग तया नित्य-योग.html",
@@ -338,7 +338,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  762.9
+        "sizeKB":  764.6
     },
     {
         "file":  "मैं की खोज.html",
@@ -347,7 +347,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  189.9
+        "sizeKB":  190.1
     },
     {
         "file":  "रजत जयन्ती स्मारिका.html",
@@ -356,7 +356,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  984.8
+        "sizeKB":  987.2
     },
     {
         "file":  "सत्संग और साधन.html",
@@ -365,7 +365,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  231.3
+        "sizeKB":  231.8
     },
     {
         "file":  "सन्त उद्बोधन.html",
@@ -374,7 +374,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  716
+        "sizeKB":  720.0
     },
     {
         "file":  "सन्त-जीवन-दर्पण.html",
@@ -383,7 +383,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  325.3
+        "sizeKB":  325.8
     },
     {
         "file":  "सन्त पत्रावली - 1.html",
@@ -392,7 +392,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  547.4
+        "sizeKB":  551.5
     },
     {
         "file":  "सन्त पत्रावली - 2.html",
@@ -401,7 +401,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  668.9
+        "sizeKB":  673.0
     },
     {
         "file":  "सन्त पत्रावली - 3.html",
@@ -410,7 +410,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  290.4
+        "sizeKB":  293.4
     },
     {
         "file":  "सन्त वाणी भाग -1.html",
@@ -419,7 +419,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  463.4
+        "sizeKB":  464.0
     },
     {
         "file":  "सन्त वाणी भाग -2.html",
@@ -428,7 +428,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  493.1
+        "sizeKB":  494.1
     },
     {
         "file":  "सन्त वाणी भाग -3.html",
@@ -437,7 +437,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  506.7
+        "sizeKB":  507.9
     },
     {
         "file":  "सन्त वाणी भाग -4.html",
@@ -446,7 +446,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  796.7
+        "sizeKB":  797.9
     },
     {
         "file":  "सन्त वाणी भाग -5B.html",
@@ -455,7 +455,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  421.9
+        "sizeKB":  423.2
     },
     {
         "file":  "सन्त वाणी भाग -6.html",
@@ -464,7 +464,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  572.9
+        "sizeKB":  574.1
     },
     {
         "file":  "सन्त वाणी भाग -7.html",
@@ -473,7 +473,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  573.9
+        "sizeKB":  575.4
     },
     {
         "file":  "सन्त वाणी भाग -8.html",
@@ -482,7 +482,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  500.6
+        "sizeKB":  501.6
     },
     {
         "file":  "सन्त वाणी भाग- 5A.html",
@@ -491,7 +491,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  382.8
+        "sizeKB":  383.6
     },
     {
         "file":  "सन्त समागम भाग - 1.html",
@@ -500,7 +500,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  713.3
+        "sizeKB":  716.2
     },
     {
         "file":  "सन्त समागम भाग - 2.html",
@@ -509,7 +509,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  504
+        "sizeKB":  505.4
     },
     {
         "file":  "सन्त समागम भाग - 3.html",
@@ -518,7 +518,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  488
+        "sizeKB":  490.1
     },
     {
         "file":  "सन्त सौरभ (सन्त वाणी ).html",
@@ -527,7 +527,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  887.9
+        "sizeKB":  890.8
     },
     {
         "file":  "सन्त हृदयोद्गार.html",
@@ -536,7 +536,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  111.5
+        "sizeKB":  112.2
     },
     {
         "file":  "साधन-तत्त्व.html",
@@ -545,7 +545,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  332.9
+        "sizeKB":  333.4
     },
     {
         "file":  "साधन-त्रिवेणी.html",
@@ -554,7 +554,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  391.7
+        "sizeKB":  392.6
     },
     {
         "file":  "साधन-निधि.html",
@@ -563,7 +563,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "मानव सेवा संघ, वृन्दावन",
-        "sizeKB":  236.8
+        "sizeKB":  237.7
     },
     {
         "file":  "शिव-आराधना.html",
@@ -572,7 +572,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  110
+        "sizeKB":  108.8
     },
     {
         "file":  "u_बृहदारण्यकोपनिषत्.html",
@@ -590,7 +590,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  275.1
+        "sizeKB":  273.3
     },
     {
         "file":  "अध्यात्म-पथ-प्रदर्शक.html",
@@ -599,7 +599,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1678.6
+        "sizeKB":  1678
     },
     {
         "file":  "अध्यात्मरामायण.html",
@@ -608,7 +608,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीमुनिलाल गुप्त",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2958
+        "sizeKB":  2900.9
     },
     {
         "file":  "अध्यात्मविषयक पत्र.html",
@@ -617,7 +617,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  493.9
+        "sizeKB":  493.7
     },
     {
         "file":  "अनन्य भक्तिसे भगवत्प्राप्ति.html",
@@ -626,7 +626,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  646
+        "sizeKB":  647.8
     },
     {
         "file":  "अनन्यभक्ति कैसे प्राप्त हो.html",
@@ -635,7 +635,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  435.4
+        "sizeKB":  434.6
     },
     {
         "file":  "अनुराग पदावली.html",
@@ -644,7 +644,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "सुदर्शन सिंह",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  912.1
+        "sizeKB":  890.4
     },
     {
         "file":  "अनुस्मृति.html",
@@ -653,7 +653,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  30.5
+        "sizeKB":  28.9
     },
     {
         "file":  "अन्त्यकर्म श्राद्धप्रकाश.html",
@@ -662,7 +662,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3298.1
+        "sizeKB":  3183.9
     },
     {
         "file":  "अपात्रको भी भगवत्प्राप्ति.html",
@@ -671,7 +671,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  617.1
+        "sizeKB":  616.8
     },
     {
         "file":  "अमरता की ओर.html",
@@ -680,7 +680,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  359.9
+        "sizeKB":  358.6
     },
     {
         "file":  "अमूल्य वचन.html",
@@ -689,7 +689,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  850
+        "sizeKB":  848.2
     },
     {
         "file":  "अमूल्य शिक्षा.html",
@@ -698,7 +698,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  633.9
+        "sizeKB":  626.7
     },
     {
         "file":  "अमूल्य समय का सदुपयोग.html",
@@ -707,7 +707,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  463.4
+        "sizeKB":  462.1
     },
     {
         "file":  "अमृत कण.html",
@@ -716,7 +716,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1160.4
+        "sizeKB":  1156.2
     },
     {
         "file":  "अमृत के घूँट.html",
@@ -725,7 +725,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  784.4
+        "sizeKB":  782.9
     },
     {
         "file":  "अमृत बिन्दु.html",
@@ -734,7 +734,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  369.5
+        "sizeKB":  368.2
     },
     {
         "file":  "अमृत वचन.html",
@@ -743,7 +743,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  501.1
+        "sizeKB":  502.7
     },
     {
         "file":  "अवतार का सिद्धान्त.html",
@@ -752,7 +752,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  65.4
+        "sizeKB":  64.8
     },
     {
         "file":  "अष्टावक्रगीता.html",
@@ -761,7 +761,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  228.2
+        "sizeKB":  224
     },
     {
         "file":  "असीम नीचता और असीम साधुता.html",
@@ -770,7 +770,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  432.3
+        "sizeKB":  427.6
     },
     {
         "file":  "आचार्य के सदुपेदश.html",
@@ -779,7 +779,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  74.1
+        "sizeKB":  74
     },
     {
         "file":  "आत्मकल्याण के विविध उपाय.html",
@@ -788,7 +788,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  428.4
+        "sizeKB":  426.2
     },
     {
         "file":  "आत्मोद्धारके सरल उपाय.html",
@@ -797,7 +797,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  810.6
+        "sizeKB":  812.7
     },
     {
         "file":  "आत्मोद्धारके साधन भाग - १.html",
@@ -806,7 +806,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  756.2
+        "sizeKB":  754.7
     },
     {
         "file":  "आदर्श उपकार.html",
@@ -815,7 +815,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  446.4
+        "sizeKB":  442.5
     },
     {
         "file":  "आदर्श कहानियाँ.html",
@@ -824,7 +824,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  323.7
+        "sizeKB":  321.4
     },
     {
         "file":  "आदर्श देवियाँ.html",
@@ -833,7 +833,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  210.7
+        "sizeKB":  207.6
     },
     {
         "file":  "आदर्श नारी सुशीला.html",
@@ -842,7 +842,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  171.2
+        "sizeKB":  170
     },
     {
         "file":  "आदर्श भक्त.html",
@@ -851,7 +851,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  297.8
+        "sizeKB":  294.5
     },
     {
         "file":  "आदर्श भ्रातृ प्रेम.html",
@@ -860,7 +860,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  292.2
+        "sizeKB":  286.7
     },
     {
         "file":  "आदर्श मानव हृदय.html",
@@ -869,7 +869,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  434.6
+        "sizeKB":  430.3
     },
     {
         "file":  "आध्यात्मिक कहानियाँ.html",
@@ -878,7 +878,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  728.9
+        "sizeKB":  728.8
     },
     {
         "file":  "आध्यात्मिक प्रवचन.html",
@@ -887,7 +887,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  583.8
+        "sizeKB":  580.5
     },
     {
         "file":  "आनन्द का स्वरूप.html",
@@ -896,7 +896,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  764.9
+        "sizeKB":  756.8
     },
     {
         "file":  "आनन्द की लहरें.html",
@@ -905,7 +905,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  121.2
+        "sizeKB":  120.7
     },
     {
         "file":  "आनन्द कैसे मिले.html",
@@ -914,7 +914,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  392.5
+        "sizeKB":  390.6
     },
     {
         "file":  "आनन्द मार्ग.html",
@@ -923,7 +923,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  909.6
+        "sizeKB":  906.5
     },
     {
         "file":  "आनन्दमय जीवन.html",
@@ -932,7 +932,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  776.6
+        "sizeKB":  775.1
     },
     {
         "file":  "आरती-संग्रह.html",
@@ -941,7 +941,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  219.1
+        "sizeKB":  216.8
     },
     {
         "file":  "आवश्यक शिक्षा.html",
@@ -950,7 +950,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  320.9
+        "sizeKB":  319.7
     },
     {
         "file":  "आवागमन से मुक्ति.html",
@@ -959,7 +959,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  414.5
+        "sizeKB":  411.9
     },
     {
         "file":  "इसी जन्ममें परमात्मप्राप्ति.html",
@@ -968,7 +968,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  533.9
+        "sizeKB":  532.1
     },
     {
         "file":  "ईशावास्योपनिषद्.html",
@@ -977,7 +977,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  111.3
+        "sizeKB":  105.4
     },
     {
         "file":  "केनोपनिषद्.html",
@@ -986,7 +986,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  153.4
+        "sizeKB":  142.3
     },
     {
         "file":  "कठोपनिषद्.html",
@@ -995,7 +995,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  482.3
+        "sizeKB":  454.1
     },
     {
         "file":  "प्रश्नोपनिषद्.html",
@@ -1004,7 +1004,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "जगद्गुरु आदि शंकराचार्य",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  418.1
+        "sizeKB":  419.9
     },
     {
         "file":  "मुण्डकोपनिषद्.html",
@@ -1013,7 +1013,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  293.1
+        "sizeKB":  272.4
     },
     {
         "file":  "माण्डूक्योपनिषद्.html",
@@ -1022,7 +1022,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  94.7
+        "sizeKB":  90
     },
     {
         "file":  "ऐतरेयोपनिषद्.html",
@@ -1031,7 +1031,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  181.4
+        "sizeKB":  166
     },
     {
         "file":  "तैत्तिरीयोपनिषद्.html",
@@ -1040,7 +1040,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  530.9
+        "sizeKB":  494.6
     },
     {
         "file":  "श्वेताश्वतरोपनिषद्.html",
@@ -1049,7 +1049,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  482
+        "sizeKB":  450.5
     },
     {
         "file":  "ईश्वर और संसार.html",
@@ -1058,7 +1058,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  948.4
+        "sizeKB":  943.7
     },
     {
         "file":  "ईश्वर की सत्ता और महत्ता.html",
@@ -1067,7 +1067,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1516.1
+        "sizeKB":  1510
     },
     {
         "file":  "ईश्वर दयालु और न्यायकारी है.html",
@@ -1076,7 +1076,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  47.9
+        "sizeKB":  47.5
     },
     {
         "file":  "ईश्वर.html",
@@ -1085,7 +1085,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  99
+        "sizeKB":  98.1
     },
     {
         "file":  "ईश्वरसाक्षात्कार के लिये नाम-जप सर्वोपरि साधन है.html",
@@ -1094,7 +1094,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  56.3
+        "sizeKB":  54.7
     },
     {
         "file":  "उद्धव संदेश.html",
@@ -1103,7 +1103,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "चतुर्भुज तोषनीवाल",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  736.8
+        "sizeKB":  732.3
     },
     {
         "file":  "उद्धार कैसे हो.html",
@@ -1112,7 +1112,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  340.8
+        "sizeKB":  337
     },
     {
         "file":  "उपदेशप्रद कहानियाँ.html",
@@ -1121,7 +1121,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  616.7
+        "sizeKB":  615.2
     },
     {
         "file":  "उपनिषदों के चौदह रत्न.html",
@@ -1130,7 +1130,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  290.5
+        "sizeKB":  289
     },
     {
         "file":  "एक नयी बात.html",
@@ -1139,7 +1139,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  96
+        "sizeKB":  95.2
     },
     {
         "file":  "एक महात्मा का प्रसाद.html",
@@ -1148,7 +1148,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  887.8
+        "sizeKB":  884.2
     },
     {
         "file":  "एक महापुरुषके अनुभवकी बातें.html",
@@ -1157,7 +1157,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  406.4
+        "sizeKB":  403.8
     },
     {
         "file":  "एक लोटा पानी.html",
@@ -1166,7 +1166,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  467.4
+        "sizeKB":  463.7
     },
     {
         "file":  "एक संत की वसीयत.html",
@@ -1175,7 +1175,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  48
+        "sizeKB":  46.9
     },
     {
         "file":  "एकादशी व्रत का माहात्म्य.html",
@@ -1184,7 +1184,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  300.1
+        "sizeKB":  297
     },
     {
         "file":  "एकै साधै सब सधै.html",
@@ -1193,7 +1193,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  249.9
+        "sizeKB":  248.8
     },
     {
         "file":  "कर्णवास का सत्संग.html",
@@ -1202,7 +1202,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  497.3
+        "sizeKB":  493.1
     },
     {
         "file":  "कर्म रहस्य.html",
@@ -1211,7 +1211,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  256.2
+        "sizeKB":  262.3
     },
     {
         "file":  "कर्मयोग का तत्त्व.html",
@@ -1220,7 +1220,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1313.7
+        "sizeKB":  1309.7
     },
     {
         "file":  "कलेजे के अक्षर.html",
@@ -1229,7 +1229,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  428.5
+        "sizeKB":  425.4
     },
     {
         "file":  "कल्याण कुंज.html",
@@ -1238,7 +1238,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  404.7
+        "sizeKB":  402.4
     },
     {
         "file":  "कल्याण पथ.html",
@@ -1247,7 +1247,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  516.9
+        "sizeKB":  511.2
     },
     {
         "file":  "कल्याण प्राप्ति के उपाय.html",
@@ -1256,7 +1256,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1075.2
+        "sizeKB":  1070.3
     },
     {
         "file":  "भक्त-चरिताङ्क.html",
@@ -1265,7 +1265,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  7380.8
+        "sizeKB":  7371.3
     },
     {
         "file":  "कल्याणकारी आचरण.html",
@@ -1274,7 +1274,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  62.9
+        "sizeKB":  61.7
     },
     {
         "file":  "कल्याणकारी दोहा संग्रह.html",
@@ -1283,7 +1283,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  455.1
+        "sizeKB":  452.9
     },
     {
         "file":  "कल्याणकारी प्रवचन.html",
@@ -1292,7 +1292,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  438.8
+        "sizeKB":  436
     },
     {
         "file":  "कवितावली.html",
@@ -1301,7 +1301,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "इन्द्रदेवनारायण",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  662.9
+        "sizeKB":  646.4
     },
     {
         "file":  "किसान और गाय.html",
@@ -1310,7 +1310,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  144.2
+        "sizeKB":  142.2
     },
     {
         "file":  "क्या करें क्या न करें.html",
@@ -1319,7 +1319,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1097.5
+        "sizeKB":  1098.5
     },
     {
         "file":  "क्या गुरु बिना मुक्ति नहीं.html",
@@ -1328,7 +1328,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  209.7
+        "sizeKB":  207.9
     },
     {
         "file":  "गंगालहरी.html",
@@ -1337,7 +1337,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  80.3
+        "sizeKB":  80
     },
     {
         "file":  "गजलगीता.html",
@@ -1346,7 +1346,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  9.9
+        "sizeKB":  8.8
     },
     {
         "file":  "गजेंद्रमोक्ष.html",
@@ -1355,7 +1355,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  56.1
+        "sizeKB":  58.2
     },
     {
         "file":  "गणेशस्तोत्ररत्नाकर.html",
@@ -1366,7 +1366,7 @@ var SWADHYAY_BOOKS_RAW = [
         "publisher":  "गीताप्रेस",
         "swith_arth":  "yes",
         "arth_hide":  "Normal!center-tight, Footnotes*, para-style-override-7",
-        "sizeKB":  1034.3
+        "sizeKB":  1014.2
     },
     {
         "file":  "गयाश्राद्धपद्धति_माहात्म्य तथा_गयायात्राविधानसहित.html",
@@ -1375,7 +1375,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  965.1
+        "sizeKB":  926.1
     },
     {
         "file":  "गीता के परम प्रचारक.html",
@@ -1384,7 +1384,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1691.3
+        "sizeKB":  1674.9
     },
     {
         "file":  "गीता ज्ञान प्रवेशिका.html",
@@ -1393,7 +1393,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1412.8
+        "sizeKB":  1385.8
     },
     {
         "file":  "गीता दर्पण.html",
@@ -1402,7 +1402,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2730
+        "sizeKB":  2714.2
     },
     {
         "file":  "गीता पढ़ने के लाभ.html",
@@ -1411,7 +1411,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  69.6
+        "sizeKB":  68.7
     },
     {
         "file":  "गीता बाल प्रश्नोत्तरी.html",
@@ -1420,7 +1420,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  204.6
+        "sizeKB":  185.5
     },
     {
         "file":  "गीता माधुर्य.html",
@@ -1429,7 +1429,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  475.7
+        "sizeKB":  465.1
     },
     {
         "file":  "गीता माधुर्यम्.html",
@@ -1438,7 +1438,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  435.3
+        "sizeKB":  437.6
     },
     {
         "file":  "गीता संग्रह.html",
@@ -1447,7 +1447,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2214.5
+        "sizeKB":  2218.3
     },
     {
         "file":  "गीता-निबन्धावली.html",
@@ -1456,7 +1456,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  234.3
+        "sizeKB":  233.7
     },
     {
         "file":  "गीता-प्रबोधनी.html",
@@ -1465,7 +1465,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1428.6
+        "sizeKB":  1390.2
     },
     {
         "file":  "गीतावली.html",
@@ -1474,7 +1474,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1361.2
+        "sizeKB":  1326.5
     },
     {
         "file":  "गीतोक्त संन्यास या सांख्ययोग का स्वरूप.html",
@@ -1483,7 +1483,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  102.9
+        "sizeKB":  102.3
     },
     {
         "file":  "गुरु और माता-पिता के भक्त बालक.html",
@@ -1492,7 +1492,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  157.6
+        "sizeKB":  156
     },
     {
         "file":  "गृहस्थमें कैसे रहें.html",
@@ -1501,7 +1501,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  468.7
+        "sizeKB":  461.7
     },
     {
         "file":  "गो सेवा के चमत्कार.html",
@@ -1510,7 +1510,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  239.7
+        "sizeKB":  237.3
     },
     {
         "file":  "गोपी प्रेम.html",
@@ -1519,7 +1519,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  164.5
+        "sizeKB":  164.1
     },
     {
         "file":  "गोवध भारतका कलंक एवं गायका माहात्म्य.html",
@@ -1528,7 +1528,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  157.2
+        "sizeKB":  156.6
     },
     {
         "file":  "चिन्ता शोक कैसे मिटें.html",
@@ -1537,7 +1537,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  521.9
+        "sizeKB":  518.3
     },
     {
         "file":  "चेतावनी और सामयिक चेतावनी.html",
@@ -1546,7 +1546,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  119.7
+        "sizeKB":  119
     },
     {
         "file":  "चेतावनी पद संग्रह.html",
@@ -1555,7 +1555,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  689.7
+        "sizeKB":  684
     },
     {
         "file":  "चोखी कहानियाँ.html",
@@ -1564,7 +1564,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  170.6
+        "sizeKB":  168.6
     },
     {
         "file":  "जन्म-मरण से छुटकारा.html",
@@ -1573,7 +1573,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  409.8
+        "sizeKB":  407
     },
     {
         "file":  "जानकी मंगल.html",
@@ -1582,7 +1582,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  165.1
+        "sizeKB":  160.6
     },
     {
         "file":  "जित देखूँ तित तू.html",
@@ -1591,7 +1591,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  516.7
+        "sizeKB":  513.3
     },
     {
         "file":  "जिन खोजा तिन पाइया.html",
@@ -1600,7 +1600,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  322.4
+        "sizeKB":  320.9
     },
     {
         "file":  "जीवन का कर्तव्य.html",
@@ -1609,7 +1609,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  592.1
+        "sizeKB":  591.6
     },
     {
         "file":  "जीवन का सत्य.html",
@@ -1618,7 +1618,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  281.4
+        "sizeKB":  279.8
     },
     {
         "file":  "जीवन में नया प्रकाश.html",
@@ -1627,7 +1627,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  906.6
+        "sizeKB":  907.5
     },
     {
         "file":  "जीवन संजीवनी.html",
@@ -1636,7 +1636,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1245.6
+        "sizeKB":  1246.6
     },
     {
         "file":  "जीवन सुधार की बातें.html",
@@ -1645,7 +1645,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  526.3
+        "sizeKB":  524.9
     },
     {
         "file":  "जीवनचर्या विज्ञान.html",
@@ -1654,7 +1654,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1067.1
+        "sizeKB":  1063
     },
     {
         "file":  "जीवनोपयोगी कल्याण मार्ग.html",
@@ -1663,7 +1663,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  182.9
+        "sizeKB":  181.2
     },
     {
         "file":  "जीवनोपयोगी प्रवचन.html",
@@ -1672,7 +1672,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  391.9
+        "sizeKB":  389.8
     },
     {
         "file":  "जैमिनीकृत महाभारतमें भक्तोंकी गाथा.html",
@@ -1681,7 +1681,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2015.8
+        "sizeKB":  2001.4
     },
     {
         "file":  "ज्ञान के दीप जले.html",
@@ -1690,7 +1690,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  818.2
+        "sizeKB":  804.3
     },
     {
         "file":  "ज्ञान मणि माला.html",
@@ -1699,7 +1699,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  203.3
+        "sizeKB":  203
     },
     {
         "file":  "ज्ञानयोग का तत्त्व.html",
@@ -1708,7 +1708,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1200.2
+        "sizeKB":  1200.4
     },
     {
         "file":  "तत्त्वचिन्तामणि.html",
@@ -1717,7 +1717,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  11155.1
+        "sizeKB":  10508.2
     },
     {
         "file":  "तत्त्वज्ञान कैसे हो.html",
@@ -1726,7 +1726,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  406
+        "sizeKB":  404.4
     },
     {
         "file":  "तत्त्वविचार.html",
@@ -1735,7 +1735,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  616.3
+        "sizeKB":  609.3
     },
     {
         "file":  "तर्पण विधि.html",
@@ -1744,7 +1744,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  82
+        "sizeKB":  80.2
     },
     {
         "file":  "तात्त्विक प्रवचन.html",
@@ -1753,7 +1753,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  282.8
+        "sizeKB":  281.1
     },
     {
         "file":  "तुलसी दल.html",
@@ -1762,7 +1762,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  864.1
+        "sizeKB":  864.8
     },
     {
         "file":  "तू ही तू.html",
@@ -1771,7 +1771,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  118.4
+        "sizeKB":  117.8
     },
     {
         "file":  "त्याग की महिमा.html",
@@ -1780,7 +1780,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  411.6
+        "sizeKB":  408.6
     },
     {
         "file":  "त्याग से भगवत्प्राप्ति.html",
@@ -1789,7 +1789,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  48.4
+        "sizeKB":  47.6
     },
     {
         "file":  "त्रिपिण्डीश्राद्धपद्धति.html",
@@ -1798,7 +1798,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  443.1
+        "sizeKB":  431.4
     },
     {
         "file":  "दत्तात्रेय वज्र कवच.html",
@@ -1807,7 +1807,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  96.9
+        "sizeKB":  96.5
     },
     {
         "file":  "दाम्पत्य जीवन का आदर्श.html",
@@ -1816,7 +1816,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  464
+        "sizeKB":  458.3
     },
     {
         "file":  "दिव्य सन्देश.html",
@@ -1825,7 +1825,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  53
+        "sizeKB":  52.4
     },
     {
         "file":  "दिव्य सुख की सरिता.html",
@@ -1834,7 +1834,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  326.9
+        "sizeKB":  320.6
     },
     {
         "file":  "दीन-दुखियों के प्रति कर्तव्य.html",
@@ -1843,7 +1843,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  75.5
+        "sizeKB":  75
     },
     {
         "file":  "दुःखोंका नाश कैसे हो.html",
@@ -1852,7 +1852,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  511
+        "sizeKB":  509.4
     },
     {
         "file":  "दुख क्यों होते हैं.html",
@@ -1861,7 +1861,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  897.3
+        "sizeKB":  890.1
     },
     {
         "file":  "दुख में भगवत्कृपा.html",
@@ -1870,7 +1870,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  744.9
+        "sizeKB":  744.7
     },
     {
         "file":  "दुर्गति से बचो.html",
@@ -1879,7 +1879,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  112.8
+        "sizeKB":  112
     },
     {
         "file":  "देवर्षि नारद.html",
@@ -1888,7 +1888,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  706.7
+        "sizeKB":  700.8
     },
     {
         "file":  "देवीस्तोत्ररत्नाकर.html",
@@ -1897,7 +1897,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  926.1
+        "sizeKB":  923.7
     },
     {
         "file":  "देश की वर्तमान दशा तथा उसका परिणाम.html",
@@ -1906,7 +1906,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  237.3
+        "sizeKB":  236.3
     },
     {
         "file":  "दैनिक कल्याण सूत्र.html",
@@ -1915,7 +1915,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  244.8
+        "sizeKB":  244.5
     },
     {
         "file":  "दोहावली.html",
@@ -1924,7 +1924,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  615.7
+        "sizeKB":  581.7
     },
     {
         "file":  "धर्म के नाम पर पाप.html",
@@ -1933,7 +1933,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  121.9
+        "sizeKB":  121.5
     },
     {
         "file":  "धर्म क्या है.html",
@@ -1942,7 +1942,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  39.9
+        "sizeKB":  38.8
     },
     {
         "file":  "धर्मसे लाभ और अधर्म से हानि.html",
@@ -1951,7 +1951,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  690.9
+        "sizeKB":  689.2
     },
     {
         "file":  "ध्यान और मानसिक पूजा.html",
@@ -1960,7 +1960,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  100
+        "sizeKB":  98.8
     },
     {
         "file":  "ध्यानावस्था में प्रभु से वार्तालाप.html",
@@ -1969,7 +1969,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  107.4
+        "sizeKB":  107.6
     },
     {
         "file":  "नल दमयन्ती.html",
@@ -1978,7 +1978,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  163
+        "sizeKB":  161.6
     },
     {
         "file":  "नवधा भक्ति.html",
@@ -1987,7 +1987,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  319.4
+        "sizeKB":  313
     },
     {
         "file":  "नाम जप की महिमा.html",
@@ -1996,7 +1996,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  60.3
+        "sizeKB":  59.1
     },
     {
         "file":  "नारद भक्ति सूत्र.html",
@@ -2005,7 +2005,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  35.7
+        "sizeKB":  35.3
     },
     {
         "file":  "नारी धर्म.html",
@@ -2014,7 +2014,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  139.4
+        "sizeKB":  138.1
     },
     {
         "file":  "नारी-शिक्षा.html",
@@ -2023,7 +2023,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  503.1
+        "sizeKB":  500.5
     },
     {
         "file":  "नित्यकर्म-पूजाप्रकाश.html",
@@ -2032,7 +2032,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1356.9
+        "sizeKB":  1335.1
     },
     {
         "file":  "नित्यकर्म-प्रयोग.html",
@@ -2041,7 +2041,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  445.9
+        "sizeKB":  440.3
     },
     {
         "file":  "नित्ययोग की प्राप्ति.html",
@@ -2050,7 +2050,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  391.8
+        "sizeKB":  388.6
     },
     {
         "file":  "निष्काम श्रद्धा और प्रेम.html",
@@ -2059,7 +2059,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  598.2
+        "sizeKB":  593.1
     },
     {
         "file":  "निष्कामभाव से भगवत्प्राप्ति.html",
@@ -2068,7 +2068,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  418.4
+        "sizeKB":  417.6
     },
     {
         "file":  "नेत्रों में भगवान् को बसा लें.html",
@@ -2077,7 +2077,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  404.8
+        "sizeKB":  401.6
     },
     {
         "file":  "नैवेद्य.html",
@@ -2086,7 +2086,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  818.2
+        "sizeKB":  815.6
     },
     {
         "file":  "पंचदेव अथर्वशीर्ष संग्रह.html",
@@ -2095,7 +2095,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  229.7
+        "sizeKB":  228.6
     },
     {
         "file":  "पद-रत्नाकर.html",
@@ -2104,7 +2104,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  4190.4
+        "sizeKB":  3412.2
     },
     {
         "file":  "पदच्छेद.html",
@@ -2113,7 +2113,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2583.7
+        "sizeKB":  1835.6
     },
     {
         "file":  "परम पिता से प्रार्थना.html",
@@ -2122,7 +2122,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  27.4
+        "sizeKB":  26.7
     },
     {
         "file":  "परम शान्ति का मार्ग.html",
@@ -2131,7 +2131,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1242
+        "sizeKB":  1244.7
     },
     {
         "file":  "परम साधन.html",
@@ -2140,7 +2140,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1184.3
+        "sizeKB":  1182.6
     },
     {
         "file":  "परम सेवा.html",
@@ -2149,7 +2149,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  671
+        "sizeKB":  663.1
     },
     {
         "file":  "परमानन्द की खेती.html",
@@ -2158,7 +2158,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  704.2
+        "sizeKB":  703.8
     },
     {
         "file":  "परमार्थ की मन्दाकिनी.html",
@@ -2167,7 +2167,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  374.8
+        "sizeKB":  369.5
     },
     {
         "file":  "परमार्थ सूत्र संग्रह.html",
@@ -2176,7 +2176,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  620.6
+        "sizeKB":  622.7
     },
     {
         "file":  "परलोक और पुनर्जन्म.html",
@@ -2185,7 +2185,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  83.3
+        "sizeKB":  82.1
     },
     {
         "file":  "परलोक और पुनर्जन्मकी सत्य घटनाएँ.html",
@@ -2194,7 +2194,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  498
+        "sizeKB":  494.3
     },
     {
         "file":  "परोपकार और सच्चाई का फल.html",
@@ -2203,7 +2203,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  457.8
+        "sizeKB":  451
     },
     {
         "file":  "पाण्डवगीता.html",
@@ -2212,7 +2212,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  81
+        "sizeKB":  78.8
     },
     {
         "file":  "पातञ्जलयोगदर्शन.html",
@@ -2221,7 +2221,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  590.7
+        "sizeKB":  572
     },
     {
         "file":  "पातञ्जलयोगप्रदीप.html",
@@ -2230,7 +2230,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  4205.9
+        "sizeKB":  4191.4
     },
     {
         "file":  "पारमार्थिक पत्र.html",
@@ -2239,7 +2239,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  670.9
+        "sizeKB":  665.2
     },
     {
         "file":  "पार्वती मंगल.html",
@@ -2248,7 +2248,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  120.2
+        "sizeKB":  116.9
     },
     {
         "file":  "पिता की सीख.html",
@@ -2257,7 +2257,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  410.8
+        "sizeKB":  402.5
     },
     {
         "file":  "पुरुषोत्तमसहस्रनामस्तोत्रम्.html",
@@ -2266,7 +2266,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  219.4
+        "sizeKB":  221.8
     },
     {
         "file":  "पूजा के फूल.html",
@@ -2275,7 +2275,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "भूपेन्द्रनाथ देवशर्मा",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1237.1
+        "sizeKB":  1231.8
     },
     {
         "file":  "पूर्ण-समर्पण_भगवच्चर्चा भाग-६.html",
@@ -2284,7 +2284,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1236.1
+        "sizeKB":  1233.1
     },
     {
         "file":  "पौराणिक कथाएँ.html",
@@ -2293,7 +2293,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  415
+        "sizeKB":  413.1
     },
     {
         "file":  "पौराणिक कहानियाँ.html",
@@ -2302,7 +2302,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  406.3
+        "sizeKB":  403.5
     },
     {
         "file":  "प्रतिकूलता में प्रसन्नता.html",
@@ -2311,7 +2311,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  432
+        "sizeKB":  430.3
     },
     {
         "file":  "प्रत्यक्ष भगवद्दर्शन के उपाय.html",
@@ -2320,7 +2320,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  755.8
+        "sizeKB":  756.2
     },
     {
         "file":  "प्रश्नोत्तर मणिमाला.html",
@@ -2329,7 +2329,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  610.3
+        "sizeKB":  600.4
     },
     {
         "file":  "प्रश्नोत्तरी.html",
@@ -2338,7 +2338,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  49.3
+        "sizeKB":  47.4
     },
     {
         "file":  "प्राचीन भक्त.html",
@@ -2347,7 +2347,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  461.6
+        "sizeKB":  458.3
     },
     {
         "file":  "प्रार्थना.html",
@@ -2356,7 +2356,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  223.8
+        "sizeKB":  222.2
     },
     {
         "file":  "प्रेम का सच्चा स्वरूप.html",
@@ -2365,7 +2365,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  57.3
+        "sizeKB":  55.9
     },
     {
         "file":  "प्रेम के वश में भगवान्.html",
@@ -2374,7 +2374,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  410.3
+        "sizeKB":  409.5
     },
     {
         "file":  "प्रेम दर्शन (नारद भक्ति सूत्र की व्याख्या).html",
@@ -2383,7 +2383,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  588.7
+        "sizeKB":  586.5
     },
     {
         "file":  "प्रेम में विलक्षण एकता.html",
@@ -2392,7 +2392,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  556.4
+        "sizeKB":  554.2
     },
     {
         "file":  "प्रेम योग.html",
@@ -2401,7 +2401,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1034
+        "sizeKB":  1034.9
     },
     {
         "file":  "प्रेम सत्संग सुधा माला.html",
@@ -2410,7 +2410,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  666.4
+        "sizeKB":  666.9
     },
     {
         "file":  "प्रेमयोग का तत्त्व.html",
@@ -2419,7 +2419,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1223
+        "sizeKB":  1224.4
     },
     {
         "file":  "प्रेमी भक्त उद्धव.html",
@@ -2428,7 +2428,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  195.5
+        "sizeKB":  194.2
     },
     {
         "file":  "प्रेमी भक्त.html",
@@ -2437,7 +2437,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  272.5
+        "sizeKB":  271
     },
     {
         "file":  "प्रेरक कहानियाँ.html",
@@ -2446,7 +2446,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  243.9
+        "sizeKB":  241.4
     },
     {
         "file":  "बड़ोंके जीवन से शिक्षा.html",
@@ -2455,7 +2455,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  225.9
+        "sizeKB":  224.1
     },
     {
         "file":  "बलिवैश्वदेव-विधि.html",
@@ -2464,7 +2464,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  37.7
+        "sizeKB":  37.1
     },
     {
         "file":  "बाल अमृत वचन.html",
@@ -2473,7 +2473,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  66.2
+        "sizeKB":  64.6
     },
     {
         "file":  "बाल प्रश्नोत्तरी.html",
@@ -2482,7 +2482,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  69.3
+        "sizeKB":  67.4
     },
     {
         "file":  "बाल शिक्षा.html",
@@ -2491,7 +2491,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  194.1
+        "sizeKB":  192.5
     },
     {
         "file":  "बालकों की बोलचाल.html",
@@ -2500,7 +2500,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  43.7
+        "sizeKB":  42.3
     },
     {
         "file":  "बालकों के कर्तव्य.html",
@@ -2509,7 +2509,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  265.5
+        "sizeKB":  263.4
     },
     {
         "file":  "ब्रह्मचर्य.html",
@@ -2518,7 +2518,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  95.5
+        "sizeKB":  94.7
     },
     {
         "file":  "भक्त कुसुम.html",
@@ -2527,7 +2527,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  246
+        "sizeKB":  244.6
     },
     {
         "file":  "भक्त चन्द्रिका.html",
@@ -2536,7 +2536,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  258.1
+        "sizeKB":  256.9
     },
     {
         "file":  "भक्त दिवाकर.html",
@@ -2545,7 +2545,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  329.2
+        "sizeKB":  327.4
     },
     {
         "file":  "भक्त नरसिंह मेहता.html",
@@ -2554,7 +2554,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1106.3
+        "sizeKB":  492
     },
     {
         "file":  "भक्त नारी.html",
@@ -2563,7 +2563,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  192.5
+        "sizeKB":  188.2
     },
     {
         "file":  "भक्त बालक.html",
@@ -2572,7 +2572,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  212.9
+        "sizeKB":  211.4
     },
     {
         "file":  "भक्त महिलारत्न.html",
@@ -2581,7 +2581,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  293.6
+        "sizeKB":  291.6
     },
     {
         "file":  "भक्त रत्नाकर .html",
@@ -2590,7 +2590,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  309.2
+        "sizeKB":  307.2
     },
     {
         "file":  "भक्त सरोज.html",
@@ -2599,7 +2599,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  319.9
+        "sizeKB":  317.9
     },
     {
         "file":  "भक्त सुधाकर.html",
@@ -2608,7 +2608,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  313.1
+        "sizeKB":  311.4
     },
     {
         "file":  "भक्त सुमन.html",
@@ -2617,7 +2617,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  336.4
+        "sizeKB":  334.4
     },
     {
         "file":  "भक्त सौरभ.html",
@@ -2626,7 +2626,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  340.8
+        "sizeKB":  337.2
     },
     {
         "file":  "भक्त-पंचरत्न.html",
@@ -2635,7 +2635,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  281.8
+        "sizeKB":  280.9
     },
     {
         "file":  "भक्त-सप्तरत्न.html",
@@ -2644,7 +2644,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  272.9
+        "sizeKB":  271.8
     },
     {
         "file":  "भक्तराज ध्रुव.html",
@@ -2653,7 +2653,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  147
+        "sizeKB":  146.3
     },
     {
         "file":  "भक्तराज हनुमान्.html",
@@ -2662,7 +2662,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  244.4
+        "sizeKB":  241.5
     },
     {
         "file":  "भक्ति भक्त भगवान्.html",
@@ -2671,7 +2671,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  810.4
+        "sizeKB":  806.9
     },
     {
         "file":  "भक्ति सुधा.html",
@@ -2680,7 +2680,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6404.6
+        "sizeKB":  6390.2
     },
     {
         "file":  "भगवच्चर्चा (भाग-५).html",
@@ -2689,7 +2689,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1249.1
+        "sizeKB":  1245.5
     },
     {
         "file":  "भगवच्चर्चा (सभी छहों भाग एक साथ).html",
@@ -2698,7 +2698,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6781.3
+        "sizeKB":  6773.2
     },
     {
         "file":  "भगवच्चर्चा.html",
@@ -2707,7 +2707,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1257
+        "sizeKB":  1247.4
     },
     {
         "file":  "भगवत्तत्त्व.html",
@@ -2716,7 +2716,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  147.6
+        "sizeKB":  146
     },
     {
         "file":  "भगवत्पथ दर्शन.html",
@@ -2725,7 +2725,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  550.9
+        "sizeKB":  538.9
     },
     {
         "file":  "भगवत्प्राप्ति एवं हिंदू संस्कृति.html",
@@ -2734,7 +2734,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1288.8
+        "sizeKB":  1288
     },
     {
         "file":  "भगवत्प्राप्ति कठिन नहीं.html",
@@ -2743,7 +2743,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  415.4
+        "sizeKB":  414.8
     },
     {
         "file":  "भगवत्प्राप्ति की युक्तियाँ.html",
@@ -2752,7 +2752,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  416.4
+        "sizeKB":  414.8
     },
     {
         "file":  "भगवत्प्राप्ति की सुगमता.html",
@@ -2761,7 +2761,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  438.1
+        "sizeKB":  432.8
     },
     {
         "file":  "भगवत्प्राप्ति के विविध उपाय.html",
@@ -2770,7 +2770,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  155.7
+        "sizeKB":  152.6
     },
     {
         "file":  "भगवत्प्राप्ति के सुगम साधन.html",
@@ -2779,7 +2779,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  405.5
+        "sizeKB":  402.6
     },
     {
         "file":  "भगवत्प्राप्ति कैसे ह.html",
@@ -2788,7 +2788,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  399.5
+        "sizeKB":  399.2
     },
     {
         "file":  "भगवत्प्राप्ति सहज है.html",
@@ -2797,7 +2797,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  472.7
+        "sizeKB":  470
     },
     {
         "file":  "भगवत्प्राप्तिकी अमूल्य बातें.html",
@@ -2806,7 +2806,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  400.6
+        "sizeKB":  399.5
     },
     {
         "file":  "भगवत्प्राप्तिमें भावकी प्रधानता.html",
@@ -2815,7 +2815,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  586.1
+        "sizeKB":  585
     },
     {
         "file":  "भगवत्प्रेम प्राप्ति के उपाय.html",
@@ -2824,7 +2824,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  507.9
+        "sizeKB":  503.7
     },
     {
         "file":  "भगवत्प्रेमकी प्राप्ति कैसे हो.html",
@@ -2833,7 +2833,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  142
+        "sizeKB":  141
     },
     {
         "file":  "भगवद्दर्शन की उत्कण्ठा.html",
@@ -2842,7 +2842,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  841.9
+        "sizeKB":  833.4
     },
     {
         "file":  "भगवन्नाम.html",
@@ -2851,7 +2851,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  229.4
+        "sizeKB":  227.5
     },
     {
         "file":  "भगवान_् और उनकी भक्ति.html",
@@ -2860,7 +2860,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  402.8
+        "sizeKB":  401.5
     },
     {
         "file":  "भगवान_् के रहने के पाँच स्थान.html",
@@ -2869,7 +2869,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  182.6
+        "sizeKB":  181
     },
     {
         "file":  "भगवान_् के सामने सच्चा सो सच्चा.html",
@@ -2878,7 +2878,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  421.5
+        "sizeKB":  417.3
     },
     {
         "file":  "भगवान_् पर विश्वास.html",
@@ -2887,7 +2887,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  191.7
+        "sizeKB":  191.3
     },
     {
         "file":  "भगवान_् से अपनापन.html",
@@ -2896,7 +2896,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  284.7
+        "sizeKB":  283.2
     },
     {
         "file":  "भगवान् का हेतु रहित सौहार्द.html",
@@ -2905,7 +2905,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  57.2
+        "sizeKB":  56.6
     },
     {
         "file":  "भगवान् की दया.html",
@@ -2914,7 +2914,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  108.5
+        "sizeKB":  107.9
     },
     {
         "file":  "भगवान् की पूजा के पुष्प.html",
@@ -2923,7 +2923,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  448.4
+        "sizeKB":  446
     },
     {
         "file":  "भगवान् के स्वभाव का रहस्य.html",
@@ -2932,7 +2932,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  649.3
+        "sizeKB":  643.9
     },
     {
         "file":  "भगवान् क्या है.html",
@@ -2941,7 +2941,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  92.5
+        "sizeKB":  92
     },
     {
         "file":  "भगवान् श्रीकृष्ण की कृपा तथा दिव्य प्रेमकी प्राप्तिके लिये.html",
@@ -2950,7 +2950,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  64.9
+        "sizeKB":  64.2
     },
     {
         "file":  "भगवान् सदा तुम्हारे साथ हैं.html",
@@ -2959,7 +2959,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  472.5
+        "sizeKB":  469.5
     },
     {
         "file":  "भगवान् कैसे मिलें.html",
@@ -2968,7 +2968,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  411.9
+        "sizeKB":  409.2
     },
     {
         "file":  "भजन-संग्रह.html",
@@ -2977,7 +2977,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1348.7
+        "sizeKB":  1271.6
     },
     {
         "file":  "भजनामृत.html",
@@ -2986,7 +2986,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  362
+        "sizeKB":  348.6
     },
     {
         "file":  "भले का फल भला.html",
@@ -2995,7 +2995,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  86.5
+        "sizeKB":  85.5
     },
     {
         "file":  "भवरोगकी रामबाण दवा.html",
@@ -3004,7 +3004,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  512.8
+        "sizeKB":  513.4
     },
     {
         "file":  "भागवत नवनीत.html",
@@ -3013,7 +3013,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3992.5
+        "sizeKB":  3970.7
     },
     {
         "file":  "भागवतरत्न प्रह्लाद.html",
@@ -3022,7 +3022,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  993.2
+        "sizeKB":  985.3
     },
     {
         "file":  "भागवतस्तुतिसंग्रह.html",
@@ -3031,7 +3031,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "पं० नित्यानन्द पाण्डेय",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2399.5
+        "sizeKB":  2387.6
     },
     {
         "file":  "भारतीय संस्कृति तथा शास्त्रों में नारी धर्म.html",
@@ -3040,7 +3040,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  161.8
+        "sizeKB":  160.8
     },
     {
         "file":  "भीष्मस्तवराज.html",
@@ -3049,7 +3049,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  35.4
+        "sizeKB":  33.5
     },
     {
         "file":  "भूले न भुलाये.html",
@@ -3058,7 +3058,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  506.6
+        "sizeKB":  504.3
     },
     {
         "file":  "मधुर.html",
@@ -3067,7 +3067,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1021.4
+        "sizeKB":  1019.8
     },
     {
         "file":  "मन को वश करने के कुछ उपाय.html",
@@ -3076,7 +3076,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  62.7
+        "sizeKB":  62.3
     },
     {
         "file":  "मनुष्य का परम कर्तव्य.html",
@@ -3085,7 +3085,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1259.3
+        "sizeKB":  1261.2
     },
     {
         "file":  "मनुष्य जीवन का उद्देश्य.html",
@@ -3094,7 +3094,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  419.9
+        "sizeKB":  416
     },
     {
         "file":  "मनुष्य जीवन की सफलता.html",
@@ -3103,7 +3103,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1105.3
+        "sizeKB":  1107.7
     },
     {
         "file":  "महत्त्वपूर्ण कल्याणकारी बातें.html",
@@ -3112,7 +3112,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  407.3
+        "sizeKB":  406.4
     },
     {
         "file":  "महत्त्वपूर्ण चेतावनी.html",
@@ -3121,7 +3121,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  425.6
+        "sizeKB":  423.1
     },
     {
         "file":  "महत्त्वपूर्ण प्रश्नोत्तर.html",
@@ -3130,7 +3130,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  909.9
+        "sizeKB":  903.9
     },
     {
         "file":  "महत्वपूर्ण शिक्षा.html",
@@ -3139,7 +3139,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1480.5
+        "sizeKB":  1482.1
     },
     {
         "file":  "महाकुम्भ पर्व.html",
@@ -3148,7 +3148,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  212
+        "sizeKB":  210.7
     },
     {
         "file":  "महात्मा किसे कहते हैं.html",
@@ -3157,7 +3157,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  77.7
+        "sizeKB":  76.3
     },
     {
         "file":  "महात्मा विदुर.html",
@@ -3166,7 +3166,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  168.8
+        "sizeKB":  168
     },
     {
         "file":  "महात्माओं की अहैतु की दया.html",
@@ -3175,7 +3175,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  404.1
+        "sizeKB":  403.7
     },
     {
         "file":  "महापाप से बचो.html",
@@ -3184,7 +3184,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  138.5
+        "sizeKB":  136.9
     },
     {
         "file":  "महाभारत के कुछ आदर्श पात्र.html",
@@ -3193,7 +3193,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  409.6
+        "sizeKB":  407.9
     },
     {
         "file":  "महाभाव कल्लोलिनी.html",
@@ -3202,7 +3202,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  246.9
+        "sizeKB":  245.5
     },
     {
         "file":  "माघ मास माहात्म्य.html",
@@ -3211,7 +3211,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  196.1
+        "sizeKB":  195.1
     },
     {
         "file":  "मातृशक्ति का घोर अपमान.html",
@@ -3220,7 +3220,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  155.4
+        "sizeKB":  154
     },
     {
         "file":  "मानव कल्याण के साधन.html",
@@ -3229,7 +3229,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  763.6
+        "sizeKB":  759.6
     },
     {
         "file":  "मानव जीवन का लक्ष्य.html",
@@ -3238,7 +3238,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  871.1
+        "sizeKB":  867.4
     },
     {
         "file":  "मानव धर्म.html",
@@ -3247,7 +3247,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  304.7
+        "sizeKB":  303.8
     },
     {
         "file":  "मानवता का पुजारी.html",
@@ -3256,7 +3256,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  422.8
+        "sizeKB":  418.3
     },
     {
         "file":  "मानवमात्र के कल्याण के लिये.html",
@@ -3265,7 +3265,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  742.7
+        "sizeKB":  734.1
     },
     {
         "file":  "मानस में नाम-वन्दना.html",
@@ -3274,7 +3274,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  549.5
+        "sizeKB":  544.2
     },
     {
         "file":  "मानस रहस्य.html",
@@ -3283,7 +3283,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1692.5
+        "sizeKB":  1680.8
     },
     {
         "file":  "मानस शंका समाधान.html",
@@ -3292,7 +3292,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  594
+        "sizeKB":  584.9
     },
     {
         "file":  "मानसिक दक्षता.html",
@@ -3301,7 +3301,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1038.1
+        "sizeKB":  1035.3
     },
     {
         "file":  "मूर्ति पूजा.html",
@@ -3310,7 +3310,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  75.2
+        "sizeKB":  74.5
     },
     {
         "file":  "मेरा अनुभव.html",
@@ -3319,7 +3319,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  586.6
+        "sizeKB":  582.8
     },
     {
         "file":  "मेरे तो गिरधर गोपाल.html",
@@ -3328,7 +3328,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  415.1
+        "sizeKB":  413
     },
     {
         "file":  "यह विकास है या विनाश जरा सोचिये.html",
@@ -3337,7 +3337,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  104.3
+        "sizeKB":  103.7
     },
     {
         "file":  "रहस्यमय प्रवचन.html",
@@ -3346,7 +3346,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  568.2
+        "sizeKB":  567
     },
     {
         "file":  "रामस्तवराज.html",
@@ -3355,7 +3355,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  78.2
+        "sizeKB":  77.9
     },
     {
         "file":  "रामाज्ञा प्रश्न.html",
@@ -3364,7 +3364,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "सुदर्शन सिंह",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  281
+        "sizeKB":  274.7
     },
     {
         "file":  "रामायण के कुछ आदर्श पात्र.html",
@@ -3373,7 +3373,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  517.3
+        "sizeKB":  511.9
     },
     {
         "file":  "रुद्राष्टाध्यायी.html",
@@ -3382,7 +3382,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  549.9
+        "sizeKB":  532
     },
     {
         "file":  "लघुसिद्धान्तकौमुदी.html",
@@ -3391,7 +3391,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1352.4
+        "sizeKB":  1295.3
     },
     {
         "file":  "लोक परलोक का सुधार.html",
@@ -3400,7 +3400,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  669.5
+        "sizeKB":  663.7
     },
     {
         "file":  "वर्तमान शिक्षा.html",
@@ -3409,7 +3409,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  156.9
+        "sizeKB":  155.7
     },
     {
         "file":  "वासुदेवः सर्वम्.html",
@@ -3418,7 +3418,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  226.7
+        "sizeKB":  224.9
     },
     {
         "file":  "वास्तविक त्याग.html",
@@ -3427,7 +3427,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  382.1
+        "sizeKB":  378.3
     },
     {
         "file":  "वास्तविक सुख.html",
@@ -3436,7 +3436,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  337.2
+        "sizeKB":  335.8
     },
     {
         "file":  "विदुरनीति.html",
@@ -3445,7 +3445,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  488.3
+        "sizeKB":  475.8
     },
     {
         "file":  "विनय-पत्रिका.html",
@@ -3454,7 +3454,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1483.9
+        "sizeKB":  1449
     },
     {
         "file":  "विरह पदावली.html",
@@ -3463,7 +3463,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "सुदर्शन सिंह",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  872.9
+        "sizeKB":  853.7
     },
     {
         "file":  "विवाह में दहेज.html",
@@ -3472,7 +3472,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  39.6
+        "sizeKB":  38.9
     },
     {
         "file":  "विवेक चूडामणि.html",
@@ -3481,7 +3481,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीमुनिलाल गुप्त",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  556.3
+        "sizeKB":  553.1
     },
     {
         "file":  "वीर बालक.html",
@@ -3490,7 +3490,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  180.1
+        "sizeKB":  178.5
     },
     {
         "file":  "वेदान्त-दर्शन (ब्रह्मसूत्र).html",
@@ -3499,7 +3499,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2037.7
+        "sizeKB":  1975.4
     },
     {
         "file":  "योग-दर्शन.html",
@@ -3508,7 +3508,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीहरिकृष्णदास गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  518.8
+        "sizeKB":  521.8
     },
     {
         "file":  "वैदिक सूक्त संग्रह.html",
@@ -3517,7 +3517,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  943.2
+        "sizeKB":  940.4
     },
     {
         "file":  "वैराग्य संदीपनी.html",
@@ -3526,7 +3526,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  55.5
+        "sizeKB":  53.4
     },
     {
         "file":  "वैराग्य.html",
@@ -3535,7 +3535,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  90.1
+        "sizeKB":  88.9
     },
     {
         "file":  "वैशाख कार्तिक माघ मास माहात्म्य.html",
@@ -3544,7 +3544,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1153
+        "sizeKB":  1148.3
     },
     {
         "file":  "व्यवहार और परमार्थ.html",
@@ -3553,7 +3553,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  826.6
+        "sizeKB":  820
     },
     {
         "file":  "व्यवहार दर्शन पीयूष.html",
@@ -3562,7 +3562,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  322.2
+        "sizeKB":  320.1
     },
     {
         "file":  "व्यवहार सुधार और परमार्थ.html",
@@ -3571,7 +3571,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  395.7
+        "sizeKB":  392.5
     },
     {
         "file":  "व्यवहारमें परमार्थकी कला.html",
@@ -3580,7 +3580,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  760.8
+        "sizeKB":  756.7
     },
     {
         "file":  "व्यापार सुधार की आवश्यकता.html",
@@ -3589,7 +3589,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  68.4
+        "sizeKB":  68.1
     },
     {
         "file":  "व्रत परिचय.html",
@@ -3598,7 +3598,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1636.2
+        "sizeKB":  1607.3
     },
     {
         "file":  "अनंत चतुर्दशी व्रत महत्व व पूजा विधि एवं कथा.html",
@@ -3607,7 +3607,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  70.8
+        "sizeKB":  70.4
     },
     {
         "file":  "शक्तिपीठ दर्शन.html",
@@ -3616,7 +3616,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  543.8
+        "sizeKB":  540.6
     },
     {
         "file":  "शतनामस्तोत्रसंग्रह.html",
@@ -3625,7 +3625,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  831.9
+        "sizeKB":  813.1
     },
     {
         "file":  "शतश्लोकी.html",
@@ -3634,7 +3634,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  204.8
+        "sizeKB":  196.5
     },
     {
         "file":  "शरणागति.html",
@@ -3643,7 +3643,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  214.3
+        "sizeKB":  211.5
     },
     {
         "file":  "शाण्डिल्य-भक्ति-सूत्र.html",
@@ -3652,7 +3652,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  94.4
+        "sizeKB":  93.3
     },
     {
         "file":  "शान्ति का उपाय.html",
@@ -3661,7 +3661,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  521
+        "sizeKB":  517.4
     },
     {
         "file":  "शान्ति कैसे मिले.html",
@@ -3670,7 +3670,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  908.7
+        "sizeKB":  903.4
     },
     {
         "file":  "शिक्षाप्रद ग्यारह कहानियाँ.html",
@@ -3679,7 +3679,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  385.6
+        "sizeKB":  384.3
     },
     {
         "file":  "शिक्षाप्रद पत्र.html",
@@ -3688,7 +3688,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  699.6
+        "sizeKB":  699.7
     },
     {
         "file":  "शिखा (चोटी) धारणकी आवश्यकता.html",
@@ -3697,7 +3697,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  124.8
+        "sizeKB":  123.8
     },
     {
         "file":  "शिव स्मरण.html",
@@ -3706,7 +3706,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  215.9
+        "sizeKB":  215.3
     },
     {
         "file":  "शिवमहिम्नस्तोत्र.html",
@@ -3715,7 +3715,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  114.3
+        "sizeKB":  113.6
     },
     {
         "file":  "शीघ्र कल्याण के सोपान.html",
@@ -3724,7 +3724,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  839.7
+        "sizeKB":  836.5
     },
     {
         "file":  "शोक नाश के उपाय.html",
@@ -3733,7 +3733,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  50.5
+        "sizeKB":  50.1
     },
     {
         "file":  "श्रद्धा विश्वास और प्रेम.html",
@@ -3742,7 +3742,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  842.9
+        "sizeKB":  841.1
     },
     {
         "file":  "श्रावणमासमाहात्म्य.html",
@@ -3751,7 +3751,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  913.6
+        "sizeKB":  892.1
     },
     {
         "file":  "श्री एकनाथ चरित्र.html",
@@ -3760,7 +3760,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  708.8
+        "sizeKB":  705.3
     },
     {
         "file":  "श्री गर्ग संहिता.html",
@@ -3769,7 +3769,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "पं० श्रीरामनारायणदत्तजी शास्त्री पाण्डेय ‘राम’; पं० श्रीगदाधरजी शर्मा; पं० श्रीरामाधारजी शुक्ल",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  4738.6
+        "sizeKB":  4672.8
     },
     {
         "file":  "श्री प्रेम सुधा सागर.html",
@@ -3778,7 +3778,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2612.1
+        "sizeKB":  2601.9
     },
     {
         "file":  "श्री भगवन्नाम-चिन्तन.html",
@@ -3787,7 +3787,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  704.2
+        "sizeKB":  703.3
     },
     {
         "file":  "श्री राम चिन्तन.html",
@@ -3796,7 +3796,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  606.1
+        "sizeKB":  604
     },
     {
         "file":  "श्री सत्यनारायण व्रत कथा.html",
@@ -3805,7 +3805,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  304.3
+        "sizeKB":  294.1
     },
     {
         "file":  "श्री सीताराम भजन.html",
@@ -3814,7 +3814,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  62.1
+        "sizeKB":  61.5
     },
     {
         "file":  "श्रीआद्यशंकराचार्यविरचित अपरोक्षानुभूति.html",
@@ -3823,7 +3823,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीमुनिलाल गुप्त; सहित",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  98.7
+        "sizeKB":  97.7
     },
     {
         "file":  "श्रीकृष्ण गीतावली.html",
@@ -3832,7 +3832,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  234.6
+        "sizeKB":  227.7
     },
     {
         "file":  "श्रीरामचरितमानस.html",
@@ -3843,7 +3843,7 @@ var SWADHYAY_BOOKS_RAW = [
         "publisher":  "गीताप्रेस",
         "swith_arth":  "yes",
         "arth_hide":  "Normal, Footnotes*",
-        "sizeKB":  4869.7
+        "sizeKB":  5743.4
     },
     {
         "file":  "श्रीकृष्ण बाल माधुरी.html",
@@ -3852,7 +3852,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "सुदर्शन सिंह",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1059.4
+        "sizeKB":  1032.1
     },
     {
         "file":  "श्रीगङ्गासहस्रनामस्तोत्रम्.html",
@@ -3861,7 +3861,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  159.4
+        "sizeKB":  160.7
     },
     {
         "file":  "श्रीगोविन्ददामोदरस्तोत्रम्.html",
@@ -3870,7 +3870,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  94.1
+        "sizeKB":  93.6
     },
     {
         "file":  "श्रीजैमिनीयाश्वमेधपर्व.html",
@@ -3879,7 +3879,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "पं० श्रीरामाधारजी शुक्ल",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  4006.4
+        "sizeKB":  3914.7
     },
     {
         "file":  "श्रीतुकाराम-चरित्र.html",
@@ -3888,7 +3888,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीलक्ष्मण नारायण गर्दे",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2755.6
+        "sizeKB":  2136.8
     },
     {
         "file":  "श्रीदुर्गाचालीसा एवं श्रीविन्ध्येश्वरीचालीसा.html",
@@ -3897,7 +3897,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  29.3
+        "sizeKB":  28.2
     },
     {
         "file":  "श्रीदुर्गासप्तशती.html",
@@ -3906,7 +3906,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "पं० श्रीरामनारायणदत्तजी शास्त्री पाण्डेय ‘राम’",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  916.4
+        "sizeKB":  914.2
     },
     {
         "file":  "श्रीनरसिंहपुराण.html",
@@ -3915,7 +3915,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2466
+        "sizeKB":  2415.8
     },
     {
         "file":  "श्रीविष्णुपुराण.html",
@@ -3924,7 +3924,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीमुनिलाल गुप्त",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3817.1
+        "sizeKB":  3837.2
     },
     {
         "file":  "मत्स्यमहापुराण.html",
@@ -3933,7 +3933,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  8608.4
+        "sizeKB":  8648
     },
     {
         "file":  "श्रीनारायणकवच.html",
@@ -3942,7 +3942,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  51.8
+        "sizeKB":  50.4
     },
     {
         "file":  "श्रीप्रेमभक्तिप्रकाश.html",
@@ -3951,7 +3951,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  50.4
+        "sizeKB":  49.8
     },
     {
         "file":  "श्रीभक्तमाल.html",
@@ -3960,7 +3960,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रीप्रियादासजी",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6499.3
+        "sizeKB":  6427.6
     },
     {
         "file":  "श्रीभगवन्नाम.html",
@@ -3969,7 +3969,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  170.1
+        "sizeKB":  169.2
     },
     {
         "file":  "श्रीभीष्मपितामह.html",
@@ -3978,7 +3978,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  522.8
+        "sizeKB":  521.4
     },
     {
         "file":  "श्रीमद्भगवद्गीता माहात्म्य की कहानियाँ.html",
@@ -3987,7 +3987,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  230.3
+        "sizeKB":  228.9
     },
     {
         "file":  "श्रीमद्भगवद्गीता शांकरभाष्य.html",
@@ -3996,7 +3996,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीहरिकृष्णदास गोयन्दका; सहित",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3329.2
+        "sizeKB":  3272.6
     },
     {
         "file":  "श्रीमद्भगवद्गीता श्रीरामानुज भाष्य.html",
@@ -4005,7 +4005,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "श्रीहरिकृष्णदास गोयन्दका; सहित",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2530.6
+        "sizeKB":  2486.9
     },
     {
         "file":  "श्रीमद्भगवद्गीता_तत्त्वविवेचनी हिन्दी_टीकासहित.html",
@@ -4014,7 +4014,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6631.5
+        "sizeKB":  5902
     },
     {
         "file":  "श्रीमद्भगवद्गीता_तत्त्वविवेचनी पदच्छेद_अन्वयसहित.html",
@@ -4023,7 +4023,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6608.0
+        "sizeKB":  6622.1
     },
     {
         "file":  "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html",
@@ -4032,7 +4032,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1661.6
+        "sizeKB":  859.3
     },
     {
         "file":  "श्रीमद्भगवद्गीता_साधक_संजीवनी.html",
@@ -4041,7 +4041,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  12907.9
+        "sizeKB":  12041.1
     },
     {
         "file":  "श्रीमद्वाल्मीकीय रामायण.html",
@@ -4050,7 +4050,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  17637.2
+        "sizeKB":  17306.8
     },
     {
         "file":  "श्रीमद‍्भागवतमहापुराण.html",
@@ -4059,7 +4059,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  15478.8
+        "sizeKB":  15178.8
     },
     {
         "file":  "श्रीराधा माधव चिन्तन.html",
@@ -4068,7 +4068,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3978.3
+        "sizeKB":  3973.9
     },
     {
         "file":  "श्रीराधा माधव रस सुधा (षोडश गीत).html",
@@ -4077,7 +4077,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  108.6
+        "sizeKB":  107
     },
     {
         "file":  "श्रीराधिकासहस्रनामस्तोत्रम्.html",
@@ -4086,7 +4086,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  166.3
+        "sizeKB":  167.6
     },
     {
         "file":  "श्रीरामकृष्णलीला भजनावली.html",
@@ -4095,7 +4095,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  700
+        "sizeKB":  657.1
     },
     {
         "file":  "श्रीरामगीता.html",
@@ -4104,7 +4104,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  88.9
+        "sizeKB":  87.8
     },
     {
         "file":  "श्रीरामसहस्रनामस्तोत्रम् नामावली तथा संक्षिप्त प्रयोग-विधि सहित.html",
@@ -4113,7 +4113,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  141.5
+        "sizeKB":  143.3
     },
     {
         "file":  "श्रीलक्ष्मीसहस्रनामस्तोत्रम्.html",
@@ -4122,7 +4122,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  143.4
+        "sizeKB":  144.7
     },
     {
         "file":  "श्रीललितासहस्रनामस्तोत्रम्.html",
@@ -4131,7 +4131,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  340.6
+        "sizeKB":  343.2
     },
     {
         "file":  "श्रीवामनपुराण.html",
@@ -4140,7 +4140,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  3770
+        "sizeKB":  3775.6
     },
     {
         "file":  "श्रीविष्णुसहस्रनाम (शांकरभाष्य, हिन्दी अनुवाद सहित).html",
@@ -4149,7 +4149,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "स्वामी श्रीभोलेबाबाजी",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1294.4
+        "sizeKB":  1248.3
     },
     {
         "file":  "श्रीविष्णुसहस्रनामस्तोत्रम्.html",
@@ -4158,7 +4158,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  76.8
+        "sizeKB":  68.8
     },
     {
         "file":  "श्रीशिवचालीसा.html",
@@ -4167,7 +4167,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  24.8
+        "sizeKB":  24.2
     },
     {
         "file":  "श्रीशिवसहस्रनामस्तोत्रम्.html",
@@ -4176,7 +4176,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  144.8
+        "sizeKB":  146.8
     },
     {
         "file":  "श्रीशुक सुधा सागर.html",
@@ -4185,7 +4185,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  8316.6
+        "sizeKB":  8278.3
     },
     {
         "file":  "श्रीश्रीचैतन्य-चरितावली.html",
@@ -4194,7 +4194,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5884.3
+        "sizeKB":  5258.9
     },
     {
         "file":  "श्रीहनुमानचालीसा (लाल रंग में).html",
@@ -4203,7 +4203,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  29.9
+        "sizeKB":  29
     },
     {
         "file":  "श्रीहरिवंशपुराण.html",
@@ -4212,7 +4212,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "पं० श्रीरामनारायणदत्तजी शास्त्री पाण्डेय ‘राम’",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  11602.4
+        "sizeKB":  11649.6
     },
     {
         "file":  "संक्षिप्त गरुडपुराण.html",
@@ -4221,7 +4221,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  4598.9
+        "sizeKB":  4567
     },
     {
         "file":  "संक्षिप्त नारदपुराण.html",
@@ -4230,7 +4230,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5523.6
+        "sizeKB":  5477.7
     },
     {
         "file":  "संक्षिप्त पद्मपुराण.html",
@@ -4239,7 +4239,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  8164.5
+        "sizeKB":  8120.5
     },
     {
         "file":  "संक्षिप्त ब्रह्मपुराण.html",
@@ -4248,7 +4248,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2947.9
+        "sizeKB":  2938.3
     },
     {
         "file":  "संक्षिप्त ब्रह्मवैवर्तपुराण.html",
@@ -4257,7 +4257,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5817.7
+        "sizeKB":  5792.7
     },
     {
         "file":  "संक्षिप्त महाभारत.html",
@@ -4266,7 +4266,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  14940.6
+        "sizeKB":  14862.9
     },
     {
         "file":  "संक्षिप्त मार्कण्डेयपुराण.html",
@@ -4275,7 +4275,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2016.7
+        "sizeKB":  1997.1
     },
     {
         "file":  "संक्षिप्त योगवासिष्ठ.html",
@@ -4284,7 +4284,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5130
+        "sizeKB":  5097.4
     },
     {
         "file":  "संक्षिप्त शिवपुराण.html",
@@ -4293,7 +4293,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5071.8
+        "sizeKB":  5036.9
     },
     {
         "file":  "संक्षिप्त श्रीमद्देवीभागवत.html",
@@ -4302,7 +4302,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6100.7
+        "sizeKB":  6069.4
     },
     {
         "file":  "संक्षिप्त श्रीवराहपुराण.html",
@@ -4311,7 +4311,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2829.3
+        "sizeKB":  2825.1
     },
     {
         "file":  "संक्षिप्त स्कन्दपुराण.html",
@@ -4320,7 +4320,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  10309.2
+        "sizeKB":  10263.4
     },
     {
         "file":  "संत महिमा.html",
@@ -4329,7 +4329,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  96.2
+        "sizeKB":  95.4
     },
     {
         "file":  "संत वाणी.html",
@@ -4338,7 +4338,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  933.2
+        "sizeKB":  939.7
     },
     {
         "file":  "संत समागम.html",
@@ -4347,7 +4347,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  357.7
+        "sizeKB":  353.2
     },
     {
         "file":  "संतानगोपालस्तोत्र (संतानप्राप्तिके शास्त्रीय उपाय).html",
@@ -4356,7 +4356,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  140.9
+        "sizeKB":  140.4
     },
     {
         "file":  "संध्या.html",
@@ -4365,7 +4365,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  29.1
+        "sizeKB":  28.7
     },
     {
         "file":  "संध्योपासनविधि और तर्पण एवं बलिवैश्वदेव विधि.html",
@@ -4374,7 +4374,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  188.2
+        "sizeKB":  185.4
     },
     {
         "file":  "संसार का असर कैसे छूटे.html",
@@ -4383,7 +4383,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  63.6
+        "sizeKB":  62.7
     },
     {
         "file":  "संस्कार प्रकाश.html",
@@ -4392,7 +4392,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1919.8
+        "sizeKB":  1902.7
     },
     {
         "file":  "सच्चा गुरु कौन.html",
@@ -4401,7 +4401,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  106
+        "sizeKB":  104.5
     },
     {
         "file":  "सच्चा सुख और उसकी प्राप्ति के उपाय.html",
@@ -4410,7 +4410,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  102.5
+        "sizeKB":  101
     },
     {
         "file":  "सच्ची सलाह.html",
@@ -4419,7 +4419,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  514.3
+        "sizeKB":  508.5
     },
     {
         "file":  "सच्चे और ईमानदार बालक.html",
@@ -4428,7 +4428,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  118.4
+        "sizeKB":  116.6
     },
     {
         "file":  "सती द्रौपदी.html",
@@ -4437,7 +4437,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  507.5
+        "sizeKB":  506.1
     },
     {
         "file":  "सती सुकला.html",
@@ -4446,7 +4446,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  200.2
+        "sizeKB":  199.3
     },
     {
         "file":  "सत्य एवं प्रेरक घटनाएँ.html",
@@ -4455,7 +4455,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  581.8
+        "sizeKB":  579
     },
     {
         "file":  "सत्य की खोज.html",
@@ -4464,7 +4464,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  319.6
+        "sizeKB":  316.9
     },
     {
         "file":  "सत्य की शरण से मुक्ति.html",
@@ -4473,7 +4473,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  82.5
+        "sizeKB":  81.5
     },
     {
         "file":  "सत्यप्रेमी हरिश्चन्द्र.html",
@@ -4482,7 +4482,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  150.3
+        "sizeKB":  149.4
     },
     {
         "file":  "सत्संग का प्रसाद.html",
@@ -4491,7 +4491,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  261.9
+        "sizeKB":  260.6
     },
     {
         "file":  "सत्संग की कुछ सार बातें.html",
@@ -4500,7 +4500,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  48.9
+        "sizeKB":  48.7
     },
     {
         "file":  "सत्संग की मार्मिक बातें.html",
@@ -4509,7 +4509,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  488.7
+        "sizeKB":  485.4
     },
     {
         "file":  "सत्संग की विलक्षणता.html",
@@ -4518,7 +4518,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  196.6
+        "sizeKB":  195.9
     },
     {
         "file":  "सत्संग के अमृत कण.html",
@@ -4527,7 +4527,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  23.2
+        "sizeKB":  22.6
     },
     {
         "file":  "सत्संग के फूल.html",
@@ -4536,7 +4536,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  581.4
+        "sizeKB":  572.8
     },
     {
         "file":  "सत्संग के बिखरे मोती.html",
@@ -4545,7 +4545,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  764.3
+        "sizeKB":  766.2
     },
     {
         "file":  "सत्संग माला.html",
@@ -4554,7 +4554,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  311.6
+        "sizeKB":  311.5
     },
     {
         "file":  "सत्संग मुक्ताहार.html",
@@ -4563,7 +4563,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  254.2
+        "sizeKB":  253
     },
     {
         "file":  "सत्संग-सुधा.html",
@@ -4572,7 +4572,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  696.9
+        "sizeKB":  694
     },
     {
         "file":  "सन्ध्या, सन्ध्या गायत्री का महत्त्व और ब्रह्मचर्य.html",
@@ -4581,7 +4581,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  262.4
+        "sizeKB":  259.3
     },
     {
         "file":  "सफलता के शिखर की सीढ़ियाँ.html",
@@ -4590,7 +4590,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  369.4
+        "sizeKB":  363.9
     },
     {
         "file":  "सब जग ईश्वररूप है.html",
@@ -4599,7 +4599,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  364.7
+        "sizeKB":  362.2
     },
     {
         "file":  "सब साधनोंका सार.html",
@@ -4608,7 +4608,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  253.9
+        "sizeKB":  252.2
     },
     {
         "file":  "समता अमृत और विषमता विष.html",
@@ -4617,7 +4617,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  809.3
+        "sizeKB":  810.3
     },
     {
         "file":  "समाज सुधार.html",
@@ -4626,7 +4626,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  158
+        "sizeKB":  157.1
     },
     {
         "file":  "सम्पूर्ण दुखोंका अभाव कैसे हो.html",
@@ -4635,7 +4635,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  402.9
+        "sizeKB":  400.5
     },
     {
         "file":  "सर्वोच्च पद की प्राप्ति का साधन.html",
@@ -4644,7 +4644,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  62.8
+        "sizeKB":  62.3
     },
     {
         "file":  "सहज साधना.html",
@@ -4653,7 +4653,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  203.9
+        "sizeKB":  202.3
     },
     {
         "file":  "सहस्रनामस्तोत्रसंग्रह.html",
@@ -4662,7 +4662,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2943.5
+        "sizeKB":  2930.5
     },
     {
         "file":  "सागरके मोती.html",
@@ -4671,7 +4671,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  517.1
+        "sizeKB":  517.2
     },
     {
         "file":  "साधक में साधुता.html",
@@ -4680,7 +4680,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  868.4
+        "sizeKB":  867.9
     },
     {
         "file":  "साधकों के प्रति.html",
@@ -4689,7 +4689,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  302.9
+        "sizeKB":  301.1
     },
     {
         "file":  "साधकोंका सहारा भगवच्चर्चा भाग-४.html",
@@ -4698,7 +4698,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1368.1
+        "sizeKB":  1370
     },
     {
         "file":  "साधन और साध्य.html",
@@ -4707,7 +4707,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  320.9
+        "sizeKB":  317.4
     },
     {
         "file":  "साधन की आवश्यकता.html",
@@ -4716,7 +4716,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  580
+        "sizeKB":  575.8
     },
     {
         "file":  "साधन नवनीत.html",
@@ -4725,7 +4725,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  681.6
+        "sizeKB":  681.8
     },
     {
         "file":  "साधन पथ.html",
@@ -4734,7 +4734,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  201.3
+        "sizeKB":  200
     },
     {
         "file":  "साधन सुधा निधि.html",
@@ -4743,7 +4743,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5836.2
+        "sizeKB":  5798.1
     },
     {
         "file":  "साधन सुधा सिन्धु.html",
@@ -4752,7 +4752,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  10973.5
+        "sizeKB":  10313.4
     },
     {
         "file":  "साधन-कल्पतरु.html",
@@ -4761,7 +4761,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  8959.9
+        "sizeKB":  8972.2
     },
     {
         "file":  "साधना पथ.html",
@@ -4770,7 +4770,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  422.4
+        "sizeKB":  419.3
     },
     {
         "file":  "साधनोपयोगी पत्र.html",
@@ -4779,7 +4779,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  616.9
+        "sizeKB":  608.8
     },
     {
         "file":  "सार संग्रह.html",
@@ -4788,7 +4788,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  51.5
+        "sizeKB":  48.8
     },
     {
         "file":  "सावित्री और सत्यवान्.html",
@@ -4797,7 +4797,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  100
+        "sizeKB":  98.4
     },
     {
         "file":  "सिद्धान्त एवं रहस्य की बातें.html",
@@ -4806,7 +4806,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  576.4
+        "sizeKB":  570.6
     },
     {
         "file":  "सिनेमा – मनोरञ्जन या विनाश का साधन.html",
@@ -4815,7 +4815,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  109.4
+        "sizeKB":  108.5
     },
     {
         "file":  "सुख-शान्ति का मार्ग.html",
@@ -4824,7 +4824,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  885.9
+        "sizeKB":  883.8
     },
     {
         "file":  "सुखी जीवन.html",
@@ -4833,7 +4833,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  647.2
+        "sizeKB":  645.9
     },
     {
         "file":  "सुखी बनने के उपाय.html",
@@ -4842,7 +4842,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  817.4
+        "sizeKB":  813.8
     },
     {
         "file":  "सुखी बनो.html",
@@ -4851,7 +4851,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  340.8
+        "sizeKB":  337.2
     },
     {
         "file":  "सुन्दर समाज का निर्माण.html",
@@ -4860,7 +4860,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  558.3
+        "sizeKB":  553.7
     },
     {
         "file":  "सूक्ति सुधाकर.html",
@@ -4869,7 +4869,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  904.9
+        "sizeKB":  907.3
     },
     {
         "file":  "सूर रामचरितावली.html",
@@ -4878,7 +4878,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "सुदर्शन सिंह",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  904
+        "sizeKB":  884.6
     },
     {
         "file":  "सूर विनय पत्रिका.html",
@@ -4887,7 +4887,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "सुदर्शन सिंह",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1179.3
+        "sizeKB":  1154.8
     },
     {
         "file":  "स्त्रियों के लिये कर्तव्य शिक्षा.html",
@@ -4896,7 +4896,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  547.7
+        "sizeKB":  548.2
     },
     {
         "file":  "स्त्री धर्म प्रश्नोत्तरी.html",
@@ -4905,7 +4905,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  152.7
+        "sizeKB":  151.2
     },
     {
         "file":  "स्वर्ण पथ.html",
@@ -4914,7 +4914,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  765.8
+        "sizeKB":  763.5
     },
     {
         "file":  "स्वाधीन कैसे बनें.html",
@@ -4923,7 +4923,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  130.2
+        "sizeKB":  128.6
     },
     {
         "file":  "हंसगीता.html",
@@ -4932,7 +4932,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  45.1
+        "sizeKB":  43.6
     },
     {
         "file":  "हम ईश्वर को क्यों मानें.html",
@@ -4941,7 +4941,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  105.2
+        "sizeKB":  104.3
     },
     {
         "file":  "हम कैसे रहें.html",
@@ -4950,7 +4950,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  328.8
+        "sizeKB":  327.2
     },
     {
         "file":  "हमारा आश्चर्य.html",
@@ -4959,7 +4959,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  545.7
+        "sizeKB":  543.5
     },
     {
         "file":  "हमारा कर्तव्य.html",
@@ -4968,7 +4968,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  50.8
+        "sizeKB":  50.3
     },
     {
         "file":  "हृदय की आदर्श विशालता.html",
@@ -4977,7 +4977,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  423.1
+        "sizeKB":  419.5
     },
     {
         "file":  "ऋग्वेद.html",
@@ -4986,7 +4986,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  39896.2
+        "sizeKB":  39959.2
     },
     {
         "file":  "यजुर्वेद.html",
@@ -4995,7 +4995,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  7310
+        "sizeKB":  7322.6
     },
     {
         "file":  "सामवेद.html",
@@ -5004,7 +5004,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5580.9
+        "sizeKB":  5594.4
     },
     {
         "file":  "अथर्ववेद.html",
@@ -5013,7 +5013,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  19785.9
+        "sizeKB":  19880.6
     },
     {
         "file":  "महकते जीवन-फूल.html",
@@ -5022,7 +5022,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1156.2
+        "sizeKB":  1160.3
     },
     {
         "file":  "श्रीमद्भगवद्गीता - माहात्म्यसहित.html",
@@ -5031,7 +5031,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  846
+        "sizeKB":  847.8
     },
     {
         "file":  "श्रीकृष्ण.html",
@@ -5049,7 +5049,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  12283.2
+        "sizeKB":  12359.4
     },
     {
         "file":  "महाभारत (आदिपर्व से स्वर्गारोहणपर्व).html",
@@ -5058,7 +5058,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  68694.9
+        "sizeKB":  67394.1
     },
     {
         "file":  "भक्तियोग.html",
@@ -5076,7 +5076,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "पं. सूर्यकान्त त्रिपाठी 'निराला'; प्रा. श्री दिनेशचन्द्र गुह",
         "publisher":  "",
-        "sizeKB":  947.6
+        "sizeKB":  949.6
     },
     {
         "file":  "स्वामी विवेकानन्द संक्षिप्त जीवनी तथा उपदेश.html",
@@ -5085,7 +5085,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "स्वामी वागीश्वरानन्द; स्वामी विदेहात्मानन्द",
         "publisher":  "",
-        "sizeKB":  360.6
+        "sizeKB":  361.6
     },
     {
         "file":  "श्रीकृष्ण चैतन्य.html",
@@ -5094,7 +5094,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "डॉ. वी. जगन्नाथ रेड्डी",
         "publisher":  "तिरुमल तिरुपति देवस्थानम्",
-        "sizeKB":  96.3
+        "sizeKB":  96
     },
     {
         "file":  "प्रेमयोग.html",
@@ -5103,7 +5103,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "स्व. पं. द्वारकानाथ तिवारी",
         "publisher":  "रामकृष्ण मठ",
-        "sizeKB":  434.2
+        "sizeKB":  442.1
     },
     {
         "file":  "भक्त नंदनार.html",
@@ -5112,7 +5112,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "डॉ. एम. लक्ष्मणाचार्य",
         "publisher":  "तिरुमल तिरुपति देवस्थानम्",
-        "sizeKB":  200.7
+        "sizeKB":  202.1
     },
     {
         "file":  "श्रीहनुमान-अङ्क.html",
@@ -5121,7 +5121,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5514.7
+        "sizeKB":  5518
     },
     {
         "file":  "संक्षिप्त श्रीगणेशपुराण.html",
@@ -5130,7 +5130,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  4835.0
+        "sizeKB":  4850.8
     },
     {
         "file":  "क्रान्तिकारी सन्तवाणी.html",
@@ -5139,7 +5139,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "करनाल मानव सेवा संघ",
-        "sizeKB":  1215.0
+        "sizeKB":  1282.3
     },
     {
         "file":  "चाणक्य नीति.html",
@@ -5148,7 +5148,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  381.1
+        "sizeKB":  382.8
     },
     {
         "file":  "नीतिशतकं.html",
@@ -5157,7 +5157,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  175.5
+        "sizeKB":  176.2
     },
     {
         "file":  "श्रीगणेशसहस्रनामस्तोत्रम्.html",
@@ -5166,7 +5166,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  155.4
+        "sizeKB":  157.3
     },
     {
         "file":  "अथर्वशिखोपनिषत्.html",
@@ -5175,7 +5175,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  38.5
+        "sizeKB":  39
     },
     {
         "file":  "ईश्वर दयालु और न्यायकारी है और अवतार का सिद्धान्त.html",
@@ -5184,7 +5184,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  111.0
+        "sizeKB":  110.6
     },
     {
         "file":  "ज्ञान-मणिमाला तथा सत्संग माला.html",
@@ -5193,7 +5193,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  510.6
+        "sizeKB":  510.9
     },
     {
         "file":  "गीता पढ़ने के लाभ ( त्याग से भगवत्प्राप्ति गजलगीता सहित).html",
@@ -5202,7 +5202,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  115.8
+        "sizeKB":  114.8
     },
     {
         "file":  "धर्म क्या है भगवान् क्या है.html",
@@ -5211,7 +5211,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  130.2
+        "sizeKB":  129.3
     },
     {
         "file":  "श्रीनारायणीयम्.html",
@@ -5220,7 +5220,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1418.9
+        "sizeKB":  1374.5
     },
     {
         "file":  "प्रेरणाप्रद कथाएँ.html",
@@ -5229,7 +5229,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  491.9
+        "sizeKB":  488.4
     },
     {
         "file":  "लव कुश चरित्र.html",
@@ -5238,7 +5238,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1053.6
+        "sizeKB":  1051
     },
     {
         "file":  "हनुमान-बाहुक भावार्थ सहित.html",
@@ -5247,7 +5247,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  97.6
+        "sizeKB":  94.1
     },
     {
         "file":  "अग्निपुराण.html",
@@ -5256,7 +5256,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6228.9
+        "sizeKB":  6203.3
     },
     {
         "file":  "कल्याण कैसे हो.html",
@@ -5265,7 +5265,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  518.8
+        "sizeKB":  516.5
     },
     {
         "file":  "परलोक और पुनर्जन्म एवं वैराग्य.html",
@@ -5274,7 +5274,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  170.6
+        "sizeKB":  169.4
     },
     {
         "file":  "भगवान् का हेतु रहित सौहार्द एवं महात्मा किसे कहते हैं.html",
@@ -5283,7 +5283,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  132.1
+        "sizeKB":  131.2
     },
     {
         "file":  "प्रेमका सच्चा स्वरूप और शोकनाशके उपाय.html",
@@ -5292,7 +5292,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  104.6
+        "sizeKB":  104.3
     },
     {
         "file":  "संतवाणी—ढाई हजार अनमोल बोल.html",
@@ -5301,7 +5301,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  939.1
+        "sizeKB":  938.6
     },
     {
         "file":  "मूर्तिपूजा-नाम-जपकी महिमा.html",
@@ -5310,7 +5310,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  132.7
+        "sizeKB":  131.9
     },
     {
         "file":  "स्तोत्ररत्नावली.html",
@@ -5319,7 +5319,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  951.8
+        "sizeKB":  945.9
     },
     {
         "file":  "श्रीपंचरत्नगीता.html",
@@ -5328,7 +5328,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  370.2
+        "sizeKB":  368.5
     },
     {
         "file":  "नारी-अङ्क.html",
@@ -5337,7 +5337,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  7444.5
+        "sizeKB":  7412.2
     },
     {
         "file":  "नारद भक्ति सूत्र एवं शाण्डिल्य भक्ति सूत्र.html",
@@ -5346,7 +5346,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  127.7
+        "sizeKB":  127.1
     },
     {
         "file":  "गरुडपुराण-सारोद्धार.html",
@@ -5355,7 +5355,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  912.8
+        "sizeKB":  912.2
     },
     {
         "file":  "मैं नहीं, मेरा नहीं.html",
@@ -5364,7 +5364,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  666.7
+        "sizeKB":  666.6
     },
     {
         "file":  "रहस्यमयी वार्ता.html",
@@ -5373,7 +5373,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  1130.5
+        "sizeKB":  1126.9
     },
     {
         "file":  "पायो परम बिश्रामु.html",
@@ -5382,7 +5382,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  508.5
+        "sizeKB":  508.3
     },
     {
         "file":  "बन गये आप अकेले सब कुछ.html",
@@ -5391,7 +5391,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  641.4
+        "sizeKB":  641.3
     },
     {
         "file":  "सरस भजनावली.html",
@@ -5400,7 +5400,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीता प्रकाशन, गोरखपुर",
-        "sizeKB":  218.0
+        "sizeKB":  217.8
     },
     {
         "file":  "भगवत्कृपा.html",
@@ -5409,7 +5409,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  204.6
+        "sizeKB":  204.4
     },
     {
         "file":  "भक्ति-रहस्य.html",
@@ -5418,7 +5418,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  824.7
+        "sizeKB":  823.8
     },
     {
         "file":  "ब्रज-भाव.html",
@@ -5427,7 +5427,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  697.9
+        "sizeKB":  696.7
     },
     {
         "file":  "प्रेम और प्रेमी.html",
@@ -5436,7 +5436,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  668.8
+        "sizeKB":  667.8
     },
     {
         "file":  "सुखी होनेके उपाय.html",
@@ -5445,7 +5445,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  692.1
+        "sizeKB":  691.3
     },
     {
         "file":  "कालियनागपर कृपा.html",
@@ -5454,7 +5454,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  662.6
+        "sizeKB":  661.6
     },
     {
         "file":  "सरस-प्रसंग.html",
@@ -5463,7 +5463,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  797.0
+        "sizeKB":  789.6
     },
     {
         "file":  "भाईजी चरितामृत.html",
@@ -5472,7 +5472,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  1120.5
+        "sizeKB":  1115
     },
     {
         "file":  "जैसा बीज वैसा फल.html",
@@ -5481,7 +5481,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  657.3
+        "sizeKB":  652.9
     },
     {
         "file":  "योग एवं भक्ति.html",
@@ -5490,7 +5490,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीतावाटिका प्रकाशन, गोरखपुर",
-        "sizeKB":  662.0
+        "sizeKB":  659.7
     },
     {
         "file":  "कौषीतकिब्राह्मणोपनिषत्.html",
@@ -5499,7 +5499,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "स्वामी महेशानन्द गिरि",
         "translator":  "",
         "publisher":  "मेहता चेरीटेबिल प्रज्ञालय ट्रस्ट",
-        "sizeKB":  174.8
+        "sizeKB":  174.3
     },
     {
         "file":  "पाणिनीयशिक्षा.html",
@@ -5508,7 +5508,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "अवस्थी बच्चूलाल ज्ञान",
         "translator":  "बालकृष्ण शर्मा",
         "publisher":  "कालिदास अकादेमी, उज्जैन",
-        "sizeKB":  628.0
+        "sizeKB":  627.4
     },
     {
         "file":  "नारदीयशिक्षा.html",
@@ -5517,7 +5517,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  488.8
+        "sizeKB":  487.3
     },
     {
         "file":  "सामवेदीया लोमशी शिक्षा.html",
@@ -5526,7 +5526,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  231.3
+        "sizeKB":  230.6
     },
     {
         "file":  "संक्षिप्त कूर्मपुराण.html",
@@ -5535,7 +5535,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  2279.9
+        "sizeKB":  2273.4
     },
     {
         "file":  "श्रीअष्टलक्ष्मीमहामन्त्रम्.html",
@@ -5544,7 +5544,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  52.5
+        "sizeKB":  51.8
     },
     {
         "file":  "श्री कार्तवीर्यार्जुन मन्त्र.html",
@@ -5553,7 +5553,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  118.0
+        "sizeKB":  117.1
     },
     {
         "file":  "नवग्रह-मन्त्र-मञ्जरी.html",
@@ -5562,7 +5562,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "कल्याण सेवा ट्रस्ट",
-        "sizeKB":  81.2
+        "sizeKB":  81.5
     },
     {
         "file":  "श्री गुर्वष्टकम्.html",
@@ -5574,7 +5574,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "guru",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  32.2
+        "sizeKB":  32.1
     },
     {
         "file":  "श्री अन्नपूर्णाकवचम्.html",
@@ -5595,7 +5595,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "जगद्गुरु आदि शंकराचार्य",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  876.8
+        "sizeKB":  875.9
     },
     {
         "file":  "श्वेताश्वतरोपनिषद् (शांकरभाष्य).html",
@@ -5604,7 +5604,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "जगद्गुरु आदि शंकराचार्य",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  940.5
+        "sizeKB":  938.7
     },
     {
         "file":  "शिवपुराण-कथासार.html",
@@ -5613,7 +5613,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  586.2
+        "sizeKB":  585.2
     },
     {
         "file":  "जगदम्बा अपराधक्षमापण स्तोत्रम्.html",
@@ -5637,7 +5637,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "ganesha",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  111.7
+        "sizeKB":  111.6
     },
     {
         "file":  "श्रीदत्तात्रेयापराधक्षमापणस्तोत्रम् २.html",
@@ -5649,7 +5649,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "guru",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  45.2
+        "sizeKB":  45.1
     },
     {
         "file":  "श्रीललितात्रिपुरसुन्दरी-अपराधक्षमापणस्तोत्रम्.html",
@@ -5661,7 +5661,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "devi",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  80.7
+        "sizeKB":  80.6
     },
     {
         "file":  "श्रीगणेशभुजङ्गप्रयातस्तोत्रम्.html",
@@ -5673,7 +5673,7 @@ var SWADHYAY_BOOKS_RAW = [
         "stotra":  "ganesha",
         "swith_arth":  "yes",
         "arth_hide":  "stotra-arth*",
-        "sizeKB":  35.1
+        "sizeKB":  35
     },
     {
         "file":  "आत्मोपनिषद्.html",
@@ -5694,7 +5694,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "",
-        "sizeKB":  78.5
+        "sizeKB":  77.6
     },
     {
         "file":  "कल्कि अवतार.html",
@@ -5703,7 +5703,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "",
-        "sizeKB":  735.0
+        "sizeKB":  733.5
     },
     {
         "file":  "ब्रज का एक दिन.html",
@@ -5712,7 +5712,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "श्री राम अध्यात्म प्रन्यास, हनुमद्धाम, शुकतीर्थ",
-        "sizeKB":  354.5
+        "sizeKB":  354.1
     },
     {
         "file":  "भारतीय मनोविज्ञान.html",
@@ -5721,7 +5721,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "आनन्द कानन प्रकाशन",
-        "sizeKB":  323.6
+        "sizeKB":  322.2
     },
     {
         "file":  "श्रीकृष्णांक.html",
@@ -5730,6 +5730,6 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  5602.7
+        "sizeKB":  5591.2
     }
 ];

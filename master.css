@@ -1,11 +1,9 @@
-/* the one font of the whole project (the books name it as ChanakyaUni) */
-@font-face { font-family: 'ChanakyaUni'; src: url('fonts/ChanakyaUni-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'ChanakyaUni'; src: url('fonts/ChanakyaUni-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'NotoSerifDevanagari'; src: url('fonts/NotoSerifDevanagari-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'NotoSerifDevanagari'; src: url('fonts/NotoSerifDevanagari-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+/* the one font of the whole project; size-adjust keeps text as wide as the book layouts were made for */
+@font-face { font-family: 'NotoSerifDevanagari'; src: url('fonts/NotoSerifDevanagari-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; size-adjust: 85%; }
+@font-face { font-family: 'NotoSerifDevanagari'; src: url('fonts/NotoSerifDevanagari-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; size-adjust: 85%; }
 
 * {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 }
 body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, p, pre, code, blockquote {
 	margin:0;
@@ -23,7 +21,7 @@ table.Samagri-Table {
 	width:100%;
 	margin:12px 0px 12px 0px;
 	border:1px solid darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.1em;
 }
 th.Samagri-Table-Head {
@@ -59,7 +57,7 @@ body {
 p.Basic-Paragraph {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -75,7 +73,7 @@ p.Basic-Paragraph {
 p.Text {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -91,7 +89,7 @@ p.Text {
 p.Sambandh {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -107,7 +105,7 @@ p.Sambandh {
 p.Tab {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -123,7 +121,7 @@ p.Tab {
 p.Sub-heading {
 	-epub-ruby-position:over;
 	color:blue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -139,7 +137,7 @@ p.Sub-heading {
 p.Italik {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:italic;
 	font-variant:normal;
@@ -155,7 +153,7 @@ p.Italik {
 p.Chapter-Heading {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -171,7 +169,7 @@ p.Chapter-Heading {
 p.Shlok {
 	-epub-ruby-position:over;
 	color:#c10202;
-	font-family:NotoSerifDevanagari, ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -246,7 +244,7 @@ p.Shlok.shloka-pair.shloka-quad {
 p.Uvaacha {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:italic;
 	font-variant:normal;
@@ -262,7 +260,7 @@ p.Uvaacha {
 p.Shlok-Right {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:italic;
 	font-variant:normal;
@@ -278,7 +276,7 @@ p.Shlok-Right {
 p.Bole {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -294,7 +292,7 @@ p.Bole {
 p.Uwach {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -310,7 +308,7 @@ p.Uwach {
 p.Shlok-Number {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -326,7 +324,7 @@ p.Shlok-Number {
 p.Page-Break {
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -342,7 +340,7 @@ p.Page-Break {
 p.Vayakhya {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -359,7 +357,7 @@ p.Footnotes {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -377,7 +375,7 @@ p.Footnotes-Bold {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -395,7 +393,7 @@ p.Footnotes-Right {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -413,7 +411,7 @@ p.ChapterEnd1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -429,7 +427,7 @@ p.ChapterEnd1 {
 p.Subject {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -445,7 +443,7 @@ p.Subject {
 p.cover-Shri-Hari {
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -461,7 +459,7 @@ p.cover-Shri-Hari {
 p.cover-Book-Name {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -478,7 +476,7 @@ p.cover-Publisher-Note {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:maroon;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -494,7 +492,7 @@ p.cover-Publisher-Note {
 p.cover-Author-Name {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -508,14 +506,14 @@ p.cover-Author-Name {
 	text-indent:0px;
 }
 p.cover-Translater-Author-Name {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-weight:bold;
 	text-align:center;
 }
 p.cover-Tvamev-mata {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -531,7 +529,7 @@ p.cover-Tvamev-mata {
 p.First-End-Page-text {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -547,7 +545,7 @@ p.First-End-Page-text {
 p.sub-heading {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -563,7 +561,7 @@ p.sub-heading {
 p.Shlok-black {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -579,7 +577,7 @@ p.Shlok-black {
 p.No-Paragraph-Style {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -595,7 +593,7 @@ p.No-Paragraph-Style {
 p.Right {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -611,7 +609,7 @@ p.Right {
 p.No-Paragraph-Style-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -627,7 +625,7 @@ p.No-Paragraph-Style-1 {
 p.Right-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -643,7 +641,7 @@ p.Right-1 {
 p.Etalic {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -659,7 +657,7 @@ p.Etalic {
 p.Bhav {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -675,7 +673,7 @@ p.Bhav {
 p.right {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -691,7 +689,7 @@ p.right {
 p.No-Paragraph-Style-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -707,7 +705,7 @@ p.No-Paragraph-Style-2 {
 p.su-head {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -723,7 +721,7 @@ p.su-head {
 p.Etalic-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -739,7 +737,7 @@ p.Etalic-1 {
 p.right-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -755,7 +753,7 @@ p.right-1 {
 p.Bhav-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -771,7 +769,7 @@ p.Bhav-1 {
 p.Right-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -787,7 +785,7 @@ p.Right-2 {
 p.Etalic-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -803,7 +801,7 @@ p.Etalic-2 {
 p.right-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -819,7 +817,7 @@ p.right-2 {
 p.right-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -835,7 +833,7 @@ p.right-3 {
 p.No-Paragraph-Style-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -851,7 +849,7 @@ p.No-Paragraph-Style-3 {
 p.Etalic-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -867,7 +865,7 @@ p.Etalic-3 {
 p.Right-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -883,7 +881,7 @@ p.Right-3 {
 p.No-Paragraph-Style-4 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -899,7 +897,7 @@ p.No-Paragraph-Style-4 {
 p.Right-4 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -915,7 +913,7 @@ p.Right-4 {
 p.No-Paragraph-Style-5 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -931,7 +929,7 @@ p.No-Paragraph-Style-5 {
 p.Right-5 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -947,7 +945,7 @@ p.Right-5 {
 p.No-Paragraph-Style-6 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -963,7 +961,7 @@ p.No-Paragraph-Style-6 {
 p.Right-6 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -979,7 +977,7 @@ p.Right-6 {
 p.No-Paragraph-Style-7 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -995,7 +993,7 @@ p.No-Paragraph-Style-7 {
 p.Etalic-4 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -1011,7 +1009,7 @@ p.Etalic-4 {
 p.Right-7 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1027,7 +1025,7 @@ p.Right-7 {
 p.Bhav-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -1043,7 +1041,7 @@ p.Bhav-2 {
 p.Etalic-5 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -1059,7 +1057,7 @@ p.Etalic-5 {
 p.right-4 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1075,7 +1073,7 @@ p.right-4 {
 p.Right-8 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1091,7 +1089,7 @@ p.Right-8 {
 p.No-Paragraph-Style-8 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1107,7 +1105,7 @@ p.No-Paragraph-Style-8 {
 p.Shlok-Black {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -1123,7 +1121,7 @@ p.Shlok-Black {
 p.First-End-Page-text-1 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -1139,7 +1137,7 @@ p.First-End-Page-text-1 {
 p.No-Paragraph-Style-9 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1155,7 +1153,7 @@ p.No-Paragraph-Style-9 {
 p.Right-9 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1171,7 +1169,7 @@ p.Right-9 {
 p.Etalic-6 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -1187,7 +1185,7 @@ p.Etalic-6 {
 p.right-5 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1203,7 +1201,7 @@ p.right-5 {
 p.Right-10 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1219,7 +1217,7 @@ p.Right-10 {
 p.No-Paragraph-Style-10 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1235,7 +1233,7 @@ p.No-Paragraph-Style-10 {
 p.Right-11 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1251,7 +1249,7 @@ p.Right-11 {
 p.No-Paragraph-Style-11 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1267,7 +1265,7 @@ p.No-Paragraph-Style-11 {
 p.Right-12 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1283,7 +1281,7 @@ p.Right-12 {
 p.No-Paragraph-Style-12 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1299,7 +1297,7 @@ p.No-Paragraph-Style-12 {
 p.Right-13 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -1424,7 +1422,7 @@ p.para-style-override-26 {
 	font-weight:bold;
 }
 p.para-style-override-27 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-style:normal;
 	font-weight:normal;
 }
@@ -1442,7 +1440,7 @@ p.para-style-override-30 {
 	text-align:center;
 }
 p.para-style-override-31 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.142em;
 	font-style:normal;
 	font-weight:normal;
@@ -1470,7 +1468,7 @@ p.para-style-override-35 {
 	text-indent:12px;
 }
 p.para-style-override-36 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-weight:normal;
@@ -1478,14 +1476,14 @@ p.para-style-override-36 {
 	text-indent:12px;
 }
 p.para-style-override-37 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-weight:normal;
 	text-align:justify;
 }
 p.para-style-override-38 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-weight:normal;
@@ -1497,12 +1495,12 @@ p.para-style-override-39 {
 	text-align:right;
 }
 p.para-style-override-40 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-style:normal;
 	font-weight:normal;
 }
 p.para-style-override-41 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-weight:normal;
@@ -1524,7 +1522,7 @@ p.para-style-override-45 {
 	margin-bottom:7px;
 }
 p.para-style-override-46 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.142em;
 	font-style:normal;
 	font-weight:normal;
@@ -1603,7 +1601,7 @@ p.para-style-override-62 {
 	break-after:page;
 }
 p.para-style-override-63 {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.125em;
 	font-style:normal;
 	font-weight:normal;
@@ -1624,10 +1622,13 @@ span.rg-it {
 	font-style:italic;
 	font-weight:normal;
 }
+a.rg-it {
+	font-style:italic;
+}
 /* inline Shlok-coloured run inside a paragraph (speaker labels, "प्रश्न—", quoted verse words): Shlok red, the surrounding text size */
 span.inline_shlok {
 	color:#c10202;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-weight:normal;
@@ -1636,16 +1637,17 @@ span.bold {
 	font-style:normal;
 	font-weight:bold;
 }
-span.inline-5 {
-	font-size:1em;
-}
-/* the same reset span inside a Shlok paragraph (was inline-5 there, 2026-11-12): the verse's own colour and font, the paragraph's size */
-span.Shlok {
-	font-size:1em;
-}
-span.inline-6 {
-	font-style:normal;
+/* bold paragraph (was Text-Bold / TXT-bold, 2026-11-24) */
+p.bold {
 	font-weight:bold;
+}
+/* quote (was inline-5, 2026-11-24): a quoted or foreign word run inside a paragraph, set in italics at the paragraph's size */
+span.quote {
+	font-size:1em;
+	font-style:italic;
+}
+/* the same reset span inside a Shlok paragraph (was inline-5 there, 2026-11-12; inline-5 itself is now `quote`): the verse's own colour and font, the paragraph's size */
+span.Shlok {
 	font-size:1em;
 }
 span.strong {
@@ -1653,9 +1655,10 @@ span.strong {
 	font-style:normal;
 	font-weight:bold;
 }
-span.inline-9 {
-	font-style:normal;
-	font-weight:normal;
+/* bold-italic (was inline-9, 2026-11-24) */
+span.bold-italic {
+	font-style:italic;
+	font-weight:bold;
 	font-size:1em;
 }
 span.inline-10 {
@@ -1696,7 +1699,8 @@ span.inline-17 {
 	font-size:smaller;
 	line-height:0;
 }
-span.inline-20 {
+/* txt-highlight (was inline-20, 2026-11-24): royal-blue text run */
+span.txt-highlight {
 	color:royalblue;
 	font-size:1em;
 }
@@ -1829,7 +1833,7 @@ img.frame-3 {
 p.AA {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -1846,7 +1850,7 @@ p.Page-Break-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -1863,7 +1867,7 @@ p.Sub-Heading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -1880,7 +1884,7 @@ p.Normal {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -1897,7 +1901,7 @@ p.Prashna {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -1914,7 +1918,7 @@ p.Uttar {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -1935,7 +1939,7 @@ p.Bhashya-Sanskrit {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#5a4a3a;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.1em;
 	font-style:italic;
 	font-variant:normal;
@@ -1951,7 +1955,7 @@ p.Bhashya-Sanskrit {
 p.Doha {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:italic;
 	font-variant:normal;
@@ -1968,7 +1972,7 @@ p.SHLOK-Black {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -1988,7 +1992,7 @@ p.Location-Date-Row {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2007,7 +2011,7 @@ p.TXT-Right {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2023,7 +2027,7 @@ p.TXT-Right {
 p.Sub-head-2 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2040,7 +2044,7 @@ p.Image {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2057,7 +2061,7 @@ p.Footnotes-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2075,7 +2079,7 @@ p.Footnotes-Bold-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2093,7 +2097,7 @@ p.Footnotes-Right-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2110,7 +2114,7 @@ p.Footnotes-Right-1 {
 p.Sub-head-2-1 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2127,7 +2131,7 @@ p.Footnotes-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2145,7 +2149,7 @@ p.Footnotes-Bold-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2163,7 +2167,7 @@ p.Footnotes-Right-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2180,7 +2184,7 @@ p.Footnotes-Right-2 {
 p.A {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2196,7 +2200,7 @@ p.A {
 p.AA-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2213,7 +2217,7 @@ p.Heading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2230,7 +2234,7 @@ p.Footnotes-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2248,7 +2252,7 @@ p.Footnotes-Bold-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2266,7 +2270,7 @@ p.Footnotes-Right-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2283,7 +2287,7 @@ p.Footnotes-Right-3 {
 p.Sub-head-2-2 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2299,7 +2303,7 @@ p.Sub-head-2-2 {
 p.Tavmev-Mata--pita {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2316,7 +2320,7 @@ p.Image-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2333,7 +2337,7 @@ p.Footnotes-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2350,7 +2354,7 @@ p.Footnotes-4 {
 p.Numbers {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2366,7 +2370,7 @@ p.Numbers {
 p.Shlok-reference {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2382,7 +2386,7 @@ p.Shlok-reference {
 p.Sub-head-2-3 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2399,7 +2403,7 @@ p.Footnotes-5 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2417,7 +2421,7 @@ p.Footnotes-Bold-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2435,7 +2439,7 @@ p.Footnotes-Right-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2452,7 +2456,7 @@ p.Footnotes-Right-4 {
 p.Numbers-1 {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2468,7 +2472,7 @@ p.Numbers-1 {
 p.Sub-head-2-4 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2485,7 +2489,7 @@ p.Footnotes-6 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2503,7 +2507,7 @@ p.Footnotes-Bold-5 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2521,7 +2525,7 @@ p.Footnotes-Right-5 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2538,7 +2542,7 @@ p.Footnotes-Right-5 {
 p.Sub-head-2-5 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2555,7 +2559,7 @@ p.Footnotes-7 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2573,7 +2577,7 @@ p.Footnotes-Bold-6 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2591,7 +2595,7 @@ p.Footnotes-Right-6 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2608,7 +2612,7 @@ p.Footnotes-Right-6 {
 p.Sub-head-2-6 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2624,7 +2628,7 @@ p.Sub-head-2-6 {
 p.Shlok-Color--1 {
 	-epub-ruby-position:over;
 	color:mediumvioletred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2641,7 +2645,7 @@ p.Footnotes-8 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2659,7 +2663,7 @@ p.Footnotes-Bold-7 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2677,7 +2681,7 @@ p.Footnotes-Right-7 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2694,7 +2698,7 @@ p.Footnotes-Right-7 {
 p.Sub-head-2-7 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2711,7 +2715,7 @@ p.Footnotes-9 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2729,7 +2733,7 @@ p.Footnotes-Bold-8 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2747,7 +2751,7 @@ p.Footnotes-Right-8 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2765,7 +2769,7 @@ p.Footnotes-10 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2783,7 +2787,7 @@ p.Footnotes-Bold-9 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2801,7 +2805,7 @@ p.Footnotes-Right-9 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2818,7 +2822,7 @@ p.Footnotes-Right-9 {
 p.Sub-head-2-8 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2835,7 +2839,7 @@ p.Footnotes-11 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2853,7 +2857,7 @@ p.Footnotes-Bold-10 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2871,7 +2875,7 @@ p.Footnotes-Right-10 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2888,7 +2892,7 @@ p.Footnotes-Right-10 {
 p.Numbers-2 {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2904,7 +2908,7 @@ p.Numbers-2 {
 p.Sub-head-2-9 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2921,7 +2925,7 @@ p.Footnotes-12 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2939,7 +2943,7 @@ p.Footnotes-Bold-11 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2957,7 +2961,7 @@ p.Footnotes-Right-11 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -2974,7 +2978,7 @@ p.Footnotes-Right-11 {
 p.Sub-head-2-10 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -2991,7 +2995,7 @@ p.Image-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3008,7 +3012,7 @@ p.Footnotes-13 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3026,7 +3030,7 @@ p.Footnotes-Bold-12 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3044,7 +3048,7 @@ p.Footnotes-Right-12 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3061,7 +3065,7 @@ p.Footnotes-Right-12 {
 p.Sub-head-2-11 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3077,7 +3081,7 @@ p.Sub-head-2-11 {
 p.Numbers-3 {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3094,7 +3098,7 @@ p.Footnotes-14 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3112,7 +3116,7 @@ p.Footnotes-Bold-13 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3130,7 +3134,7 @@ p.Footnotes-Right-13 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3148,7 +3152,7 @@ p.Chapter-End-Text {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3164,7 +3168,7 @@ p.Chapter-End-Text {
 p.Sub-head-2-12 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3181,7 +3185,7 @@ p.Footnotes-15 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3199,7 +3203,7 @@ p.Footnotes-Bold-14 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3217,7 +3221,7 @@ p.Footnotes-Right-14 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3234,7 +3238,7 @@ p.Footnotes-Right-14 {
 p.Sub-head-2-13 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3251,7 +3255,7 @@ p.Footer-Chopai {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3269,7 +3273,7 @@ p.Sub-Heading-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -3287,7 +3291,7 @@ p.OM {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:mediumvioletred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.667em;
 	font-style:normal;
 	font-variant:normal;
@@ -3304,7 +3308,7 @@ p.Chapter-End-Text-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3320,7 +3324,7 @@ p.Chapter-End-Text-1 {
 p.Shlok-Color-2 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3336,7 +3340,7 @@ p.Shlok-Color-2 {
 p.Shlok-Color-2-New {
 	-epub-ruby-position:over;
 	color:blue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3353,7 +3357,7 @@ p.Chapter-End-Text-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3370,7 +3374,7 @@ p.Footer-Chopai-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3387,7 +3391,7 @@ p.Footer-Chopai-1 {
 p.Shlok-Color-2-1 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3404,7 +3408,7 @@ p.Chapter-End-Text-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3421,7 +3425,7 @@ p.Footer-Chopai-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3438,7 +3442,7 @@ p.Footer-Chopai-2 {
 p.Shlok-Color-2-2 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3455,7 +3459,7 @@ p.Chapter-End-Text-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3472,7 +3476,7 @@ p.Footer-Chopai-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3489,7 +3493,7 @@ p.Footer-Chopai-3 {
 p.Sub-Heading-2-1 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -3506,7 +3510,7 @@ p.Chapter-End-Text-5 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3522,7 +3526,7 @@ p.Chapter-End-Text-5 {
 p.Shlok-Color-2-3 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3539,7 +3543,7 @@ p.Chapter-End-Text-6 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3556,7 +3560,7 @@ p.Footer-Chopai-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3573,7 +3577,7 @@ p.Footer-Chopai-4 {
 p.Shlok-Color-2-4 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3590,7 +3594,7 @@ p.Footer-Chopai-5 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3608,7 +3612,7 @@ p.Chapter-End-Text-7 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3625,7 +3629,7 @@ p.Footer-Chopai-6 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3642,7 +3646,7 @@ p.Footer-Chopai-6 {
 p.Shlok-Color-2-5 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3659,7 +3663,7 @@ p.Chapter-End-Text-8 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3675,7 +3679,7 @@ p.Chapter-End-Text-8 {
 p.Shlok-Color-2-6 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3692,7 +3696,7 @@ p.Chapter-End-Text-9 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3709,7 +3713,7 @@ p.Footer-Chopai-7 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3726,7 +3730,7 @@ p.Footer-Chopai-7 {
 p.Shlok-Color-2-7 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3743,7 +3747,7 @@ p.Chapter-End-Text-10 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3759,7 +3763,7 @@ p.Chapter-End-Text-10 {
 p.Shlok-Color-2-8 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3776,7 +3780,7 @@ p.Chapter-End-Text-11 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3793,7 +3797,7 @@ p.Footer-Chopai-8 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3810,7 +3814,7 @@ p.Footer-Chopai-8 {
 p.Shlok-Color-2-9 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3827,7 +3831,7 @@ p.Footer-Chopai-9 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3844,7 +3848,7 @@ p.Footer-Chopai-9 {
 p.Shlok-Color-2-10 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3861,7 +3865,7 @@ p.Chapter-End-Text-12 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3878,7 +3882,7 @@ p.Footer-Chopai-10 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3895,7 +3899,7 @@ p.Footer-Chopai-10 {
 p.Shlok-Color-2-11 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3912,7 +3916,7 @@ p.Footer-Chopai-11 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3930,7 +3934,7 @@ p.Chapter-End-Text-13 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3947,7 +3951,7 @@ p.Footer-Chopai-12 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -3964,7 +3968,7 @@ p.Footer-Chopai-12 {
 p.Shlok-Color-2-12 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -3981,7 +3985,7 @@ p.Chapter-End-Text-14 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -3997,7 +4001,7 @@ p.Chapter-End-Text-14 {
 p.Shlok-Color-2-13 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4014,7 +4018,7 @@ p.Chapter-End-Text-15 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -4030,7 +4034,7 @@ p.Chapter-End-Text-15 {
 p.Shlok-Color-2-14 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4047,7 +4051,7 @@ p.Chapter-End-Text-16 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -4063,7 +4067,7 @@ p.Chapter-End-Text-16 {
 p.Dash {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -4079,7 +4083,7 @@ p.Dash {
 p.Shlok-Color-2-15 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4096,7 +4100,7 @@ p.Chapter-End-Text-17 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -4122,7 +4126,7 @@ img.frame-5 {
 p.Arth {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4138,7 +4142,7 @@ p.Arth {
 p.Uvach {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -4154,7 +4158,7 @@ p.Uvach {
 p.Book-Name {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4171,7 +4175,7 @@ p.Shrihari {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4187,7 +4191,7 @@ p.Shrihari {
 p.S-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -4200,10 +4204,10 @@ p.S-2 {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.Footnote {
+p.fn {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4220,7 +4224,7 @@ p.Footnote {
 p.x-- {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4236,7 +4240,7 @@ p.x-- {
 p.cover-Sub-Title {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -4252,7 +4256,7 @@ p.cover-Sub-Title {
 p.N {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -4268,7 +4272,7 @@ p.N {
 p.Sub-heading-1 {
 	-epub-ruby-position:over;
 	color:darkcyan;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4284,7 +4288,7 @@ p.Sub-heading-1 {
 p.Bhav-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4300,7 +4304,7 @@ p.Bhav-3 {
 p.Bhav-4 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4316,7 +4320,7 @@ p.Bhav-4 {
 p.S-2-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -4332,7 +4336,7 @@ p.S-2-1 {
 p.x---1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4348,7 +4352,7 @@ p.x---1 {
 p.Bhav-5 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4364,7 +4368,7 @@ p.Bhav-5 {
 p.x---2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4380,7 +4384,7 @@ p.x---2 {
 p.Footnote-1 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4397,7 +4401,7 @@ p.Footnote-1 {
 p.Bhav-6 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4413,7 +4417,7 @@ p.Bhav-6 {
 p.Footnote-2 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4430,7 +4434,7 @@ p.Footnote-2 {
 p.Bhav-7 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4446,7 +4450,7 @@ p.Bhav-7 {
 p.x---3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4462,7 +4466,7 @@ p.x---3 {
 p.Sub-heading-2 {
 	-epub-ruby-position:over;
 	color:deepskyblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4478,7 +4482,7 @@ p.Sub-heading-2 {
 p.Footnote-3 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4495,7 +4499,7 @@ p.Footnote-3 {
 p.Bhav-8 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4511,7 +4515,7 @@ p.Bhav-8 {
 p.Bhav-9 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4527,7 +4531,7 @@ p.Bhav-9 {
 p.Bhav-10 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4543,7 +4547,7 @@ p.Bhav-10 {
 p.Bhav-11 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4559,7 +4563,7 @@ p.Bhav-11 {
 p.Bhav-12 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4575,7 +4579,7 @@ p.Bhav-12 {
 p.Bhav-13 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4591,7 +4595,7 @@ p.Bhav-13 {
 p.Bhav-14 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4607,7 +4611,7 @@ p.Bhav-14 {
 p.Bhav-15 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4623,7 +4627,7 @@ p.Bhav-15 {
 p.Bhav-16 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4640,7 +4644,7 @@ p.Nayash {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4656,7 +4660,7 @@ p.Nayash {
 p.Varsh---Sankhya {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -4673,7 +4677,7 @@ p.SHLOK {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4690,7 +4694,7 @@ p.Footnote-Center {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4708,7 +4712,7 @@ p.Footnote-Right {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -4725,7 +4729,7 @@ p.Footnote-Right {
 p.Title-page---sub-title {
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.667em;
 	font-style:normal;
 	font-variant:normal;
@@ -4742,7 +4746,7 @@ p.Main-Heading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -4830,7 +4834,7 @@ img.frame-29 {
 p.Padchched-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4846,7 +4850,7 @@ p.Padchched-1 {
 p.Shlok-L {
 	-epub-ruby-position:over;
 	color:teal;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4862,7 +4866,7 @@ p.Shlok-L {
 p.Paradhan-Vishay {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -4878,7 +4882,7 @@ p.Paradhan-Vishay {
 p.Chapter-End {
 	-epub-ruby-position:over;
 	color:mediumvioletred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4894,7 +4898,7 @@ p.Chapter-End {
 p.Shlok-Subject {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -4909,7 +4913,7 @@ p.Shlok-Subject {
 }
 p.cover-subtitle {
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-weight:bold;
@@ -4926,7 +4930,7 @@ p[class^="cover-"], p[class*=" cover-"] {
 p.cover-Sub-Heading {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -4946,7 +4950,7 @@ p.cover-Sub-Heading {
 p.Gadya {
 	-epub-ruby-position:over;
 	color:#c10202;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4963,7 +4967,7 @@ p.mantra {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -4979,7 +4983,7 @@ p.mantra {
 p.cover-Sub-Title-2 {
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.667em;
 	font-style:normal;
 	font-variant:normal;
@@ -4996,7 +5000,7 @@ p.Chapter-Heading-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:steelblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -5012,7 +5016,7 @@ p.Chapter-Heading-1 {
 p.Shlok-Number-copy {
 	-epub-ruby-position:over;
 	color:mediumvioletred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:0.917em;
 	font-style:normal;
 	font-variant:normal;
@@ -5033,7 +5037,7 @@ p.Footnotes-bold {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5050,7 +5054,7 @@ p.Footnotes-bold {
 p.Sub-Head-2 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5066,7 +5070,7 @@ p.Sub-Head-2 {
 p.cover-subheading {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5082,7 +5086,7 @@ p.cover-subheading {
 p.cover-Sub-heading {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5099,7 +5103,7 @@ p.Footnotes-right {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5117,7 +5121,7 @@ p.Sub-Heading- {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5134,7 +5138,7 @@ p.Sholk-Black {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5150,7 +5154,7 @@ p.Sholk-Black {
 p.Basic-Paragraph-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5166,7 +5170,7 @@ p.Basic-Paragraph-1 {
 p.xfootnote {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5184,7 +5188,7 @@ p.x-Main-Heading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5200,7 +5204,7 @@ p.x-Main-Heading {
 p.Shlok-Number-1 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -5216,7 +5220,7 @@ p.Shlok-Number-1 {
 p.Shlok-Color {
 	-epub-ruby-position:over;
 	color:mediumvioletred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5232,7 +5236,7 @@ p.Shlok-Color {
 p.Sub-Heading-1 {
 	-epub-ruby-position:over;
 	color:darkcyan;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5248,7 +5252,7 @@ p.Sub-Heading-1 {
 p.Basic-Paragraph-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5264,7 +5268,7 @@ p.Basic-Paragraph-2 {
 p.Futnote {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5280,7 +5284,7 @@ p.Futnote {
 p.Shlok-Number--2 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -5297,7 +5301,7 @@ p.Slok1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5313,7 +5317,7 @@ p.Slok1 {
 p.No-paragraph-style {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -5330,7 +5334,7 @@ p.Shlok-Black-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5347,7 +5351,7 @@ p.Shlok-Black-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5364,7 +5368,7 @@ p.SHLOK-Black-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5380,7 +5384,7 @@ p.SHLOK-Black-1 {
 p.Number {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5396,7 +5400,7 @@ p.Number {
 p.Sub-Head-3 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5412,7 +5416,7 @@ p.Sub-Head-3 {
 p.sub-head {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5428,7 +5432,7 @@ p.sub-head {
 p.Chapter-Heading-2 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -5445,7 +5449,7 @@ p.Footnotes-Center {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5462,7 +5466,7 @@ p.Footnotes-Center {
 p.subhead {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5478,7 +5482,7 @@ p.subhead {
 p.Uvach-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -5492,7 +5496,7 @@ p.Uvach-1 {
 	text-indent:0px;
 }
 p.Text-Right-coloer {
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:italic;
 	text-align:right;
@@ -5501,7 +5505,7 @@ p.Text-Right {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5517,7 +5521,7 @@ p.Text-Right {
 p.Sub-Heading-2-2 {
 	-epub-ruby-position:over;
 	color:deepskyblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5533,7 +5537,7 @@ p.Sub-Heading-2-2 {
 p.Uvach-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -5549,7 +5553,7 @@ p.Uvach-2 {
 p.uwach {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -5565,7 +5569,7 @@ p.uwach {
 p.cover-Subheading {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5581,7 +5585,7 @@ p.cover-Subheading {
 p.Foot-note {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5598,7 +5602,7 @@ p.Foot-note {
 p.UWACH {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -5614,7 +5618,7 @@ p.UWACH {
 p.Uwash {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -5631,7 +5635,7 @@ p.SHLOK-Black-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5647,7 +5651,7 @@ p.SHLOK-Black-2 {
 p.Sub-Heading-1-2 {
 	-epub-ruby-position:over;
 	color:darkcyan;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5664,7 +5668,7 @@ p.SHLOK-Black-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5680,7 +5684,7 @@ p.SHLOK-Black-3 {
 p.Sub-Heading-1-3 {
 	-epub-ruby-position:over;
 	color:darkcyan;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5697,7 +5701,7 @@ p.TXT-Right-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5714,7 +5718,7 @@ p.TXT-Right-2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5730,7 +5734,7 @@ p.TXT-Right-2 {
 p.Sub-Heading-1-1 {
 	-epub-ruby-position:over;
 	color:darkcyan;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5746,24 +5750,7 @@ p.Sub-Heading-1-1 {
 p.fOOTNOTE-1 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
-	font-size:1.083em;
-	font-style:normal;
-	font-variant:normal;
-	font-weight:normal;
-	line-height:1.2;
-	margin-bottom:0px;
-	margin-left:0px;
-	margin-right:0px;
-	text-align:justify;
-	text-decoration:none;
-	text-indent:18px;
-	border:1px solid BlueViolet;
-}
-p.fOOTNOTE {
-	-epub-ruby-position:over;
-	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5780,7 +5767,7 @@ p.fOOTNOTE {
 p.Futnote-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5796,7 +5783,7 @@ p.Futnote-1 {
 p.Footnote--A- {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5813,7 +5800,7 @@ p.Footnote--A- {
 p.xfootnote-2 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5830,7 +5817,7 @@ p.xfootnote-2 {
 p.xfootnote-1 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5848,7 +5835,7 @@ p.Sub-Hading {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5865,7 +5852,7 @@ p.Slok-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5882,7 +5869,7 @@ p.mantra-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5898,7 +5885,7 @@ p.mantra-1 {
 p.Sub-Head-1 {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5914,7 +5901,7 @@ p.Sub-Head-1 {
 p.cover-sub-heading {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -5930,7 +5917,7 @@ p.cover-sub-heading {
 p.FOOTNOTE-2 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5947,7 +5934,7 @@ p.FOOTNOTE-2 {
 p.FOOTNOTE-1 {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -5964,7 +5951,7 @@ p.FOOTNOTE-1 {
 p.uvach-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -5980,7 +5967,7 @@ p.uvach-1 {
 p.Basic-Paragraph-4 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -5996,7 +5983,7 @@ p.Basic-Paragraph-4 {
 p.Basic-Paragraph-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6013,7 +6000,7 @@ p.Sholk {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6030,7 +6017,7 @@ p.Shlok-1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6046,7 +6033,7 @@ p.Shlok-1 {
 p.Chappter-Heading {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -6063,7 +6050,7 @@ p.Slok2 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6080,7 +6067,7 @@ p.Shloka {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6096,7 +6083,7 @@ p.Shloka {
 p.Text-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6112,7 +6099,7 @@ p.Text-2 {
 p.Vyakhya {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6128,7 +6115,7 @@ p.Vyakhya {
 p.Sub-had- {
 	-epub-ruby-position:over;
 	color:darkred;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6144,7 +6131,7 @@ p.Sub-had- {
 p.cover-Subheading {
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -6160,7 +6147,7 @@ p.cover-Subheading {
 p.Foot-Note {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -6177,7 +6164,7 @@ p.Foot-Note {
 p.SHLOK-number {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -6193,7 +6180,7 @@ p.SHLOK-number {
 p.cover-sub-title {
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.667em;
 	font-style:normal;
 	font-variant:normal;
@@ -6209,7 +6196,7 @@ p.cover-sub-title {
 p.Uvach-3 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:italic;
 	font-variant:normal;
@@ -6226,7 +6213,7 @@ p.Sub-Heading-4 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -6243,7 +6230,7 @@ p.Sub-Heading-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -6259,7 +6246,7 @@ p.Sub-Heading-3 {
 p.Sub-Heading-2-3 {
 	-epub-ruby-position:over;
 	color:deepskyblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6275,7 +6262,7 @@ p.Sub-Heading-2-3 {
 p.TEXT {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6291,7 +6278,7 @@ p.TEXT {
 p.Paragraph-Style {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -6307,7 +6294,7 @@ p.Paragraph-Style {
 p.TEXT-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6323,7 +6310,7 @@ p.TEXT-2 {
 p.TEXT-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6339,7 +6326,7 @@ p.TEXT-1 {
 p.Title-page---sub-title-2 {
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.667em;
 	font-style:normal;
 	font-variant:normal;
@@ -6356,7 +6343,7 @@ p.heading1 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:navy;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -6376,7 +6363,7 @@ p.heading1 {
 p.x75 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -6392,7 +6379,7 @@ p.x75 {
 p.Footer {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -6409,7 +6396,7 @@ p.Footer {
 p.numbers {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -6425,7 +6412,7 @@ p.numbers {
 p.Inner-Heading {
 	-epub-ruby-position:over;
 	color:teal;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6442,7 +6429,7 @@ p.TXT-Bold {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6458,7 +6445,7 @@ p.TXT-Bold {
 p.Sanwant {
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -6474,7 +6461,7 @@ p.Sanwant {
 p.day-night {
 	-epub-ruby-position:over;
 	color:steelblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -6490,7 +6477,7 @@ p.day-night {
 p.x1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -6510,7 +6497,7 @@ p.x1 {
 p.Futnoot {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -6526,7 +6513,7 @@ p.Futnoot {
 p.S-3 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6542,7 +6529,7 @@ p.S-3 {
 p.B-3 {
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6559,7 +6546,7 @@ p.Pad-sankhya {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6576,7 +6563,7 @@ p.Pad-sankhya {
 p.Book-Title {
 	-epub-ruby-position:over;
 	color:#800000;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:2.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -6592,7 +6579,7 @@ p.Book-Title {
 p.cover-caption {
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6613,7 +6600,7 @@ p.pravachan {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6630,7 +6617,7 @@ p.Sub-Head {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:red;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6650,7 +6637,7 @@ p.Sub-Head {
 p.Caption-L-16 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1em;
 	font-style:normal;
 	font-variant:normal;
@@ -6670,7 +6657,7 @@ p.Caption-L-16 {
 p.dhyan {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -6686,7 +6673,7 @@ p.dhyan {
 p.end {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -6702,7 +6689,7 @@ p.end {
 p.stotra {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -6715,27 +6702,10 @@ p.stotra {
 	text-decoration:none;
 	text-indent:0px;
 }
-p.FOOTNOTE {
-	-epub-ruby-position:over;
-	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
-	font-size:1em;
-	font-style:normal;
-	font-variant:normal;
-	font-weight:normal;
-	line-height:1.2;
-	margin-bottom:0px;
-	margin-left:0px;
-	margin-right:0px;
-	text-align:justify;
-	text-decoration:none;
-	text-indent:18px;
-	border:1px solid BlueViolet;
-}
 p.SLOK {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -6751,7 +6721,7 @@ p.SLOK {
 p.Middle-Heading {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:italic;
 	font-variant:normal;
@@ -6767,7 +6737,7 @@ p.Middle-Heading {
 p.uvach {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.05em;
 	font-style:italic;
 	font-variant:normal;
@@ -6783,7 +6753,7 @@ p.uvach {
 p.Text- {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6799,7 +6769,7 @@ p.Text- {
 p.Chapter-end-Text {
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:italic;
 	font-variant:normal;
@@ -6819,7 +6789,7 @@ p.Chapter-end-Text {
 p.Footnote-A {
 	-epub-ruby-position:over;
 	color:BlueViolet;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -6837,7 +6807,7 @@ p.Sloke-AA {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:firebrick;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6853,7 +6823,7 @@ p.Sloke-AA {
 p.Sub-Heading-A {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.417em;
 	font-style:normal;
 	font-variant:normal;
@@ -6870,7 +6840,7 @@ p.OM-Namah {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.167em;
 	font-style:normal;
 	font-variant:normal;
@@ -6886,7 +6856,7 @@ p.OM-Namah {
 p.Center-Dais-A {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	font-style:normal;
 	font-variant:normal;
@@ -6902,7 +6872,7 @@ p.Center-Dais-A {
 p.F-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.083em;
 	font-style:normal;
 	font-variant:normal;
@@ -6923,7 +6893,7 @@ p.TXT-hindi {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6940,7 +6910,7 @@ p.Chapter {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:deeppink;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -6957,7 +6927,7 @@ p.prashn {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:#c10202;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6974,7 +6944,7 @@ p.samadan {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -6988,8 +6958,8 @@ p.samadan {
 	text-indent:18px;
 }
 /* "प्रश्न (१)—" and "उत्तर—" labels in गीता बाल प्रश्नोत्तरी */
-p.prashn > span.inline-5,
-p.samadan > span.inline-5,
+p.prashn > span.quote,
+p.samadan > span.quote,
 p.samadan > span.inline_shlok {
 	font-style:italic;
 }
@@ -7000,7 +6970,7 @@ p.samadan > span.inline_shlok {
 p.Subhed {
 	-epub-ruby-position:over;
 	color:maroon;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -7016,7 +6986,7 @@ p.Subhed {
 p.Slok {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.125em;
 	font-style:normal;
 	font-variant:normal;
@@ -7036,7 +7006,7 @@ p.Slok {
 p.Hindi-Chappter-Heading {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -7052,7 +7022,7 @@ p.Hindi-Chappter-Heading {
 p.Hindi-Chappter-Heading-1 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -7068,7 +7038,7 @@ p.Hindi-Chappter-Heading-1 {
 p.Hindi-Chappter-Heading-2 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -7084,7 +7054,7 @@ p.Hindi-Chappter-Heading-2 {
 p.Hindi-Chaptter-Heading {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.833em;
 	font-style:normal;
 	font-variant:normal;
@@ -7100,7 +7070,7 @@ p.Hindi-Chaptter-Heading {
 p.Shlok-new {
 	-epub-ruby-position:over;
 	color:#b33c00;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -7119,7 +7089,7 @@ p.Shlok-new {
 
 p.Pada-Patha {
 	color:#231f20;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.1em;
 	font-style:italic;
 	text-align:center;
@@ -7127,7 +7097,7 @@ p.Pada-Patha {
 }
 p.Rishi-Devata-Line {
 	color:#5a5148;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:0.95em;
 	text-align:center;
 	margin-bottom:6px;
@@ -7136,7 +7106,7 @@ p.Mantra-Vishay {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:darkslateblue;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.5em;
 	font-style:normal;
 	font-variant:normal;
@@ -7255,7 +7225,7 @@ p.SHLOK-60,
 p.SHLOK-61 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:0.85em;
 	font-style:italic;
 	font-variant:normal;
@@ -7335,7 +7305,7 @@ p.Image-66 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -7394,7 +7364,7 @@ p.Image-word-7,
 p.Image-word-8,
 p.Image-Word-9 {
 	color:#333333;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:0.917em;
 	font-style:italic;
 	font-weight:normal;
@@ -7419,7 +7389,7 @@ p.Basic-Paragraph-14,
 p.Basic-Paragraph-15 {
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -7436,7 +7406,7 @@ p.TXT-Right-3 {
 	-epub-hyphens:none;
 	-epub-ruby-position:over;
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.333em;
 	font-style:normal;
 	font-variant:normal;
@@ -7456,7 +7426,7 @@ table.Shalaka-Table {
 	table-layout:fixed;
 	margin:12px 0px 12px 0px;
 	border-collapse:collapse;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 }
 td.Shalaka-Cell {
 	border:1px solid currentColor;
@@ -7595,7 +7565,7 @@ p.vf-wrap .vf {
 img.inline-sign { height: 1.05em; width: auto; vertical-align: middle; }
 
 /* पाणिनीयशिक्षा — the four yama signs with their names (a list of signs, one per line): the sign in a fixed-width cell so the dashes line up */
-p.sign-row { font-family: ChanakyaUni, serif; font-size: 1.333em; line-height: 1.6; color: black; text-align: left; text-indent: 0; margin: 0 0 4px 1.2em; }
+p.sign-row { font-family:NotoSerifDevanagari, serif; font-size: 1.333em; line-height: 1.6; color: black; text-align: left; text-indent: 0; margin: 0 0 4px 1.2em; }
 span.sign-cell { display: inline-block; width: 2.2em; text-align: center; }
 img.sign-col { width: 1.38em; height: auto; vertical-align: middle; }
 
@@ -7606,7 +7576,7 @@ img.jihva-sign { height: 0.68em; width: auto; vertical-align: baseline; }
    They are paragraphs, so the reader's अर्थ button (arth_hide "stotra-arth*") hides them to leave only the shloka. */
 p.stotra-arth-label {
 	color:#7a1a10;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.15em;
 	font-weight:bold;
 	line-height:1.3;
@@ -7616,7 +7586,7 @@ p.stotra-arth-label {
 }
 p.stotra-arth-pad {
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.2em;
 	line-height:1.35;
 	margin:0 0 .3em 0;
@@ -7629,7 +7599,7 @@ p.stotra-arth-pad span.stotra-eq { color:#8a6a3a; padding:0 .2em; }
 p.stotra-arth-pad span.stotra-br { color:#6b5a3a; font-size:.92em; }
 p.stotra-arth-bhav {
 	color:black;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.25em;
 	line-height:1.45;
 	margin:.9em 0 .6em 0;
@@ -7640,7 +7610,7 @@ p.stotra-arth-bhav {
 }
 p.stotra-vlabel {
 	color:#7a1a10;
-	font-family:ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-size:1.1em;
 	font-weight:bold;
 	line-height:1.3;
@@ -7673,7 +7643,7 @@ summary.filler-sum::-webkit-details-marker {
 }
 summary.filler-sum::before {
 	content: "+";
-	font: 700 1.25rem/1 sans-serif;
+	font: 700 1.25rem/1 NotoSerifDevanagari, serif;
 }
 details.filler-box[open] > summary.filler-sum::before {
 	content: "\2212";
@@ -7683,8 +7653,8 @@ summary.filler-sum:hover {
 	background: rgba(201, 164, 99, 0.18);
 }
 
-/* the Vedic anusvara sign ᳬं (U+1CEC U+0902), which ChanakyaUni lacks: set in Noto Serif Devanagari */
+/* the Vedic anusvara sign ᳬं (U+1CEC U+0902) */
 span.ved-anu {
-	font-family: 'NotoSerifDevanagari', ChanakyaUni, serif;
+	font-family:NotoSerifDevanagari, serif;
 	font-weight: inherit;
 }

@@ -19,9 +19,10 @@ handles (it pings `/health` when a lesson opens and waits for `ready`).
 | model size | 481 MB | 138 MB |
 | transcript | correct, Sanskrit spelling | visible errors (`चेकितान` -> `चे कित न`) -- not used |
 
-Through the site's own `scoreSpeech`: correct recitation 87-100, a *different* shloka 12-26, only the first half 31-50, so the
-pass mark `SP_PASS = 60` in `swadhyay-gita.js` sits in a clear gap and was left as it is. These are clean recordings by one
-reciter; re-check with real learners' voices after launch.
+Through the site's own `scoreSpeech`: correct recitation 87-100, a *different* shloka 12-26, only the first half 31-50 --
+but with the middle 30 % left out 54-72, so some such recitations pass the mark `SP_PASS = 60` in `swadhyay-gita.js`; the
+scoring needs work there. These are clean recordings by one reciter; re-check with real learners' voices.
+To try it on this computer: `node tools/asr/run_local.js` -> http://localhost:5180/gita.
 
 ## One-time setup
 

@@ -1,0 +1,4 @@
+Alpa v0.2 -- Sanskrit text-to-speech model, https://huggingface.co/77ethers/alpa (revision "main", downloaded 2026-11-27).
+Licensed under the Apache License, Version 2.0 (Apache-2.0.txt). Third-party notices of the model: THIRD_PARTY_NOTICES.md.
+The model file here is unchanged. This site's text front end (swadhyay-sanskrit.js) is a JavaScript port, changed for this
+site, of alpa/text.py from the same repository.

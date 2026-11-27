@@ -381,7 +381,7 @@ async function handleChapterSave(ctx, id) {
   if (!ch) return sendJSON(ctx.res, 404, { error: 'Chapter not found' });
   const b = await readJSON(ctx.req, 12e6);
   if (typeof b.html !== 'string') return sendJSON(ctx.res, 400, { error: 'html is required' });
-  if (/<hr[^>]*\bclass=["']page-break["']/i.test(b.html)) return sendJSON(ctx.res, 400, { error: 'A chapter cannot contain a page break. Use "Split chapter" instead.' });
+  if (/<hr\s*\/?>|<hr[^>]*\bclass=["']page-break["']/i.test(b.html)) return sendJSON(ctx.res, 400, { error: 'A chapter cannot contain a page break. Use "Split chapter" instead.' });
   const changed = await writeChapter(ch, b.html.trim(), ctx.user, b.note);
   if (changed) await audit(ctx.user, 'chapter.save', ch.book_file + ' #' + (Number(ch.pos) + 1), bd.chapterTitle(b.html));
   const fresh = await chapterRow(id);
