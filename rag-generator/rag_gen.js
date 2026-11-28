@@ -148,7 +148,7 @@ function classify(cls) {
   if (has(/^Sub-Head(ing)?(-\d+)?$/i)) return 'h2';
   if (has(/^(Main-)?Heading/i) || has(/^Title-page/i)) return 'h1';
   if (has(/^txt-right$/i)) return 'attr';
-  if (has(/^Shlok/i) || has(/^U(wach|vach|vaacha)$/i) || has(/^Nayash$/i) && false) return 'verse';
+  if (has(/^(?:Shlok|word-break$)/i) || has(/^U(wach|vach|vaacha)$/i) || has(/^Nayash$/i) && false) return 'verse';
   return 'prose';
 }
 

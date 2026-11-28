@@ -147,7 +147,7 @@ def table_to_padachhed(b):
                 items.append((t, ""))
     parts = []
     for i, (w, m) in enumerate(items):
-        seg = "<b>%s</b> = %s" % (w, '<span class="pm">%s</span>' % m if m else "")
+        seg = "<b>%s</b> = %s" % (w, '<span class="word-meaning">%s</span>' % m if m else "")
         if i < len(items) - 1 and not re.search(r"[,;]$", plain(m)):
             seg += ","
         parts.append(seg)
@@ -305,7 +305,7 @@ def locate_units(chap, rep, label):
 def loose_to_padachhed(b):
     t = plain(clean_inline(inner_html(b)))
     w, m = t.split("=", 1)
-    return "<b>%s</b> = %s" % (w.strip(), '<span class="pm">%s</span>' % m.strip())
+    return "<b>%s</b> = %s" % (w.strip(), '<span class="word-meaning">%s</span>' % m.strip())
 
 
 def build(src, dry=False):
@@ -598,7 +598,7 @@ def build(src, dry=False):
             if u["star"] is not None:
                 add(emit("Footnotes", clean_inline(inner_html(seg[u["star"]]))))
             for y in range(u["pad"][0], u["pad"][1]):
-                add(emit("Shlok-L", clean_inline(inner_html(seg[y]))))
+                add(emit("word-break", clean_inline(inner_html(seg[y]))))
             add(emit("Padchched-1", " ".join(table_to_padachhed(seg[g]) if seg[g].tag == "table" else loose_to_padachhed(seg[g]) for g in u["grp"])))
             # translation + commentary up to the next unit
             prev = None
@@ -704,7 +704,7 @@ HEAD = """<!DOCTYPE html>
   .epub-page {{
     margin-bottom: 1rem;
   }}
-  span.pm {{ font-weight: normal; }}
+  span.word-meaning {{ font-weight: normal; }}
 </style>
 
 </head>

@@ -39,7 +39,9 @@ function paragraphs(html) {
   let m, page = 0;
   while ((m = re.exec(html))) {
     if (m[1] !== undefined) { page = +m[1]; continue; }
-    const cls = (/class="([^"]*)"/.exec(m[2]) || [, ''])[1].trim();
+    let cls = (/class="([^"]*)"/.exec(m[2]) || [, ''])[1].trim();
+    // साधक संजीवनी marks its सम्बन्ध paragraphs with data-sambandh instead of a class
+    if (cls === 'Italik' && /data-sambandh=/.test(m[2])) cls = 'Sambandh';
     const text = inlineText(m[3]);
     if (text) out.push({ cls, text, page });
   }
@@ -89,7 +91,7 @@ function parseBook(book) {
     // `pending` is the run of consecutive shloka-like paragraphs (intro, speaker, shloka lines, padchhed lines).
     // The run becomes a verse when one of its lines ends with the number we expect next; otherwise it is a quoted
     // shloka inside commentary and is appended to the current verse.
-    if (isPrefix(p) || isShlok(p) || (/^Shlok-L$/i.test(p.cls) && p.text.length < 400)) {
+    if (isPrefix(p) || isShlok(p) || (/^word-break$/i.test(p.cls) && p.text.length < 400)) {
       pending.push(p);
       const n = p.text.length < 300 && END_NUM.exec(p.text);
       if (n) {

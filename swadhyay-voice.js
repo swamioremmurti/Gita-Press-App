@@ -167,9 +167,10 @@
 
   /* ================================================================ Hindi text */
   var HINDI_LETTER = /[ऄ-हॐक़-ॡॲ-ॿ]/, HINDI_MAX = 600;
-  /* the same tidying the app's Hindi voice does (PiperEngine.prep). Null = nothing this voice can say. */
+  /* the same tidying the app's Hindi voice does (PiperEngine.prep). Invisible joiners go too: with one inside a word
+     ("भगवान<ZWJ>्से") the voice says the word "halant". Null = nothing this voice can say. */
   function prepareHindi(line) {
-    var t = String(line || "").replace(/[­​]/g, "").replace(/॥/g, "।").replace(/[|*†‡]/g, " ").replace(/\s+/g, " ").trim();
+    var t = String(line || "").replace(/[\u00ad\u200b-\u200d\u2060\ufeff]/g, "").replace(/॥/g, "।").replace(/[|*†‡]/g, " ").replace(/\s+/g, " ").trim();
     return HINDI_LETTER.test(t) && t.length <= HINDI_MAX ? { text: t } : null;
   }
 

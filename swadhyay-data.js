@@ -2113,7 +2113,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  1835.6
+        "sizeKB":  1839.7
     },
     {
         "file":  "परम पिता से प्रार्थना.html",
@@ -4023,7 +4023,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "श्रद्धेय श्रीजयदयालजी गोयन्दका",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  6622.1
+        "sizeKB":  6713
     },
     {
         "file":  "श्रीमद्भगवद्गीता_मोटे_अक्षरोंमें.html",
@@ -4041,7 +4041,7 @@ var SWADHYAY_BOOKS_RAW = [
         "tikakar":  "",
         "translator":  "",
         "publisher":  "गीताप्रेस",
-        "sizeKB":  12041.1
+        "sizeKB":  12055.9
     },
     {
         "file":  "श्रीमद्वाल्मीकीय रामायण.html",
@@ -5731,5 +5731,16 @@ var SWADHYAY_BOOKS_RAW = [
         "translator":  "",
         "publisher":  "गीताप्रेस",
         "sizeKB":  5591.2
+    },
+    {
+        "file":  "सुन्दरकाण्ड (सटीक).html",
+        "category":  "Itihasas",
+        "author":  "श्रीगोस्वामी तुलसीदासजी",
+        "tikakar":  "श्रद्धेय श्रीहनुमानप्रसादजी पोद्दार",
+        "translator":  "",
+        "publisher":  "गीताप्रेस",
+        "swith_arth":  "yes",
+        "arth_hide":  "TEXT",
+        "sizeKB":  294.8
     }
 ];

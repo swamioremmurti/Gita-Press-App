@@ -80,7 +80,7 @@ def read_book(path):
                 elif c1 == "Shlok":
                     lines.append(clean_line(s1))
                     closed = s1.rstrip().endswith("॥") and not re.search(r"[०-९0-9]", s1)
-                elif c1 in ("Shlok-L", "Padchched-1", "Bole", "Shlok-Number"):
+                elif c1 in ("word-break", "Padchched-1", "Bole", "Shlok-Number"):
                     break
                 j += 1
             assert len(uws) <= 1 and lines, (ch, n, uws, lines)

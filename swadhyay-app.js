@@ -416,6 +416,7 @@
   }
 
   var COVER_OVERRIDES = {
+    "सुन्दरकाण्ड (सटीक).html": "assets/covers/sundarakand-satik.webp",
     "श्रीकृष्णांक.html": "assets/covers/shreekrishnaank.webp",
     "भारतीय मनोविज्ञान.html": "assets/covers/bhaarateey-manovijnyaan.webp",
     "ब्रज का एक दिन.html": "assets/covers/braj-kaa-ek-din.webp",
@@ -2731,7 +2732,7 @@
       var sups = p.querySelectorAll("sup"); for (var s = 0; s < sups.length; s++) sups[s].parentNode.removeChild(sups[s]);
       var txt = (p.textContent || "").replace(/\s+/g, " ").trim();
       if (!txt) continue;
-      var cls = has(p, /\sShlok/) ? "about-sh" : (has(p, /\s(?:TXT-Right|Shlok-Right)[\s]/) ? "about-sign" : "");
+      var cls = has(p, /\s(?:Shlok|word-break)/) ? "about-sh" : (has(p, /\s(?:TXT-Right|Shlok-Right)[\s]/) ? "about-sign" : "");
       out.push({ t: txt, c: cls });
       chars += txt.length;
     }
@@ -3155,7 +3156,8 @@
     return out.length ? out : [html];
   }
 
-  var SAMBANDH_START_RE = /^\s*<p\s[^>]*\bclass="(?:[^"]*\s)?Sambandh(?:\s[^"]*)?"/;
+  /* a सम्बन्ध paragraph: class Sambandh, or the mark data-sambandh (साधक संजीवनी, whose paragraphs are classed Italik) */
+  var SAMBANDH_START_RE = /^\s*<p\s[^>]*(?:\bclass="(?:[^"]*\s)?Sambandh(?:\s[^"]*)?"|\bdata-sambandh=)/;
 
   // "श्लोक-४" / "श्लोक-४–५" from the Shlok-Number lines of a सम्बन्ध-led page; falls back to
   // the opening words of the सम्बन्ध paragraph itself.
@@ -3170,7 +3172,7 @@
       return nums.length > 1 && last && first.indexOf(last) === -1 ? first + "–" + last : first;
     }
     // Verses numbered inline at the end of their last line ("…सञ्जय॥१") -> "श्लोक-१" / "श्लोक-४–६"
-    var vre = /<p\s[^>]*\bclass="(?:[^"]*\s)?(?:Shlok|Etalic)[^"]*"[^>]*>([\s\S]*?)<\/p>/g, vn = [];
+    var vre = /<p\s[^>]*\bclass="(?:[^"]*\s)?(?:Shlok|Etalic|word-break)[^"]*"[^>]*>([\s\S]*?)<\/p>/g, vn = [];
     while ((m = vre.exec(html))) {
       var vm = stripTagsForLabel(m[1]).replace(/\*/g, "").match(/॥\s*([०-९]+)$/);
       if (vm) vn.push(vm[1]);
@@ -4240,12 +4242,14 @@
      so a shloka is read line by line. A verse number ("॥ १७ ॥") is neither read nor highlighted. */
   var TTS_LETTER = /[^\s\d०-९।॥|.,;:!?'"‘’“”()\[\]\-–—*]/;
   var TTS_VERSE_NO = /[॥|]+\s*[०-९0-9][०-९0-9.\-–,\s]*[॥|]*/g;
-  function ttsClean(raw) { return raw.replace(/\u0001/g, " ").replace(TTS_VERSE_NO, " ").replace(/[॥|]+/g, "").replace(/\s+/g, " ").trim(); }
+  function ttsClean(raw) { return raw.replace(/[\u00ad\u200b-\u200d\u2060\ufeff]/g, "").replace(/\u0001/g, " ").replace(TTS_VERSE_NO, " ").replace(/[॥|]+/g, "").replace(/\s+/g, " ").trim(); }
   function ttsCollect() {
     var doc = null; try { doc = document.getElementById("readerIframe").contentDocument; } catch (e) {}
     if (!doc || !doc.body) return [];
     var sel = "p, h1, h2, h3, h4, h5, li, blockquote", els = Array.prototype.slice.call(doc.body.querySelectorAll(sel)), out = [];
-    var skip = "sup, script, style, [class*='footnote'], .fn, [class*='fn-']";
+    /* never read: footnote marks and notes, a verse split into its words (.word-break) and the meaning given word by word (.word-meaning) */
+    var unread = "[class*='footnote'], .fn, [class*='fn-'], .word-break, .word-meaning";
+    var skip = "sup, script, style, " + unread;
     /* A paragraph is a shloka (or speaker line) when it, or a small block around it (a verse box), has a class Shlok… / Uwach….
        Some books wrap a whole chapter in one outer element with such a class; that wrapper is not a verse, so it does not count:
        a wrapping element counts only when it holds fewer than 8 blocks or under half of the page's blocks. */
@@ -4262,7 +4266,10 @@
     }
     els.forEach(function (el) {
       if (el.querySelector(sel)) return;                                            // read the inner paragraph, not its container
-      if (el.closest("[class*='footnote'], .fn, [class*='fn-'], nav, script, style")) return;
+      if (el.closest(unread + ", nav, script, style")) return;
+      /* a "word = meaning" list is skipped whole (without the meanings only "word =" would remain): a paragraph holding
+         .word-meaning, or a .Padchched-1 paragraph with "=" (a few Padchched-1 paragraphs are ordinary text and are read) */
+      if (el.querySelector(".word-meaning") || (el.matches(".Padchched-1") && el.textContent.indexOf("=") >= 0)) return;
       var cs = doc.defaultView.getComputedStyle(el);
       if (cs.display === "none" || cs.visibility === "hidden") return;
       var whole = verseClassed(el);

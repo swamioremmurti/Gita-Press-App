@@ -4,8 +4,8 @@
    The reader runs readerInlineScript inside the book's iframe, which calls SwadhyayFootnotes.init(document) on that page. Here:
      1. Footnote paragraphs are the <p> whose class is fn, or starts Footnote / Footnotes / Foot-note / Futnote / Futnoot (Footnotes-Bold,
         Footnotes-Right ...). Footnote paragraphs that directly follow each other make a block.
-     2. A block is cut into notes at every paragraph that starts with a marker -- "*", "**", "[१]", "(१)", "१." or "१)"; a paragraph
-        without a marker belongs to the note before it ("स बुद्धिमान्...", "(गीता ४। १८)").
+     2. A block is cut into notes at every paragraph that starts with a marker -- "*", "**", "[१]", "(१)", "१.", "१)" or "१-"; a
+        paragraph without a marker belongs to the note before it ("स बुद्धिमान्...", "(गीता ४। १८)").
      3. For each note the same mark is looked for in the paragraphs just before it (up to 80 back): a <sup> holding it, or the mark in
         the text. Found: the mark becomes a link (a.fn-ref), the note's paragraphs are hidden. Not found: the note is left as it was.
      4. A tap (or Enter) on a link opens the modal; the backdrop, the close button and Esc close it.
@@ -16,7 +16,8 @@
 
   var FN_CLASS = /^(?:fn$|foot-?note|futnoo?te?|xfootnote)/i;
   var LOOK_BACK = 80;
-  var MARK_RE = /^\s*(\*{1,4}|\[\s*([०-९0-9]+)\s*\]|\(\s*([०-९0-9]+)\s*\)|([०-९0-9]+)\s*[.)])/;
+  /* "१-" / "१—" is a marker too, but not a range such as "१-२" or "१—३" */
+  var MARK_RE = /^\s*(\*{1,4}|\[\s*([०-९0-9]+)\s*\]|\(\s*([०-९0-9]+)\s*\)|([०-९0-9]+)\s*[.)]|([०-९0-9]+)\s*[-‐-―](?!\s*[०-९0-9]))/;
   var DEV = "०१२३४५६७८९";
 
   function num(s) {
@@ -37,6 +38,9 @@
     var m = MARK_RE.exec(t);
     if (!m) return null;
     if (m[1].charAt(0) === "*") return { key: m[1], stars: m[1].length, passes: ["star"] };
+    /* a note numbered "१-" is cited by a raised digit (a <sup>, or a span holding only the digit), else by a digit stuck to a
+       word; a digit after a danda is a verse number in these books, so it is never taken */
+    if (m[5]) return { key: "n" + num(m[5]), n: num(m[5]), hyphen: true, passes: ["raised", "stuck"] };
     var d = m[2] || m[3] || m[4], bracketed = !!(m[2] || m[3]);
     // a note numbered "१." is cited by a raised digit; one numbered "(१)" / "[१]" by that mark in the text -- each falls back to the other
     return { key: "n" + num(d), n: num(d), passes: bracketed ? ["bracket", "digit"] : ["digit", "bracket"] };
@@ -84,10 +88,10 @@
     }
     var sup = supRef(p, mk);
     if (sup) return sup;
-    if (pass === "digit") {
+    if (pass === "digit" || pass === "raised" || pass === "stuck") {
       /* a styled span that holds only the number and sits straight after a word: the books' superscript digits are often
          <span class="inline-N">२</span> (the book's own CSS raises them) */
-      var spans = p.querySelectorAll("span");
+      var spans = pass === "stuck" ? [] : p.querySelectorAll("span");
       for (i = 0; i < spans.length; i++) {
         var sp = spans[i];
         if (sp.classList.contains("fn-ref") || sp.children.length) continue;
@@ -96,18 +100,20 @@
         /* the word before it may be plain text or a styled span of its own (<span>ऊकालो…प्लुतः</span><span>१</span>) */
         var before = sp.previousSibling;
         var tail = before ? (before.nodeType === 3 ? before.nodeValue : before.nodeType === 1 ? before.textContent : "") : "";
+        if (pass === "raised") tail = tail.replace(/\s+$/, "");        // "सुनायीं <span>१</span>": a space before the number
         if (!/[ऀ-ॣ॰-ॿ।॥’”;,:?!)\]]$/.test(tail)) continue;          // (a closing quote or a mark of punctuation may stand between the word and the number: "है;१")
         if (doc.defaultView.getComputedStyle(sp).verticalAlign !== "super") sp.classList.add("fn-sup");
         return sp;
       }
       /* a bare digit: straight after a Devanagari letter or vowel sign, or after a danda when no danda closes it ("।१ खाल");
          "॥ ४२॥" (a space before it) and "।४२।" (a verse number) are never taken for one */
+      if (pass === "raised") return null;
       nodes = textNodes(p);
       for (i = 0; i < nodes.length; i++) {
         BARE_RE.lastIndex = 0;
         while ((m = BARE_RE.exec(nodes[i].nodeValue))) {
           var lead = (m[1] || m[3]).length, digits = m[2] || m[4];
-          if (num(digits) !== mk.n) continue;
+          if (num(digits) !== mk.n || (pass === "stuck" && (m[3] || digits.charAt(0) === "०"))) continue;     // "तै०उ०२": ० as the abbreviation mark
           var el = wrap(doc, nodes[i], m.index + lead, m.index + lead + digits.length);
           el.classList.add("fn-sup");
           return el;
@@ -270,8 +276,11 @@
           g.paras.forEach(function (p) { p.classList.add("fn-hidden"); p.setAttribute("data-fn-note", id); });
           last = notes[id];
           last.id = id;
+          last.hyphen = !!g.mk.hyphen;
           claimedAny = true;
-        } else if (last && g.mk.n >= 2) {
+        } else if (last && (g.mk.hyphen ? !last.hyphen : g.mk.n >= 2)) {
+          /* (an unmatched "२-" joins only a note of another kind, e.g. a "*" note that lists "१-…", "२-…"; beside other
+             "१-" notes it stays visible on the page) */
           /* a numbered item ("२.", "३." ...) that nothing in the text points to is a further item of the note before it
              (a footnote that quotes several verses: "* ..." then "२. ..." "३. ..."): it joins that note and opens with it */
           g.paras.forEach(function (p) { last.paras.push(p); p.classList.add("fn-hidden"); p.setAttribute("data-fn-note", last.id); });

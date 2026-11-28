@@ -126,7 +126,7 @@ def distance(a, b, size_scale):
 ZONES = {
     "title": ["cover-Book-Name", "cover-Sub-Title", "cover-Sub-Heading", "cover-Tvamev-mata",
               "cover-Publisher-Note", "cover-Author-Name", "cover-Shri-Hari"],
-    "body": ["Shlok", "Shlok-L", "Shlok-Color", "Shlok-Subject", "Uvaacha", "TXT", "TXT-Bold", "Sambandh", "Chapter-End-Text",
+    "body": ["Shlok", "word-break", "Shlok-Color", "Shlok-Subject", "Uvaacha", "TXT", "TXT-Bold", "Sambandh", "Chapter-End-Text",
              "OM-Namah", "Center-Dais-A", "Doha", "Subject", "Right"],
     "note": ["Footnotes", "Footnotes-Right", "Footnotes-Bold", "Footnotes-Center"],
 }
